@@ -1,0 +1,244 @@
+"use client"
+
+import * as React from "react"
+import { Bell } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Badge } from "@/components/ui/badge"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Separator } from "@/components/ui/separator"
+import Link from "next/link"
+import { createClient } from "@/lib/supabase/client"
+import { formatDistanceToNow } from "date-fns"
+
+interface Notification {
+  id: string
+  title: string
+  message: string
+  notification_type: string
+  read: boolean
+  created_at: string
+  action_url?: string
+}
+
+export function NotificationsPopover({ clientId }: { clientId: string }) {
+  const [notifications, setNotifications] = React.useState<Notification[]>([])
+  const [unreadCount, setUnreadCount] = React.useState(0)
+  const [isLoading, setIsLoading] = React.useState(true)
+  const [isOpen, setIsOpen] = React.useState(false)
+  const supabase = createClient()
+
+  React.useEffect(() => {
+    if (!clientId) return
+
+    // Fetch notifications
+    const fetchNotifications = async () => {
+      const { data, error } = await supabase
+        .from('notifications')
+        .select('*')
+        .eq('client_id', clientId)
+        .order('created_at', { ascending: false })
+        .limit(10)
+
+      if (!error && data) {
+        setNotifications(data)
+        setUnreadCount(data.filter((n) => !n.read).length)
+      }
+      setIsLoading(false)
+    }
+
+    fetchNotifications()
+
+    // Subscribe to real-time updates
+    const channel = supabase
+      .channel('notifications')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'notifications',
+          filter: `client_id=eq.${clientId}`,
+        },
+        () => {
+          fetchNotifications()
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [clientId, supabase])
+
+  const markAsRead = async (notificationId: string) => {
+    const { error } = await supabase
+      .from('notifications')
+      .update({ read: true, read_at: new Date().toISOString() })
+      .eq('id', notificationId)
+
+    if (!error) {
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === notificationId ? { ...n, read: true } : n))
+      )
+      setUnreadCount((prev) => Math.max(0, prev - 1))
+    }
+  }
+
+  const markAllAsRead = async () => {
+    const unreadIds = notifications.filter((n) => !n.read).map((n) => n.id)
+    if (unreadIds.length === 0) return
+
+    const { error } = await supabase
+      .from('notifications')
+      .update({ read: true, read_at: new Date().toISOString() })
+      .in('id', unreadIds)
+
+    if (!error) {
+      setNotifications((prev) =>
+        prev.map((n) => ({ ...n, read: true }))
+      )
+      setUnreadCount(0)
+    }
+  }
+
+  const getNotificationIcon = (type: string) => {
+    switch (type) {
+      case 'points_earned':
+        return '🎉'
+      case 'points_spent':
+        return '💳'
+      case 'referral_signup':
+        return '👥'
+      case 'referral_completed':
+        return '✅'
+      case 'booking_confirmed':
+        return '✈️'
+      case 'booking_cancelled':
+        return '❌'
+      default:
+        return '📢'
+    }
+  }
+
+  return (
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="relative h-9 w-9"
+        >
+          <Bell className="h-4 w-4" />
+          {unreadCount > 0 && (
+            <Badge
+              variant="destructive"
+              className="absolute -right-1 -top-1 h-5 w-5 flex items-center justify-center p-0 text-xs font-semibold"
+            >
+              {unreadCount > 9 ? '9+' : unreadCount}
+            </Badge>
+          )}
+          <span className="sr-only">Notifications</span>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-80 p-0" align="end">
+        <div className="flex items-center justify-between px-4 py-3 border-b">
+          <div className="flex items-center gap-2">
+            <h4 className="font-semibold text-sm">Notifications</h4>
+            {unreadCount > 0 && (
+              <Badge variant="secondary" className="h-5 text-xs">
+                {unreadCount} new
+              </Badge>
+            )}
+          </div>
+          {unreadCount > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7 text-xs"
+              onClick={markAllAsRead}
+            >
+              Mark all read
+            </Button>
+          )}
+        </div>
+        <ScrollArea className="h-[400px]">
+          {isLoading ? (
+            <div className="p-4 text-center text-sm text-muted-foreground">
+              Loading notifications...
+            </div>
+          ) : notifications.length === 0 ? (
+            <div className="p-8 text-center">
+              <Bell className="h-8 w-8 mx-auto mb-2 text-muted-foreground opacity-50" />
+              <p className="text-sm text-muted-foreground">
+                No notifications yet
+              </p>
+            </div>
+          ) : (
+            <div className="divide-y">
+              {notifications.map((notification) => (
+                <Link
+                  key={notification.id}
+                  href={notification.action_url || '#'}
+                  onClick={() => {
+                    if (!notification.read) {
+                      markAsRead(notification.id)
+                    }
+                  }}
+                  className="block p-4 hover:bg-accent transition-colors"
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="text-lg shrink-0">
+                      {getNotificationIcon(notification.notification_type)}
+                    </span>
+                    <div className="flex-1 min-w-0 space-y-1">
+                      <div className="flex items-start justify-between gap-2">
+                        <p
+                          className={`text-sm font-medium ${
+                            !notification.read ? 'text-foreground' : 'text-muted-foreground'
+                          }`}
+                        >
+                          {notification.title}
+                        </p>
+                        {!notification.read && (
+                          <div className="h-2 w-2 rounded-full bg-primary shrink-0 mt-1.5" />
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground line-clamp-2">
+                        {notification.message}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {formatDistanceToNow(new Date(notification.created_at), {
+                          addSuffix: true,
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </ScrollArea>
+        {notifications.length > 0 && (
+          <div className="border-t p-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full text-xs"
+              asChild
+            >
+              <Link href="/notifications" onClick={() => setIsOpen(false)}>
+                View all notifications
+              </Link>
+            </Button>
+          </div>
+        )}
+      </PopoverContent>
+    </Popover>
+  )
+}
+
