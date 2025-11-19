@@ -78,7 +78,7 @@ export function ReferFriendBanner({
             <h3 className="text-2xl md:text-3xl font-bold text-foreground">
               Refer a Friend
             </h3>
-            <p className="text-xl md:text-xl font-semibold text-muted-foreground">
+            <p className="text-xl md:text-xl font-semibold text-foreground text-shadow-lg">
             Get {bonusPoints} points for each friend you refer!
             </p>
           </div>
