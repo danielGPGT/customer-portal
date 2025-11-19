@@ -97,7 +97,7 @@ export function PointsBalanceCard({
         </div>
 
         {/* Divider */}
-        <div className="border-t" />
+        <div className="border-t mt-2 mb-2" />
 
         {/* Current Activity Progress Bar */}
         <div className="space-y-2">
@@ -115,7 +115,7 @@ export function PointsBalanceCard({
         </div>
 
         {/* Metrics List */}
-        <div className="space-y-0 flex gap-2">
+        <div className="space-y-0 flex gap-2 mt-4">
           <Button variant="outline" className="">
             How to earn points?
           </Button>

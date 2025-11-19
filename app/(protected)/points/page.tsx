@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { PointsBalanceCard } from '@/components/points/points-balance-card'
 import { PointsStatsCards } from '@/components/points/points-stats-cards'
 import { ReferAFriendWidget } from '@/components/points/refer-a-friend-widget'
+import { ReferFriendBanner } from '@/components/points/refer-friend-banner'
 import { StatisticsCard } from '@/components/points/statistics-card'
 import { LoyaltyTransactionsTable } from '@/components/points/loyalty-transactions-table'
 import { UserPlus, Coins, CreditCard, Plane } from 'lucide-react'
@@ -340,13 +341,18 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
           pointValue={pointValue}
           className="col-span-1 lg:col-span-2"
         />
-              {/* Refer a Friend Widget */}
+                <ReferFriendBanner
+          referralCode={referralData?.referral_code}
+          referralLink={referralData?.referral_link}
+          bonusPoints={settings?.referral_bonus_referee || 100}
+        />
+              {/* Refer a Friend Widget 
               <ReferAFriendWidget
           referralCode={referralData?.referral_code}
           referralLink={referralData?.referral_link}
           refereeBonus={settings?.referral_bonus_referee || 100}
           referrerBonus={settings?.referral_bonus_referrer || 100}
-        />
+        />*/}
 
 
       </div>

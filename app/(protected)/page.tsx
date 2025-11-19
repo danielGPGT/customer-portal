@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { ReferFriendBanner } from '@/components/points/refer-friend-banner'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -207,6 +208,25 @@ export default async function DashboardPage() {
     )
   }
 
+  // Get loyalty settings for referral bonus
+  const { data: settings } = await supabase
+    .from('loyalty_settings')
+    .select('referral_bonus_referee, referral_bonus_referrer')
+    .eq('id', 1)
+    .single()
+
+  // Get referral data
+  const { data: referralData } = await supabase
+    .from('referrals')
+    .select('referral_code, referral_link')
+    .eq('referrer_client_id', client.id)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  // Get referrer bonus points from loyalty settings (what the user gets when someone books)
+  const referrerBonusPoints = settings?.referral_bonus_referrer || 100
+
   return (
     <div className="space-y-6">
       <div>
@@ -224,6 +244,13 @@ export default async function DashboardPage() {
           Worth £{(client?.points_balance || 0).toLocaleString()} in discounts
         </p>
       </div>
+
+      {/* Refer Friend Banner */}
+      <ReferFriendBanner
+        referralCode={referralData?.referral_code}
+        referralLink={referralData?.referral_link}
+        bonusPoints={referrerBonusPoints}
+      />
 
       {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-3">
