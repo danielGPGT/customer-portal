@@ -1,8 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { SidebarProvider } from '@/components/ui/sidebar'
-import { AppSidebar } from '@/components/app/app-sidebar'
-import { AppHeader } from '@/components/app/app-header'
+import { LayoutWrapper } from '@/components/app/layout-wrapper'
 
 export default async function ProtectedLayout({
   children,
@@ -133,16 +131,10 @@ export default async function ProtectedLayout({
   }
 
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen w-full">
-        <AppSidebar user={user} client={client} />
-        <div className="flex flex-1 flex-col bg-card">
-          <AppHeader clientId={client.id} />
-          <main className="flex flex-1 flex-col gap-4 p-4 sm:p-8 m-2 ml-2 lg:ml-0 rounded-xl overflow-hidden bg-background border shadow-md">
-            {children}
-          </main>
-        </div>
+    <LayoutWrapper user={user} client={client}>
+      <div className="">
+        {children}
       </div>
-    </SidebarProvider>
+    </LayoutWrapper>
   )
 }

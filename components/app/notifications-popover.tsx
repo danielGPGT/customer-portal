@@ -131,7 +131,7 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
         <Button
           variant="ghost"
           size="icon"
-          className="relative h-9 w-9"
+          className="relative h-9 w-9 text-foreground dark:text-primary-foreground hover:bg-accent"
         >
           <Bell className="h-4 w-4" />
           {unreadCount > 0 && (

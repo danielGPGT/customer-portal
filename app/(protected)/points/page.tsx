@@ -1,16 +1,21 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { PointsBalanceCard } from '@/components/points/points-balance-card'
-import { EnhancedStatsGrid } from '@/components/points/enhanced-stats-grid'
-import { PointsBreakdownChart } from '@/components/points/points-breakdown-chart'
-import { PointsProgressCard } from '@/components/points/points-progress-card'
-import { RecentTransactionsTable } from '@/components/points/recent-transactions-table'
-import { ReferralShareCard } from '@/components/points/referral-share-card'
-import { PointsActivityChart } from '@/components/points/points-activity-chart'
-import { PointsExpiringAlert } from '@/components/points/points-expiring-alert'
+import { PointsStatsCards } from '@/components/points/points-stats-cards'
+import { ReferAFriendWidget } from '@/components/points/refer-a-friend-widget'
+import { StatisticsCard } from '@/components/points/statistics-card'
+import { LoyaltyTransactionsTable } from '@/components/points/loyalty-transactions-table'
+import { UserPlus, Coins, CreditCard, Plane } from 'lucide-react'
 
-export default async function PointsPage() {
+interface PointsPageProps {
+  searchParams: Promise<{ page?: string }>
+}
+
+export default async function PointsPage({ searchParams }: PointsPageProps) {
   const supabase = await createClient()
+  const params = await searchParams
+  const currentPage = parseInt(params.page || '1', 10)
+  const pageSize = 10
   
   const {
     data: { user },
@@ -74,17 +79,73 @@ export default async function PointsPage() {
     .eq('client_id', client.id)
     .order('created_at', { ascending: false })
 
-  // Get recent transactions for table
-  const { data: recentTransactions } = await supabase
+  // Calculate year-over-year spent change
+  const now = new Date()
+  const currentYearStart = new Date(now.getFullYear(), 0, 1) // Jan 1 of current year
+  const lastYearStart = new Date(now.getFullYear() - 1, 0, 1) // Jan 1 of last year
+  const lastYearEnd = new Date(now.getFullYear(), 0, 1) // Jan 1 of current year (exclusive)
+
+  // Get spent transactions for current year
+  const currentYearSpent = allTransactions?.filter(tx => {
+    const txDate = new Date(tx.created_at)
+    return tx.transaction_type === 'spend' && 
+           txDate >= currentYearStart && 
+           txDate < now
+  }).reduce((sum, tx) => sum + Math.abs(tx.points || 0), 0) || 0
+
+  // Get spent transactions for last year
+  const lastYearSpent = allTransactions?.filter(tx => {
+    const txDate = new Date(tx.created_at)
+    return tx.transaction_type === 'spend' && 
+           txDate >= lastYearStart && 
+           txDate < lastYearEnd
+  }).reduce((sum, tx) => sum + Math.abs(tx.points || 0), 0) || 0
+
+  // Calculate percentage change for spent
+  const spentChangePercent = lastYearSpent > 0
+    ? ((currentYearSpent - lastYearSpent) / lastYearSpent) * 100
+    : currentYearSpent > 0 ? 100 : 0
+
+  // Get earned transactions for current year
+  const currentYearEarned = allTransactions?.filter(tx => {
+    const txDate = new Date(tx.created_at)
+    return tx.transaction_type === 'earn' && 
+           txDate >= currentYearStart && 
+           txDate < now
+  }).reduce((sum, tx) => sum + (tx.points || 0), 0) || 0
+
+  // Get earned transactions for last year
+  const lastYearEarned = allTransactions?.filter(tx => {
+    const txDate = new Date(tx.created_at)
+    return tx.transaction_type === 'earn' && 
+           txDate >= lastYearStart && 
+           txDate < lastYearEnd
+  }).reduce((sum, tx) => sum + (tx.points || 0), 0) || 0
+
+  // Calculate percentage change for earned
+  const earnedChangePercent = lastYearEarned > 0
+    ? ((currentYearEarned - lastYearEarned) / lastYearEarned) * 100
+    : currentYearEarned > 0 ? 100 : 0
+
+  // Get transactions count for pagination
+  const { count: totalTransactionsCount } = await supabase
+    .from('loyalty_transactions')
+    .select('*', { count: 'exact', head: true })
+    .eq('client_id', client.id)
+
+  // Get transactions for table with pagination
+  const startRange = (currentPage - 1) * pageSize
+  const endRange = startRange + pageSize - 1
+  const { data: transactions } = await supabase
     .from('loyalty_transactions')
     .select('*')
     .eq('client_id', client.id)
     .order('created_at', { ascending: false })
-    .limit(5)
+    .range(startRange, endRange)
 
-  // Get booking references for recent transactions
-  const recentTransactionsWithBookings = await Promise.all(
-    (recentTransactions || []).map(async (tx) => {
+  // Get booking references for transactions
+  const transactionsWithBookings = await Promise.all(
+    (transactions || []).map(async (tx) => {
       if (tx.source_reference_id && (tx.source_type === 'purchase' || tx.source_type === 'redemption')) {
         const { data: booking } = await supabase
           .from('bookings_cache')
@@ -170,6 +231,64 @@ export default async function PointsPage() {
     .limit(1)
     .maybeSingle()
 
+  // Get all referrals for statistics
+  const { data: allReferrals } = await supabase
+    .from('referrals')
+    .select('status, created_at')
+    .eq('referrer_client_id', client.id)
+
+  // Calculate friends referred (completed or signed_up)
+  const friendsReferred = allReferrals?.filter(r => 
+    r.status === 'completed' || r.status === 'signed_up'
+  ).length || 0
+
+  // Calculate friends referred for current year
+  const currentYearReferrals = allReferrals?.filter(r => {
+    const rDate = new Date(r.created_at)
+    return (r.status === 'completed' || r.status === 'signed_up') &&
+           rDate >= currentYearStart &&
+           rDate < now
+  }).length || 0
+
+  // Calculate friends referred for last year
+  const lastYearReferrals = allReferrals?.filter(r => {
+    const rDate = new Date(r.created_at)
+    return (r.status === 'completed' || r.status === 'signed_up') &&
+           rDate >= lastYearStart &&
+           rDate < lastYearEnd
+  }).length || 0
+
+  // Calculate percentage change for referrals
+  const friendsReferredChange = lastYearReferrals > 0
+    ? ((currentYearReferrals - lastYearReferrals) / lastYearReferrals) * 100
+    : currentYearReferrals > 0 ? 100 : 0
+
+  // Calculate points from bookings (purchase transactions)
+  const totalPointsFromBookings = pointsBySource.purchase
+
+  // Calculate points from bookings for current year
+  const currentYearPointsFromBookings = allTransactions?.filter(tx => {
+    const txDate = new Date(tx.created_at)
+    return tx.source_type === 'purchase' && 
+           tx.transaction_type === 'earn' &&
+           txDate >= currentYearStart && 
+           txDate < now
+  }).reduce((sum, tx) => sum + (tx.points || 0), 0) || 0
+
+  // Calculate points from bookings for last year
+  const lastYearPointsFromBookings = allTransactions?.filter(tx => {
+    const txDate = new Date(tx.created_at)
+    return tx.source_type === 'purchase' && 
+           tx.transaction_type === 'earn' &&
+           txDate >= lastYearStart && 
+           txDate < lastYearEnd
+  }).reduce((sum, tx) => sum + (tx.points || 0), 0) || 0
+
+  // Calculate percentage change for points from bookings
+  const pointsFromBookingsChange = lastYearPointsFromBookings > 0
+    ? ((currentYearPointsFromBookings - lastYearPointsFromBookings) / lastYearPointsFromBookings) * 100
+    : currentYearPointsFromBookings > 0 ? 100 : 0
+
   // Get monthly activity data for chart
   const monthlyMap = new Map<string, { earned: number; spent: number }>()
   
@@ -196,90 +315,83 @@ export default async function PointsPage() {
     .slice(-6) // Last 6 months
     .reverse()
 
+  const currency = settings?.currency || 'GBP'
+  const pointValue = settings?.point_value || 1
+
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">My Points Balance</h1>
-          <p className="text-muted-foreground mt-1 text-sm sm:text-base">
-            Track your points, earnings, and redemptions
-          </p>
-        </div>
+    <div className="h-full w-full space-y-6">
+      <div>
+      <h1 className="text-xl font-bold">Points Overview</h1>
+      <p className="text-sm text-muted-foreground">View and manage your loyalty point transactions</p>
       </div>
-
-      {/* Points Expiring Warning */}
-      {expiringPointsData && (
-        <PointsExpiringAlert
-          pointsExpiring={expiringPointsData.points_expiring}
-          daysRemaining={expiringPointsData.days_remaining}
-          currency={settings?.currency || 'GBP'}
-          pointValue={settings?.point_value || 1}
+            
+      {/* Top Row: Points Balance Card + Refer a Friend Widget */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* Points Balance Card */}
+        <PointsBalanceCard
+          pointsBalance={client.points_balance || 0}
+          availablePoints={availablePoints}
+          reservedPoints={reservedPoints}
+          availableDiscount={availableDiscount}
+          nextThreshold={nextThreshold}
+          minRedemptionPoints={minRedemption}
+          redemptionIncrement={redemptionIncrement}
+          currency={currency}
+          pointValue={pointValue}
+          className="col-span-1 lg:col-span-2"
         />
-      )}
+              {/* Refer a Friend Widget */}
+              <ReferAFriendWidget
+          referralCode={referralData?.referral_code}
+          referralLink={referralData?.referral_link}
+          refereeBonus={settings?.referral_bonus_referee || 100}
+          referrerBonus={settings?.referral_bonus_referrer || 100}
+        />
 
-      {/* Main Layout: Left Column (Main Content) + Right Column (Sidebar) */}
-      <div className="grid gap-6 items-start lg:grid-cols-[minmax(0,2fr)_360px] xl:grid-cols-[minmax(0,2.1fr)_400px]">
-        {/* LEFT COLUMN - Main Content */}
-        <div className="space-y-6 min-w-0">
-          {/* Top Row: Two Cards Side-by-Side */}
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-[2fr_1fr]">
-            <PointsBalanceCard 
-              points={client.points_balance || 0}
-              availablePoints={availablePoints}
-              reservedPoints={reservedPoints}
-              pointValue={settings?.point_value || 1}
-              currency={settings?.currency || 'GBP'}
-            />
-            <PointsProgressCard
-              currentPoints={availablePoints}
-              nextThreshold={nextThreshold}
-              pointValue={settings?.point_value || 1}
-              currency={settings?.currency || 'GBP'}
-              minRedemptionPoints={minRedemption}
-              redemptionIncrement={redemptionIncrement}
-            />
-          </div>
 
-          {/* Middle Row: Five Stats Cards */}
-          <div>
-            <h2 className="text-xl font-semibold mb-4">Lifetime Summary</h2>
-            <EnhancedStatsGrid 
-              lifetimeEarned={client.lifetime_points_earned || 0}
-              lifetimeSpent={client.lifetime_points_spent || 0}
-              memberSince={client.loyalty_enrolled_at}
-              averagePerBooking={averagePerBooking}
-              totalBookings={totalBookings}
-              availablePoints={availablePoints}
-              currency={settings?.currency || 'GBP'}
-              pointValue={settings?.point_value || 1}
-            />
-          </div>
-
-          {/* Bottom Section: Large Activity Chart */}
-          <PointsActivityChart monthlyData={monthlyActivity} />
-        </div>
-
-        {/* RIGHT COLUMN - Sidebar */}
-        <div className="space-y-6 lg:sticky lg:top-6 lg:self-start lg:pl-4 w-full lg:w-auto">
-          {/* Top: Points Breakdown Chart (Donut) */}
-          <PointsBreakdownChart breakdown={pointsBySource} />
-
-          {/* Middle: Recent Transactions Table */}
-          <RecentTransactionsTable 
-            transactions={recentTransactionsWithBookings || []}
-            maxRows={5}
-          />
-
-          {/* Bottom: Referral Share Code UI */}
-          <ReferralShareCard
-            referralCode={referralData?.referral_code || null}
-            referralLink={referralData?.referral_link || null}
-            refereeBonus={settings?.referral_bonus_referee || 100}
-            referrerBonus={settings?.referral_bonus_referrer || 100}
-          />
-        </div>
       </div>
+      {/* Statistics Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatisticsCard
+          icon={<UserPlus className='size-4' />}
+          value={friendsReferred.toString()}
+          title="Friends Referred"
+          changePercentage={friendsReferredChange !== 0 ? `${friendsReferredChange > 0 ? '+' : ''}${friendsReferredChange.toFixed(1)}%` : '0%'}
+        />
+        <StatisticsCard
+          icon={<Coins className='size-4' />}
+          value={lastYearEarned.toLocaleString()}
+          title="Points Earned Last Year"
+          changePercentage={earnedChangePercent !== 0 ? `${earnedChangePercent > 0 ? '+' : ''}${earnedChangePercent.toFixed(1)}%` : '0%'}
+        />
+        <StatisticsCard
+          icon={<CreditCard className='size-4' />}
+          value={lastYearSpent.toLocaleString()}
+          title="Points Spent Last Year"
+          changePercentage={spentChangePercent !== 0 ? `${spentChangePercent > 0 ? '+' : ''}${spentChangePercent.toFixed(1)}%` : '0%'}
+        />
+        <StatisticsCard
+          icon={<Plane className='size-4' />}
+          value={totalPointsFromBookings.toLocaleString()}
+          title="Total Points from Bookings"
+          changePercentage={pointsFromBookingsChange !== 0 ? `${pointsFromBookingsChange > 0 ? '+' : ''}${pointsFromBookingsChange.toFixed(1)}%` : '0%'}
+        />
+      </div>
+
+      {/* Transactions Table */}
+      <div className="space-y-4">
+        <div>
+          <h2 className="text-lg font-semibold">Recent Transactions</h2>
+          <p className="text-sm text-muted-foreground">View your loyalty point transactions</p>
+        </div>
+        <LoyaltyTransactionsTable
+          transactions={transactionsWithBookings}
+          totalCount={totalTransactionsCount || 0}
+          page={currentPage}
+          pageSize={pageSize}
+        />
+      </div>
+
     </div>
   )
 }

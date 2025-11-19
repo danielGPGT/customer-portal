@@ -112,6 +112,8 @@
 }
 
 @theme inline {
+  --font-sans: var(--font-outfit), sans-serif;
+  
   --color-base-50: var(--base-50);
   --color-base-100: var(--base-100);
   --color-base-200: var(--base-200);
@@ -193,5 +195,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-outfit), sans-serif;
   }
 }
