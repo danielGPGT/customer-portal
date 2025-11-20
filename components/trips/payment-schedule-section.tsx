@@ -77,36 +77,36 @@ export function PaymentScheduleSection({ payments, currency }: PaymentScheduleSe
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <CreditCard className="h-5 w-5" />
+      <CardHeader >
+        <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+          <CreditCard className="h-4 w-4 sm:h-5 sm:w-5" />
           Payment Schedule
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {sortedPayments.map((payment) => (
-            <div key={payment.id} className="border rounded-lg p-4 space-y-2">
+            <div key={payment.id} className="border rounded-lg p-3 sm:p-4 space-y-2">
               <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h4 className="font-semibold">{getPaymentTypeLabel(payment.payment_type)}</h4>
-                    <Badge variant={payment.paid ? 'default' : 'secondary'}>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5 sm:gap-2 mb-1 flex-wrap">
+                    <h4 className="font-semibold text-sm sm:text-base">{getPaymentTypeLabel(payment.payment_type)}</h4>
+                    <Badge variant={payment.paid ? 'default' : 'secondary'} className="text-[10px] sm:text-xs">
                       {payment.paid ? (
                         <>
-                          <CheckCircle2 className="h-3 w-3 mr-1" />
+                          <CheckCircle2 className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
                           Paid
                         </>
                       ) : (
                         <>
-                          <Clock className="h-3 w-3 mr-1" />
+                          <Clock className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
                           Pending
                         </>
                       )}
                     </Badge>
                   </div>
 
-                  <div className="text-2xl font-bold">
+                  <div className="text-lg sm:text-xl lg:text-2xl font-bold">
                     {currencySymbol}{payment.amount.toLocaleString(undefined, { 
                       minimumFractionDigits: 2, 
                       maximumFractionDigits: 2 
@@ -115,10 +115,10 @@ export function PaymentScheduleSection({ payments, currency }: PaymentScheduleSe
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-muted-foreground">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs sm:text-sm text-muted-foreground">
                 {payment.due_date && (
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 shrink-0" />
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
                     <span>
                       Due: {formatDate(payment.due_date)}
                     </span>
@@ -126,15 +126,15 @@ export function PaymentScheduleSection({ payments, currency }: PaymentScheduleSe
                 )}
 
                 {payment.paid && payment.paid_at && (
-                  <div className="flex items-center gap-2 text-green-600">
-                    <CheckCircle2 className="h-4 w-4 shrink-0" />
+                  <div className="flex items-center gap-1.5 sm:gap-2 text-green-600">
+                    <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
                     <span>Paid: {formatDateTime(payment.paid_at)}</span>
                   </div>
                 )}
 
                 {payment.payment_reference && (
                   <div className="md:col-span-2">
-                    <span className="font-medium">Reference:</span> {payment.payment_reference}
+                    <span className="font-medium">Reference:</span> <span className="font-mono text-[10px] sm:text-xs">{payment.payment_reference}</span>
                   </div>
                 )}
 
@@ -145,7 +145,7 @@ export function PaymentScheduleSection({ payments, currency }: PaymentScheduleSe
                 )}
 
                 {payment.notes && (
-                  <div className="md:col-span-2 text-xs">
+                  <div className="md:col-span-2 text-[10px] sm:text-xs">
                     <span className="font-medium">Notes:</span> {payment.notes}
                   </div>
                 )}
@@ -153,8 +153,8 @@ export function PaymentScheduleSection({ payments, currency }: PaymentScheduleSe
             </div>
           ))}
 
-          <div className="border-t pt-4 space-y-2">
-            <div className="flex justify-between text-sm">
+          <div className="border-t pt-3 sm:pt-4 space-y-1.5 sm:space-y-2">
+            <div className="flex justify-between text-xs sm:text-sm">
               <span className="text-muted-foreground">Total Amount</span>
               <span className="font-semibold">
                 {currencySymbol}{totalAmount.toLocaleString(undefined, { 
@@ -163,7 +163,7 @@ export function PaymentScheduleSection({ payments, currency }: PaymentScheduleSe
                 })}
               </span>
             </div>
-            <div className="flex justify-between text-sm">
+            <div className="flex justify-between text-xs sm:text-sm">
               <span className="text-muted-foreground">Total Paid</span>
               <span className="font-semibold text-green-600">
                 {currencySymbol}{totalPaid.toLocaleString(undefined, { 
@@ -173,7 +173,7 @@ export function PaymentScheduleSection({ payments, currency }: PaymentScheduleSe
               </span>
             </div>
             {totalOutstanding > 0 && (
-              <div className="flex justify-between text-sm pt-2 border-t">
+              <div className="flex justify-between text-xs sm:text-sm pt-2 border-t">
                 <span className="font-medium">Outstanding</span>
                 <span className="font-bold text-orange-600">
                   {currencySymbol}{totalOutstanding.toLocaleString(undefined, { 

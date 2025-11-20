@@ -57,38 +57,38 @@ export function EventDetailsSection({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Calendar className="h-5 w-5" />
+        <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+          <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
           Event Details
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <div className="text-sm text-muted-foreground">Dates</div>
-          <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-            <span className="font-medium">{formatDateRange()}</span>
+      <CardContent className="space-y-3 sm:space-y-4">
+        <div className="space-y-1.5 sm:space-y-2">
+          <div className="text-xs sm:text-sm text-muted-foreground">Dates</div>
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+            <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground shrink-0" />
+            <span className="font-medium text-xs sm:text-sm">{formatDateRange()}</span>
             {duration && (
-              <span className="text-sm text-muted-foreground">
+              <span className="text-xs sm:text-sm text-muted-foreground">
                 ({duration} {duration === 1 ? 'day' : 'days'})
               </span>
             )}
           </div>
         </div>
 
-        <div className="border-t pt-4 space-y-2">
-          <div className="text-sm text-muted-foreground">Location</div>
-          <div className="flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-muted-foreground shrink-0" />
-            <span className="font-medium">{location}</span>
+        <div className="border-t pt-3 sm:pt-4 space-y-1.5 sm:space-y-2">
+          <div className="text-xs sm:text-sm text-muted-foreground">Location</div>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground shrink-0" />
+            <span className="font-medium text-xs sm:text-sm truncate">{location}</span>
           </div>
         </div>
 
-        <div className="border-t pt-4 space-y-2">
-          <div className="text-sm text-muted-foreground">Event Type</div>
-          <div className="flex items-center gap-2">
-            <Ticket className="h-4 w-4 text-muted-foreground" />
-            <span className="font-medium">{eventName}</span>
+        <div className="border-t pt-3 sm:pt-4 space-y-1.5 sm:space-y-2">
+          <div className="text-xs sm:text-sm text-muted-foreground">Event Type</div>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <Ticket className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground shrink-0" />
+            <span className="font-medium text-xs sm:text-sm truncate">{eventName}</span>
           </div>
         </div>
       </CardContent>

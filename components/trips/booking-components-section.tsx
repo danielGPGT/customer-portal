@@ -69,60 +69,46 @@ export function BookingComponentsSection({ components, currency }: BookingCompon
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Package className="h-5 w-5" />
+        <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+          <Package className="h-4 w-4 sm:h-5 sm:w-5" />
           Booking Components ({activeComponents.length})
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-6">
+      <CardContent >
+        <div className="space-y-4 sm:space-y-6">
           {Object.entries(groupedByType).map(([type, items]) => {
             const Icon = getComponentIcon(type)
             const totalForType = items.reduce((sum, item) => sum + (item.total_price || 0), 0)
 
             return (
-              <div key={type} className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <Icon className="h-4 w-4 text-muted-foreground" />
-                  <h4 className="font-semibold">{getComponentTypeLabel(type)}</h4>
-                  <span className="text-sm text-muted-foreground">
+              <div key={type} className="space-y-2 sm:space-y-3">
+                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                  <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+                  <h4 className="font-semibold text-sm sm:text-base">{getComponentTypeLabel(type)}</h4>
+                  <span className="text-xs sm:text-sm text-muted-foreground">
                     ({items.length} {items.length === 1 ? 'item' : 'items'})
                   </span>
                 </div>
 
-                <div className="space-y-2 pl-6">
+                <div className="space-y-2 pl-4 sm:pl-6">
                   {items.map((component) => (
                     <div key={component.id} className="flex justify-between items-start border-b pb-2 last:border-0">
-                      <div className="flex-1">
-                        <div className="font-medium">
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-xs sm:text-sm truncate">
                           {component.component_name || getComponentTypeLabel(type)}
                         </div>
                         {component.quantity && component.quantity > 1 && (
-                          <div className="text-sm text-muted-foreground">
+                          <div className="text-xs sm:text-sm text-muted-foreground">
                             Quantity: {component.quantity}
-                            {component.unit_price && (
-                              <span> × {currencySymbol}{component.unit_price.toLocaleString(undefined, { 
-                                minimumFractionDigits: 2, 
-                                maximumFractionDigits: 2 
-                              })}</span>
-                            )}
                           </div>
                         )}
                       </div>
-                      {(component.total_price || component.unit_price) && (
-                        <div className="font-semibold">
-                          {currencySymbol}{(component.total_price || component.unit_price || 0).toLocaleString(undefined, { 
-                            minimumFractionDigits: 2, 
-                            maximumFractionDigits: 2 
-                          })}
-                        </div>
-                      )}
                     </div>
                   ))}
                 </div>
 
                 {items.length > 1 && (
-                  <div className="pl-6 border-t pt-2 flex justify-between text-sm font-semibold">
+                  <div className="pl-4 sm:pl-6 border-t pt-2 flex justify-between text-xs sm:text-sm font-semibold">
                     <span>Subtotal ({type})</span>
                     <span>
                       {currencySymbol}{totalForType.toLocaleString(undefined, { 

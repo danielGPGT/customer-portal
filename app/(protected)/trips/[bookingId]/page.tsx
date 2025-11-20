@@ -69,37 +69,35 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
     notFound()
   }
 
-  // Get loyalty transactions for this booking
-  const { data: loyaltyTransactions } = await supabase
-    .from('loyalty_transactions')
-    .select('*')
-    .eq('client_id', client.id)
-    .or(`source_reference_id.eq.${booking.id},source_reference_id.eq.${bookingId}`)
-    .in('source_type', ['purchase', 'redemption', 'refund'])
+  // Get loyalty transactions for this booking (for transaction details)
+  const { data: earnTransaction } = booking.earn_transaction_id
+    ? await supabase
+        .from('loyalty_transactions')
+        .select('*')
+        .eq('id', booking.earn_transaction_id)
+        .single()
+    : { data: null }
 
-  // Get redemption for this booking
-  const { data: redemption } = await supabase
+  const { data: spendTransaction } = booking.spend_transaction_id
+    ? await supabase
+        .from('loyalty_transactions')
+        .select('*')
+        .eq('id', booking.spend_transaction_id)
+        .single()
+    : { data: null }
+
+  // Get redemption(s) for this booking (there may be multiple)
+  const { data: redemptions } = await supabase
     .from('redemptions')
     .select('*')
     .eq('booking_id', booking.id)
-    .maybeSingle()
+    .order('applied_at', { ascending: false })
 
-  // Find points earned
-  const earnTransaction = loyaltyTransactions?.find(
-    tx => tx.source_type === 'purchase' && tx.source_reference_id === booking.id.toString()
-  )
-  const pointsEarned = earnTransaction?.points || 0
-
-  // Find points used
-  const pointsUsed = redemption?.points_redeemed || 0
-  const discountApplied = redemption?.discount_amount || 0
-
-  // Check if first loyalty booking
-  const firstLoyaltyBookingAt = client.first_loyalty_booking_at
-  const isFirstLoyaltyBooking = 
-    firstLoyaltyBookingAt && 
-    booking.confirmed_at &&
-    new Date(booking.confirmed_at).toISOString() === new Date(firstLoyaltyBookingAt).toISOString()
+  // Use booking fields directly (from migration - these are now on bookings table)
+  const pointsEarned = booking.points_earned || 0
+  const pointsUsed = booking.points_used || 0
+  const discountApplied = booking.discount_applied || 0
+  const isFirstLoyaltyBooking = booking.is_first_loyalty_booking || false
 
   // Map status
   const mapStatus = (status: string): 'pending' | 'confirmed' | 'completed' | 'cancelled' => {
@@ -121,9 +119,12 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
     points_earned: pointsEarned,
     points_used: pointsUsed,
     discount_applied: discountApplied,
-    is_first_loyalty_booking: !!isFirstLoyaltyBooking,
-    earn_transaction_id: earnTransaction?.id || null,
-    spend_transaction_id: redemption?.transaction_id || null,
+    is_first_loyalty_booking: isFirstLoyaltyBooking,
+    earn_transaction_id: booking.earn_transaction_id,
+    spend_transaction_id: booking.spend_transaction_id,
+    earn_transaction: earnTransaction,
+    spend_transaction: spendTransaction,
+    redemptions: redemptions || [],
     booked_at: booking.created_at
   }
 
@@ -146,12 +147,12 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
     : enrichedBooking.events?.location || 'Location TBD'
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Back Button */}
-      <Button asChild variant="ghost" className="mb-2">
+      <Button asChild variant="ghost" className="mb-2 h-8 sm:h-10 px-2 sm:px-4">
         <Link href="/trips">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Trips
+          <ArrowLeft className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          <span className="text-xs sm:text-sm">Back to Trips</span>
         </Link>
       </Button>
 
@@ -192,14 +193,20 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
         totalAmount={enrichedBooking.total_amount}
         discountApplied={enrichedBooking.discount_applied}
         currency={currency}
+        bookingId={bookingId}
         travelers={booking.booking_travelers || []}
         components={booking.booking_components || []}
         flights={booking.bookings_flights || []}
         payments={booking.booking_payments || []}
         pointsUsed={enrichedBooking.points_used}
         pointsEarned={enrichedBooking.points_earned}
+        discountApplied={enrichedBooking.discount_applied}
         pointValue={pointValue}
         isCancelled={enrichedBooking.booking_status === 'cancelled'}
+        earnTransaction={enrichedBooking.earn_transaction}
+        spendTransaction={enrichedBooking.spend_transaction}
+        redemptions={enrichedBooking.redemptions}
+        isFirstLoyaltyBooking={enrichedBooking.is_first_loyalty_booking}
       />
 
       {/* Actions */}

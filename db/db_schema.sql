@@ -1,3 +1,59 @@
+create table public.airlines (
+  id uuid not null default gen_random_uuid (),
+  name text not null,
+  created_at timestamp without time zone null default now(),
+  updated_at timestamp without time zone null default now(),
+  logo_url text null,
+  constraint airlines_pkey primary key (id)
+) TABLESPACE pg_default;
+
+create unique INDEX IF not exists uq_airlines_name on public.airlines using btree (name) TABLESPACE pg_default;
+
+create table public.airline_codes (
+  id uuid not null default gen_random_uuid (),
+  airline_id uuid not null,
+  iata_code character(2) null,
+  icao_code character(3) null,
+  is_primary boolean null default false,
+  created_at timestamp without time zone null default now(),
+  updated_at timestamp without time zone null default now(),
+  constraint airline_codes_pkey primary key (id),
+  constraint airline_codes_airline_id_fkey foreign KEY (airline_id) references airlines (id) on delete CASCADE
+) TABLESPACE pg_default;
+
+create unique INDEX IF not exists uq_airline_codes_iata on public.airline_codes using btree (iata_code) TABLESPACE pg_default
+where
+  (iata_code is not null);
+
+create unique INDEX IF not exists uq_airline_codes_icao on public.airline_codes using btree (icao_code) TABLESPACE pg_default
+where
+  (icao_code is not null);
+
+create index IF not exists idx_airline_codes_airline_id on public.airline_codes using btree (airline_id) TABLESPACE pg_default;
+
+create index IF not exists idx_airline_codes_iata_code on public.airline_codes using btree (iata_code) TABLESPACE pg_default;
+
+create index IF not exists idx_airline_codes_icao_code on public.airline_codes using btree (icao_code) TABLESPACE pg_default;
+
+create index IF not exists idx_airline_codes_is_primary on public.airline_codes using btree (is_primary) TABLESPACE pg_default;
+
+create table public.airports (
+  id uuid not null default gen_random_uuid (),
+  name text not null,
+  iata_code character(3) not null,
+  icao_code character(4) null,
+  created_at timestamp without time zone null default now(),
+  updated_at timestamp without time zone null default now(),
+  country text null,
+  city text null,
+  constraint airports_pkey primary key (id),
+  constraint airports_iata_code_key unique (iata_code),
+  constraint airports_icao_code_key unique (icao_code)
+) TABLESPACE pg_default;
+
+create index IF not exists idx_airports_iata_code on public.airports using btree (iata_code) TABLESPACE pg_default;
+
+create index IF not exists idx_airports_icao_code on public.airports using btree (icao_code) TABLESPACE pg_default;
 
 CREATE TABLE public.audit_logs (
   id uuid NOT NULL DEFAULT gen_random_uuid(),

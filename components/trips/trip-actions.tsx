@@ -87,38 +87,41 @@ Thank you`
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Actions</CardTitle>
+      <CardHeader >
+        <CardTitle className="text-base sm:text-lg">Actions</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-2 sm:space-y-3">
         <Button
           onClick={generateICS}
           variant="outline"
-          className="w-full justify-start"
+          className="w-full justify-start h-9 sm:h-10"
+          size="sm"
         >
-          <Calendar className="mr-2 h-4 w-4" />
-          Add to Calendar
-          <Download className="ml-auto h-4 w-4" />
+          <Calendar className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          <span className="text-xs sm:text-sm">Add to Calendar</span>
+          <Download className="ml-auto h-3.5 w-3.5 sm:h-4 sm:w-4" />
         </Button>
 
         <Button
           onClick={contactSupport}
           variant="outline"
-          className="w-full justify-start"
+          className="w-full justify-start h-9 sm:h-10"
+          size="sm"
         >
-          <MessageCircle className="mr-2 h-4 w-4" />
-          Contact Support
+          <MessageCircle className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          <span className="text-xs sm:text-sm">Contact Support</span>
         </Button>
 
         {/* Future feature - View Invoice */}
         <Button
           variant="outline"
-          className="w-full justify-start"
+          className="w-full justify-start h-9 sm:h-10"
+          size="sm"
           disabled
         >
-          <FileText className="mr-2 h-4 w-4" />
-          View Invoice
-          <span className="ml-auto text-xs text-muted-foreground">Coming soon</span>
+          <FileText className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          <span className="text-xs sm:text-sm">View Invoice</span>
+          <span className="ml-auto text-[10px] sm:text-xs text-muted-foreground">Coming soon</span>
         </Button>
       </CardContent>
     </Card>

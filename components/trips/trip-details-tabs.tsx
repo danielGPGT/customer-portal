@@ -25,6 +25,7 @@ interface TripDetailsTabsProps {
   totalAmount: number
   discountApplied: number
   currency: string
+  bookingId: string
   
   // Travelers
   travelers: any[]
@@ -41,6 +42,9 @@ interface TripDetailsTabsProps {
   pointsEarned: number
   pointValue: number
   isCancelled: boolean
+  earnTransaction?: any
+  spendTransaction?: any
+  redemptions?: any[]
 }
 
 export function TripDetailsTabs({
@@ -57,6 +61,7 @@ export function TripDetailsTabs({
   totalAmount,
   discountApplied,
   currency,
+  bookingId,
   travelers,
   components,
   flights,
@@ -64,29 +69,32 @@ export function TripDetailsTabs({
   pointsUsed,
   pointsEarned,
   pointValue,
-  isCancelled
+  isCancelled,
+  earnTransaction,
+  spendTransaction,
+  redemptions
 }: TripDetailsTabsProps) {
   return (
     <Tabs defaultValue="overview" className="w-full">
-      <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 h-auto">
-        <TabsTrigger value="overview" className="text-xs sm:text-sm">
+      <TabsList className="grid w-full lg:w-fit grid-cols-3 lg:grid-cols-5 h-auto gap-1 sm:gap-2">
+        <TabsTrigger value="overview" className="text-[10px] sm:text-xs md:text-sm px-2 sm:px-4 md:px-6 py-2 sm:py-2.5">
           Overview
         </TabsTrigger>
-        <TabsTrigger value="travelers" className="text-xs sm:text-sm">
+        <TabsTrigger value="travelers" className="text-[10px] sm:text-xs md:text-sm px-2 sm:px-4 md:px-6 py-2 sm:py-2.5">
           Travelers
         </TabsTrigger>
-        <TabsTrigger value="included" className="text-xs sm:text-sm">
+        <TabsTrigger value="included" className="text-[10px] sm:text-xs md:text-sm px-2 sm:px-4 md:px-6 py-2 sm:py-2.5">
           Included
         </TabsTrigger>
-        <TabsTrigger value="payments" className="text-xs sm:text-sm">
+        <TabsTrigger value="payments" className="text-[10px] sm:text-xs md:text-sm px-2 sm:px-4 md:px-6 py-2 sm:py-2.5">
           Payments
         </TabsTrigger>
-        <TabsTrigger value="points" className="text-xs sm:text-sm">
+        <TabsTrigger value="points" className="text-[10px] sm:text-xs md:text-sm px-2 sm:px-4 md:px-6 py-2 sm:py-2.5">
           Points
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="overview" className="space-y-6 mt-6">
+      <TabsContent value="overview" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
         {/* Event Details */}
         <EventDetailsSection
           eventName={eventName}
@@ -113,11 +121,11 @@ export function TripDetailsTabs({
         />
       </TabsContent>
 
-      <TabsContent value="travelers" className="space-y-6 mt-6">
+      <TabsContent value="travelers" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
         <TravelersSection travelers={travelers} />
       </TabsContent>
 
-      <TabsContent value="included" className="space-y-6 mt-6">
+      <TabsContent value="included" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
         <BookingComponentsSection 
           components={components} 
           currency={currency}
@@ -125,10 +133,11 @@ export function TripDetailsTabs({
         <FlightsSection 
           flights={flights} 
           currency={currency}
+          bookingId={bookingId}
         />
       </TabsContent>
 
-      <TabsContent value="payments" className="space-y-6 mt-6">
+      <TabsContent value="payments" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
         <PaymentSummarySection
           totalAmount={totalAmount}
           discountApplied={discountApplied}
@@ -140,14 +149,19 @@ export function TripDetailsTabs({
         />
       </TabsContent>
 
-      <TabsContent value="points" className="space-y-6 mt-6">
+      <TabsContent value="points" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
         <LoyaltyPointsSection
           pointsUsed={pointsUsed}
           pointsEarned={pointsEarned}
+          discountApplied={discountApplied}
           currency={currency}
           pointValue={pointValue}
           totalAmount={totalAmount}
           isCancelled={isCancelled}
+          earnTransaction={earnTransaction}
+          spendTransaction={spendTransaction}
+          redemptions={redemptions}
+          isFirstLoyaltyBooking={isFirstLoyaltyBooking}
         />
       </TabsContent>
     </Tabs>

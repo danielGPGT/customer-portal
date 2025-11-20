@@ -66,27 +66,27 @@ export function TravelersSection({ travelers }: TravelersSectionProps) {
   return (
     <>
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5" />
+        <CardHeader >
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <Users className="h-4 w-4 sm:h-5 sm:w-5" />
             Travelers ({activeTravelers.length})
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-6">
+        <CardContent >
+          <div className="space-y-4 sm:space-y-6">
             {activeTravelers.map((traveler, index) => (
               <div 
                 key={traveler.id} 
-                className={index !== activeTravelers.length - 1 ? 'border-b pb-6' : ''}
+                className={index !== activeTravelers.length - 1 ? 'border-b pb-4 sm:pb-6' : ''}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-2 flex-1">
-                    <User className="h-4 w-4 text-muted-foreground shrink-0" />
-                    <h4 className="font-semibold">
+                <div className="flex items-start justify-between mb-2 sm:mb-3">
+                  <div className="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+                    <User className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground shrink-0" />
+                    <h4 className="font-semibold text-sm sm:text-base truncate">
                       {traveler.first_name} {traveler.last_name}
                     </h4>
                     {traveler.traveler_type === 'lead' && (
-                      <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      <span className="text-[10px] sm:text-xs bg-primary/10 text-primary px-1.5 sm:px-2 py-0.5 rounded shrink-0">
                         Lead Traveler
                       </span>
                     )}
@@ -95,24 +95,24 @@ export function TravelersSection({ travelers }: TravelersSectionProps) {
                     variant="ghost"
                     size="sm"
                     onClick={() => handleTravelerClick(traveler)}
-                    className="shrink-0"
+                    className="shrink-0 h-7 sm:h-8 px-2 sm:px-3"
                   >
-                    <Edit2 className="h-4 w-4 mr-1.5" />
-                    <span className="hidden sm:inline">Edit</span>
+                    <Edit2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1 sm:mr-1.5" />
+                    <span className="hidden sm:inline text-xs sm:text-sm">Edit</span>
                   </Button>
                 </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm">
                 {traveler.email && (
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Mail className="h-4 w-4 shrink-0" />
-                    <span>{traveler.email}</span>
+                  <div className="flex items-center gap-1.5 sm:gap-2 text-muted-foreground">
+                    <Mail className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
+                    <span className="truncate">{traveler.email}</span>
                   </div>
                 )}
 
                 {traveler.phone && (
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Phone className="h-4 w-4 shrink-0" />
+                  <div className="flex items-center gap-1.5 sm:gap-2 text-muted-foreground">
+                    <Phone className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
                     <span>{traveler.phone}</span>
                   </div>
                 )}
@@ -137,12 +137,12 @@ export function TravelersSection({ travelers }: TravelersSectionProps) {
                 )}
 
                 {(traveler.address_line1 || traveler.city || traveler.country) && (
-                  <div className="flex items-start gap-2 text-muted-foreground md:col-span-2">
-                    <MapPin className="h-4 w-4 shrink-0 mt-0.5" />
-                    <div>
-                      {traveler.address_line1 && <div>{traveler.address_line1}</div>}
+                  <div className="flex items-start gap-1.5 sm:gap-2 text-muted-foreground md:col-span-2">
+                    <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 mt-0.5" />
+                    <div className="min-w-0 flex-1">
+                      {traveler.address_line1 && <div className="truncate">{traveler.address_line1}</div>}
                       {(traveler.city || traveler.country) && (
-                        <div>
+                        <div className="truncate">
                           {[traveler.city, traveler.country].filter(Boolean).join(', ')}
                         </div>
                       )}

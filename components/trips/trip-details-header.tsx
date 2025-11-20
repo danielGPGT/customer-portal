@@ -39,17 +39,17 @@ export function TripDetailsHeader({ eventName, bookingStatus, isCancelled }: Tri
   const StatusIcon = status.icon
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div className="flex sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
       <div>
-        <h1 className="text-2xl lg:text-3xl font-bold">{eventName}</h1>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold">{eventName}</h1>
         {isCancelled && (
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-xs sm:text-sm text-muted-foreground mt-1">
             This booking has been cancelled
           </p>
         )}
       </div>
-      <Badge variant="outline" className={`${status.color} border w-fit`}>
-        <StatusIcon className="h-4 w-4 mr-2" />
+      <Badge variant="outline" className={`${status.color} border w-fit text-xs sm:text-sm`}>
+        <StatusIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
         {status.label}
       </Badge>
     </div>
