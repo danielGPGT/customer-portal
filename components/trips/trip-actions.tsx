@@ -1,0 +1,127 @@
+'use client'
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Calendar, MessageCircle, FileText, Download } from 'lucide-react'
+import { format } from 'date-fns'
+
+interface Booking {
+  booking_id: string
+  booking_reference: string
+  [key: string]: any
+}
+
+interface TripActionsProps {
+  booking: Booking
+  eventName: string
+  location: string
+  startDate: string | null
+  endDate: string | null
+}
+
+export function TripActions({ booking, eventName, location, startDate, endDate }: TripActionsProps) {
+  const generateICS = () => {
+    if (!startDate || !endDate) {
+      alert('Date information is not available for this booking.')
+      return
+    }
+
+    try {
+      const formatDateToICS = (date: string) => {
+        const d = new Date(date)
+        return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'
+      }
+
+      const icsStart = formatDateToICS(startDate)
+      const icsEnd = formatDateToICS(endDate)
+
+      const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Grand Prix Grand Tours//Customer Portal//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:${booking.booking_id}@customer-portal
+DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+DTSTART:${icsStart}
+DTEND:${icsEnd}
+SUMMARY:${eventName}
+DESCRIPTION:Booking Reference: ${booking.booking_reference}\\nEvent: ${eventName}
+LOCATION:${location}
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR`
+
+      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `${booking.booking_reference}.ics`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Error generating ICS file:', error)
+      alert('Failed to generate calendar file. Please try again.')
+    }
+  }
+
+  const contactSupport = () => {
+    const subject = `Booking Support: ${booking.booking_reference}`
+    const body = `Hello,
+
+I need help with my booking:
+
+Booking Reference: ${booking.booking_reference}
+Event: ${eventName}
+${startDate ? `Date: ${format(new Date(startDate), 'MMMM d, yyyy')}` : ''}
+
+Please assist me with:
+[Your question or issue here]
+
+Thank you`
+
+    const mailtoLink = `mailto:support@grandprixgrandtours.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    window.location.href = mailtoLink
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Actions</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <Button
+          onClick={generateICS}
+          variant="outline"
+          className="w-full justify-start"
+        >
+          <Calendar className="mr-2 h-4 w-4" />
+          Add to Calendar
+          <Download className="ml-auto h-4 w-4" />
+        </Button>
+
+        <Button
+          onClick={contactSupport}
+          variant="outline"
+          className="w-full justify-start"
+        >
+          <MessageCircle className="mr-2 h-4 w-4" />
+          Contact Support
+        </Button>
+
+        {/* Future feature - View Invoice */}
+        <Button
+          variant="outline"
+          className="w-full justify-start"
+          disabled
+        >
+          <FileText className="mr-2 h-4 w-4" />
+          View Invoice
+          <span className="ml-auto text-xs text-muted-foreground">Coming soon</span>
+        </Button>
+      </CardContent>
+    </Card>
+  )
+}
+

@@ -40,16 +40,23 @@ export default async function PointsStatementPage() {
     (transactions || []).map(async (tx) => {
       if (tx.source_reference_id && (tx.source_type === 'purchase' || tx.source_type === 'redemption')) {
         const { data: booking } = await supabase
-          .from('bookings_cache')
-          .select('booking_reference, event_name')
-          .eq('booking_id', tx.source_reference_id)
+          .from('bookings')
+          .select(`
+            booking_reference,
+            event_id,
+            events (
+              name
+            )
+          `)
+          .eq('id', tx.source_reference_id)
+          .is('deleted_at', null)
           .maybeSingle()
         
         if (booking) {
           return {
             ...tx,
             booking_reference: booking.booking_reference || null,
-            event_name: booking.event_name || null,
+            event_name: (booking.events as { name?: string } | null)?.name || null,
           }
         }
       }

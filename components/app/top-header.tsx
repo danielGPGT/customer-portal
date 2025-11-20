@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Search, Type, BarChart3, Bell, User, Menu, X } from "lucide-react"
+import { Search, Type, BarChart3, Bell, User, Menu, X, Coins } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -17,6 +17,7 @@ import { NotificationsPopover } from "@/components/app/notifications-popover"
 import { ThemeToggle } from "@/components/app/theme-toggle"
 import Image from "next/image"
 import { useTheme } from "next-themes"
+import Link from "next/link"
 
 interface TopHeaderProps {
   onMenuClick?: () => void
@@ -140,6 +141,8 @@ export function TopHeader({
         {/* Notifications */}
         <NotificationsPopover clientId={clientId} />
 
+        
+
         {/* User Profile */}
         {user && (
           <DropdownMenu>
@@ -187,6 +190,34 @@ export function TopHeader({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+        )}
+        {/* Points Wallet */}
+        {client && (
+          <Link href="/points" className="flex items-center">
+            {/* Mobile: Compact version */}
+            <Button
+              variant="outline"
+              className="md:hidden items-center gap-1.5 h-9 px-2.5 border-border hover:bg-accent text-foreground"
+            >
+              <Coins className="h-4 w-4 text-primary" />
+              <span className="font-semibold text-sm">
+                {client.points_balance?.toLocaleString() || 0}
+              </span>
+            </Button>
+            {/* Desktop: Full version */}
+            <Button
+              variant="outline"
+              className="hidden md:flex items-center gap-2 h-9 px-3 border-border hover:bg-accent text-foreground"
+            >
+              <Coins className="h-4 w-4 text-primary" />
+              <span className="font-semibold text-sm">
+                {client.points_balance?.toLocaleString() || 0}
+              </span>
+              <span className="text-xs text-muted-foreground hidden lg:inline">
+                points
+              </span>
+            </Button>
+          </Link>
         )}
       </div>
       </div>

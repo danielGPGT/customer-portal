@@ -37,10 +37,11 @@ export default async function PointsEarnPage() {
 
   // Get earning stats
   const { data: bookingsData } = await supabase
-    .from('bookings_cache')
+    .from('bookings')
     .select('id')
     .eq('client_id', client.id)
-    .in('booking_status', ['confirmed', 'completed'])
+    .in('status', ['confirmed', 'completed'])
+    .is('deleted_at', null)
 
   const { data: referralsData } = await supabase
     .from('referrals')

@@ -149,15 +149,22 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
     (transactions || []).map(async (tx) => {
       if (tx.source_reference_id && (tx.source_type === 'purchase' || tx.source_type === 'redemption')) {
         const { data: booking } = await supabase
-          .from('bookings_cache')
-          .select('booking_reference, event_name')
-          .eq('booking_id', tx.source_reference_id)
+          .from('bookings')
+          .select(`
+            booking_reference,
+            event_id,
+            events (
+              name
+            )
+          `)
+          .eq('id', tx.source_reference_id)
+          .is('deleted_at', null)
           .maybeSingle()
         
         return {
           ...tx,
           booking_reference: booking?.booking_reference || null,
-          event_name: booking?.event_name || null,
+          event_name: (booking?.events as { name?: string } | null)?.name || null,
         }
       }
       return {
@@ -179,10 +186,11 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
 
   // Calculate booking stats
   const { data: bookingsData } = await supabase
-    .from('bookings_cache')
+    .from('bookings')
     .select('points_earned')
     .eq('client_id', client.id)
-    .in('booking_status', ['confirmed', 'completed'])
+    .in('status', ['confirmed', 'completed'])
+    .is('deleted_at', null)
     .not('points_earned', 'is', null)
 
   const totalBookings = bookingsData?.length || 0
@@ -322,7 +330,7 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
   return (
     <div className="h-full w-full space-y-6">
       <div>
-      <h1 className="text-xl font-bold">Points Overview</h1>
+      <h1 className="text-3xl font-bold">Points Overview</h1>
       <p className="text-sm text-muted-foreground">View and manage your loyalty point transactions</p>
       </div>
             

@@ -37,7 +37,7 @@ export function TransactionFilter({ filters, onFiltersChange }: TransactionFilte
 
   return (
     <Card>
-      <CardContent className="p-4">
+      <CardContent>
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
           <div className="flex items-center gap-2 shrink-0">
             <Filter className="h-4 w-4 text-muted-foreground" />

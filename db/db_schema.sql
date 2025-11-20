@@ -224,38 +224,7 @@ CREATE TABLE public.bookings (
   CONSTRAINT bookings_team_id_fkey FOREIGN KEY (team_id) REFERENCES public.teams(id),
   CONSTRAINT bookings_acquisition_source_id_fkey FOREIGN KEY (acquisition_source_id) REFERENCES public.acquisition_sources(id)
 );
-CREATE TABLE public.bookings_cache (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  client_id uuid NOT NULL,
-  booking_id uuid NOT NULL UNIQUE,
-  booking_reference text NOT NULL,
-  quote_id uuid,
-  event_id uuid,
-  event_name text,
-  event_start_date date,
-  event_end_date date,
-  total_amount numeric NOT NULL,
-  currency text NOT NULL DEFAULT 'GBP'::text,
-  points_earned integer DEFAULT 0,
-  points_used integer DEFAULT 0,
-  discount_applied numeric DEFAULT 0,
-  booking_status text NOT NULL CHECK (booking_status = ANY (ARRAY['pending'::text, 'confirmed'::text, 'completed'::text, 'cancelled'::text])),
-  is_first_loyalty_booking boolean DEFAULT false,
-  earn_transaction_id uuid,
-  spend_transaction_id uuid,
-  booking_data jsonb,
-  booked_at timestamp with time zone,
-  confirmed_at timestamp with time zone,
-  created_at timestamp with time zone DEFAULT now(),
-  updated_at timestamp with time zone DEFAULT now(),
-  CONSTRAINT bookings_cache_pkey PRIMARY KEY (id),
-  CONSTRAINT bookings_cache_client_id_fkey FOREIGN KEY (client_id) REFERENCES public.clients(id),
-  CONSTRAINT bookings_cache_booking_id_fkey FOREIGN KEY (booking_id) REFERENCES public.bookings(id),
-  CONSTRAINT bookings_cache_quote_id_fkey FOREIGN KEY (quote_id) REFERENCES public.quotes(id),
-  CONSTRAINT bookings_cache_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.events(id),
-  CONSTRAINT bookings_cache_earn_transaction_id_fkey FOREIGN KEY (earn_transaction_id) REFERENCES public.loyalty_transactions(id),
-  CONSTRAINT bookings_cache_spend_transaction_id_fkey FOREIGN KEY (spend_transaction_id) REFERENCES public.loyalty_transactions(id)
-);
+
 CREATE TABLE public.bookings_flights (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   booking_id uuid NOT NULL,
@@ -584,3 +553,21 @@ CREATE TABLE public.teams (
   CONSTRAINT teams_pkey PRIMARY KEY (id),
   CONSTRAINT teams_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES auth.users(id)
 );
+create table public.venues (
+  id uuid not null default gen_random_uuid (),
+  name text not null,
+  slug text null,
+  country text null,
+  city text null,
+  timezone text null,
+  latitude numeric(9, 6) null,
+  longitude numeric(9, 6) null,
+  description text null,
+  images jsonb null,
+  website text null,
+  created_at timestamp without time zone null default now(),
+  updated_at timestamp without time zone null default now(),
+  map_img jsonb null,
+  constraint venues_pkey primary key (id),
+  constraint venues_slug_key unique (slug)
+) TABLESPACE pg_default;

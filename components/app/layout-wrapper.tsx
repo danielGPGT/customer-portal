@@ -55,7 +55,7 @@ export function LayoutWrapper({
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 pt-20 lg:pt-34 px-4 lg:px-0 pb-4">
+      <main className="flex-1 pt-20 lg:pt-38 px-4 lg:px-0 pb-4">
         <div className="h-full">
           {children}
         </div>

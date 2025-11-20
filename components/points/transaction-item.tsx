@@ -61,7 +61,7 @@ export function TransactionItem({ transaction, previousBalance }: TransactionIte
 
   return (
     <Card className={cn("border-l-4", getColorClass())}>
-      <CardContent className="p-4">
+      <CardContent>
         <div className="flex items-start gap-3">
           <div className="mt-0.5 shrink-0">
             {getIcon()}
