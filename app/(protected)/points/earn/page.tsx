@@ -18,7 +18,7 @@ export default async function PointsEarnPage() {
   }
 
   // Get client data
-  let { data: client } = await supabase
+  const { data: client } = await supabase
     .from('clients')
     .select('*')
     .eq('user_id', user.id)

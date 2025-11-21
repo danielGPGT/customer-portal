@@ -167,78 +167,14 @@ export function AppSidebar({ user, client }: { user: any; client: any }) {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navigationItems.map((item) => {
-                const hasSubItems = item.subItems && item.subItems.length > 0
-                const isItemActive = isActive(item.url)
-                const [open, setOpen] = React.useState(isItemActive)
-
-                // Auto-expand if active
-                React.useEffect(() => {
-                  if (isItemActive) {
-                    setOpen(true)
-                  }
-                }, [isItemActive])
-
-                if (hasSubItems) {
-                  return (
-                    <Collapsible
-                      key={item.title}
-                      defaultOpen={isItemActive}
-                      open={open}
-                      onOpenChange={setOpen}
-                    >
-                      <SidebarMenuItem>
-                        <CollapsibleTrigger asChild>
-                          <SidebarMenuButton
-                            tooltip={item.title}
-                            isActive={isItemActive}
-                          >
-                            <item.icon className="h-4 w-4" />
-                            <span>{item.title}</span>
-                            <ChevronRight
-                              className={cn(
-                                "ml-auto h-4 w-4 transition-transform duration-200",
-                                open && "rotate-90"
-                              )}
-                            />
-                          </SidebarMenuButton>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent>
-                          <SidebarMenuSub>
-                            {item.subItems?.map((subItem) => (
-                              <SidebarMenuSubItem key={subItem.title}>
-                                <SidebarMenuSubButton
-                                  asChild
-                                  isActive={pathname === subItem.url}
-                                >
-                                  <Link href={subItem.url}>
-                                    <span>{subItem.title}</span>
-                                  </Link>
-                                </SidebarMenuSubButton>
-                              </SidebarMenuSubItem>
-                            ))}
-                          </SidebarMenuSub>
-                        </CollapsibleContent>
-                      </SidebarMenuItem>
-                    </Collapsible>
-                  )
-                }
-
-                return (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={isItemActive}
-                      tooltip={item.title}
-                    >
-                      <Link href={item.url}>
-                        <item.icon className="h-4 w-4" />
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                )
-              })}
+              {navigationItems.map((item) => (
+                <NavigationItem 
+                  key={item.title} 
+                  item={item} 
+                  isActive={isActive(item.url)} 
+                  pathname={pathname}
+                />
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -323,5 +259,85 @@ export function AppSidebar({ user, client }: { user: any; client: any }) {
 
       <SidebarRail />
     </Sidebar>
+  )
+}
+
+// Separate component to use hooks properly
+function NavigationItem({ 
+  item, 
+  isActive, 
+  pathname 
+}: { 
+  item: NavItem
+  isActive: boolean
+  pathname: string
+}) {
+  const hasSubItems = item.subItems && item.subItems.length > 0
+  const [open, setOpen] = React.useState(isActive)
+
+  // Auto-expand if active
+  React.useEffect(() => {
+    if (isActive) {
+      setOpen(true)
+    }
+  }, [isActive])
+
+  if (hasSubItems) {
+    return (
+      <Collapsible
+        defaultOpen={isActive}
+        open={open}
+        onOpenChange={setOpen}
+      >
+        <SidebarMenuItem>
+          <CollapsibleTrigger asChild>
+            <SidebarMenuButton
+              tooltip={item.title}
+              isActive={isActive}
+            >
+              <item.icon className="h-4 w-4" />
+              <span>{item.title}</span>
+              <ChevronRight
+                className={cn(
+                  "ml-auto h-4 w-4 transition-transform duration-200",
+                  open && "rotate-90"
+                )}
+              />
+            </SidebarMenuButton>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <SidebarMenuSub>
+              {item.subItems?.map((subItem) => (
+                <SidebarMenuSubItem key={subItem.title}>
+                  <SidebarMenuSubButton
+                    asChild
+                    isActive={pathname === subItem.url}
+                  >
+                    <Link href={subItem.url}>
+                      <span>{subItem.title}</span>
+                    </Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+              ))}
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        </SidebarMenuItem>
+      </Collapsible>
+    )
+  }
+
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton
+        asChild
+        isActive={isActive}
+        tooltip={item.title}
+      >
+        <Link href={item.url}>
+          <item.icon className="h-4 w-4" />
+          <span>{item.title}</span>
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
   )
 }

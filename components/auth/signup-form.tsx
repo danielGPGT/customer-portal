@@ -102,184 +102,184 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
       }
 
       // Track if we need to clean up auth user on error
-      let authUserCreated = true
+      const authUserCreated = true
       let clientCreatedOrLinked = false
       const authUserId = authData.user.id // Store user ID for cleanup
 
       try {
-        // STEP 3: Handle existing client record
-        // Note: user_id in clients table is the ADMIN who created the client, NOT the client's own auth account
-        // If client exists but auth signup succeeded, we need to UPDATE the client.user_id to point to
-        // the client's NEW auth account (replacing the admin's user_id)
-        // This is the correct behavior: the client's own auth account should be linked to their client record
+      // STEP 3: Handle existing client record
+      // Note: user_id in clients table is the ADMIN who created the client, NOT the client's own auth account
+      // If client exists but auth signup succeeded, we need to UPDATE the client.user_id to point to
+      // the client's NEW auth account (replacing the admin's user_id)
+      // This is the correct behavior: the client's own auth account should be linked to their client record
 
-        // STEP 3: If referral code provided, process it (handles client creation/update)
-        if (data.referralCode) {
+      // STEP 3: If referral code provided, process it (handles client creation/update)
+      if (data.referralCode) {
           // Normalize referral code (uppercase, trim)
           const normalizedReferralCode = data.referralCode.toUpperCase().trim()
           
-          const { error: referralError } = await supabase.rpc('process_referral_signup', {
+        const { error: referralError } = await supabase.rpc('process_referral_signup', {
             p_referral_code: normalizedReferralCode,
-            p_auth_user_id: authData.user.id,
-            p_email: data.email,
-            p_first_name: data.firstName,
-            p_last_name: data.lastName,
-            p_phone: data.phone || null,
-            p_team_id: null, // Customer portal doesn't use teams
-          })
+          p_auth_user_id: authData.user.id,
+          p_email: data.email,
+          p_first_name: data.firstName,
+          p_last_name: data.lastName,
+          p_phone: data.phone || null,
+          p_team_id: null, // Customer portal doesn't use teams
+        })
 
-          if (referralError) {
-            console.error('Referral error:', referralError)
-            // If referral fails but client exists, try to link without referral
-            // Replace admin's user_id with client's own auth account
-            if (existingClient) {
-              const { error: updateError } = await supabase
-                .from('clients')
-                .update({
-                  user_id: authData.user.id, // Link to client's own auth account (replacing admin's user_id)
-                  team_id: existingClient.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7', // Preserve existing team_id or use default
-                  loyalty_enrolled: true,
-                  loyalty_enrolled_at: new Date().toISOString(),
-                  loyalty_signup_source: 'self_signup',
-                  updated_at: new Date().toISOString(),
-                })
-                .eq('id', existingClient.id)
-
-              if (updateError) throw updateError
-
-              clientCreatedOrLinked = true
-              toast({
-                title: 'Account linked',
-                description: 'Your existing client record has been linked! Please check your email to verify. (Referral code was invalid)',
-              })
-            } else {
-              throw referralError
-            }
-          } else {
-            clientCreatedOrLinked = true
-            toast({
-              title: 'Success! 🎉',
-              description: 'Account created with 100 bonus points! Check your email to verify.',
-            })
-          }
-        } else {
-          // STEP 4: Create or update client record without referral
+        if (referralError) {
+          console.error('Referral error:', referralError)
+          // If referral fails but client exists, try to link without referral
+          // Replace admin's user_id with client's own auth account
           if (existingClient) {
-            // Client exists - UPDATE to link client's own auth account
-            // Note: The existing user_id is the ADMIN who created this client record
-            // We're replacing it with the client's own auth account (authData.user.id)
-            const updateData: any = {
-              user_id: authData.user.id, // Link client record to client's own auth account (not admin's)
-              team_id: existingClient.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7', // Preserve existing team_id or use default (required by klaviyo trigger)
-              loyalty_enrolled: true,
-              loyalty_enrolled_at: new Date().toISOString(),
-              loyalty_signup_source: 'self_signup',
-              updated_at: new Date().toISOString(),
-            }
-            
-            // Optionally update personal info if provided (but preserve existing data if not provided)
-            if (data.firstName) updateData.first_name = data.firstName
-            if (data.lastName) updateData.last_name = data.lastName
-            if (data.phone) updateData.phone = data.phone
-
             const { error: updateError } = await supabase
               .from('clients')
-              .update(updateData)
+              .update({
+                user_id: authData.user.id, // Link to client's own auth account (replacing admin's user_id)
+                team_id: existingClient.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7', // Preserve existing team_id or use default
+                loyalty_enrolled: true,
+                loyalty_enrolled_at: new Date().toISOString(),
+                loyalty_signup_source: 'self_signup',
+                updated_at: new Date().toISOString(),
+              })
               .eq('id', existingClient.id)
 
-            if (updateError) {
-              // Handle foreign key or other constraint errors
-              if (updateError.message.includes('foreign key') || updateError.message.includes('violates foreign key')) {
-                console.error('Foreign key constraint violation:', updateError)
-                // Clean up the auth account we just created
+            if (updateError) throw updateError
+
+              clientCreatedOrLinked = true
+            toast({
+              title: 'Account linked',
+              description: 'Your existing client record has been linked! Please check your email to verify. (Referral code was invalid)',
+            })
+          } else {
+            throw referralError
+          }
+        } else {
+            clientCreatedOrLinked = true
+          toast({
+            title: 'Success! 🎉',
+            description: 'Account created with 100 bonus points! Check your email to verify.',
+          })
+        }
+      } else {
+        // STEP 4: Create or update client record without referral
+        if (existingClient) {
+          // Client exists - UPDATE to link client's own auth account
+          // Note: The existing user_id is the ADMIN who created this client record
+          // We're replacing it with the client's own auth account (authData.user.id)
+          const updateData: any = {
+            user_id: authData.user.id, // Link client record to client's own auth account (not admin's)
+            team_id: existingClient.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7', // Preserve existing team_id or use default (required by klaviyo trigger)
+            loyalty_enrolled: true,
+            loyalty_enrolled_at: new Date().toISOString(),
+            loyalty_signup_source: 'self_signup',
+            updated_at: new Date().toISOString(),
+          }
+          
+          // Optionally update personal info if provided (but preserve existing data if not provided)
+          if (data.firstName) updateData.first_name = data.firstName
+          if (data.lastName) updateData.last_name = data.lastName
+          if (data.phone) updateData.phone = data.phone
+
+          const { error: updateError } = await supabase
+            .from('clients')
+            .update(updateData)
+            .eq('id', existingClient.id)
+
+          if (updateError) {
+            // Handle foreign key or other constraint errors
+            if (updateError.message.includes('foreign key') || updateError.message.includes('violates foreign key')) {
+              console.error('Foreign key constraint violation:', updateError)
+              // Clean up the auth account we just created
                 await cleanupAuthUser(authUserId).catch(() => {})
-                toast({
-                  variant: 'destructive',
-                  title: 'Error linking account',
-                  description: 'Unable to link account. Please contact support.',
-                })
-                return
-              }
-              throw updateError
+              toast({
+                variant: 'destructive',
+                title: 'Error linking account',
+                description: 'Unable to link account. Please contact support.',
+              })
+              return
             }
+            throw updateError
+          }
 
             clientCreatedOrLinked = true
 
-            // Preserve existing points if client had any
-            const preservedPoints = existingClient.points_balance > 0 
-              ? ` Your existing ${existingClient.points_balance} points have been preserved.`
-              : ''
-            
-            // Show message indicating we replaced admin's user_id with client's own account
-            const hadAdminUserId = existingClient.user_id && existingClient.user_id !== authData.user.id
+          // Preserve existing points if client had any
+          const preservedPoints = existingClient.points_balance > 0 
+            ? ` Your existing ${existingClient.points_balance} points have been preserved.`
+            : ''
+          
+          // Show message indicating we replaced admin's user_id with client's own account
+          const hadAdminUserId = existingClient.user_id && existingClient.user_id !== authData.user.id
 
-            toast({
-              title: 'Account linked! 🎉',
-              description: `Your existing client record has been linked to your portal account.${preservedPoints} Please check your email to verify.`,
-            })
-          } else {
-            // New client - create record
-            // Note: team_id is required by klaviyo_profile_queue trigger
-            const { error: clientError } = await supabase.from('clients').insert({
-              user_id: authData.user.id,
-              team_id: '0cef0867-1b40-4de1-9936-16b867a753d7', // Default team ID for customer portal
-              email: data.email,
-              first_name: data.firstName,
-              last_name: data.lastName,
-              phone: data.phone || null,
-              status: 'active',
-              loyalty_enrolled: true,
-              loyalty_enrolled_at: new Date().toISOString(),
-              loyalty_signup_source: 'self_signup',
-            })
+          toast({
+            title: 'Account linked! 🎉',
+            description: `Your existing client record has been linked to your portal account.${preservedPoints} Please check your email to verify.`,
+          })
+        } else {
+          // New client - create record
+          // Note: team_id is required by klaviyo_profile_queue trigger
+          const { error: clientError } = await supabase.from('clients').insert({
+            user_id: authData.user.id,
+            team_id: '0cef0867-1b40-4de1-9936-16b867a753d7', // Default team ID for customer portal
+            email: data.email,
+            first_name: data.firstName,
+            last_name: data.lastName,
+            phone: data.phone || null,
+            status: 'active',
+            loyalty_enrolled: true,
+            loyalty_enrolled_at: new Date().toISOString(),
+            loyalty_signup_source: 'self_signup',
+          })
 
-            if (clientError) {
-              // If insert fails due to unique constraint, try update instead
-              if (clientError.message.includes('unique constraint') || clientError.message.includes('duplicate')) {
-                const { data: checkClient } = await supabase
+          if (clientError) {
+            // If insert fails due to unique constraint, try update instead
+            if (clientError.message.includes('unique constraint') || clientError.message.includes('duplicate')) {
+              const { data: checkClient } = await supabase
+                .from('clients')
+                .select('id')
+                .eq('email', data.email)
+                .single()
+
+              if (checkClient) {
+                const { error: updateError } = await supabase
                   .from('clients')
-                  .select('id')
-                  .eq('email', data.email)
-                  .single()
+                  .update({
+                    user_id: authData.user.id,
+                    team_id: '0cef0867-1b40-4de1-9936-16b867a753d7', // Ensure team_id is set for trigger
+                    loyalty_enrolled: true,
+                    loyalty_enrolled_at: new Date().toISOString(),
+                    loyalty_signup_source: 'self_signup',
+                  })
+                  .eq('id', checkClient.id)
 
-                if (checkClient) {
-                  const { error: updateError } = await supabase
-                    .from('clients')
-                    .update({
-                      user_id: authData.user.id,
-                      team_id: '0cef0867-1b40-4de1-9936-16b867a753d7', // Ensure team_id is set for trigger
-                      loyalty_enrolled: true,
-                      loyalty_enrolled_at: new Date().toISOString(),
-                      loyalty_signup_source: 'self_signup',
-                    })
-                    .eq('id', checkClient.id)
-
-                  if (updateError) throw updateError
+                if (updateError) throw updateError
 
                   clientCreatedOrLinked = true
-                  toast({
-                    title: 'Account linked! 🎉',
-                    description: 'Your existing account has been linked. Please check your email to verify.',
-                  })
-                } else {
-                  throw clientError
-                }
+                toast({
+                  title: 'Account linked! 🎉',
+                  description: 'Your existing account has been linked. Please check your email to verify.',
+                })
               } else {
                 throw clientError
               }
             } else {
-              clientCreatedOrLinked = true
-              toast({
-                title: 'Success! 🎉',
-                description: 'Account created! Check your email to verify.',
-              })
+              throw clientError
             }
+          } else {
+              clientCreatedOrLinked = true
+            toast({
+              title: 'Success! 🎉',
+              description: 'Account created! Check your email to verify.',
+            })
           }
         }
+      }
 
         // If we get here, everything succeeded
         if (clientCreatedOrLinked) {
-          router.push('/login?verified=false')
+      router.push('/login?verified=false')
         }
       } catch (stepError: any) {
         // If auth user was created but client wasn't, clean up the auth user

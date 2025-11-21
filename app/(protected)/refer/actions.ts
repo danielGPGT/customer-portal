@@ -5,16 +5,11 @@ import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { checkServerRateLimit } from '@/lib/utils/rate-limit-server'
+import { getBaseUrl } from '@/lib/utils/get-base-url'
 
 const inviteSchema = z.object({
   email: z.string().email(),
 })
-
-const getBaseUrl = () => {
-  // For now, use localhost:3000 as requested
-  // TODO: Update to use environment variables in production
-  return 'http://localhost:3000'
-}
 
 interface ActionState {
   success?: boolean
@@ -69,7 +64,11 @@ export async function submitReferralInvite(
     return { error: 'Could not get your referral code. Please try again later.' }
   }
 
-  const referralLink = `${getBaseUrl()}/signup?ref=${referralCode}`
+  const baseUrl = getBaseUrl()
+  if (!baseUrl) {
+    return { error: 'Site URL not configured. Please set NEXT_PUBLIC_SITE_URL environment variable.' }
+  }
+  const referralLink = `${baseUrl}/signup?ref=${referralCode}`
 
   const { error: insertError } = await supabase.from('referrals').insert({
     referrer_client_id: client.id,

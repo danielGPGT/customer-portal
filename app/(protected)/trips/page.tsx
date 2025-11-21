@@ -24,7 +24,7 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
   }
 
   // Get client data
-  let { data: client } = await supabase
+  const { data: client } = await supabase
     .from('clients')
     .select('id')
     .eq('user_id', user.id)

@@ -59,17 +59,17 @@ export default async function SignupPage({ searchParams }: SignupPageProps) {
           isValid={referrerInfo.isValid}
         />
       )}
-      <Card className="border-gray-200 shadow-sm">
-        <CardHeader className="space-y-1 pb-6">
-          <CardTitle className="text-2xl font-bold text-center">Create your account</CardTitle>
-          <CardDescription className="text-center">
-            Join our loyalty program and start earning points
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+    <Card className="border-gray-200 shadow-sm">
+      <CardHeader className="space-y-1 pb-6">
+        <CardTitle className="text-2xl font-bold text-center">Create your account</CardTitle>
+        <CardDescription className="text-center">
+          Join our loyalty program and start earning points
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
           <SignupForm initialReferralCode={referralCode || undefined} />
-        </CardContent>
-      </Card>
+      </CardContent>
+    </Card>
     </div>
   )
 }

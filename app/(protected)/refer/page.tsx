@@ -35,7 +35,7 @@ export default async function ReferralPage() {
     .eq('id', 1)
     .single()
 
-  const { data: referrals = [] } = await supabase
+  const { data: referralsData } = await supabase
     .from('referrals')
     .select(
       `
@@ -53,13 +53,16 @@ export default async function ReferralPage() {
     .eq('referrer_client_id', client.id)
     .order('created_at', { ascending: false })
 
+  const referrals = referralsData || []
+
   // Get or create the client's persistent referral code
   const { data: referralCode } = await supabase.rpc('get_or_create_referral_code', {
     p_client_id: client.id,
   })
 
   // Generate the referral link
-  const referralLink = referralCode ? `http://localhost:3000/signup?ref=${referralCode}` : null
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '')
+  const referralLink = referralCode && baseUrl ? `${baseUrl}/signup?ref=${referralCode}` : null
 
   const totalInvites = referrals.length
   const pending = referrals.filter((r) => r.status === 'pending').length

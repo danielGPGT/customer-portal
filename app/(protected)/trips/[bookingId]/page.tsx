@@ -25,7 +25,7 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
   }
 
   // Get client data
-  let { data: client } = await supabase
+  const { data: client } = await supabase
     .from('clients')
     .select('id')
     .eq('user_id', user.id)
@@ -200,13 +200,11 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
         payments={booking.booking_payments || []}
         pointsUsed={enrichedBooking.points_used}
         pointsEarned={enrichedBooking.points_earned}
-        discountApplied={enrichedBooking.discount_applied}
         pointValue={pointValue}
         isCancelled={enrichedBooking.booking_status === 'cancelled'}
         earnTransaction={enrichedBooking.earn_transaction}
         spendTransaction={enrichedBooking.spend_transaction}
         redemptions={enrichedBooking.redemptions}
-        isFirstLoyaltyBooking={enrichedBooking.is_first_loyalty_booking}
       />
 
       {/* Actions */}

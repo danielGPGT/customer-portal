@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { format } from 'date-fns'
 import { Search, Filter } from 'lucide-react'
 
@@ -206,11 +206,13 @@ export function TripList({ bookings, tab, currency, pointValue }: TripListProps)
               <p className="text-xs font-medium uppercase text-muted-foreground">Destination</p>
               <div className="flex flex-nowrap gap-2 overflow-x-auto pb-1">
                 {renderChip('All', selectedDestination === 'all', () => setSelectedDestination('all'))}
-                {destinations.map((destination) =>
-                  renderChip(destination, selectedDestination === destination, () =>
-                    setSelectedDestination((prev) => (prev === destination ? 'all' : destination))
-                  )
-                )}
+                {destinations.map((destination) => (
+                  <React.Fragment key={destination}>
+                    {renderChip(destination, selectedDestination === destination, () =>
+                      setSelectedDestination((prev) => (prev === destination ? 'all' : destination))
+                    )}
+                  </React.Fragment>
+                ))}
               </div>
             </div>
           )}
@@ -220,11 +222,13 @@ export function TripList({ bookings, tab, currency, pointValue }: TripListProps)
               <p className="text-xs font-medium uppercase text-muted-foreground">Month</p>
               <div className="flex flex-nowrap gap-2 overflow-x-auto pb-1">
                 {renderChip('Any', selectedMonth === 'all', () => setSelectedMonth('all'))}
-                {months.map((month) =>
-                  renderChip(month, selectedMonth === month, () =>
-                    setSelectedMonth((prev) => (prev === month ? 'all' : month))
-                  )
-                )}
+                {months.map((month) => (
+                  <React.Fragment key={month}>
+                    {renderChip(month, selectedMonth === month, () =>
+                      setSelectedMonth((prev) => (prev === month ? 'all' : month))
+                    )}
+                  </React.Fragment>
+                ))}
               </div>
             </div>
           )}

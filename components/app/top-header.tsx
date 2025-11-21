@@ -145,22 +145,27 @@ export function TopHeader({
 
         {/* User Profile */}
         {user && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="relative h-9 w-9 rounded-full text-foreground dark:text-primary-foreground hover:bg-accent p-0"
-              >
-                <Avatar className="h-8 w-8 border border-border">
-                  <AvatarImage src="" alt={userName} />
-                  <AvatarFallback className="bg-muted text-foreground dark:text-primary-foreground text-xs">
-                    {userInitials}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="sr-only">User menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenu modal={false}>
+            <div className="relative">
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="relative h-9 w-9 rounded-full text-foreground dark:text-primary-foreground hover:bg-accent p-0"
+                >
+                  <Avatar className="h-8 w-8 border border-border">
+                    <AvatarImage src="" alt={userName} />
+                    <AvatarFallback className="bg-muted text-foreground dark:text-primary-foreground text-xs">
+                      {userInitials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="sr-only">User menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              {/* Invisible bridge to cover the gap */}
+              <div 
+                className="absolute top-full right-0 w-full h-2 -mb-2 z-50 pointer-events-none"
+              />
+              <DropdownMenuContent align="end" className="w-56" sideOffset={1}>
               <DropdownMenuLabel>
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">{userName}</p>
@@ -189,6 +194,7 @@ export function TopHeader({
                 Log out
               </DropdownMenuItem>
             </DropdownMenuContent>
+            </div>
           </DropdownMenu>
         )}
         {/* Points Wallet */}

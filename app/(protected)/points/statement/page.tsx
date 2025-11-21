@@ -17,7 +17,7 @@ export default async function PointsStatementPage() {
   }
 
   // Get client data
-  let { data: client } = await supabase
+  const { data: client } = await supabase
     .from('clients')
     .select('*')
     .eq('user_id', user.id)
@@ -35,38 +35,52 @@ export default async function PointsStatementPage() {
     .order('created_at', { ascending: false })
     .limit(20)
 
-  // Get booking references for transactions
-  const transactionsWithBookings = await Promise.all(
-    (transactions || []).map(async (tx) => {
-      if (tx.source_reference_id && (tx.source_type === 'purchase' || tx.source_type === 'redemption')) {
-        const { data: booking } = await supabase
-          .from('bookings')
-          .select(`
-            booking_reference,
-            event_id,
-            events (
-              name
-            )
-          `)
-          .eq('id', tx.source_reference_id)
-          .is('deleted_at', null)
-          .maybeSingle()
-        
-        if (booking) {
-          return {
-            ...tx,
-            booking_reference: booking.booking_reference || null,
-            event_name: (booking.events as { name?: string } | null)?.name || null,
-          }
-        }
-      }
+  // Get booking references for transactions (BATCH QUERY - fixes N+1 problem)
+  const bookingIds = (transactions || [])
+    .filter(tx => tx.source_reference_id && (tx.source_type === 'purchase' || tx.source_type === 'redemption'))
+    .map(tx => tx.source_reference_id)
+    .filter((id, index, self) => self.indexOf(id) === index) // Get unique IDs
+
+  // Batch fetch all bookings in one query
+  const bookingMap = new Map<string, { booking_reference: string | null; event_name: string | null }>()
+  if (bookingIds.length > 0) {
+    const { data: bookings } = await supabase
+      .from('bookings')
+      .select(`
+        id,
+        booking_reference,
+        events (
+          name
+        )
+      `)
+      .in('id', bookingIds)
+      .is('deleted_at', null)
+
+    // Create map for O(1) lookup
+    bookings?.forEach(booking => {
+      bookingMap.set(booking.id, {
+        booking_reference: booking.booking_reference || null,
+        event_name: (booking.events as { name?: string } | null)?.name || null,
+      })
+    })
+  }
+
+  // Map transactions with bookings (in-memory, fast)
+  const transactionsWithBookings = (transactions || []).map(tx => {
+    if (tx.source_reference_id && (tx.source_type === 'purchase' || tx.source_type === 'redemption')) {
+      const booking = bookingMap.get(tx.source_reference_id)
       return {
         ...tx,
-        booking_reference: null,
-        event_name: null,
+        booking_reference: booking?.booking_reference || null,
+        event_name: booking?.event_name || null,
       }
-    })
-  )
+    }
+    return {
+      ...tx,
+      booking_reference: null,
+      event_name: null,
+    }
+  })
 
   return (
     <div className="space-y-6">
