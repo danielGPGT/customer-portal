@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "next build",
+    "build:turbopack": "next build --turbopack",
     "start": "next start",
     "lint": "eslint"
   },
@@ -64,7 +65,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@netlify/plugin-nextjs": "^4.0.0",
+    "@netlify/plugin-nextjs": "^5.14.7",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

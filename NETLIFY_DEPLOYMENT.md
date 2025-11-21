@@ -10,11 +10,13 @@ This guide will help you deploy the Customer Loyalty Portal to Netlify.
 
 ## Step 1: Install Netlify Next.js Plugin
 
-The `netlify.toml` file is already configured, but you need to install the plugin:
+The `netlify.toml` file is already configured. The plugin is already in `package.json` as a dev dependency. Make sure to run:
 
 ```bash
-npm install --save-dev @netlify/plugin-nextjs
+npm install
 ```
+
+This will install `@netlify/plugin-nextjs@^5.14.7` which is compatible with Next.js 15.5.6.
 
 ## Step 2: Configure Environment Variables
 
