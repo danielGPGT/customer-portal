@@ -115,7 +115,8 @@ A mobile-first customer portal that allows customers to:
 
 **Requirements:**
 - Email + password signup
-- Optional: Sign up with referral code
+- Optional: Sign up with referral code (via URL parameter `?ref=CODE` or manual entry)
+- Referral code auto-filled from URL if present
 - Email verification required
 - Password requirements: min 8 chars, 1 number, 1 special char
 - Auto-login after signup
@@ -123,16 +124,20 @@ A mobile-first customer portal that allows customers to:
 
 **Acceptance Criteria:**
 - [ ] User can create account with email/password
-- [ ] Referral code validated if provided
+- [ ] Referral code can be provided via URL (`/signup?ref=CODE`) or manual entry
+- [ ] Referral code auto-filled from URL parameter
+- [ ] Referral code validates referrer eligibility (codes are reusable)
 - [ ] Email verification sent immediately
 - [ ] User redirected to dashboard after signup
 - [ ] 100 points awarded if referral code valid
 - [ ] Error handling for duplicate emails
+- [ ] Banner shown when signing up via referral link
 
 **Design Notes:**
 - Simple, clean form
 - Show password strength indicator
 - "Sign up with referral code" as optional expansion
+- Special banner when arriving via referral link (shows referrer name if available)
 - Mobile keyboard optimization (email type, etc.)
 
 ---
@@ -404,19 +409,22 @@ Upcoming Trips Screen:
 **User Story:** As a user, I want to refer friends to earn bonus points.
 
 **Requirements:**
-- Enter friend's email
-- Generate unique referral link
-- Share via email, SMS, WhatsApp, Copy link
-- Track referral status
+- Each user has ONE persistent referral code (reusable for unlimited referrals)
+- Enter friend's email (optional - for direct invitations)
+- Share referral link via email, SMS, WhatsApp, or copy link
+- Same link can be shared with multiple friends
+- Track referral status for each signup
 - See pending/completed referrals
 - Terms & conditions clear
 
 **Acceptance Criteria:**
-- [ ] Can enter and validate email
-- [ ] Referral link generated and unique
+- [ ] Each user has one persistent referral code
+- [ ] Can enter and validate email (optional)
+- [ ] Referral link generated and persistent (same code always)
+- [ ] Same link can be used by multiple friends
 - [ ] Multiple share methods work
-- [ ] Email invitation sent
-- [ ] Referral tracked correctly
+- [ ] Email invitation sent (if email provided)
+- [ ] Referral tracked correctly for each signup
 - [ ] Status updates in real-time
 
 **Referral Flow:**
@@ -425,21 +433,31 @@ Refer Friend Screen:
 ├─ Header
 │  ├─ "Give £100, Get £100"
 │  └─ "Both you and your friend benefit!"
-├─ Enter Friend's Email
-│  └─ [Input field with validation]
-├─ Or Share Your Link
-│  └─ [Copy Link Button]
+├─ Your Referral Code
+│  └─ [Persistent code displayed, e.g., "ABC12345"]
+├─ Your Referral Link
+│  └─ [Copy Link Button] - Same link for all referrals
+├─ Enter Friend's Email (Optional)
+│  └─ [Input field with validation] - For direct invitations
 ├─ Share Options
 │  ├─ [Email] [WhatsApp] [SMS]
-│  └─ [Copy Link]
+│  └─ [Copy Link] - Share same link everywhere
 ├─ How It Works
-│  ├─ 1. Friend signs up (+100 pts)
-│  ├─ 2. Friend makes first booking
-│  └─ 3. You get 100 pts!
+│  ├─ 1. Share your link (one link, unlimited uses)
+│  ├─ 2. Friend signs up using your code (+100 pts)
+│  ├─ 3. Friend makes first booking
+│  └─ 4. You get 100 pts!
 └─ My Referrals
    ├─ Pending: 2
    └─ Completed: 5 (+500 pts earned)
 ```
+
+**Key Implementation Details:**
+- **Persistent Codes:** Each user gets ONE referral code that never changes
+- **Reusable Links:** Same referral link can be shared with unlimited friends
+- **Tracking:** Each friend who signs up creates a separate referral record
+- **Validation:** Code validates referrer eligibility, not single-use status
+- **Flexible Signup:** Friends can sign up via direct link OR email invitation
 
 ---
 
@@ -447,24 +465,48 @@ Refer Friend Screen:
 **User Story:** As a user, I want to track my referrals and see rewards earned.
 
 **Requirements:**
-- List all referrals
+- List all referrals (each friend who signs up creates separate record)
+- All referrals share the same referral code (persistent per user)
 - Status per referral: Pending, Signed Up, Completed
 - Points earned per referral
-- Friend's first name (privacy-safe)
-- Date of referral
-- Resend invitation option
+- Friend's email or first name (privacy-safe, if available)
+- Date of referral/signup
+- Resend invitation option (for pending referrals)
 
 **Acceptance Criteria:**
-- [ ] All referrals displayed
-- [ ] Status accurate and updates
+- [ ] All referrals displayed (both invited and direct link signups)
+- [ ] Status accurate and updates in real-time
 - [ ] Points calculation correct
-- [ ] Can resend invitations
-- [ ] Privacy maintained
+- [ ] Can resend invitations for pending referrals
+- [ ] Privacy maintained (only show email/name if available)
+- [ ] Shows statistics: Total invites, Pending, Signed Up, Completed, Points Earned
+
+**Technical Notes:**
+- Each referral record tracks one friend's signup
+- Multiple referral records can share the same `referral_code`
+- Direct link signups (no email invite) still create referral records
+- Referral records are matched by email if invited, or created new if direct signup
 
 **Referral Status:**
 - 🕐 **Pending** - Invited, not signed up yet
 - ✅ **Signed Up** - Signed up, earned 100 pts
 - 🎉 **Completed** - Made first booking, you earned 100 pts
+
+**Referral Code System Architecture:**
+- **Persistent Codes:** Each client has ONE referral code that never changes
+- **Code Generation:** `get_or_create_referral_code(client_id)` returns existing code or generates new unique 8-character code
+- **Reusability:** Same code can be used by unlimited friends (no single-use restriction)
+- **Validation:** `check_referral_validity(code)` validates:
+  - Code exists in system
+  - Referrer is active and enrolled in loyalty program
+  - Returns `referrer_client_id` for processing
+- **Signup Processing:** `process_referral_signup()`:
+  - Creates new client account
+  - Awards 100 bonus points to referee
+  - Creates or updates referral record (matches by email if invited, or creates new if direct link)
+  - Sends notifications to both referrer and referee
+- **Tracking:** Each signup creates separate referral record, all sharing same `referral_code`
+- **Link Format:** `https://portal.example.com/signup?ref=CODE` (auto-fills code in signup form)
 
 ---
 
@@ -792,13 +834,13 @@ A feature is considered "done" when:
 ## 📝 Appendix
 
 ### A. API Endpoints (Supabase RPC)
-- `update_client_points()`
-- `enroll_client_in_loyalty()`
-- `process_referral_signup()`
-- `process_first_loyalty_booking()`
-- `calculate_available_discount()`
-- `check_referral_validity()`
-- `generate_referral_code()`
+- `update_client_points()` - Updates client points balance and creates transaction record
+- `enroll_client_in_loyalty()` - Enrolls client in loyalty program
+- `process_referral_signup()` - Processes signup with referral code (creates/updates referral record)
+- `process_first_loyalty_booking()` - Awards referrer bonus when referee makes first booking
+- `calculate_available_discount()` - Calculates discount available from points
+- `check_referral_validity()` - Validates referral code and returns referrer info (codes are reusable)
+- `get_or_create_referral_code()` - Gets or creates persistent referral code for a client (one per user)
 
 ### B. Database Schema
 - See `loyalty_schema_v3.0_using_clients.sql`
@@ -808,6 +850,14 @@ A feature is considered "done" when:
 
 ---
 
-**Document Version:** 1.0  
-**Last Updated:** November 2024  
+**Document Version:** 1.1  
+**Last Updated:** January 2025  
 **Status:** ✅ Approved for Development
+
+**Version 1.1 Changes:**
+- Updated referral system to use persistent referral codes (one per user)
+- Codes are now reusable for unlimited referrals
+- Updated function names: `generate_referral_code()` → `get_or_create_referral_code()`
+- Updated validation logic: codes validate referrer eligibility, not single-use status
+- Added technical architecture details for referral code system
+- Clarified signup flow with URL parameter support (`?ref=CODE`)

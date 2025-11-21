@@ -10,7 +10,13 @@ export const signupSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
   phone: z.string().optional(),
-  referralCode: z.string().optional(),
+  referralCode: z
+    .string()
+    .optional()
+    .refine(
+      (val) => !val || /^[A-Z0-9]{1,20}$/i.test(val.trim()),
+      'Referral code must be alphanumeric (up to 20 characters)'
+    ),
 })
 
 export const loginSchema = z.object({

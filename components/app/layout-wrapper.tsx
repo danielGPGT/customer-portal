@@ -4,6 +4,7 @@ import * as React from "react"
 import { TopHeader } from '@/components/app/top-header'
 import { NavBar } from '@/components/app/nav-bar'
 import { MobileSidebar } from '@/components/app/mobile-sidebar'
+import { AppFooter } from '@/components/app/app-footer'
 import Image from "next/image"
 
 interface LayoutWrapperProps {
@@ -20,7 +21,7 @@ export function LayoutWrapper({
   const [sidebarOpen, setSidebarOpen] = React.useState(false)
 
   return (
-    <div className="flex min-h-screen container mx-auto flex-col">
+    <div className="flex min-h-screen mx-auto flex-col">
         {/* <div className="h-[100vh] bg-image-background bg-gradient-to-bl from-background/40 to-primary/0 fixed top-0 left-0 w-full -z-1"></div> */}
         <div className="h-[100vh] fixed top-0 left-0 w-full -z-10 overflow-hidden">
 
@@ -55,11 +56,13 @@ export function LayoutWrapper({
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 pt-20 lg:pt-38 px-4 lg:px-0 pb-4">
+      <main className="flex-1 pt-20 container mx-auto lg:pt-38 px-4 lg:px-0 pb-10">
         <div className="h-full">
           {children}
         </div>
       </main>
+
+      <AppFooter />
     </div>
   )
 }

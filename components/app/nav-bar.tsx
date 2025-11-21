@@ -186,7 +186,7 @@ export function NavBar() {
         className="bg-primary hover:bg-primary-700 text-primary-foreground h-9 px-4 ml-4 hidden md:flex"
         asChild
       >
-        <Link href="/apply">Refer a friend</Link>
+        <Link href="/refer">Refer a friend</Link>
       </Button>
       </div>
     </nav>

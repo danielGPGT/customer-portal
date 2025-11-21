@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation'
 import { TripTabs } from '@/components/trips/trip-tabs'
 import { TripList } from '@/components/trips/trip-list'
 import { EmptyTripState } from '@/components/trips/empty-trip-state'
-import { format } from 'date-fns'
 
 type TripTab = 'upcoming' | 'past' | 'cancelled'
 
@@ -90,22 +89,32 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
 
     const portalStatus = mapStatus(booking.status)
 
-    // Find points earned from this booking
     const earnTransaction = loyaltyTransactions?.find(
       tx => tx.source_type === 'purchase' && tx.source_reference_id === booking.id.toString()
     )
-    const pointsEarned = earnTransaction?.points || 0
 
-    // Find points used (from redemptions)
     const redemption = redemptions?.find(r => r.booking_id === booking.id)
-    const pointsUsed = redemption?.points_redeemed || 0
-    const discountApplied = redemption?.discount_amount || 0
 
-    // Check if this is first loyalty booking
+    const pointsEarned =
+      (typeof booking.points_earned === 'number' ? booking.points_earned : null) ??
+      earnTransaction?.points ??
+      0
+
+    const pointsUsed =
+      (typeof booking.points_used === 'number' ? booking.points_used : null) ??
+      redemption?.points_redeemed ??
+      0
+
+    const discountApplied =
+      (typeof booking.discount_applied === 'number' ? booking.discount_applied : null) ??
+      redemption?.discount_amount ??
+      0
+
     const isFirstLoyaltyBooking = 
-      firstLoyaltyBookingAt && 
+      booking.is_first_loyalty_booking ||
+      (firstLoyaltyBookingAt &&
       booking.confirmed_at &&
-      new Date(booking.confirmed_at).toISOString() === new Date(firstLoyaltyBookingAt).toISOString()
+        new Date(booking.confirmed_at).toISOString() === new Date(firstLoyaltyBookingAt).toISOString())
 
     return {
       id: booking.id,
@@ -150,33 +159,39 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
-  // Filter bookings by tab
-  const filteredBookings = enrichedBookings.filter((booking) => {
+  const filterByTab = (tab: TripTab) => {
+    return enrichedBookings.filter((booking) => {
     const startDate = booking.event_start_date ? new Date(booking.event_start_date) : null
     const endDate = booking.event_end_date ? new Date(booking.event_end_date) : null
 
-    switch (activeTab) {
+      switch (tab) {
       case 'upcoming':
-        // Future trips (confirmed or pending)
         return (
           startDate && 
           startDate >= today && 
           (booking.booking_status === 'confirmed' || booking.booking_status === 'pending')
         )
       case 'past':
-        // Past confirmed trips
         return (
           endDate && 
           endDate < today && 
           (booking.booking_status === 'confirmed' || booking.booking_status === 'completed')
         )
       case 'cancelled':
-        // All cancelled bookings
         return booking.booking_status === 'cancelled'
       default:
         return false
     }
   })
+  }
+
+  const tabCounts: Record<TripTab, number> = {
+    upcoming: filterByTab('upcoming').length,
+    past: filterByTab('past').length,
+    cancelled: filterByTab('cancelled').length,
+  }
+
+  const filteredBookings = filterByTab(activeTab)
 
   // Sort bookings based on tab
   const sortedBookings = [...filteredBookings].sort((a, b) => {
@@ -219,7 +234,7 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
         </p>
       </div>
 
-      <TripTabs activeTab={activeTab} />
+      <TripTabs activeTab={activeTab} counts={tabCounts} />
 
       {sortedBookings.length === 0 ? (
         <EmptyTripState tab={activeTab} />

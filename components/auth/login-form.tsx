@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label'
 import { useToast } from '@/hooks/use-toast'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
+import { checkLoginRateLimit } from '@/app/(auth)/login/actions'
 
 export function LoginForm() {
   const router = useRouter()
@@ -31,6 +32,18 @@ export function LoginForm() {
     const supabase = createClient()
 
     try {
+      // Check rate limit before attempting login
+      const rateLimitCheck = await checkLoginRateLimit()
+      if (!rateLimitCheck.allowed) {
+        toast({
+          variant: 'destructive',
+          title: 'Too many login attempts',
+          description: rateLimitCheck.error || 'Please try again later.',
+        })
+        setIsLoading(false)
+        return
+      }
+
       const { error } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.password,

@@ -32,19 +32,19 @@ export default async function DashboardPage() {
         .eq('email', user.email)
         .maybeSingle()
 
-      // If client exists by email but has different user_id, update it
-        if (clientByEmail && !emailError) {
-          console.log('Found client by email, updating user_id:', clientByEmail.id)
-          const { error: updateError } = await supabase
-            .from('clients')
-            .update({
-              user_id: user.id,
-              team_id: clientByEmail.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7', // Preserve existing team_id or use default (required by klaviyo trigger)
-              loyalty_enrolled: clientByEmail.loyalty_enrolled ?? true,
-              loyalty_enrolled_at: clientByEmail.loyalty_enrolled_at ?? new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            })
-            .eq('id', clientByEmail.id)
+      // If client exists by email, update it to link to this auth account
+      if (clientByEmail) {
+        console.log('Found client by email, updating user_id:', clientByEmail.id)
+        const { error: updateError } = await supabase
+          .from('clients')
+          .update({
+            user_id: user.id,
+            team_id: clientByEmail.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7', // Preserve existing team_id or use default (required by klaviyo trigger)
+            loyalty_enrolled: clientByEmail.loyalty_enrolled ?? true,
+            loyalty_enrolled_at: clientByEmail.loyalty_enrolled_at ?? new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', clientByEmail.id)
 
         if (!updateError) {
           // Retry fetch after update
@@ -58,7 +58,34 @@ export default async function DashboardPage() {
             client = updatedClient
             clientError = null
           }
+        } else {
+          // Update failed, but client exists - use it anyway
+          console.warn('Failed to update client user_id, but client exists:', updateError)
+          client = clientByEmail
+          clientError = null
         }
+      } else if (emailError && emailError.code !== 'PGRST116') {
+        // Error other than "not found" - log it
+        console.error('Error finding client by email:', emailError)
+      }
+    }
+  }
+
+  // If client still doesn't exist, check one more time by email before creating
+  if (clientError || !client) {
+    if (user.email) {
+      // Final check: does a client with this email exist?
+      const { data: finalCheck } = await supabase
+        .from('clients')
+        .select('*')
+        .eq('email', user.email)
+        .maybeSingle()
+      
+      if (finalCheck) {
+        // Client exists but couldn't be linked - use it anyway
+        console.warn('Client exists by email but couldn\'t be linked, using existing record:', finalCheck.id)
+        client = finalCheck
+        clientError = null
       }
     }
   }
@@ -89,73 +116,127 @@ export default async function DashboardPage() {
       )
     }
 
-    // Extract user metadata from auth
-    const userMetadata = user.user_metadata || {}
-    const firstName = userMetadata.first_name || user.email.split('@')[0] || 'Customer'
-    const lastName = userMetadata.last_name || ''
-    const phone = userMetadata.phone || null
-
-    // Create new client record
-    // Note: team_id is required by klaviyo_profile_queue trigger
-    const { data: newClient, error: createError } = await supabase
+    // Final safety check: verify client doesn't exist by email before inserting
+    const { data: existingCheck } = await supabase
       .from('clients')
-      .insert({
-        user_id: user.id,
-        team_id: '0cef0867-1b40-4de1-9936-16b867a753d7', // Default team ID for customer portal
-        email: user.email,
-        first_name: firstName,
-        last_name: lastName || 'User',
-        phone: phone,
-        status: 'active',
-        loyalty_enrolled: true,
-        loyalty_enrolled_at: new Date().toISOString(),
-        loyalty_signup_source: 'self_signup',
-      })
-      .select()
-      .single()
+      .select('*')
+      .eq('email', user.email)
+      .maybeSingle()
+    
+    if (existingCheck) {
+      // Client exists - update it instead of inserting
+      console.log('Client exists by email, updating instead of inserting:', existingCheck.id)
+      const { error: updateError } = await supabase
+        .from('clients')
+        .update({
+          user_id: user.id,
+          team_id: existingCheck.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7',
+          loyalty_enrolled: existingCheck.loyalty_enrolled ?? true,
+          loyalty_enrolled_at: existingCheck.loyalty_enrolled_at ?? new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', existingCheck.id)
 
-    if (createError || !newClient) {
-      console.error('Failed to create client record:', createError)
-      
-      // If insert fails due to unique constraint (email already exists), try update
-      if (createError?.message?.includes('unique constraint') || createError?.message?.includes('duplicate')) {
-        const { data: existingByEmail } = await supabase
+      if (!updateError) {
+        // Fetch the updated client
+        const { data: updatedClient } = await supabase
           .from('clients')
           .select('*')
-          .eq('email', user.email)
+          .eq('user_id', user.id)
           .single()
+        
+        if (updatedClient) {
+          client = updatedClient
+          clientError = null
+        } else {
+          // Fallback to existing client
+          client = existingCheck
+          clientError = null
+        }
+      } else {
+        // Update failed, but use existing client anyway
+        console.warn('Failed to update existing client, using as-is:', updateError)
+        client = existingCheck
+        clientError = null
+      }
+    } else {
+      // No existing client - safe to insert
+      // Extract user metadata from auth
+      const userMetadata = user.user_metadata || {}
+      const firstName = userMetadata.first_name || user.email.split('@')[0] || 'Customer'
+      const lastName = userMetadata.last_name || ''
+      const phone = userMetadata.phone || null
 
-        if (existingByEmail) {
-          // Update existing client to link to this auth account
-          const { error: updateError } = await supabase
+      // Create new client record
+      // Note: team_id is required by klaviyo_profile_queue trigger
+      const { data: newClient, error: createError } = await supabase
+        .from('clients')
+        .insert({
+          user_id: user.id,
+          team_id: '0cef0867-1b40-4de1-9936-16b867a753d7', // Default team ID for customer portal
+          email: user.email,
+          first_name: firstName,
+          last_name: lastName || 'User',
+          phone: phone,
+          status: 'active',
+          loyalty_enrolled: true,
+          loyalty_enrolled_at: new Date().toISOString(),
+          loyalty_signup_source: 'self_signup',
+        })
+        .select()
+        .single()
+
+      if (createError || !newClient) {
+        console.error('Failed to create client record:', createError)
+        
+        // If insert fails due to unique constraint (email already exists), try update
+        if (createError?.code === '23505' || createError?.message?.includes('unique constraint') || createError?.message?.includes('duplicate')) {
+          const { data: existingByEmail } = await supabase
             .from('clients')
-            .update({
-              user_id: user.id,
-              team_id: existingByEmail.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7', // Preserve existing team_id or use default (required by klaviyo trigger)
-              loyalty_enrolled: existingByEmail.loyalty_enrolled ?? true,
-              loyalty_enrolled_at: existingByEmail.loyalty_enrolled_at ?? new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            })
-            .eq('id', existingByEmail.id)
+            .select('*')
+            .eq('email', user.email)
+            .maybeSingle()
 
-          if (!updateError) {
-            // Fetch the updated client
-            const { data: updatedClient } = await supabase
+          if (existingByEmail) {
+            // Update existing client to link to this auth account
+            const { error: updateError } = await supabase
               .from('clients')
-              .select('*')
-              .eq('user_id', user.id)
-              .single()
-            
-            if (updatedClient) {
-              client = updatedClient
+              .update({
+                user_id: user.id,
+                team_id: existingByEmail.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7', // Preserve existing team_id or use default (required by klaviyo trigger)
+                loyalty_enrolled: existingByEmail.loyalty_enrolled ?? true,
+                loyalty_enrolled_at: existingByEmail.loyalty_enrolled_at ?? new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+              })
+              .eq('id', existingByEmail.id)
+
+            if (!updateError) {
+              // Fetch the updated client
+              const { data: updatedClient } = await supabase
+                .from('clients')
+                .select('*')
+                .eq('user_id', user.id)
+                .single()
+              
+              if (updatedClient) {
+                client = updatedClient
+                clientError = null
+              } else {
+                // Fallback to existing client
+                client = existingByEmail
+                clientError = null
+              }
+            } else {
+              // Update failed, but use existing client anyway
+              console.warn('Failed to update existing client after insert error, using as-is:', updateError)
+              client = existingByEmail
               clientError = null
             }
           }
         }
-      }
 
-      // If still no client, show error
-      if (!client) {
+        // If still no client, show error
+        if (!client) {
         return (
           <div className="container py-8 px-4">
             <div className="max-w-4xl mx-auto text-center space-y-4">
@@ -179,12 +260,13 @@ export default async function DashboardPage() {
             </div>
           </div>
         )
+        }
+      } else {
+        // Successfully created new client
+        client = newClient
+        clientError = null
+        console.log('Successfully created client record for user:', user.id)
       }
-    } else {
-      // Successfully created new client
-      client = newClient
-      clientError = null
-      console.log('Successfully created client record for user:', user.id)
     }
   }
 

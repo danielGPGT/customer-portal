@@ -22,24 +22,24 @@
 ### ✅ 1.2 Database Setup
 - [x] Deploy loyalty schema to Supabase
 - [x] Insert mock data for testing
-- [ ] Set up Row Level Security (RLS) policies
+- [x] Set up Row Level Security (RLS) policies
 - [ ] Create database indexes
 - [ ] Test all database functions
 
 ### ✅ 1.3 Authentication Implementation
-- [ ] Implement Supabase client (browser + server)
-- [ ] Create middleware for route protection
-- [ ] Build auth callback handler
-- [ ] Create signup form with referral code support
-- [ ] Create login form
+- [x] Implement Supabase client (browser + server)
+- [x] Create middleware for route protection
+- [x] Build auth callback handler
+- [x] Create signup form with referral code support
+- [x] Create login form
 - [ ] Create password reset flow
 - [ ] Add email verification
 - [ ] Test auth flow end-to-end
 
 ### ✅ 1.4 Base Layout & Navigation
-- [ ] Create protected layout wrapper
+- [x] Create protected layout wrapper
 - [ ] Build mobile bottom navigation
-- [ ] Build desktop top navigation
+- [x] Build desktop top navigation
 - [ ] Create user menu dropdown
 - [ ] Add notifications bell (UI only for now)
 - [ ] Test responsive behavior (375px to 1440px)
@@ -114,12 +114,12 @@
 ## 📋 PHASE 3: Trips Management (Weeks 5-6)
 
 ### ✈️ 3.1 Trips Hub (/trips)
-- [ ] Create trips hub page with tabs
-- [ ] Build tab navigation (Upcoming/Past/Cancelled)
-- [ ] Build trip card component
-- [ ] Implement tab switching logic
-- [ ] Fetch bookings from bookings_cache
-- [ ] Filter by status and date
+- [x] Create trips hub page with tabs
+- [x] Build tab navigation (Upcoming/Past/Cancelled)
+- [x] Build trip card component
+- [x] Implement tab switching logic
+- [x] Fetch bookings from bookings_cache
+- [x] Filter by status and date
 - [ ] Add empty states for each tab
 - [ ] Test tab switching
 
@@ -150,15 +150,15 @@
 ## 📋 PHASE 4: Referral Program (Week 7)
 
 ### 🎁 4.1 Referral Hub (/refer)
-- [ ] Create referral hub page layout
-- [ ] Build "Give £100, Get £100" hero card
-- [ ] Build "How It Works" section (3 steps)
-- [ ] Build referral link generator
-- [ ] Implement copy-to-clipboard functionality
-- [ ] Build share buttons (Email, WhatsApp, SMS)
-- [ ] Build referrals stats summary card
-- [ ] Fetch referral settings from Supabase
-- [ ] Generate unique referral code (if none exists)
+- [x] Create referral hub page layout
+- [x] Build "Give £100, Get £100" hero card
+- [x] Build "How It Works" section (3 steps)
+- [x] Build referral link generator
+- [x] Implement copy-to-clipboard functionality
+- [x] Build share buttons (Email, WhatsApp, SMS)
+- [x] Build referrals stats summary card
+- [x] Fetch referral settings from Supabase
+- [x] Generate unique referral code (if none exists)
 - [ ] Test share functionality on mobile
 
 ### 📊 4.2 My Referrals Page (/refer/my-referrals)
@@ -382,20 +382,21 @@
 
 ## 📋 PHASE 10: Security & RLS (Week 12)
 
-### 🔒 10.1 Row Level Security Policies
-- [ ] Add RLS policy for `clients` table
-- [ ] Add RLS policy for `loyalty_transactions` table
-- [ ] Add RLS policy for `referrals` table
-- [ ] Add RLS policy for `notifications` table
-- [ ] Add RLS policy for `bookings_cache` table
-- [ ] Add RLS policy for `redemptions` table
+### ✅ 10.1 Row Level Security Policies
+- [x] Add RLS policy for `clients` table
+- [x] Add RLS policy for `loyalty_transactions` table
+- [x] Add RLS policy for `referrals` table
+- [x] Add RLS policy for `notifications` table
+- [x] Add RLS policy for `bookings` table
+- [x] Add RLS policy for `redemptions` table
+- [x] Add RLS policy for `loyalty_settings` table
 - [ ] Test policies with different users
 - [ ] Ensure users can only see their own data
 
 ### 🔒 10.2 API Security
 - [ ] Validate all user inputs
 - [ ] Sanitize data before database queries
-- [ ] Rate limit API endpoints
+- [x] Rate limit API endpoints (signup, login, referral invites)
 - [ ] Add CSRF protection
 - [ ] Add request validation middleware
 - [ ] Test with invalid inputs

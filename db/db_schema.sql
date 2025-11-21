@@ -1,59 +1,60 @@
-create table public.airlines (
-  id uuid not null default gen_random_uuid (),
-  name text not null,
-  created_at timestamp without time zone null default now(),
-  updated_at timestamp without time zone null default now(),
-  logo_url text null,
-  constraint airlines_pkey primary key (id)
-) TABLESPACE pg_default;
-
-create unique INDEX IF not exists uq_airlines_name on public.airlines using btree (name) TABLESPACE pg_default;
-
-create table public.airline_codes (
-  id uuid not null default gen_random_uuid (),
-  airline_id uuid not null,
-  iata_code character(2) null,
-  icao_code character(3) null,
-  is_primary boolean null default false,
-  created_at timestamp without time zone null default now(),
-  updated_at timestamp without time zone null default now(),
-  constraint airline_codes_pkey primary key (id),
-  constraint airline_codes_airline_id_fkey foreign KEY (airline_id) references airlines (id) on delete CASCADE
-) TABLESPACE pg_default;
-
-create unique INDEX IF not exists uq_airline_codes_iata on public.airline_codes using btree (iata_code) TABLESPACE pg_default
-where
-  (iata_code is not null);
-
-create unique INDEX IF not exists uq_airline_codes_icao on public.airline_codes using btree (icao_code) TABLESPACE pg_default
-where
-  (icao_code is not null);
-
-create index IF not exists idx_airline_codes_airline_id on public.airline_codes using btree (airline_id) TABLESPACE pg_default;
-
-create index IF not exists idx_airline_codes_iata_code on public.airline_codes using btree (iata_code) TABLESPACE pg_default;
-
-create index IF not exists idx_airline_codes_icao_code on public.airline_codes using btree (icao_code) TABLESPACE pg_default;
-
-create index IF not exists idx_airline_codes_is_primary on public.airline_codes using btree (is_primary) TABLESPACE pg_default;
-
-create table public.airports (
-  id uuid not null default gen_random_uuid (),
-  name text not null,
-  iata_code character(3) not null,
-  icao_code character(4) null,
-  created_at timestamp without time zone null default now(),
-  updated_at timestamp without time zone null default now(),
-  country text null,
-  city text null,
-  constraint airports_pkey primary key (id),
-  constraint airports_iata_code_key unique (iata_code),
-  constraint airports_icao_code_key unique (icao_code)
-) TABLESPACE pg_default;
-
-create index IF not exists idx_airports_iata_code on public.airports using btree (iata_code) TABLESPACE pg_default;
-
-create index IF not exists idx_airports_icao_code on public.airports using btree (icao_code) TABLESPACE pg_default;
+-- WARNING: This schema is for context only and is not meant to be run.
+-- Table order and constraints may not be valid for execution.
+CREATE TABLE public.airline_codes (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  airline_id uuid NOT NULL,
+  iata_code character,
+  icao_code character,
+  is_primary boolean DEFAULT false,
+  created_at timestamp without time zone DEFAULT now(),
+  updated_at timestamp without time zone DEFAULT now(),
+  CONSTRAINT airline_codes_pkey PRIMARY KEY (id),
+  CONSTRAINT airline_codes_airline_id_fkey FOREIGN KEY (airline_id) REFERENCES public.airlines(id)
+);
+CREATE TABLE public.airlines (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  created_at timestamp without time zone DEFAULT now(),
+  updated_at timestamp without time zone DEFAULT now(),
+  logo_url text,
+  CONSTRAINT airlines_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.airport_transfers (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  event_id uuid,
+  hotel_id uuid,
+  transport_type text NOT NULL,
+  max_capacity integer NOT NULL,
+  used integer DEFAULT 0,
+  supplier text,
+  quote_currency text DEFAULT 'GBP'::text,
+  supplier_quote_per_car_local numeric,
+  supplier_quote_per_car_gbp numeric,
+  paid_to_supplier boolean DEFAULT false,
+  outstanding boolean DEFAULT true,
+  markup numeric DEFAULT 0,
+  notes text,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  price_per_car_gbp_markup numeric DEFAULT (supplier_quote_per_car_gbp + ((supplier_quote_per_car_gbp * COALESCE(markup, (0)::numeric)) / (100)::numeric)),
+  active boolean DEFAULT true,
+  team_id uuid NOT NULL DEFAULT '0cef0867-1b40-4de1-9936-16b867a753d7'::uuid,
+  CONSTRAINT airport_transfers_pkey PRIMARY KEY (id),
+  CONSTRAINT airport_transfers_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.events(id),
+  CONSTRAINT airport_transfers_hotel_id_fkey FOREIGN KEY (hotel_id) REFERENCES public.gpgt_hotels(id),
+  CONSTRAINT airport_transfers_team_id_fkey FOREIGN KEY (team_id) REFERENCES public.teams(id)
+);
+CREATE TABLE public.airports (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  iata_code character NOT NULL UNIQUE,
+  icao_code character UNIQUE,
+  created_at timestamp without time zone DEFAULT now(),
+  updated_at timestamp without time zone DEFAULT now(),
+  country text,
+  city text,
+  CONSTRAINT airports_pkey PRIMARY KEY (id)
+);
 
 CREATE TABLE public.audit_logs (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
@@ -269,6 +270,12 @@ CREATE TABLE public.bookings (
   commission_amount numeric DEFAULT 0,
   commission_paid boolean DEFAULT false,
   exchange_rate numeric DEFAULT 1.000000,
+  points_earned integer DEFAULT 0 CHECK (points_earned >= 0),
+  points_used integer DEFAULT 0 CHECK (points_used >= 0),
+  discount_applied numeric DEFAULT 0 CHECK (discount_applied >= 0::numeric),
+  is_first_loyalty_booking boolean DEFAULT false,
+  earn_transaction_id uuid,
+  spend_transaction_id uuid,
   CONSTRAINT bookings_pkey PRIMARY KEY (id),
   CONSTRAINT bookings_lead_traveler_id_fkey FOREIGN KEY (lead_traveler_id) REFERENCES public.booking_travelers(id),
   CONSTRAINT bookings_quote_id_fkey FOREIGN KEY (quote_id) REFERENCES public.quotes(id),
@@ -278,9 +285,10 @@ CREATE TABLE public.bookings (
   CONSTRAINT bookings_consultant_id_fkey FOREIGN KEY (consultant_id) REFERENCES public.team_members(id),
   CONSTRAINT bookings_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id),
   CONSTRAINT bookings_team_id_fkey FOREIGN KEY (team_id) REFERENCES public.teams(id),
-  CONSTRAINT bookings_acquisition_source_id_fkey FOREIGN KEY (acquisition_source_id) REFERENCES public.acquisition_sources(id)
+  CONSTRAINT bookings_acquisition_source_id_fkey FOREIGN KEY (acquisition_source_id) REFERENCES public.acquisition_sources(id),
+  CONSTRAINT bookings_earn_transaction_id_fkey FOREIGN KEY (earn_transaction_id) REFERENCES public.loyalty_transactions(id),
+  CONSTRAINT bookings_spend_transaction_id_fkey FOREIGN KEY (spend_transaction_id) REFERENCES public.loyalty_transactions(id)
 );
-
 CREATE TABLE public.bookings_flights (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   booking_id uuid NOT NULL,
@@ -306,33 +314,50 @@ CREATE TABLE public.bookings_flights (
   CONSTRAINT bookings_flights_booking_id_fkey FOREIGN KEY (booking_id) REFERENCES public.bookings(id),
   CONSTRAINT bookings_flights_source_flight_id_fkey FOREIGN KEY (source_flight_id) REFERENCES public.flights(id)
 );
-
-CREATE TABLE public.client_interactions (
+CREATE TABLE public.circuit_transfers (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
-  client_id uuid NOT NULL,
-  user_id uuid NOT NULL,
-  interaction_type text NOT NULL CHECK (interaction_type = ANY (ARRAY['email'::text, 'phone'::text, 'meeting'::text, 'quote_sent'::text, 'quote_accepted'::text, 'quote_declined'::text, 'follow_up'::text, 'note'::text])),
-  subject text,
-  content text,
-  outcome text,
-  next_action text,
-  scheduled_follow_up timestamp with time zone,
-  created_at timestamp with time zone DEFAULT now()
-);
-CREATE TABLE public.client_travel_history (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  client_id uuid NOT NULL,
-  quote_id uuid,
-  destination text NOT NULL,
-  start_date date,
-  end_date date,
-  trip_type text,
-  total_spent numeric,
-  currency text DEFAULT 'USD'::text,
-  status text DEFAULT 'completed'::text,
+  event_id uuid,
+  hotel_id uuid,
+  transfer_type text NOT NULL,
+  used integer DEFAULT 0,
+  coach_capacity integer NOT NULL,
+  days integer NOT NULL,
+  quote_hours integer,
+  expected_hours integer,
+  supplier text,
+  coach_cost_per_day_local numeric,
+  coach_cost_per_hour_local numeric,
+  coach_extra_cost_per_hour_local numeric,
+  coach_vat numeric,
+  parking_ticket_per_coach_per_day numeric,
+  supplier_currency text DEFAULT 'EUR'::text,
+  guide_included boolean DEFAULT true,
+  guide_cost_per_day numeric,
+  guide_cost_per_hour_local numeric,
+  guide_extra_cost_per_hour_local numeric,
+  guide_vat numeric,
+  markup_percent numeric DEFAULT 0.00,
+  coaches_required integer DEFAULT ceil(((used)::numeric / (coach_capacity)::numeric)),
+  coach_cost_local numeric,
+  guide_cost_local numeric,
+  utilisation_percent numeric DEFAULT 100,
+  utilisation_cost_per_seat_local numeric,
+  coach_cost_gbp numeric,
+  guide_cost_gbp numeric,
+  utilisation_cost_per_seat_gbp numeric,
+  sell_price_per_seat_gbp numeric,
+  active boolean DEFAULT true,
   notes text,
-  created_at timestamp with time zone DEFAULT now()
+  created_at timestamp without time zone DEFAULT now(),
+  updated_at timestamp without time zone DEFAULT now(),
+  transfer_days text,
+  team_id uuid NOT NULL DEFAULT '0cef0867-1b40-4de1-9936-16b867a753d7'::uuid,
+  CONSTRAINT circuit_transfers_pkey PRIMARY KEY (id),
+  CONSTRAINT circuit_transfers_team_id_fkey FOREIGN KEY (team_id) REFERENCES public.teams(id),
+  CONSTRAINT circuit_transfers_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.events(id),
+  CONSTRAINT circuit_transfers_hotel_id_fkey FOREIGN KEY (hotel_id) REFERENCES public.gpgt_hotels(id)
 );
+
 CREATE TABLE public.clients (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   user_id uuid NOT NULL,
@@ -423,7 +448,141 @@ CREATE TABLE public.events (
   CONSTRAINT events_venue_id_fkey FOREIGN KEY (venue_id) REFERENCES public.venues(id),
   CONSTRAINT events_primary_consultant_id_fkey FOREIGN KEY (primary_consultant_id) REFERENCES public.team_members(id)
 );
+CREATE TABLE public.extras (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  team_id uuid NOT NULL,
+  event_id uuid NOT NULL,
+  extra_type text NOT NULL CHECK (extra_type = ANY (ARRAY['lounge_pass'::text, 'meet_greet'::text, 'pit_lane_walk'::text, 'hospitality'::text, 'parking'::text, 'transport'::text, 'accommodation'::text, 'other'::text])),
+  name text NOT NULL,
+  description text,
+  cost numeric NOT NULL CHECK (cost >= 0::numeric),
+  markup numeric NOT NULL CHECK (markup >= 0::numeric),
+  currency text DEFAULT 'GBP'::text,
+  is_active boolean DEFAULT true,
+  notes text,
+  max_quantity integer,
+  quantity_used integer DEFAULT 0 CHECK (quantity_used >= 0),
+  created_at timestamp with time zone DEFAULT timezone('utc'::text, now()),
+  updated_at timestamp with time zone DEFAULT timezone('utc'::text, now()),
+  sell_price numeric DEFAULT round((cost * ((1)::numeric + (markup / (100)::numeric))), 2),
+  CONSTRAINT extras_pkey PRIMARY KEY (id),
+  CONSTRAINT extras_team_id_fkey FOREIGN KEY (team_id) REFERENCES public.teams(id),
+  CONSTRAINT extras_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.events(id)
+);
 
+CREATE TABLE public.flights (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  event_id uuid,
+  outbound_flight_number text NOT NULL,
+  outbound_departure_airport_code text NOT NULL,
+  outbound_departure_airport_name text NOT NULL,
+  outbound_arrival_airport_code text NOT NULL,
+  outbound_arrival_airport_name text NOT NULL,
+  outbound_departure_datetime timestamp without time zone NOT NULL,
+  outbound_arrival_datetime timestamp without time zone NOT NULL,
+  inbound_flight_number text,
+  inbound_departure_airport_code text,
+  inbound_departure_airport_name text,
+  inbound_arrival_airport_code text,
+  inbound_arrival_airport_name text,
+  inbound_departure_datetime timestamp without time zone,
+  inbound_arrival_datetime timestamp without time zone,
+  airline text,
+  cabin text,
+  total_price_gbp numeric NOT NULL,
+  currency text DEFAULT 'GBP'::text,
+  refundable boolean DEFAULT false,
+  baggage_allowance text,
+  notes text,
+  supplier text,
+  created_at timestamp without time zone DEFAULT now(),
+  updated_at timestamp without time zone DEFAULT now(),
+  active boolean DEFAULT true,
+  airline_code text,
+  outbound_airline_code text,
+  inbound_airline_code text,
+  CONSTRAINT flights_pkey PRIMARY KEY (id),
+  CONSTRAINT flights_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.events(id)
+);
+CREATE TABLE public.gpgt_hotels (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  brand text,
+  star_rating integer,
+  address text,
+  city text,
+  country text,
+  latitude numeric,
+  longitude numeric,
+  description text,
+  images jsonb,
+  amenities jsonb,
+  check_in_time time without time zone,
+  check_out_time time without time zone,
+  contact_email text,
+  phone text,
+  room_types jsonb,
+  created_at timestamp without time zone DEFAULT now(),
+  team_id uuid NOT NULL DEFAULT '0cef0867-1b40-4de1-9936-16b867a753d7'::uuid,
+  CONSTRAINT gpgt_hotels_pkey PRIMARY KEY (id),
+  CONSTRAINT gpgt_hotels_team_id_fkey FOREIGN KEY (team_id) REFERENCES public.teams(id)
+);
+
+CREATE TABLE public.hotel_rooms (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  hotel_id uuid NOT NULL,
+  room_type_id text NOT NULL,
+  event_id uuid,
+  check_in date NOT NULL,
+  check_out date NOT NULL,
+  quantity_total integer NOT NULL,
+  quantity_reserved integer DEFAULT 0,
+  supplier_price_per_night numeric,
+  supplier_currency text DEFAULT 'EUR'::text,
+  markup_percent numeric DEFAULT 0.00,
+  vat_percentage numeric,
+  resort_fee numeric,
+  resort_fee_type text DEFAULT 'per_night'::text,
+  city_tax numeric,
+  city_tax_type text DEFAULT 'per_person_per_night'::text,
+  extra_night_markup_percent numeric,
+  contracted boolean DEFAULT false,
+  attrition_deadline date,
+  release_allowed_percent numeric,
+  penalty_terms text,
+  supplier text,
+  supplier_ref text,
+  contract_file_path text,
+  active boolean DEFAULT true,
+  created_at timestamp without time zone DEFAULT now(),
+  updated_at timestamp without time zone DEFAULT now(),
+  max_people integer,
+  total_supplier_price_per_night numeric,
+  total_price_per_night_gbp numeric,
+  total_price_per_stay_gbp numeric,
+  total_price_per_night_gbp_with_markup numeric DEFAULT (total_price_per_night_gbp + ((total_price_per_night_gbp * markup_percent) / (100)::numeric)),
+  total_price_per_stay_gbp_with_markup numeric DEFAULT (total_price_per_stay_gbp + ((total_price_per_stay_gbp * markup_percent) / (100)::numeric)),
+  is_provisional boolean NOT NULL DEFAULT false,
+  quantity_available integer DEFAULT 
+CASE
+    WHEN is_provisional THEN 0
+    ELSE (quantity_total - quantity_reserved)
+END,
+  bed_type text DEFAULT 'Double Room'::text,
+  commission_percent numeric DEFAULT 0.00 CHECK (commission_percent >= 0::numeric),
+  flexibility text NOT NULL DEFAULT 'Flex'::text CHECK (flexibility = ANY (ARRAY['Flex'::text, 'Non Flex'::text])),
+  board_type text NOT NULL DEFAULT 'Bed & Breakfast'::text CHECK (board_type = ANY (ARRAY['Room Only'::text, 'Bed & Breakfast'::text, 'Half Board'::text, 'Full Board'::text, 'All Inclusive'::text])),
+  board_price_per_person_per_night numeric,
+  extra_night_cost numeric,
+  contract_id uuid,
+  extra_night_price_gbp numeric DEFAULT (extra_night_cost * ((1)::numeric + (extra_night_markup_percent / (100)::numeric))),
+  team_id uuid NOT NULL DEFAULT '0cef0867-1b40-4de1-9936-16b867a753d7'::uuid,
+  CONSTRAINT hotel_rooms_pkey PRIMARY KEY (id),
+  CONSTRAINT hotel_rooms_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.events(id),
+  CONSTRAINT hotel_rooms_hotel_id_fkey FOREIGN KEY (hotel_id) REFERENCES public.gpgt_hotels(id),
+  CONSTRAINT hotel_rooms_team_id_fkey FOREIGN KEY (team_id) REFERENCES public.teams(id),
+  CONSTRAINT hotel_rooms_contract_id_fkey FOREIGN KEY (contract_id) REFERENCES public.hotel_contracts(id)
+);
 
 CREATE TABLE public.loyalty_settings (
   id integer NOT NULL DEFAULT 1 CHECK (id = 1),
@@ -465,6 +624,7 @@ CREATE TABLE public.loyalty_transactions (
   CONSTRAINT loyalty_transactions_pkey PRIMARY KEY (id),
   CONSTRAINT loyalty_transactions_client_id_fkey FOREIGN KEY (client_id) REFERENCES public.clients(id)
 );
+
 
 CREATE TABLE public.notifications (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
@@ -525,7 +685,75 @@ CREATE TABLE public.packages (
   CONSTRAINT packages_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.events(id),
   CONSTRAINT packages_team_id_fkey FOREIGN KEY (team_id) REFERENCES public.teams(id)
 );
-
+CREATE TABLE public.quotes (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL,
+  client_id uuid,
+  team_id uuid,
+  consultant_id uuid,
+  client_name text NOT NULL,
+  client_email text,
+  client_phone text,
+  client_address jsonb,
+  event_id uuid,
+  event_name character varying,
+  event_location character varying,
+  event_start_date date,
+  event_end_date date,
+  package_id uuid,
+  package_name character varying,
+  package_base_type character varying,
+  tier_id uuid,
+  tier_name character varying,
+  tier_description text,
+  tier_price_override numeric,
+  travelers jsonb NOT NULL,
+  travelers_adults integer DEFAULT 1,
+  travelers_children integer DEFAULT 0,
+  travelers_total integer DEFAULT 1,
+  total_price numeric,
+  currency text DEFAULT 'GBP'::text CHECK (currency = ANY (ARRAY['GBP'::text, 'USD'::text, 'EUR'::text, 'CAD'::text, 'AUD'::text, 'AED'::text, 'BHD'::text, 'SGD'::text, 'NZD'::text, 'ZAR'::text, 'MYR'::text, 'QAR'::text, 'SAR'::text, 'INR'::text])),
+  base_cost numeric,
+  payment_deposit numeric DEFAULT 0,
+  payment_second_payment numeric DEFAULT 0,
+  payment_final_payment numeric DEFAULT 0,
+  payment_deposit_date date,
+  payment_second_payment_date date,
+  payment_final_payment_date date,
+  quote_number character varying UNIQUE,
+  quote_reference character varying,
+  status text DEFAULT 'draft'::text CHECK (status = ANY (ARRAY['draft'::text, 'sent'::text, 'accepted'::text, 'declined'::text, 'expired'::text, 'confirmed'::text, 'cancelled'::text])),
+  version integer DEFAULT 1,
+  is_revision boolean DEFAULT false,
+  parent_quote_id uuid,
+  selected_components jsonb,
+  selected_package jsonb,
+  selected_tier jsonb,
+  price_breakdown jsonb,
+  internal_notes text,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  expires_at timestamp with time zone,
+  sent_at timestamp with time zone,
+  accepted_at timestamp with time zone,
+  declined_at timestamp with time zone,
+  expired_at timestamp with time zone,
+  payment_third_payment numeric DEFAULT 0,
+  payment_third_payment_date date,
+  alternative_totals jsonb,
+  source text,
+  event_status text NOT NULL DEFAULT 'actual'::text CHECK (event_status = ANY (ARRAY['provisional'::text, 'actual'::text])),
+  exchange_rate numeric DEFAULT 1.000000,
+  CONSTRAINT quotes_pkey PRIMARY KEY (id),
+  CONSTRAINT quotes_client_id_fkey FOREIGN KEY (client_id) REFERENCES public.clients(id),
+  CONSTRAINT quotes_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.events(id),
+  CONSTRAINT quotes_team_id_fkey FOREIGN KEY (team_id) REFERENCES public.teams(id),
+  CONSTRAINT quotes_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id),
+  CONSTRAINT quotes_tier_id_fkey FOREIGN KEY (tier_id) REFERENCES public.package_tiers(id),
+  CONSTRAINT quotes_package_id_fkey FOREIGN KEY (package_id) REFERENCES public.packages(id),
+  CONSTRAINT quotes_consultant_id_fkey FOREIGN KEY (consultant_id) REFERENCES public.team_members(id),
+  CONSTRAINT quotes_parent_quote_id_fkey FOREIGN KEY (parent_quote_id) REFERENCES public.quotes(id)
+);
 CREATE TABLE public.redemptions (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   client_id uuid NOT NULL,
@@ -576,6 +804,11 @@ CREATE TABLE public.referrals (
   CONSTRAINT referrals_referrer_booking_transaction_id_fkey FOREIGN KEY (referrer_booking_transaction_id) REFERENCES public.loyalty_transactions(id)
 );
 
+CREATE TABLE public.sports (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  name text NOT NULL UNIQUE,
+  CONSTRAINT sports_pkey PRIMARY KEY (id)
+);
 CREATE TABLE public.team_members (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   user_id uuid,
@@ -609,21 +842,75 @@ CREATE TABLE public.teams (
   CONSTRAINT teams_pkey PRIMARY KEY (id),
   CONSTRAINT teams_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES auth.users(id)
 );
-create table public.venues (
-  id uuid not null default gen_random_uuid (),
-  name text not null,
-  slug text null,
-  country text null,
-  city text null,
-  timezone text null,
-  latitude numeric(9, 6) null,
-  longitude numeric(9, 6) null,
-  description text null,
-  images jsonb null,
-  website text null,
-  created_at timestamp without time zone null default now(),
-  updated_at timestamp without time zone null default now(),
-  map_img jsonb null,
-  constraint venues_pkey primary key (id),
-  constraint venues_slug_key unique (slug)
-) TABLESPACE pg_default;
+CREATE TABLE public.ticket_categories (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  category_name text NOT NULL,
+  venue_id text,
+  sport_type text,
+  category_type text,
+  description jsonb,
+  options jsonb,
+  ticket_delivery_days integer,
+  media_files jsonb,
+  created_at timestamp without time zone DEFAULT now(),
+  features ARRAY DEFAULT '{}'::text[] CHECK (array_length(features, 1) <= 6),
+  CONSTRAINT ticket_categories_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.tickets (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  event_id uuid NOT NULL,
+  ticket_category_id uuid,
+  quantity_total integer NOT NULL CHECK (quantity_total >= 0),
+  quantity_reserved integer NOT NULL DEFAULT 0 CHECK (quantity_reserved >= 0),
+  price numeric NOT NULL CHECK (price >= 0::numeric),
+  markup_percent numeric DEFAULT 0.00 CHECK (markup_percent >= 0::numeric),
+  price_with_markup numeric DEFAULT (price + ((price * markup_percent) / (100)::numeric)),
+  currency text NOT NULL DEFAULT 'EUR'::text,
+  ticket_type text,
+  refundable boolean DEFAULT false,
+  resellable boolean DEFAULT false,
+  supplier text,
+  supplier_ref text,
+  ordered boolean DEFAULT false,
+  ordered_at timestamp without time zone,
+  paid boolean DEFAULT false,
+  paid_at timestamp without time zone,
+  tickets_received boolean DEFAULT false,
+  tickets_received_at timestamp without time zone,
+  created_at timestamp without time zone DEFAULT now(),
+  updated_at timestamp without time zone DEFAULT now(),
+  metadata jsonb,
+  supplier_currency text DEFAULT 'EUR'::text,
+  supplier_price numeric,
+  price_gbp numeric DEFAULT (supplier_price + ((supplier_price * markup_percent) / (100)::numeric)),
+  ticket_days text,
+  active boolean DEFAULT true,
+  is_provisional boolean NOT NULL DEFAULT false,
+  quantity_available integer DEFAULT 
+CASE
+    WHEN is_provisional THEN 0
+    ELSE (quantity_total - quantity_reserved)
+END,
+  team_id uuid NOT NULL DEFAULT '0cef0867-1b40-4de1-9936-16b867a753d7'::uuid,
+  CONSTRAINT tickets_pkey PRIMARY KEY (id),
+  CONSTRAINT tickets_ticket_category_id_fkey FOREIGN KEY (ticket_category_id) REFERENCES public.ticket_categories(id),
+  CONSTRAINT tickets_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.events(id),
+  CONSTRAINT tickets_team_id_fkey FOREIGN KEY (team_id) REFERENCES public.teams(id)
+);
+CREATE TABLE public.venues (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  slug text UNIQUE,
+  country text,
+  city text,
+  timezone text,
+  latitude numeric,
+  longitude numeric,
+  description text,
+  images jsonb,
+  website text,
+  created_at timestamp without time zone DEFAULT now(),
+  updated_at timestamp without time zone DEFAULT now(),
+  map_img jsonb,
+  CONSTRAINT venues_pkey PRIMARY KEY (id)
+);
