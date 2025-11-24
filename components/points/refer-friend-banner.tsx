@@ -131,8 +131,8 @@ export function ReferFriendBanner({
             Refer friends
           </Button>
         </div>
-        <div className="absolute md:right-6 -right-24 flex items-center justify-center -z-1 opacity-50">
-          <div className="relative flex h-full w-full items-center justify-center overflow-visible">
+        <div className="absolute md:right-6 -bottom-16 -right-24 flex items-center justify-center -z-1 opacity-100">
+          <div className="relative flex h-full md:w-full w-60 items-center justify-center overflow-visible">
 
             <div className="relative flex items-center justify-center">
             <div className="absolute w-[120%] aspect-square -z-1 rounded-full bg-black/20 "/>
