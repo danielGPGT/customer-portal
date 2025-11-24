@@ -112,13 +112,13 @@ export function ReferFriendBanner({
       </div>
       <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <div className="space-y-2">
-          <p className="text-sm font-semibold uppercase tracking-wide text-white/75">
+          <p className="text-sm font-semibold tracking-wide text-white/75">
             Loyalty Referral Program
           </p>
           <h3 className="text-2xl font-bold leading-tight md:text-3xl">
             Share the love. Earn {bonusPoints} pts every time.
           </h3>
-          <p className="text-white/85">
+          <p className="text-white/85 text-shadow-md max-w-100">
             Invite friends to book their next trip with your unique link and
             both of you unlock exclusive travel rewards.
           </p>
@@ -131,7 +131,7 @@ export function ReferFriendBanner({
             Refer friends
           </Button>
         </div>
-        <div className="absolute md:right-6 -bottom-16 -right-24 flex items-center justify-center -z-1 opacity-100">
+        <div className="absolute md:right-0 -bottom-16 -right-24 flex items-center justify-center -z-1 opacity-100">
           <div className="relative flex h-full md:w-full w-60 items-center justify-center overflow-visible">
 
             <div className="relative flex items-center justify-center">
