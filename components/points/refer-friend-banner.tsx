@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Share2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
-import { UndrawMakeItRain } from "react-undraw-illustrations"
+import { UndrawGift } from "react-undraw-illustrations"
 
 interface ReferFriendBannerProps {
   referralCode?: string | null
@@ -88,7 +88,7 @@ export function ReferFriendBanner({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary-700 via-primary to-primary-1000 p-5 text-white shadow-md",
+        "relative overflow-hidden md:!p-12 !p-6 rounded-3xl bg-gradient-to-r from-primary-700 via-primary to-primary-1000 text-white shadow-md",
         className
       )}
     >
@@ -131,16 +131,17 @@ export function ReferFriendBanner({
             Refer friends
           </Button>
         </div>
-        <div className="absolute right-0 top-0 md:relative flex items-center justify-center md:justify-end -z-1">
+        <div className="absolute md:right-6 -right-24 flex items-center justify-center -z-1 opacity-50">
           <div className="relative flex h-full w-full items-center justify-center overflow-visible">
 
             <div className="relative flex items-center justify-center">
             <div className="absolute w-[120%] aspect-square -z-1 rounded-full bg-black/20 "/>
             <div className="absolute w-[90%] aspect-square -z-1 rounded-full bg-black/20 "/>
-            <UndrawMakeItRain
+            <UndrawGift
     
-              primaryColor="#FDE68A"
+              primaryColor="#e00b0b"
               accentColor="#F8B4D9"
+              shirtColor="#F9FAFB"
               hairColor="#F9FAFB"
               skinColor="#FCD9B8"
               className="relative z-10"
