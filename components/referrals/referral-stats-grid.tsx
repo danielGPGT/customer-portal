@@ -1,13 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
-import { cn } from "@/lib/utils"
-
-interface Stat {
-  label: string
-  value: string | number
-  helper?: string
-  accent?: string
-}
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
+import { StatisticsCard } from "@/components/points/statistics-card"
+import { UserPlus, Hourglass, CheckCircle, Trophy, Coins } from "lucide-react"
 
 interface ReferralStatsGridProps {
   totalInvites: number
@@ -24,35 +17,36 @@ export function ReferralStatsGrid({
   completed,
   totalPointsEarned,
 }: ReferralStatsGridProps) {
-  const stats: Stat[] = [
+  const stats = [
     {
-      label: "Total invites",
-      value: totalInvites,
+      label: "Total Invites",
+      value: totalInvites.toString(),
       helper: "All time",
+      icon: <UserPlus className="size-4" />,
     },
     {
       label: "Pending",
-      value: pending,
+      value: pending.toString(),
       helper: "Awaiting signup",
-      accent: "text-amber-600",
+      icon: <Hourglass className="size-4" />,
     },
     {
-      label: "Signed up",
-      value: signedUp,
+      label: "Signed Up",
+      value: signedUp.toString(),
       helper: "Bonus pending",
-      accent: "text-sky-600",
+      icon: <CheckCircle className="size-4" />,
     },
     {
       label: "Completed",
-      value: completed,
+      value: completed.toString(),
       helper: "Bonus received",
-      accent: "text-emerald-600",
+      icon: <Trophy className="size-4" />,
     },
     {
-      label: "Points earned",
-      value: totalPointsEarned,
+      label: "Points Earned",
+      value: totalPointsEarned.toLocaleString(),
       helper: "From referrals",
-      accent: "text-primary",
+      icon: <Coins className="size-4" />,
     },
   ]
 
@@ -63,17 +57,14 @@ export function ReferralStatsGrid({
           <CarouselContent>
             {stats.map((stat) => (
               <CarouselItem key={stat.label} className="basis-[80%] sm:basis-1/2">
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                      {stat.label}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className={cn("text-2xl font-semibold", stat.accent)}>{stat.value}</p>
-                    {stat.helper && <p className="text-xs text-muted-foreground mt-1">{stat.helper}</p>}
-                  </CardContent>
-                </Card>
+                <StatisticsCard
+                  icon={stat.icon}
+                  value={stat.value}
+                  title={stat.label}
+                  changePercentage={stat.helper || "Program stat"}
+                  changeLabel="Referral program"
+                  badgeVariant="neutral"
+                />
               </CarouselItem>
             ))}
           </CarouselContent>
@@ -81,17 +72,15 @@ export function ReferralStatsGrid({
       </div>
       <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-5 gap-4">
         {stats.map((stat) => (
-          <Card key={stat.label}>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                {stat.label}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className={cn("text-2xl font-semibold", stat.accent)}>{stat.value}</p>
-              {stat.helper && <p className="text-xs text-muted-foreground mt-1">{stat.helper}</p>}
-            </CardContent>
-          </Card>
+          <StatisticsCard
+            key={stat.label}
+            icon={stat.icon}
+            value={stat.value}
+            title={stat.label}
+            changePercentage={stat.helper || "Program stat"}
+            changeLabel="Referral program"
+            badgeVariant="neutral"
+          />
         ))}
       </div>
     </>

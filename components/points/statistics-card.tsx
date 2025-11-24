@@ -10,13 +10,30 @@ type StatisticsCardProps = {
   value: string
   title: string
   changePercentage: string
+  changeLabel?: string
+  badgeVariant?: "positive" | "negative" | "neutral"
   className?: string
 }
 
-export function StatisticsCard({ icon, value, title, changePercentage, className }: StatisticsCardProps) {
-  // Parse the percentage to determine if it's positive or negative
-  const isPositive = changePercentage.startsWith('+') || (!changePercentage.startsWith('-') && parseFloat(changePercentage) > 0)
-  const isNegative = changePercentage.startsWith('-') || parseFloat(changePercentage) < 0
+export function StatisticsCard({
+  icon,
+  value,
+  title,
+  changePercentage,
+  changeLabel = "vs last year",
+  badgeVariant,
+  className,
+}: StatisticsCardProps) {
+  const derivedPositive = changePercentage.startsWith('+') || (!changePercentage.startsWith('-') && parseFloat(changePercentage) > 0)
+  const derivedNegative = changePercentage.startsWith('-') || parseFloat(changePercentage) < 0
+
+  const variant = badgeVariant
+    ? badgeVariant
+    : derivedPositive
+    ? "positive"
+    : derivedNegative
+    ? "negative"
+    : "neutral"
 
   return (
     <Card className={cn('gap-4', className)}>
@@ -31,15 +48,15 @@ export function StatisticsCard({ icon, value, title, changePercentage, className
         <div className='flex items-center gap-2'>
           <span className={cn(
             "inline-flex items-center px-2 py-1 rounded-md text-xs font-medium",
-            isPositive
+            variant === "positive"
               ? "bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400"
-              : isNegative
+              : variant === "negative"
               ? "bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400"
               : "bg-muted text-muted-foreground"
           )}>
             {changePercentage}
           </span>
-          <span className='text-muted-foreground text-sm'>vs last year</span>
+          <span className='text-muted-foreground text-sm'>{changeLabel}</span>
         </div>
       </CardContent>
     </Card>
