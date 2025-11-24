@@ -9,6 +9,7 @@ import {
   Plane,
   UserPlus,
   Settings,
+  Shield,
   CreditCard,
   ChevronRight,
 } from "lucide-react"
@@ -64,6 +65,11 @@ const navigationItems: NavItem[] = [
     title: "Settings",
     url: "/profile",
     icon: Settings,
+  },
+  {
+    title: "Admin",
+    url: "/admin",
+    icon: Shield,
   },
 ]
 
