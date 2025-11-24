@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import { cn } from "@/lib/utils"
 
 interface Stat {
@@ -55,24 +56,28 @@ export function ReferralStatsGrid({
     },
   ]
 
-  const renderCard = (stat: Stat) => (
-    <Card key={stat.label} className="min-w-[220px] snap-start">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          {stat.label}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className={cn("text-2xl font-semibold", stat.accent)}>{stat.value}</p>
-        {stat.helper && <p className="text-xs text-muted-foreground mt-1">{stat.helper}</p>}
-      </CardContent>
-    </Card>
-  )
-
   return (
     <>
-      <div className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 md:hidden snap-x snap-mandatory">
-        {stats.map((stat) => renderCard(stat))}
+      <div className="md:hidden">
+        <Carousel opts={{ align: "start" }} className="px-2">
+          <CarouselContent>
+            {stats.map((stat) => (
+              <CarouselItem key={stat.label} className="basis-[80%] sm:basis-1/2">
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                      {stat.label}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className={cn("text-2xl font-semibold", stat.accent)}>{stat.value}</p>
+                    {stat.helper && <p className="text-xs text-muted-foreground mt-1">{stat.helper}</p>}
+                  </CardContent>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
       </div>
       <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-5 gap-4">
         {stats.map((stat) => (

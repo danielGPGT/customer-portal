@@ -115,7 +115,7 @@ export function PointsBalanceCard({
         </div>
 
         {/* Metrics List */}
-        <div className="space-y-0 flex gap-2 mt-4">
+        <div className="space-y-0 flex flex-col md:flex-row gap-2 mt-4">
           <Button variant="outline" className="">
             How to earn points?
           </Button>

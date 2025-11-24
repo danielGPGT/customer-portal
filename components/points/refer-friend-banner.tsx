@@ -14,6 +14,27 @@ interface ReferFriendBannerProps {
   className?: string
 }
 
+const confettiSpecs = [
+  { top: "5%", left: "10%", color: "#FDE047", rotate: "12deg" },
+  { top: "15%", left: "65%", color: "#F472B6", rotate: "-25deg" },
+  { top: "30%", left: "40%", color: "#34D399", rotate: "45deg" },
+  { top: "45%", left: "80%", color: "#38BDF8", rotate: "18deg" },
+  { top: "60%", left: "20%", color: "#F97316", rotate: "-12deg" },
+  { top: "75%", left: "55%", color: "#FDE047", rotate: "30deg" },
+  { top: "85%", left: "5%", color: "#F472B6", rotate: "-40deg" },
+  { top: "10%", left: "85%", color: "#34D399", rotate: "8deg" },
+  { top: "35%", left: "5%", color: "#38BDF8", rotate: "-18deg" },
+  { top: "65%", left: "70%", color: "#F97316", rotate: "22deg" },
+  { top: "50%", left: "50%", color: "#FDE047", rotate: "-30deg" },
+  { top: "25%", left: "25%", color: "#F472B6", rotate: "36deg" },
+  { top: "82%", left: "42%", color: "#34D399", rotate: "-6deg" },
+  { top: "12%", left: "32%", color: "#38BDF8", rotate: "60deg" },
+  { top: "58%", left: "90%", color: "#F97316", rotate: "-15deg" },
+  { top: "90%", left: "78%", color: "#FDE047", rotate: "10deg" },
+  { top: "70%", left: "35%", color: "#F472B6", rotate: "-28deg" },
+  { top: "40%", left: "15%", color: "#34D399", rotate: "14deg" },
+]
+
 export function ReferFriendBanner({
   referralCode,
   referralLink,
@@ -67,10 +88,24 @@ export function ReferFriendBanner({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-r from-primary via-primary to-primary p-5 text-white shadow-[0_15px_45px_rgba(92,46,248,0.35)]",
+        "relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary-700 via-primary to-primary-1000 p-5 text-white shadow-md",
         className
       )}
     >
+      <div className="pointer-events-none absolute inset-0 opacity-40">
+        {confettiSpecs.map((spec, idx) => (
+          <span
+            key={idx}
+            className="absolute block h-1.5 w-3 rounded-full"
+            style={{
+              backgroundColor: spec.color,
+              top: spec.top,
+              left: spec.left,
+              transform: `rotate(${spec.rotate})`,
+            }}
+          />
+        ))}
+      </div>
       <div className="absolute inset-0 pointer-events-none opacity-30">
         <div className="absolute -left-10 -top-12 h-36 w-36 rounded-full bg-white/40 blur-2xl" />
         <div className="absolute right-4 bottom-0 h-40 w-40 rounded-full bg-[#FDE68A]/50 blur-3xl" />
@@ -90,23 +125,27 @@ export function ReferFriendBanner({
           <Button
             onClick={handleShare}
             disabled={!referralCode}
-            className="mt-2 w-fit rounded-full bg-black/30 !px-6 !py-6 text-lg font-semibold text-white shadow-lg transition hover:bg-black/40 cursor-pointer"
+            className="mt-2 w-fit rounded-full bg-black/30 backdrop-blur-sm !px-6 !py-6 text-lg font-semibold text-white shadow-lg transition hover:bg-black/40 cursor-pointer"
           >
             <Share2 className="mr-2 h-4 w-4" />
             Refer friends
           </Button>
         </div>
         <div className="flex items-center justify-center md:justify-end">
-          <div className="relative flex h-32 w-40 items-center justify-center md:h-36 md:w-48">
-            <div className="absolute inset-0 rounded-2xl bg-white/10 blur-md" />
+          <div className="relative flex h-full w-full items-center justify-center overflow-visible">
+
+            <div className="relative flex items-center justify-center">
+            <div className="absolute w-[120%] aspect-square -z-1 rounded-full bg-black/20 "/>
+            <div className="absolute w-[90%] aspect-square -z-1 rounded-full bg-black/20 "/>
             <UndrawMakeItRain
-              height="100%"
+    
               primaryColor="#FDE68A"
               accentColor="#F8B4D9"
               hairColor="#F9FAFB"
               skinColor="#FCD9B8"
-              className="relative z-10 w-full max-w-[220px]"
+              className="relative z-10"
             />
+            </div>
           </div>
         </div>
       </div>

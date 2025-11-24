@@ -5,6 +5,7 @@ import { PointsStatsCards } from '@/components/points/points-stats-cards'
 import { ReferAFriendWidget } from '@/components/points/refer-a-friend-widget'
 import { ReferFriendBanner } from '@/components/points/refer-friend-banner'
 import { StatisticsCard } from '@/components/points/statistics-card'
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { LoyaltyTransactionsTable } from '@/components/points/loyalty-transactions-table'
 import { UserPlus, Coins, CreditCard, Plane } from 'lucide-react'
 import { getClient } from '@/lib/utils/get-client'
@@ -470,7 +471,7 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
       </div>
             
       {/* Top Row: Points Balance Card + Refer a Friend Widget */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         {/* Points Balance Card */}
         <PointsBalanceCard
           pointsBalance={client.points_balance || 0}
@@ -488,6 +489,7 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
           referralCode={referralData?.referral_code}
           referralLink={referralData?.referral_link}
           bonusPoints={settings?.referral_bonus_referee || 100}
+          className="col-span-1 lg:col-span-2"
         />
               {/* Refer a Friend Widget 
               <ReferAFriendWidget
@@ -500,31 +502,94 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
 
       </div>
       {/* Statistics Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatisticsCard
-          icon={<UserPlus className='size-4' />}
-          value={friendsReferred.toString()}
-          title="Friends Referred"
-          changePercentage={friendsReferredChange !== 0 ? `${friendsReferredChange > 0 ? '+' : ''}${friendsReferredChange.toFixed(1)}%` : '0%'}
-        />
-        <StatisticsCard
-          icon={<Coins className='size-4' />}
-          value={lastYearEarned.toLocaleString()}
-          title="Points Earned Last Year"
-          changePercentage={earnedChangePercent !== 0 ? `${earnedChangePercent > 0 ? '+' : ''}${earnedChangePercent.toFixed(1)}%` : '0%'}
-        />
-        <StatisticsCard
-          icon={<CreditCard className='size-4' />}
-          value={lastYearSpent.toLocaleString()}
-          title="Points Spent Last Year"
-          changePercentage={spentChangePercent !== 0 ? `${spentChangePercent > 0 ? '+' : ''}${spentChangePercent.toFixed(1)}%` : '0%'}
-        />
-        <StatisticsCard
-          icon={<Plane className='size-4' />}
-          value={totalPointsFromBookings.toLocaleString()}
-          title="Total Points from Bookings"
-          changePercentage={pointsFromBookingsChange !== 0 ? `${pointsFromBookingsChange > 0 ? '+' : ''}${pointsFromBookingsChange.toFixed(1)}%` : '0%'}
-        />
+      <div className="space-y-4">
+        <div className="md:hidden">
+          <Carousel opts={{ align: "start" }} className="px-2">
+            <CarouselContent>
+              {[
+                {
+                  icon: <UserPlus className="size-4" />,
+                  value: friendsReferred.toString(),
+                  title: "Friends Referred",
+                  change: friendsReferredChange,
+                },
+                {
+                  icon: <Coins className="size-4" />,
+                  value: lastYearEarned.toLocaleString(),
+                  title: "Points Earned Last Year",
+                  change: earnedChangePercent,
+                },
+                {
+                  icon: <CreditCard className="size-4" />,
+                  value: lastYearSpent.toLocaleString(),
+                  title: "Points Spent Last Year",
+                  change: spentChangePercent,
+                },
+                {
+                  icon: <Plane className="size-4" />,
+                  value: totalPointsFromBookings.toLocaleString(),
+                  title: "Total Points from Bookings",
+                  change: pointsFromBookingsChange,
+                },
+              ].map((stat) => (
+                <CarouselItem key={stat.title} className="basis-[85%] sm:basis-1/2 pb-1">
+                  <StatisticsCard
+                    icon={stat.icon}
+                    value={stat.value}
+                    title={stat.title}
+                    changePercentage={
+                      stat.change !== 0
+                        ? `${stat.change > 0 ? "+" : ""}${stat.change.toFixed(1)}%`
+                        : "0%"
+                    }
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
+        <div className="hidden grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 md:grid">
+          <StatisticsCard
+            icon={<UserPlus className="size-4" />}
+            value={friendsReferred.toString()}
+            title="Friends Referred"
+            changePercentage={
+              friendsReferredChange !== 0
+                ? `${friendsReferredChange > 0 ? "+" : ""}${friendsReferredChange.toFixed(1)}%`
+                : "0%"
+            }
+          />
+          <StatisticsCard
+            icon={<Coins className="size-4" />}
+            value={lastYearEarned.toLocaleString()}
+            title="Points Earned Last Year"
+            changePercentage={
+              earnedChangePercent !== 0
+                ? `${earnedChangePercent > 0 ? "+" : ""}${earnedChangePercent.toFixed(1)}%`
+                : "0%"
+            }
+          />
+          <StatisticsCard
+            icon={<CreditCard className="size-4" />}
+            value={lastYearSpent.toLocaleString()}
+            title="Points Spent Last Year"
+            changePercentage={
+              spentChangePercent !== 0
+                ? `${spentChangePercent > 0 ? "+" : ""}${spentChangePercent.toFixed(1)}%`
+                : "0%"
+            }
+          />
+          <StatisticsCard
+            icon={<Plane className="size-4" />}
+            value={totalPointsFromBookings.toLocaleString()}
+            title="Total Points from Bookings"
+            changePercentage={
+              pointsFromBookingsChange !== 0
+                ? `${pointsFromBookingsChange > 0 ? "+" : ""}${pointsFromBookingsChange.toFixed(1)}%`
+                : "0%"
+            }
+          />
+        </div>
       </div>
 
       {/* Transactions Table */}
