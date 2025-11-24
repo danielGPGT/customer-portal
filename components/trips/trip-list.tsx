@@ -195,7 +195,7 @@ export function TripList({ bookings, tab, currency, pointValue }: TripListProps)
       </div>
 
       {(destinations.length > 0 || months.length > 0) && (
-        <div className="space-y-3 rounded-lg border p-4">
+        <div className="space-y-3 rounded-lg border p-4 bg-card">
           <div className="flex items-center gap-2 text-sm font-medium">
             <Filter className="h-4 w-4 text-muted-foreground" />
             Refine results

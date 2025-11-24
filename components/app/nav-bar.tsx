@@ -49,14 +49,10 @@ const navigationItems: NavItem[] = [
     ],
   },
   {
-    title: "Trip Management",
+    title: "My Trips",
     url: "/trips",
     icon: Plane,
-    subItems: [
-      { title: "All Trips", url: "/trips" },
-      { title: "Upcoming", url: "/trips/upcoming" },
-      { title: "Past", url: "/trips/past" },
-    ],
+
   },
   {
     title: "Referrals",
@@ -72,11 +68,7 @@ const navigationItems: NavItem[] = [
     url: "/profile",
     icon: Settings,
   },
-  {
-    title: "Billing & Invoice",
-    url: "/billing",
-    icon: CreditCard,
-  },
+
 ]
 
 export function NavBar() {
