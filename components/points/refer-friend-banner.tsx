@@ -88,7 +88,7 @@ export function ReferFriendBanner({
   return (
     <div
       className={cn(
-        "relative overflow-hidden md:!p-12 !p-6 rounded-3xl bg-gradient-to-r from-primary-700 via-primary to-primary-1000 text-white shadow-md",
+        "relative overflow-hidden md:!p-12 !p-6 rounded-3xl bg-gradient-to-r from-[#7F1D1D] via-[#B91C1C] to-[#DC2626] text-white shadow-md",
         className
       )}
     >
