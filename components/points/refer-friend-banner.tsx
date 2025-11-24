@@ -135,7 +135,7 @@ export function ReferFriendBanner({
           <div className="relative flex h-full md:w-full w-60 items-center justify-center overflow-visible">
 
             <div className="relative flex items-center justify-center">
-            <div className="absolute w-[120%] aspect-square -z-1 rounded-full bg-black/20 "/>
+            <div className="absolute w-[140%] aspect-square -z-1 rounded-full bg-black/20 "/>
             <div className="absolute w-[90%] aspect-square -z-1 rounded-full bg-black/20 "/>
             <UndrawGift
     
