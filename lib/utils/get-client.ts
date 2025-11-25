@@ -2,6 +2,35 @@ import { cache } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { normalizePortalTypes, canAccessClientPortal } from '@/lib/utils/portal-access'
 
+type CachedClient = {
+  client: any
+  portalAccess: string[]
+  expiresAt: number
+}
+
+const CLIENT_CACHE_TTL_MS = Number(process.env.CLIENT_CACHE_TTL_MS ?? 60_000)
+const clientCache = new Map<string, CachedClient>()
+
+const getCachedClient = (userId: string) => {
+  const cached = clientCache.get(userId)
+  if (!cached) {
+    return null
+  }
+  if (cached.expiresAt < Date.now()) {
+    clientCache.delete(userId)
+    return null
+  }
+  return cached
+}
+
+const setCachedClient = (userId: string, client: any, portalAccess: string[]) => {
+  clientCache.set(userId, {
+    client,
+    portalAccess,
+    expiresAt: Date.now() + CLIENT_CACHE_TTL_MS,
+  })
+}
+
 /**
  * Cached client fetcher - prevents duplicate queries on the same request
  * Uses React cache() to deduplicate requests within the same render
@@ -28,6 +57,11 @@ export const getClient = cache(async () => {
 
   if (!clientAccessEnabled) {
     return { client: null, user, portalAccess, error: 'no_client_access' as const }
+  }
+
+  const cached = getCachedClient(user.id)
+  if (cached) {
+    return { client: cached.client, user, portalAccess: cached.portalAccess, error: null }
   }
 
   // Get client data by auth_user_id (most common case)
@@ -124,6 +158,8 @@ export const getClient = cache(async () => {
 
     portalAccess = normalizePortalTypes(refreshedPortalRows)
   }
+
+  setCachedClient(user.id, client, portalAccess)
 
   return { client, user, portalAccess, error: null }
 })
