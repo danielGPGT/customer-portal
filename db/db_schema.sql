@@ -358,47 +358,145 @@ CREATE TABLE public.circuit_transfers (
   CONSTRAINT circuit_transfers_hotel_id_fkey FOREIGN KEY (hotel_id) REFERENCES public.gpgt_hotels(id)
 );
 
-CREATE TABLE public.clients (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL,
-  team_id uuid,
-  first_name text NOT NULL,
-  last_name text NOT NULL,
-  email text UNIQUE,
-  phone text,
-  company text,
-  job_title text,
-  date_of_birth date,
-  passport_number text,
-  nationality text,
-  preferred_language text DEFAULT 'English'::text,
-  address jsonb,
-  preferences jsonb,
-  notes text,
-  status text DEFAULT 'active'::text CHECK (status = ANY (ARRAY['active'::text, 'inactive'::text, 'prospect'::text, 'vip'::text])),
-  source text,
-  tags ARRAY DEFAULT '{}'::text[],
-  budget_preference jsonb,
-  payment_preference text,
-  created_at timestamp with time zone DEFAULT now(),
-  updated_at timestamp with time zone DEFAULT now(),
-  last_contact_at timestamp with time zone,
-  search_vector tsvector,
-  hubspot_contact_id text,
-  acquisition text,
-  original_source text,
-  properties jsonb NOT NULL DEFAULT '{}'::jsonb,
-  points_balance integer NOT NULL DEFAULT 0 CHECK (points_balance >= 0),
-  lifetime_points_earned integer NOT NULL DEFAULT 0,
-  lifetime_points_spent integer NOT NULL DEFAULT 0,
-  loyalty_enrolled boolean,
-  loyalty_enrolled_at timestamp with time zone,
-  loyalty_signup_source text CHECK (loyalty_signup_source = ANY (ARRAY['referral'::text, 'auto_enrolled'::text, 'self_signup'::text])),
-  first_loyalty_booking_at timestamp with time zone,
-  CONSTRAINT clients_pkey PRIMARY KEY (id),
-  CONSTRAINT clients_team_id_fkey FOREIGN KEY (team_id) REFERENCES public.teams(id),
-  CONSTRAINT clients_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
-);
+create table public.clients (
+  id uuid not null default gen_random_uuid (),
+  user_id uuid not null,
+  team_id uuid null,
+  first_name text not null,
+  last_name text not null,
+  email text null,
+  phone text null,
+  company text null,
+  job_title text null,
+  date_of_birth date null,
+  passport_number text null,
+  nationality text null,
+  preferred_language text null default 'English'::text,
+  address jsonb null,
+  preferences jsonb null,
+  notes text null,
+  status text null default 'active'::text,
+  source text null,
+  tags text[] null default '{}'::text[],
+  budget_preference jsonb null,
+  payment_preference text null,
+  created_at timestamp with time zone null default now(),
+  updated_at timestamp with time zone null default now(),
+  last_contact_at timestamp with time zone null,
+  search_vector tsvector null,
+  hubspot_contact_id text null,
+  acquisition text null,
+  original_source text null,
+  properties jsonb not null default '{}'::jsonb,
+  points_balance integer not null default 0,
+  lifetime_points_earned integer not null default 0,
+  lifetime_points_spent integer not null default 0,
+  loyalty_enrolled boolean null,
+  loyalty_enrolled_at timestamp with time zone null,
+  loyalty_signup_source text null,
+  first_loyalty_booking_at timestamp with time zone null,
+  referral_code text null,
+  auth_user_id uuid null,
+  constraint clients_pkey primary key (id),
+  constraint clients_email_key unique (email),
+  constraint clients_referral_code_key unique (referral_code),
+  constraint clients_auth_user_id_fkey foreign KEY (auth_user_id) references auth.users (id) on delete set null,
+  constraint clients_team_id_fkey foreign KEY (team_id) references teams (id),
+  constraint clients_user_id_fkey foreign KEY (user_id) references auth.users (id),
+  constraint clients_status_check check (
+    (
+      status = any (
+        array[
+          'active'::text,
+          'inactive'::text,
+          'prospect'::text,
+          'vip'::text
+        ]
+      )
+    )
+  ),
+  constraint clients_points_balance_check check ((points_balance >= 0)),
+  constraint clients_loyalty_signup_source_check check (
+    (
+      loyalty_signup_source = any (
+        array[
+          'referral'::text,
+          'auto_enrolled'::text,
+          'self_signup'::text
+        ]
+      )
+    )
+  )
+) TABLESPACE pg_default;
+
+create index IF not exists idx_clients_acquisition on public.clients using btree (acquisition) TABLESPACE pg_default;
+
+create index IF not exists idx_clients_original_source on public.clients using btree (original_source) TABLESPACE pg_default;
+
+create index IF not exists idx_clients_referral_code on public.clients using btree (referral_code) TABLESPACE pg_default
+where
+  (referral_code is not null);
+
+create index IF not exists idx_clients_loyalty_enrolled on public.clients using btree (loyalty_enrolled) TABLESPACE pg_default
+where
+  (loyalty_enrolled = true);
+
+create index IF not exists clients_search_vector_idx on public.clients using gin (search_vector) TABLESPACE pg_default;
+
+create index IF not exists idx_clients_hubspot_contact_id on public.clients using btree (hubspot_contact_id) TABLESPACE pg_default;
+
+create unique INDEX IF not exists idx_clients_team_hubspot_contact_id on public.clients using btree (team_id, hubspot_contact_id) TABLESPACE pg_default
+where
+  (hubspot_contact_id is not null);
+
+create index IF not exists idx_clients_team_email on public.clients using btree (team_id, email) TABLESPACE pg_default
+where
+  (email is not null);
+
+create index IF not exists idx_clients_points_balance on public.clients using btree (points_balance) TABLESPACE pg_default
+where
+  (loyalty_enrolled = true);
+
+create index IF not exists idx_clients_loyalty_enrolled_at on public.clients using btree (loyalty_enrolled_at) TABLESPACE pg_default;
+
+create index IF not exists idx_clients_properties_gin on public.clients using gin (properties) TABLESPACE pg_default;
+
+create index IF not exists idx_clients_auth_user_id on public.clients using btree (auth_user_id) TABLESPACE pg_default
+where
+  (auth_user_id is not null);
+
+create trigger clients_enqueue_klaviyo_ins
+after INSERT on clients for EACH row
+execute FUNCTION trg_clients_enqueue_klaviyo ();
+
+create trigger clients_enqueue_klaviyo_upd
+after
+update OF email,
+first_name,
+last_name,
+phone,
+properties on clients for EACH row
+execute FUNCTION trg_clients_enqueue_klaviyo ();
+
+create trigger on_client_created
+after INSERT
+or
+update OF user_id on clients for EACH row
+execute FUNCTION grant_client_portal_access ();
+
+create trigger trigger_hubspot_sync_clients_insert
+after INSERT on clients for EACH row
+execute FUNCTION queue_hubspot_sync ();
+
+create trigger trigger_hubspot_sync_clients_update
+after
+update on clients for EACH row
+execute FUNCTION queue_hubspot_sync ();
+
+create trigger update_client_search_vector_trigger BEFORE INSERT
+or
+update on clients for EACH row
+execute FUNCTION update_client_search_vector ();
 CREATE TABLE public.customer_sessions (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   client_id uuid NOT NULL,
