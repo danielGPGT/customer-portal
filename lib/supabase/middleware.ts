@@ -63,9 +63,13 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // Auth routes (redirect if already logged in)
+  // Auth routes (redirect if already logged in, but allow error messages to be shown)
   if ((request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/signup') && user) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+    // Don't redirect if there's an error parameter - allow error messages to be displayed
+    const hasError = request.nextUrl.searchParams.has('error')
+    if (!hasError) {
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
   }
 
   return response

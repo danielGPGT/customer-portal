@@ -19,14 +19,35 @@ export default async function ReferralPage() {
     redirect('/login')
   }
 
-  const { data: client } = await supabase
+  // Get client data by auth_user_id
+  let { data: client } = await supabase
     .from('clients')
     .select('id, first_name')
-    .eq('user_id', user.id)
+    .eq('auth_user_id', user.id)
     .single()
 
+  // If client not found, try to link by email
+  if (!client && user.email) {
+    const { data: linkedClient } = await supabase
+      .rpc('link_client_to_user', { p_user_id: user.id })
+
+    if (linkedClient && linkedClient.length > 0) {
+      const { data: retryClient } = await supabase
+        .from('clients')
+        .select('id, first_name')
+        .eq('auth_user_id', user.id)
+        .single()
+      
+      if (retryClient) {
+        client = retryClient
+      } else {
+        client = { id: linkedClient[0].id, first_name: linkedClient[0].first_name }
+      }
+    }
+  }
+
   if (!client) {
-    redirect('/login')
+    redirect('/dashboard?error=client_not_found')
   }
 
   const { data: settings } = await supabase

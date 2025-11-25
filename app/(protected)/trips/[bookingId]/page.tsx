@@ -24,15 +24,37 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
     redirect('/login')
   }
 
-  // Get client data
-  const { data: client } = await supabase
+  // Get client data by auth_user_id
+  let { data: client } = await supabase
     .from('clients')
     .select('id')
-    .eq('user_id', user.id)
+    .eq('auth_user_id', user.id)
     .single()
 
+  // If client not found, try to link by email
+  if (!client && user.email) {
+    const { data: linkedClient } = await supabase
+      .rpc('link_client_to_user', { p_user_id: user.id })
+
+    if (linkedClient && linkedClient.length > 0) {
+      // Retry query after linking
+      const { data: retryClient } = await supabase
+        .from('clients')
+        .select('id')
+        .eq('auth_user_id', user.id)
+        .single()
+      
+      if (retryClient) {
+        client = retryClient
+      } else {
+        // Use linked client data directly
+        client = { id: linkedClient[0].id }
+      }
+    }
+  }
+
   if (!client) {
-    redirect('/login')
+    redirect('/dashboard?error=client_not_found')
   }
 
   // Get booking details from bookings table with all related data

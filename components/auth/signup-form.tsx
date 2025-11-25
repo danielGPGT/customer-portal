@@ -81,17 +81,29 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
 
       // Handle Supabase Auth errors
       if (authError) {
-        // If user already exists in auth, the email is already registered
-        // Note: user_id in clients table is the ADMIN who created the client, not the client's auth account
-        // So we check if the email itself is already in auth.users
+        // If user already exists in auth, attempt to sign them in with the provided password.
         if (authError.message.includes('already registered') || authError.message.includes('already exists')) {
-          // Email already exists in auth.users - client already has their own account
+          const { error: signInError } = await supabase.auth.signInWithPassword({
+            email: data.email,
+            password: data.password,
+          })
+
+          if (!signInError) {
+            toast({
+              title: 'Welcome back! 👋',
+              description: 'Account already existed, but we logged you in.',
+            })
+            router.push('/dashboard')
+            router.refresh()
+            return
+          }
+
           toast({
             variant: 'destructive',
             title: 'Account already exists',
-            description: 'An account with this email already exists. Please log in instead.',
+            description: 'Please log in with your existing password or reset it.',
           })
-          router.push('/login')
+          router.push('/login?error=account_exists')
           return
         }
         throw authError
@@ -136,7 +148,8 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
             const { error: updateError } = await supabase
               .from('clients')
               .update({
-                user_id: authData.user.id, // Link to client's own auth account (replacing admin's user_id)
+                user_id: authData.user.id, // Keep user_id for backward compatibility
+                auth_user_id: authData.user.id, // Use auth_user_id for portal access
                 team_id: existingClient.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7', // Preserve existing team_id or use default
                 loyalty_enrolled: true,
                 loyalty_enrolled_at: new Date().toISOString(),
@@ -169,7 +182,8 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
           // Note: The existing user_id is the ADMIN who created this client record
           // We're replacing it with the client's own auth account (authData.user.id)
           const updateData: any = {
-            user_id: authData.user.id, // Link client record to client's own auth account (not admin's)
+            user_id: authData.user.id, // Keep user_id for backward compatibility
+            auth_user_id: authData.user.id, // Use auth_user_id for portal access
             team_id: existingClient.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7', // Preserve existing team_id or use default (required by klaviyo trigger)
             loyalty_enrolled: true,
             loyalty_enrolled_at: new Date().toISOString(),
@@ -221,7 +235,8 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
           // New client - create record
           // Note: team_id is required by klaviyo_profile_queue trigger
           const { error: clientError } = await supabase.from('clients').insert({
-            user_id: authData.user.id,
+            user_id: authData.user.id,  // Keep user_id for backward compatibility
+            auth_user_id: authData.user.id,  // Use auth_user_id for portal access
             team_id: '0cef0867-1b40-4de1-9936-16b867a753d7', // Default team ID for customer portal
             email: data.email,
             first_name: data.firstName,
@@ -246,7 +261,8 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
                 const { error: updateError } = await supabase
                   .from('clients')
                   .update({
-                    user_id: authData.user.id,
+                    user_id: authData.user.id,  // Keep user_id for backward compatibility
+                    auth_user_id: authData.user.id,  // Use auth_user_id for portal access
                     team_id: '0cef0867-1b40-4de1-9936-16b867a753d7', // Ensure team_id is set for trigger
                     loyalty_enrolled: true,
                     loyalty_enrolled_at: new Date().toISOString(),

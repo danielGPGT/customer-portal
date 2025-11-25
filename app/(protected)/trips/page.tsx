@@ -23,15 +23,40 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
     redirect('/login')
   }
 
-  // Get client data
-  const { data: client } = await supabase
+  // Get client data by auth_user_id
+  let { data: client } = await supabase
     .from('clients')
-    .select('id')
-    .eq('user_id', user.id)
+    .select('id, first_loyalty_booking_at')
+    .eq('auth_user_id', user.id)
     .single()
 
+  // If client not found, try to link by email
+  if (!client && user.email) {
+    const { data: linkedClient } = await supabase
+      .rpc('link_client_to_user', { p_user_id: user.id })
+
+    if (linkedClient && linkedClient.length > 0) {
+      // Retry query after linking
+      const { data: retryClient } = await supabase
+        .from('clients')
+        .select('id, first_loyalty_booking_at')
+        .eq('auth_user_id', user.id)
+        .single()
+      
+      if (retryClient) {
+        client = retryClient
+      } else {
+        // Use linked client data directly
+        client = {
+          id: linkedClient[0].id,
+          first_loyalty_booking_at: linkedClient[0].first_loyalty_booking_at
+        }
+      }
+    }
+  }
+
   if (!client) {
-    redirect('/login')
+    redirect('/dashboard?error=client_not_found')
   }
 
   // Get all bookings from bookings table with event details

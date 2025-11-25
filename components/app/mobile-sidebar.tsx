@@ -9,8 +9,6 @@ import {
   Plane,
   UserPlus,
   Settings,
-  Shield,
-  CreditCard,
   ChevronRight,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -61,11 +59,7 @@ const navigationItems: NavItem[] = [
       { title: "My Referrals", url: "/refer/my-referrals" },
     ],
   },
-  {
-    title: "Settings",
-    url: "/profile",
-    icon: Settings,
-  },
+
 ]
 
 interface MobileSidebarProps {
@@ -78,25 +72,10 @@ export function MobileSidebar({ open, onOpenChange }: MobileSidebarProps) {
   const [expandedItems, setExpandedItems] = React.useState<string[]>([])
   const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
-  const [isAdmin, setIsAdmin] = React.useState(false)
 
   // Avoid hydration mismatch
   React.useEffect(() => {
     setMounted(true)
-  }, [])
-
-  React.useEffect(() => {
-    async function checkAdmin() {
-      try {
-        const res = await fetch("/api/auth/role")
-        if (!res.ok) return
-        const data = await res.json()
-        setIsAdmin(data.isTeamMember === true)
-      } catch {
-        // ignore
-      }
-    }
-    checkAdmin()
   }, [])
 
   // Determine which logo to use based on theme
@@ -144,18 +123,7 @@ export function MobileSidebar({ open, onOpenChange }: MobileSidebarProps) {
 
         {/* Navigation Items */}
         <div className="flex flex-col py-4">
-          {[
-            ...navigationItems,
-            ...(isAdmin
-              ? [
-                  {
-                    title: "Admin",
-                    url: "/admin",
-                    icon: Shield,
-                  } as NavItem,
-                ]
-              : []),
-          ].map((item) => {
+          {navigationItems.map((item) => {
             const hasSubItems = item.subItems && item.subItems.length > 0
             const itemActive = isActive(item.url)
             const isExpanded = expandedItems.includes(item.title)

@@ -1,5 +1,6 @@
 import { cache } from 'react'
 import { createClient } from '@/lib/supabase/server'
+import { normalizePortalTypes, canAccessClientPortal } from '@/lib/utils/portal-access'
 
 /**
  * Cached client fetcher - prevents duplicate queries on the same request
@@ -13,73 +14,43 @@ export const getClient = cache(async () => {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    return { client: null, user: null, error: 'not_authenticated' as const }
+    return { client: null, user: null, portalAccess: [], error: 'not_authenticated' as const }
   }
 
-  // Get client data by user_id (most common case)
+  const { data: portalRows } = await supabase
+    .from('user_portal_access')
+    .select('portal_type')
+    .eq('user_id', user.id)
+
+  let portalAccess = normalizePortalTypes(portalRows)
+  const portalAccessExists = portalAccess.length > 0
+  const clientAccessEnabled = canAccessClientPortal(portalAccess)
+
+  if (!clientAccessEnabled) {
+    return { client: null, user, portalAccess, error: 'no_client_access' as const }
+  }
+
+  // Get client data by auth_user_id (most common case)
   let { data: client, error: clientError } = await supabase
     .from('clients')
     .select('*')
-    .eq('user_id', user.id)
+    .eq('auth_user_id', user.id)
     .single()
 
-  // If client doesn't exist by user_id, try to find by email (recovery scenario)
+  // If client doesn't exist by user_id, try to link by email using RPC function
+  // This bypasses RLS to find and link existing client records
   if (clientError || !client) {
     if (user.email) {
-      const { data: clientByEmail } = await supabase
-        .from('clients')
-        .select('*')
-        .eq('email', user.email)
-        .maybeSingle()
+      // Use RPC function to find and link client by email (bypasses RLS)
+      const { data: linkedClient, error: linkError } = await supabase
+        .rpc('link_client_to_user', { p_user_id: user.id })
 
-      if (clientByEmail) {
-        // Update to link to this auth account
-        const { error: updateError } = await supabase
-          .from('clients')
-          .update({
-            user_id: user.id,
-            team_id: clientByEmail.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7',
-            loyalty_enrolled: clientByEmail.loyalty_enrolled ?? true,
-            loyalty_enrolled_at: clientByEmail.loyalty_enrolled_at ?? new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          })
-          .eq('id', clientByEmail.id)
-
-        if (!updateError) {
-          // Fetch updated client
-          const { data: updatedClient } = await supabase
-            .from('clients')
-            .select('*')
-            .eq('user_id', user.id)
-            .single()
-          
-          if (updatedClient) {
-            client = updatedClient
-            clientError = null
-          } else {
-            client = clientByEmail
-            clientError = null
-          }
-        } else {
-          client = clientByEmail
-          clientError = null
-        }
-      }
-    }
-  }
-
-  // If client still doesn't exist, check one more time by email before creating
-  if (clientError || !client) {
-    if (user.email) {
-      const { data: finalCheck } = await supabase
-        .from('clients')
-        .select('*')
-        .eq('email', user.email)
-        .maybeSingle()
-      
-      if (finalCheck) {
-        client = finalCheck
+      if (linkedClient && linkedClient.length > 0) {
+        // The RPC returns an array, get the first result
+        client = linkedClient[0]
         clientError = null
+      } else if (linkError) {
+        console.error('Error linking client to user in getClient:', linkError)
       }
     }
   }
@@ -87,45 +58,20 @@ export const getClient = cache(async () => {
   // If client still doesn't exist, create one automatically
   if (clientError || !client) {
     if (!user.email) {
-      return { client: null, user, error: 'no_email' as const }
+      return { client: null, user, portalAccess, error: 'no_email' as const }
     }
 
-    // Final safety check: verify client doesn't exist by email before inserting
-    const { data: existingCheck } = await supabase
-      .from('clients')
-      .select('*')
-      .eq('email', user.email)
-      .maybeSingle()
-    
-    if (existingCheck) {
-      // Client exists - update it instead of inserting
-      const { error: updateError } = await supabase
-        .from('clients')
-        .update({
-          user_id: user.id,
-          team_id: existingCheck.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7',
-          loyalty_enrolled: existingCheck.loyalty_enrolled ?? true,
-          loyalty_enrolled_at: existingCheck.loyalty_enrolled_at ?? new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', existingCheck.id)
+    // Final safety check: try to link client by email before inserting
+    // Use RPC function to bypass RLS
+    const { data: linkedClient, error: linkError } = await supabase
+      .rpc('link_client_to_user', { p_user_id: user.id })
 
-      if (!updateError) {
-        const { data: updatedClient } = await supabase
-          .from('clients')
-          .select('*')
-          .eq('user_id', user.id)
-          .single()
-        
-        if (updatedClient) {
-          client = updatedClient
-        } else {
-          client = existingCheck
-        }
-      } else {
-        client = existingCheck
-      }
+    if (linkedClient && linkedClient.length > 0) {
+      // Client was found and linked
+      client = linkedClient[0]
+      clientError = null
     } else {
+      // No existing client - safe to insert
       // No existing client - safe to insert
       const userMetadata = user.user_metadata || {}
       const firstName = userMetadata.first_name || user.email.split('@')[0] || 'Customer'
@@ -135,7 +81,8 @@ export const getClient = cache(async () => {
       const { data: newClient, error: createError } = await supabase
         .from('clients')
         .insert({
-          user_id: user.id,
+          user_id: user.id,  // Keep user_id for backward compatibility
+          auth_user_id: user.id,  // Use auth_user_id for portal access
           team_id: '0cef0867-1b40-4de1-9936-16b867a753d7',
           email: user.email,
           first_name: firstName,
@@ -152,49 +99,32 @@ export const getClient = cache(async () => {
       if (!createError && newClient) {
         client = newClient
       } else if (createError?.code === '23505' || createError?.message?.includes('unique constraint') || createError?.message?.includes('duplicate')) {
-        // Insert failed due to duplicate - try to fetch and update
-        const { data: existingByEmail } = await supabase
-          .from('clients')
-          .select('*')
-          .eq('email', user.email)
-          .maybeSingle()
+        // Insert failed due to duplicate - use RPC function to link existing client
+        const { data: linkedClient, error: linkError } = await supabase
+          .rpc('link_client_to_user', { p_user_id: user.id })
 
-        if (existingByEmail) {
-          const { error: updateError } = await supabase
-            .from('clients')
-            .update({
-              user_id: user.id,
-              team_id: existingByEmail.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7',
-              loyalty_enrolled: existingByEmail.loyalty_enrolled ?? true,
-              loyalty_enrolled_at: existingByEmail.loyalty_enrolled_at ?? new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            })
-            .eq('id', existingByEmail.id)
-
-          if (!updateError) {
-            const { data: updatedClient } = await supabase
-              .from('clients')
-              .select('*')
-              .eq('user_id', user.id)
-              .single()
-            
-            if (updatedClient) {
-              client = updatedClient
-            } else {
-              client = existingByEmail
-            }
-          } else {
-            client = existingByEmail
-          }
+        if (linkedClient && linkedClient.length > 0) {
+          client = linkedClient[0]
+        } else if (linkError) {
+          console.error('Error linking client after duplicate insert:', linkError)
         }
       }
     }
   }
 
   if (!client) {
-    return { client: null, user, error: 'setup_failed' as const }
+      return { client: null, user, portalAccess, error: 'setup_failed' as const }
   }
 
-  return { client, user, error: null }
+  if (!portalAccessExists) {
+    const { data: refreshedPortalRows } = await supabase
+      .from('user_portal_access')
+      .select('portal_type')
+      .eq('user_id', user.id)
+
+    portalAccess = normalizePortalTypes(refreshedPortalRows)
+  }
+
+  return { client, user, portalAccess, error: null }
 })
 

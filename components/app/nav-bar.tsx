@@ -9,8 +9,6 @@ import {
   Plane,
   UserPlus,
   Settings,
-  Shield,
-  CreditCard,
   ChevronDown,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -64,32 +62,13 @@ const navigationItems: NavItem[] = [
       { title: "My Referrals", url: "/refer/my-referrals" },
     ],
   },
-  {
-    title: "Settings",
-    url: "/profile",
-    icon: Settings,
-  },
+
 
 ]
 
 export function NavBar() {
   const pathname = usePathname()
-  const [isAdmin, setIsAdmin] = React.useState(false)
   const [openDropdown, setOpenDropdown] = React.useState<string | null>(null)
-
-  React.useEffect(() => {
-    async function checkAdmin() {
-      try {
-        const res = await fetch("/api/auth/role")
-        if (!res.ok) return
-        const data = await res.json()
-        setIsAdmin(data.isTeamMember === true)
-      } catch {
-        // ignore
-      }
-    }
-    checkAdmin()
-  }, [])
 
   // Prevent body scroll lock when dropdown is open
   React.useEffect(() => {
@@ -114,18 +93,7 @@ export function NavBar() {
     <nav className="bg-card border-b border-border w-full py-2 flex items-center px-4 lg:px-6 z-40 fixed top-16 left-0 right-0">
       <div className="container mx-auto flex items-center">
       <div className="flex items-center gap-1 flex-1 min-w-0">
-        {[
-          ...navigationItems,
-          ...(isAdmin
-            ? [
-                {
-                  title: "Admin",
-                  url: "/admin",
-                  icon: Shield,
-                } as NavItem,
-              ]
-            : []),
-        ].map((item) => {
+        {navigationItems.map((item) => {
           const hasSubItems = item.subItems && item.subItems.length > 0
           const itemActive = isActive(item.url)
           const isOpen = openDropdown === item.title

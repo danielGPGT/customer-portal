@@ -45,11 +45,34 @@ export async function submitReferralInvite(
     return { error: 'Please enter a valid email address.' }
   }
 
-  const { data: client, error: clientError } = await supabase
+  // Get client data by auth_user_id
+  let { data: client, error: clientError } = await supabase
     .from('clients')
     .select('id')
-    .eq('user_id', user.id)
+    .eq('auth_user_id', user.id)
     .single()
+
+  // If client not found, try to link by email
+  if ((clientError || !client) && user.email) {
+    const { data: linkedClient } = await supabase
+      .rpc('link_client_to_user', { p_user_id: user.id })
+
+    if (linkedClient && linkedClient.length > 0) {
+      const { data: retryClient } = await supabase
+        .from('clients')
+        .select('id')
+        .eq('auth_user_id', user.id)
+        .single()
+      
+      if (retryClient) {
+        client = retryClient
+        clientError = null
+      } else {
+        client = { id: linkedClient[0].id }
+        clientError = null
+      }
+    }
+  }
 
   if (clientError || !client) {
     return { error: 'Unable to find your profile. Please try again.' }

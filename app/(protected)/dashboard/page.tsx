@@ -14,78 +14,46 @@ export default async function DashboardPage() {
     redirect('/login')
   }
 
-  // Get client data by user_id
+  // Get client data by auth_user_id
   let { data: client, error: clientError } = await supabase
     .from('clients')
     .select('*')
-    .eq('user_id', user.id)
+    .eq('auth_user_id', user.id)
     .single()
 
-  // If client doesn't exist by user_id, try to find by email (recovery scenario)
+  // If client doesn't exist by auth_user_id, try to link by email using RPC function
+  // This bypasses RLS to find and link existing client records
   if (clientError || !client) {
-    console.warn('Client not found by user_id, attempting to find by email:', user.id, user.email)
+    console.warn('Client not found by auth_user_id, attempting to link by email:', user.id, user.email)
     
     if (user.email) {
-      const { data: clientByEmail, error: emailError } = await supabase
-        .from('clients')
-        .select('*')
-        .eq('email', user.email)
-        .maybeSingle()
+      // Use RPC function to find and link client by email (bypasses RLS)
+      const { data: linkedClient, error: linkError } = await supabase
+        .rpc('link_client_to_user', { p_user_id: user.id })
 
-      // If client exists by email, update it to link to this auth account
-      if (clientByEmail) {
-          console.log('Found client by email, updating user_id:', clientByEmail.id)
-          const { error: updateError } = await supabase
-            .from('clients')
-            .update({
-              user_id: user.id,
-              team_id: clientByEmail.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7', // Preserve existing team_id or use default (required by klaviyo trigger)
-              loyalty_enrolled: clientByEmail.loyalty_enrolled ?? true,
-              loyalty_enrolled_at: clientByEmail.loyalty_enrolled_at ?? new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            })
-            .eq('id', clientByEmail.id)
-
-        if (!updateError) {
-          // Retry fetch after update
-          const { data: updatedClient } = await supabase
-            .from('clients')
-            .select('*')
-            .eq('user_id', user.id)
-            .single()
-          
-          if (updatedClient) {
-            client = updatedClient
-            clientError = null
-          }
-        } else {
-          // Update failed, but client exists - use it anyway
-          console.warn('Failed to update client user_id, but client exists:', updateError)
-          client = clientByEmail
-          clientError = null
-        }
-      } else if (emailError && emailError.code !== 'PGRST116') {
-        // Error other than "not found" - log it
-        console.error('Error finding client by email:', emailError)
+      if (linkedClient && linkedClient.length > 0) {
+        console.log('Successfully linked client to user:', linkedClient[0].id)
+        // The RPC returns an array, get the first result
+        client = linkedClient[0]
+        clientError = null
+      } else if (linkError) {
+        console.error('Error linking client to user:', linkError)
       }
     }
   }
 
-  // If client still doesn't exist, check one more time by email before creating
+  // If client still doesn't exist, try RPC function one more time
   if (clientError || !client) {
     if (user.email) {
-      // Final check: does a client with this email exist?
-      const { data: finalCheck } = await supabase
-        .from('clients')
-        .select('*')
-        .eq('email', user.email)
-        .maybeSingle()
-      
-      if (finalCheck) {
-        // Client exists but couldn't be linked - use it anyway
-        console.warn('Client exists by email but couldn\'t be linked, using existing record:', finalCheck.id)
-        client = finalCheck
+      // Try RPC function one more time (in case the function wasn't available on first try)
+      const { data: linkedClient, error: linkError } = await supabase
+        .rpc('link_client_to_user', { p_user_id: user.id })
+
+      if (linkedClient && linkedClient.length > 0) {
+        client = linkedClient[0]
         clientError = null
+      } else if (linkError) {
+        console.error('Error linking client to user (retry):', linkError)
       }
     }
   }
@@ -116,49 +84,15 @@ export default async function DashboardPage() {
       )
     }
 
-    // Final safety check: verify client doesn't exist by email before inserting
-    const { data: existingCheck } = await supabase
-      .from('clients')
-      .select('*')
-      .eq('email', user.email)
-      .maybeSingle()
-    
-    if (existingCheck) {
-      // Client exists - update it instead of inserting
-      console.log('Client exists by email, updating instead of inserting:', existingCheck.id)
-      const { error: updateError } = await supabase
-        .from('clients')
-        .update({
-          user_id: user.id,
-          team_id: existingCheck.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7',
-          loyalty_enrolled: existingCheck.loyalty_enrolled ?? true,
-          loyalty_enrolled_at: existingCheck.loyalty_enrolled_at ?? new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', existingCheck.id)
+    // Final safety check: try RPC function one more time before inserting
+    // This handles the case where a client exists but wasn't linked yet
+    const { data: linkedClient, error: linkError } = await supabase
+      .rpc('link_client_to_user', { p_user_id: user.id })
 
-      if (!updateError) {
-        // Fetch the updated client
-        const { data: updatedClient } = await supabase
-          .from('clients')
-          .select('*')
-          .eq('user_id', user.id)
-          .single()
-        
-        if (updatedClient) {
-          client = updatedClient
-          clientError = null
-        } else {
-          // Fallback to existing client
-          client = existingCheck
-          clientError = null
-        }
-      } else {
-        // Update failed, but use existing client anyway
-        console.warn('Failed to update existing client, using as-is:', updateError)
-        client = existingCheck
-        clientError = null
-      }
+    if (linkedClient && linkedClient.length > 0) {
+      // Client was found and linked
+      client = linkedClient[0]
+      clientError = null
     } else {
       // No existing client - safe to insert
     // Extract user metadata from auth
@@ -172,7 +106,8 @@ export default async function DashboardPage() {
     const { data: newClient, error: createError } = await supabase
       .from('clients')
       .insert({
-        user_id: user.id,
+        user_id: user.id,  // Keep user_id for backward compatibility
+        auth_user_id: user.id,  // Use auth_user_id for portal access
         team_id: '0cef0867-1b40-4de1-9936-16b867a753d7', // Default team ID for customer portal
         email: user.email,
         first_name: firstName,
@@ -189,49 +124,17 @@ export default async function DashboardPage() {
     if (createError || !newClient) {
       console.error('Failed to create client record:', createError)
       
-      // If insert fails due to unique constraint (email already exists), try update
+      // If insert fails due to unique constraint (email already exists), use RPC function to link
         if (createError?.code === '23505' || createError?.message?.includes('unique constraint') || createError?.message?.includes('duplicate')) {
-        const { data: existingByEmail } = await supabase
-          .from('clients')
-          .select('*')
-          .eq('email', user.email)
-            .maybeSingle()
+        // Use RPC function to link existing client
+        const { data: linkedClient, error: linkError } = await supabase
+          .rpc('link_client_to_user', { p_user_id: user.id })
 
-        if (existingByEmail) {
-          // Update existing client to link to this auth account
-          const { error: updateError } = await supabase
-            .from('clients')
-            .update({
-              user_id: user.id,
-              team_id: existingByEmail.team_id || '0cef0867-1b40-4de1-9936-16b867a753d7', // Preserve existing team_id or use default (required by klaviyo trigger)
-              loyalty_enrolled: existingByEmail.loyalty_enrolled ?? true,
-              loyalty_enrolled_at: existingByEmail.loyalty_enrolled_at ?? new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            })
-            .eq('id', existingByEmail.id)
-
-          if (!updateError) {
-            // Fetch the updated client
-            const { data: updatedClient } = await supabase
-              .from('clients')
-              .select('*')
-              .eq('user_id', user.id)
-              .single()
-            
-            if (updatedClient) {
-              client = updatedClient
-                clientError = null
-              } else {
-                // Fallback to existing client
-                client = existingByEmail
-                clientError = null
-              }
-            } else {
-              // Update failed, but use existing client anyway
-              console.warn('Failed to update existing client after insert error, using as-is:', updateError)
-              client = existingByEmail
-              clientError = null
-          }
+        if (linkedClient && linkedClient.length > 0) {
+          client = linkedClient[0]
+          clientError = null
+        } else if (linkError) {
+          console.error('Error linking client after duplicate insert:', linkError)
         }
       }
 
