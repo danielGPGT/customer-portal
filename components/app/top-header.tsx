@@ -113,25 +113,7 @@ export function TopHeader({
 
       {/* Right: Icons */}
       <div className="flex items-center gap-2 ml-auto">
-        {/* Text Size / Accessibility */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-foreground dark:text-primary-foreground hover:bg-accent h-9 w-9 hidden lg:flex"
-        >
-          <Type className="h-4 w-4" />
-          <span className="sr-only">Text size</span>
-        </Button>
 
-        {/* Analytics / Graph */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-foreground dark:text-primary-foreground hover:bg-accent h-9 w-9 hidden lg:flex"
-        >
-          <BarChart3 className="h-4 w-4" />
-          <span className="sr-only">Analytics</span>
-        </Button>
 
         {/* Theme Toggle - Desktop only */}
         <div className="hidden lg:flex">
