@@ -49,7 +49,6 @@ type SortOption = 'date-asc' | 'date-desc' | 'amount-desc' | 'amount-asc'
 interface TripListProps {
   bookings: Booking[]
   tab: TripTab
-  currency: string
   pointValue: number
 }
 
@@ -73,7 +72,7 @@ const getMonthLabel = (booking: Booking) => {
   return format(new Date(startDate), 'MMM yyyy')
 }
 
-export function TripList({ bookings, tab, currency, pointValue }: TripListProps) {
+export function TripList({ bookings, tab, pointValue }: TripListProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedDestination, setSelectedDestination] = useState<string>('all')
   const [selectedMonth, setSelectedMonth] = useState<string>('all')
@@ -244,7 +243,6 @@ export function TripList({ bookings, tab, currency, pointValue }: TripListProps)
                   <TripCard
                     booking={booking}
                     variant={tab}
-                    currency={currency}
                     pointValue={pointValue}
                   />
                 </div>
@@ -258,7 +256,6 @@ export function TripList({ bookings, tab, currency, pointValue }: TripListProps)
             key={booking.id}
             booking={booking}
             variant={tab}
-            currency={currency}
             pointValue={pointValue}
           />
         ))}

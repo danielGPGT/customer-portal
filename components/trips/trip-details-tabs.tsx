@@ -144,8 +144,7 @@ export function TripDetailsTabs({
           currency={currency}
         />
         <PaymentScheduleSection 
-          payments={payments} 
-          currency={currency}
+          payments={payments}
         />
       </TabsContent>
 

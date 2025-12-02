@@ -157,7 +157,8 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
     .eq('id', 1)
     .single()
 
-  const currency = settings?.currency || 'GBP'
+  const defaultCurrency = settings?.currency || 'GBP'
+  const currency = booking.currency || defaultCurrency
   const pointValue = settings?.point_value || 1
 
   const eventName = enrichedBooking.event_name || enrichedBooking.events?.name || 'Event'

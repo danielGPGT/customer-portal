@@ -247,7 +247,6 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
     .eq('id', 1)
     .single()
 
-  const currency = settings?.currency || 'GBP'
   const pointValue = settings?.point_value || 1
 
   return (
@@ -267,7 +266,6 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
         <TripList 
           bookings={sortedBookings} 
           tab={activeTab}
-          currency={currency}
           pointValue={pointValue}
         />
       )}

@@ -22,10 +22,14 @@ interface Payment {
 
 interface PaymentScheduleSectionProps {
   payments: Payment[]
-  currency: string
 }
 
-export function PaymentScheduleSection({ payments, currency }: PaymentScheduleSectionProps) {
+const getCurrencySymbol = (code: string | null | undefined) => {
+  const currency = code || 'GBP'
+  return currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'
+}
+
+export function PaymentScheduleSection({ payments }: PaymentScheduleSectionProps) {
   if (!payments || payments.length === 0) {
     return null
   }
@@ -40,7 +44,10 @@ export function PaymentScheduleSection({ payments, currency }: PaymentScheduleSe
   // Sort by payment number
   const sortedPayments = [...activePayments].sort((a, b) => a.payment_number - b.payment_number)
 
-  const currencySymbol = currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'
+  // Use the currency attached to the payments themselves for summaries.
+  // If mixed currencies ever appear, totals will still be calculated numerically
+  // but labelled using the first payment's currency.
+  const summaryCurrencySymbol = getCurrencySymbol(sortedPayments[0]?.currency)
   const totalAmount = sortedPayments.reduce((sum, p) => sum + (p.amount || 0), 0)
   const totalPaid = sortedPayments.filter(p => p.paid).reduce((sum, p) => sum + (p.amount || 0), 0)
   const totalOutstanding = totalAmount - totalPaid
@@ -107,7 +114,8 @@ export function PaymentScheduleSection({ payments, currency }: PaymentScheduleSe
                   </div>
 
                   <div className="text-lg sm:text-xl lg:text-2xl font-bold">
-                    {currencySymbol}{payment.amount.toLocaleString(undefined, { 
+                    {getCurrencySymbol(payment.currency)}
+                    {payment.amount.toLocaleString(undefined, { 
                       minimumFractionDigits: 2, 
                       maximumFractionDigits: 2 
                     })}
@@ -157,7 +165,8 @@ export function PaymentScheduleSection({ payments, currency }: PaymentScheduleSe
             <div className="flex justify-between text-xs sm:text-sm">
               <span className="text-muted-foreground">Total Amount</span>
               <span className="font-semibold">
-                {currencySymbol}{totalAmount.toLocaleString(undefined, { 
+                {summaryCurrencySymbol}
+                {totalAmount.toLocaleString(undefined, { 
                   minimumFractionDigits: 2, 
                   maximumFractionDigits: 2 
                 })}
@@ -166,7 +175,8 @@ export function PaymentScheduleSection({ payments, currency }: PaymentScheduleSe
             <div className="flex justify-between text-xs sm:text-sm">
               <span className="text-muted-foreground">Total Paid</span>
               <span className="font-semibold text-green-600">
-                {currencySymbol}{totalPaid.toLocaleString(undefined, { 
+                {summaryCurrencySymbol}
+                {totalPaid.toLocaleString(undefined, { 
                   minimumFractionDigits: 2, 
                   maximumFractionDigits: 2 
                 })}
@@ -176,7 +186,8 @@ export function PaymentScheduleSection({ payments, currency }: PaymentScheduleSe
               <div className="flex justify-between text-xs sm:text-sm pt-2 border-t">
                 <span className="font-medium">Outstanding</span>
                 <span className="font-bold text-orange-600">
-                  {currencySymbol}{totalOutstanding.toLocaleString(undefined, { 
+                  {summaryCurrencySymbol}
+                  {totalOutstanding.toLocaleString(undefined, { 
                     minimumFractionDigits: 2, 
                     maximumFractionDigits: 2 
                   })}

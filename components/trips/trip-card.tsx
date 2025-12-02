@@ -51,7 +51,6 @@ type TripTab = 'upcoming' | 'past' | 'cancelled'
 interface TripCardProps {
   booking: Booking
   variant: TripTab
-  currency: string
   pointValue: number
 }
 
@@ -142,8 +141,11 @@ export function TripCard({ booking, variant, currency, pointValue }: TripCardPro
     endDate && startDate && endDate !== startDate
       ? `${startDateFormatted} - ${endDateFormatted}`
       : startDateFormatted
-
-  const currencySymbol = currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'
+  
+  // Prefer the booking's own currency; fall back to GBP if missing
+  const bookingCurrency = booking.currency || 'GBP'
+  const currencySymbol =
+    bookingCurrency === 'GBP' ? '£' : bookingCurrency === 'USD' ? '$' : '€'
   const status = statusConfig[booking.booking_status]
   const StatusIcon = status.icon
   const currentStep = status.step
