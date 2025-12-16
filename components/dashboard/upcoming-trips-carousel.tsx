@@ -149,7 +149,7 @@ export function UpcomingTripsCarousel({ trips }: UpcomingTripsCarouselProps) {
       <div
         ref={scrollRef}
         onScroll={checkScroll}
-        className="flex gap-4 overflow-x-auto scroll-smooth pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] md:overflow-visible"
+        className="flex gap-4 overflow-x-auto scroll-smooth pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] w-full max-w-full"
       >
         {trips.map((trip) => {
           const eventName = trip.event_name || trip.events?.name || 'Trip'
@@ -173,7 +173,7 @@ export function UpcomingTripsCarousel({ trips }: UpcomingTripsCarouselProps) {
           return (
             <Card
               key={trip.id}
-              className="group min-w-[300px] flex-shrink-0 overflow-hidden border-2 transition-all hover:shadow-lg pt-0 md:min-w-0 md:flex-1"
+              className="group min-w-[300px] flex-shrink-0 overflow-hidden border-2 transition-all hover:shadow-lg pt-0 max-w-[300px]"
             >
               <div className="relative h-40 w-full bg-muted">
                 <div

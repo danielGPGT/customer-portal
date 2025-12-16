@@ -127,12 +127,12 @@ export function RecentActivityCard({ transactions, trips }: RecentActivityCardPr
                     <div className="mt-0.5 flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary">
                       <Sparkles className="h-3.5 w-3.5" />
                     </div>
-                    <div className="flex-1 min-w-0 space-y-1">
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-2">
+                    <div className="flex-1 min-w-0 space-y-1 overflow-hidden">
+                      <div className="flex items-center justify-between gap-2 flex-wrap">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <span
                             className={cn(
-                              'text-sm font-semibold',
+                              'text-sm font-semibold shrink-0',
                               isEarn
                                 ? 'text-green-600 dark:text-green-400'
                                 : 'text-red-600 dark:text-red-400'
@@ -142,13 +142,13 @@ export function RecentActivityCard({ transactions, trips }: RecentActivityCardPr
                           </span>
                           <Badge
                             variant="outline"
-                            className={cn('text-[10px] px-1.5 py-0 h-auto', badge.className)}
+                            className={cn('text-[10px] px-1.5 py-0 h-auto shrink-0', badge.className)}
                           >
                             {badge.label}
                           </Badge>
                         </div>
                       </div>
-                      <p className="text-xs font-medium text-foreground line-clamp-1">
+                      <p className="text-xs font-medium text-foreground line-clamp-1 break-words">
                         {tx.description}
                       </p>
                       {(tx.booking_reference || tx.event_name) && (

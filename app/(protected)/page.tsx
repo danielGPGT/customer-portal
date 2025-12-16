@@ -319,7 +319,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   const errorInfo = error ? errorMessages[error] : null
 
   return (
-    <div className="space-y-8 pb-8">
+    <div className="space-y-8 pb-8 w-full max-w-full overflow-x-hidden">
       {errorInfo && (
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
@@ -329,9 +329,9 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       )}
       
       {/* Main Grid: Left hero/content + Right stats column */}
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] w-full max-w-full">
         {/* Left Column: Hero, Pills, Main Content */}
-        <div className="space-y-6">
+        <div className="space-y-6 min-w-0 w-full max-w-full">
           {/* Hero Banner */}
           <DashboardHeroCard
             firstName={client?.first_name || 'Customer'}
@@ -378,7 +378,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         </div>
 
         {/* Right Column: Stats, Activity & Referrals (full height sidebar) */}
-        <div className="space-y-6">
+        <div className="space-y-6 min-w-0">
           {/* Stats Card with Progress */}
           <DashboardStatsCard
             firstName={client?.first_name || 'Customer'}
@@ -393,12 +393,14 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       </div>
 
       {/* Referral Highlight - Full Width */}
-      <ReferralHighlight
-        totalInvites={totalInvites}
-        completedReferrals={completedReferrals}
-        totalPointsEarned={totalPointsEarned}
-        referralBonusPerFriend={settings?.referral_bonus_referrer || 100}
-      />
+      <div className="w-full max-w-full">
+        <ReferralHighlight
+          totalInvites={totalInvites}
+          completedReferrals={completedReferrals}
+          totalPointsEarned={totalPointsEarned}
+          referralBonusPerFriend={settings?.referral_bonus_referrer || 100}
+        />
+      </div>
     </div>
   )
 }

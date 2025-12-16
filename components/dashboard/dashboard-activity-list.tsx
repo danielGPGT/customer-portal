@@ -138,18 +138,18 @@ export function DashboardActivityList({ transactions, trips }: DashboardActivity
                   <div className={cn('flex h-8 w-8 items-center justify-center rounded-lg border', typeInfo.className)}>
                     <Icon className="h-4 w-4" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5 mb-0.5">
-                      <Badge variant="outline" className={cn('text-[10px] px-1.5 py-0 h-auto', typeInfo.className)}>
+                  <div className="flex-1 min-w-0 overflow-hidden">
+                    <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
+                      <Badge variant="outline" className={cn('text-[10px] px-1.5 py-0 h-auto shrink-0', typeInfo.className)}>
                         {typeInfo.label}
                       </Badge>
-                      <span className={cn('text-sm font-semibold', isEarn ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400')}>
+                      <span className={cn('text-sm font-semibold shrink-0', isEarn ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400')}>
                         {pointsDisplay} pts
                       </span>
                     </div>
-                    <p className="text-xs font-medium text-foreground truncate">{tx.description}</p>
+                    <p className="text-xs font-medium text-foreground truncate break-words">{tx.description}</p>
                     {tx.booking_reference && (
-                      <p className="text-[11px] text-muted-foreground font-mono">{tx.booking_reference}</p>
+                      <p className="text-[11px] text-muted-foreground font-mono truncate">{tx.booking_reference}</p>
                     )}
                   </div>
                   <div className="flex flex-col items-end gap-0.5 shrink-0">

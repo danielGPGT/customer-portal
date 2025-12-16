@@ -123,7 +123,7 @@ export function DashboardPillsRow({
       <div
         ref={scrollRef}
         onScroll={checkScroll}
-        className="flex gap-3 overflow-x-auto scroll-smooth pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] md:grid md:grid-cols-3 md:overflow-visible"
+        className="flex gap-3 overflow-x-auto scroll-smooth pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] md:grid md:grid-cols-3 md:overflow-visible md:max-w-full"
       >
         {pills.map((pill) => {
           const Icon = pill.icon
@@ -131,7 +131,7 @@ export function DashboardPillsRow({
             <Link
               key={pill.id}
               href={pill.href}
-              className="group min-w-[200px] shrink-0 md:min-w-0"
+              className="group min-w-[200px] shrink-0 md:min-w-0 md:w-full"
             >
               <Card className="h-full border-2 p-4 transition-all hover:shadow-md hover:-translate-y-0.5">
                 <div className="flex items-center gap-3">

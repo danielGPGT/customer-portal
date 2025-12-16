@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={outfit.variable}>
       <body
-        className="font-sans antialiased"
+        className="font-sans antialiased overflow-x-hidden"
       >
         <ThemeProvider
           attribute="class"

@@ -37,12 +37,12 @@ export function PointsBalanceCard({
 
       <CardContent className="relative p-6">
         <div className="flex items-start justify-between mb-6">
-          <div className="flex items-center gap-2">
-            <div className="rounded-lg bg-white/20 backdrop-blur-sm p-2">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="rounded-lg bg-white/20 backdrop-blur-sm p-2 shrink-0">
               <Sparkles className="h-5 w-5" />
             </div>
-            <div>
-              <h2 className="text-sm font-medium text-primary-foreground/90 uppercase tracking-wide">
+            <div className="min-w-0">
+              <h2 className="text-sm font-medium text-primary-foreground/90 uppercase tracking-wide break-words">
                 Points Balance
               </h2>
             </div>
@@ -50,12 +50,12 @@ export function PointsBalanceCard({
         </div>
 
         {/* Main Points Display */}
-        <div className="mb-6">
-          <div className="flex items-baseline gap-2 mb-2">
-            <span className="text-5xl font-bold leading-none">{formattedPoints}</span>
-            <span className="text-lg font-medium text-primary-foreground/80">points</span>
+        <div className="mb-6 min-w-0">
+          <div className="flex items-baseline gap-2 mb-2 flex-wrap">
+            <span className="text-5xl font-bold leading-none break-all">{formattedPoints}</span>
+            <span className="text-lg font-medium text-primary-foreground/80 shrink-0">points</span>
           </div>
-          <p className="text-sm text-primary-foreground/80 font-medium">
+          <p className="text-sm text-primary-foreground/80 font-medium break-words">
             {formattedValue} in discounts available
           </p>
         </div>

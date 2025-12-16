@@ -192,21 +192,21 @@ export function NextTripCard({ booking }: NextTripCardProps) {
         {/* Content Overlay */}
         <div className="absolute inset-0 flex flex-col justify-between p-6 text-white">
           <div className="flex items-start justify-between">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-2">
+            <div className="flex-1 min-w-0 max-w-full">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
                 {booking.is_first_loyalty_booking && (
-                  <Badge className="bg-yellow-500/90 text-white border-yellow-400/50 text-xs">
+                  <Badge className="bg-yellow-500/90 text-white border-yellow-400/50 text-xs shrink-0">
                     <Sparkles className="h-3 w-3 mr-1" />
                     First Booking
                   </Badge>
                 )}
-                <Badge className={cn('text-xs border backdrop-blur-sm', status.className)}>
+                <Badge className={cn('text-xs border backdrop-blur-sm shrink-0', status.className)}>
                   <StatusIcon className="h-3 w-3 mr-1" />
                   {status.label}
                 </Badge>
               </div>
-              <h3 className="text-2xl font-bold mb-1 line-clamp-2">{eventName}</h3>
-              <p className="text-sm text-white/90 font-mono">Ref: {booking.booking_reference}</p>
+              <h3 className="text-2xl font-bold mb-1 line-clamp-2 break-words">{eventName}</h3>
+              <p className="text-sm text-white/90 font-mono truncate">Ref: {booking.booking_reference}</p>
             </div>
           </div>
 

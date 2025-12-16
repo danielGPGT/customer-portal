@@ -28,15 +28,15 @@ export function DashboardHeroCard({
       <div className="relative p-6 md:p-8 lg:p-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           {/* Left Content */}
-          <div className="flex-1 space-y-4">
+          <div className="flex-1 min-w-0 space-y-4">
             <div className="space-y-2">
               <p className="text-sm font-medium uppercase tracking-wider text-primary-foreground/80">
                 LOYALTY PORTAL
               </p>
-              <h1 className="text-3xl font-bold leading-tight tracking-tight md:text-4xl lg:text-5xl">
+              <h1 className="text-3xl font-bold leading-tight tracking-tight md:text-4xl lg:text-5xl break-words">
                 Turn Your Trips Into Rewards
               </h1>
-              <p className="max-w-2xl text-base text-primary-foreground/90 md:text-lg">
+              <p className="max-w-2xl text-base text-primary-foreground/90 md:text-lg break-words">
                 Earn points on every booking, redeem for discounts, and unlock exclusive benefits
                 with our loyalty program.
               </p>
