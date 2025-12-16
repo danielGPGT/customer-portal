@@ -74,6 +74,52 @@ export function TripDetailsTabs({
   spendTransaction,
   redemptions
 }: TripDetailsTabsProps) {
+  // --- Edit lock logic (4 weeks before event start) ---
+  const TEST_EDIT_LOCK_STATE: 'auto' | 'locked' | 'unlocked' = 'auto' // change for testing
+
+  const now = new Date()
+  let isEditLocked = false
+  let daysUntilLock: number | null = null
+  let lockDate: string | null = null
+
+  if (eventStartDate) {
+    try {
+      const start = new Date(eventStartDate)
+      const lockThreshold = new Date(start)
+      lockThreshold.setDate(lockThreshold.getDate() - 28) // 4 weeks before event
+      lockDate = lockThreshold.toISOString()
+
+      if (now >= lockThreshold) {
+        isEditLocked = true
+      } else {
+        const diffMs = lockThreshold.getTime() - now.getTime()
+        daysUntilLock = Math.ceil(diffMs / (1000 * 60 * 60 * 24))
+      }
+    } catch {
+      // ignore parsing errors, fall back to unlocked
+    }
+  }
+
+  if (TEST_EDIT_LOCK_STATE === 'locked') {
+    isEditLocked = true
+    daysUntilLock = null
+  } else if (TEST_EDIT_LOCK_STATE === 'unlocked') {
+    isEditLocked = false
+    // keep computed lockDate so we can still show the date in UI while forcing unlocked for testing
+  }
+
+  const hasBookedFlights = flights?.some(
+    (f: any) => !f.deleted_at && (f.flight_type === 'booked' || !f.flight_type)
+  )
+
+  // Travellers can be edited until 4 weeks before departure (even if flights are booked),
+  // but some fields (name/email/phone) will be locked when flights are booked.
+  const canEditTravellers = !isEditLocked
+
+  // Customer flight details can only be added/edited when there are no booked flights
+  // and we are not inside the 4-week lock window.
+  const canEditFlights = !isEditLocked && !hasBookedFlights
+
   return (
     <Tabs defaultValue="overview" className="w-full">
       <TabsList className="grid w-full lg:w-fit grid-cols-3 lg:grid-cols-5 h-auto gap-1 sm:gap-2">
@@ -122,7 +168,14 @@ export function TripDetailsTabs({
       </TabsContent>
 
       <TabsContent value="travelers" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
-        <TravelersSection travelers={travelers} />
+        <TravelersSection 
+          travelers={travelers} 
+          canEdit={canEditTravellers}
+          isEditLocked={isEditLocked}
+          daysUntilLock={daysUntilLock}
+          hasBookedFlights={hasBookedFlights}
+          lockDate={lockDate}
+        />
       </TabsContent>
 
       <TabsContent value="included" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
@@ -134,6 +187,10 @@ export function TripDetailsTabs({
           flights={flights} 
           currency={currency}
           bookingId={bookingId}
+          canEdit={canEditFlights}
+          isEditLocked={isEditLocked}
+          daysUntilLock={daysUntilLock}
+          lockDate={lockDate}
         />
       </TabsContent>
 

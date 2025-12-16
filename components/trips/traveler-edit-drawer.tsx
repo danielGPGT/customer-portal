@@ -64,9 +64,11 @@ interface TravelerEditDrawerProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onSuccess?: () => void
+  // When false, core contact fields (name/email/phone) are read-only
+  canEditContactFields: boolean
 }
 
-export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess }: TravelerEditDrawerProps) {
+export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, canEditContactFields }: TravelerEditDrawerProps) {
   const router = useRouter()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
@@ -180,6 +182,12 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess }: 
     <div className="space-y-4">
           {/* Personal Information */}
           <div className="space-y-4">
+            {!canEditContactFields && (
+              <p className="text-[11px] sm:text-xs text-muted-foreground">
+                Because flights have already been booked for this trip, we can no longer change core contact details
+                (name, email, phone, date of birth, passport). Please contact support if any of these are incorrect.
+              </p>
+            )}
             <h3 className="text-sm font-semibold text-foreground">Personal Information</h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -190,7 +198,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess }: 
                   <FormItem>
                     <FormLabel>First Name *</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="John" />
+                      <Input {...field} placeholder="John" disabled={!canEditContactFields} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -204,7 +212,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess }: 
                   <FormItem>
                     <FormLabel>Last Name *</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Doe" />
+                      <Input {...field} placeholder="Doe" disabled={!canEditContactFields} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -220,7 +228,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess }: 
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input type="email" {...field} placeholder="john.doe@example.com" />
+                      <Input type="email" {...field} placeholder="john.doe@example.com" disabled={!canEditContactFields} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -234,7 +242,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess }: 
                   <FormItem>
                     <FormLabel>Phone</FormLabel>
                     <FormControl>
-                      <Input type="tel" {...field} placeholder="+44 20 1234 5678" />
+                      <Input type="tel" {...field} placeholder="+44 20 1234 5678" disabled={!canEditContactFields} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -250,7 +258,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess }: 
                   <FormItem>
                     <FormLabel>Date of Birth</FormLabel>
                     <FormControl>
-                      <Input type="date" {...field} />
+                      <Input type="date" {...field} disabled={!canEditContactFields} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -278,7 +286,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess }: 
                   <FormItem>
                     <FormLabel>Passport Number</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="123456789" />
+                      <Input {...field} placeholder="123456789" disabled={!canEditContactFields} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -35,10 +35,15 @@ interface FlightItineraryCardProps {
     outboundSegments?: FlightSegment[]
     returnSegments?: FlightSegment[]
   }
+  /**
+   * Label shown above the itinerary (e.g. "Your Flight", "Booked Flight")
+   * Defaults to "Your Flight"
+   */
+  label?: string
   onEditSegment?: (segmentType: 'outbound' | 'return', segmentIndex: number) => void
 }
 
-export function FlightItineraryCard({ flightId, details, onEditSegment }: FlightItineraryCardProps) {
+export function FlightItineraryCard({ flightId, details, label = 'Your Flight', onEditSegment }: FlightItineraryCardProps) {
   const [airports, setAirports] = useState<Record<string, Airport>>({})
 
   // Fetch airport details
@@ -253,7 +258,7 @@ export function FlightItineraryCard({ flightId, details, onEditSegment }: Flight
     <div className="space-y-4">
       <div className="flex items-center justify-between mb-1">
         <Badge variant="outline" className="bg-secondary-50 dark:bg-secondary-950 border-secondary-200 dark:border-secondary-800">
-          Your Flight
+          {label}
         </Badge>
       </div>
 

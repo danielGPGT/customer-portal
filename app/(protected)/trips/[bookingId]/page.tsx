@@ -1,4 +1,3 @@
-import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -7,55 +6,28 @@ import { TripDetailsHeader } from '@/components/trips/trip-details-header'
 import { BookingOverviewCard } from '@/components/trips/booking-overview-card'
 import { TripDetailsTabs } from '@/components/trips/trip-details-tabs'
 import { TripActions } from '@/components/trips/trip-actions'
+import { getClient } from '@/lib/utils/get-client'
 
 interface TripDetailsPageProps {
   params: Promise<{ bookingId: string }>
 }
 
-export default async function TripDetailsPage({ params }: TripDetailsPageProps) {
-  const supabase = await createClient()
-  const { bookingId } = await params
+// Trip details can be cached briefly
+export const revalidate = 60
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+export default async function TripDetailsPage({ params }: TripDetailsPageProps) {
+  const { client, user, error } = await getClient()
+  const { bookingId } = await params
 
   if (!user) {
     redirect('/login')
   }
 
-  // Get client data by auth_user_id
-  let { data: client } = await supabase
-    .from('clients')
-    .select('id')
-    .eq('auth_user_id', user.id)
-    .single()
-
-  // If client not found, try to link by email
-  if (!client && user.email) {
-    const { data: linkedClient } = await supabase
-      .rpc('link_client_to_user', { p_user_id: user.id })
-
-    if (linkedClient && linkedClient.length > 0) {
-      // Retry query after linking
-      const { data: retryClient } = await supabase
-        .from('clients')
-        .select('id')
-        .eq('auth_user_id', user.id)
-        .single()
-      
-      if (retryClient) {
-        client = retryClient
-      } else {
-        // Use linked client data directly
-        client = { id: linkedClient[0].id }
-      }
-    }
-  }
-
-  if (!client) {
+  if (!client || error) {
     redirect('/dashboard?error=client_not_found')
   }
+
+  const supabase = await (await import('@/lib/supabase/server')).createClient()
 
   // Get booking details from bookings table with all related data
   const { data: booking, error: bookingError } = await supabase

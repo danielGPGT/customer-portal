@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Users, User, Mail, Phone, MapPin, Edit2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -27,11 +27,52 @@ interface Traveler {
 
 interface TravelersSectionProps {
   travelers: Traveler[]
+  canEdit: boolean
+  isEditLocked: boolean
+  daysUntilLock: number | null
+  hasBookedFlights: boolean
+  lockDate: string | null
 }
 
-export function TravelersSection({ travelers }: TravelersSectionProps) {
+export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLock, hasBookedFlights, lockDate }: TravelersSectionProps) {
   const [selectedTraveler, setSelectedTraveler] = useState<Traveler | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [timeRemaining, setTimeRemaining] = useState<string | null>(null)
+
+  // Live countdown timer until lockDate
+  useEffect(() => {
+    if (!lockDate || isEditLocked) {
+      setTimeRemaining(null)
+      return
+    }
+
+    const target = new Date(lockDate).getTime()
+
+    const update = () => {
+      const now = Date.now()
+      const diff = target - now
+      if (diff <= 0) {
+        setTimeRemaining(null)
+        return
+      }
+      const totalMinutes = Math.floor(diff / (1000 * 60))
+      const days = Math.floor(totalMinutes / (60 * 24))
+      const hours = Math.floor((totalMinutes % (60 * 24)) / 60)
+      const minutes = totalMinutes % 60
+
+      if (days > 0) {
+        setTimeRemaining(`${days}d ${hours}h ${minutes}m`)
+      } else if (hours > 0) {
+        setTimeRemaining(`${hours}h ${minutes}m`)
+      } else {
+        setTimeRemaining(`${minutes}m`)
+      }
+    }
+
+    update()
+    const id = setInterval(update, 60_000) // update every minute
+    return () => clearInterval(id)
+  }, [lockDate, isEditLocked])
 
   if (!travelers || travelers.length === 0) {
     return null
@@ -67,10 +108,44 @@ export function TravelersSection({ travelers }: TravelersSectionProps) {
     <>
       <Card>
         <CardHeader >
-          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-            <Users className="h-4 w-4 sm:h-5 sm:w-5" />
-            Travelers ({activeTravelers.length})
-          </CardTitle>
+          <div className="space-y-1.5">
+            <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+              <Users className="h-4 w-4 sm:h-5 sm:w-5" />
+              Travelers ({activeTravelers.length})
+            </CardTitle>
+            {/* Lock / info note */}
+            {isEditLocked ? (
+              <div className="rounded-md border border-amber-300 bg-amber-50 px-3 py-2">
+                <p className="text-[11px] sm:text-xs text-amber-900 font-medium">
+                  Traveller details are locked as we&apos;re within 4 weeks of departure
+                  {lockDate && (
+                    <> (changes locked from {new Date(lockDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}).</>
+                  )}
+                  {' '}Please contact support to update information.
+                </p>
+              </div>
+            ) : hasBookedFlights ? (
+              <div className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2">
+                <p className="text-[11px] sm:text-xs text-blue-900 font-medium">
+                  You can still update traveller details, but name, email, date of birth and passport number are locked because flights have been booked.
+                </p>
+              </div>
+            ) : daysUntilLock !== null ? (
+              <div className="rounded-md border border-emerald-300 bg-emerald-50 px-3 py-2 flex flex-col gap-0.5">
+                <p className="text-[11px] sm:text-xs text-emerald-900 font-medium">
+                  You can update traveller details for another {daysUntilLock} {daysUntilLock === 1 ? 'day' : 'days'}
+                  {lockDate && (
+                    <> (changes lock on {new Date(lockDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}).</>
+                  )}
+                </p>
+                {timeRemaining && (
+                  <p className="text-[11px] sm:text-[11px] text-emerald-900 font-semibold uppercase tracking-wide">
+                    Time remaining to make changes: {timeRemaining}
+                  </p>
+                )}
+              </div>
+            ) : null}
+          </div>
         </CardHeader>
         <CardContent >
           <div className="space-y-4 sm:space-y-6">
@@ -91,15 +166,17 @@ export function TravelersSection({ travelers }: TravelersSectionProps) {
                       </span>
                     )}
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleTravelerClick(traveler)}
-                    className="shrink-0 h-7 sm:h-8 px-2 sm:px-3"
-                  >
-                    <Edit2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1 sm:mr-1.5" />
-                    <span className="hidden sm:inline text-xs sm:text-sm">Edit</span>
-                  </Button>
+                  {canEdit && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleTravelerClick(traveler)}
+                      className="shrink-0 h-7 sm:h-8 px-2 sm:px-3"
+                    >
+                      <Edit2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1 sm:mr-1.5" />
+                      <span className="hidden sm:inline text-xs sm:text-sm">Edit</span>
+                    </Button>
+                  )}
                 </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm">
@@ -183,6 +260,7 @@ export function TravelersSection({ travelers }: TravelersSectionProps) {
           // Refresh the page to show updated data
           window.location.reload()
         }}
+        canEditContactFields={!hasBookedFlights}
       />
     </>
   )

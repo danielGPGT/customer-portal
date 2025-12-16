@@ -1,8 +1,8 @@
-import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { TripTabs } from '@/components/trips/trip-tabs'
 import { TripList } from '@/components/trips/trip-list'
 import { EmptyTripState } from '@/components/trips/empty-trip-state'
+import { getClient } from '@/lib/utils/get-client'
 
 type TripTab = 'upcoming' | 'past' | 'cancelled'
 
@@ -10,57 +10,26 @@ interface TripsPageProps {
   searchParams: Promise<{ tab?: string }>
 }
 
+// Trips overview doesn't need to be fully dynamic
+export const revalidate = 60
+
 export default async function TripsPage({ searchParams }: TripsPageProps) {
-  const supabase = await createClient()
+  const { client, user, error } = await getClient()
   const params = await searchParams
   const activeTab = (params.tab || 'upcoming') as TripTab
   
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
   if (!user) {
     redirect('/login')
   }
 
-  // Get client data by auth_user_id
-  let { data: client } = await supabase
-    .from('clients')
-    .select('id, first_loyalty_booking_at')
-    .eq('auth_user_id', user.id)
-    .single()
-
-  // If client not found, try to link by email
-  if (!client && user.email) {
-    const { data: linkedClient } = await supabase
-      .rpc('link_client_to_user', { p_user_id: user.id })
-
-    if (linkedClient && linkedClient.length > 0) {
-      // Retry query after linking
-      const { data: retryClient } = await supabase
-        .from('clients')
-        .select('id, first_loyalty_booking_at')
-        .eq('auth_user_id', user.id)
-        .single()
-      
-      if (retryClient) {
-        client = retryClient
-      } else {
-        // Use linked client data directly
-        client = {
-          id: linkedClient[0].id,
-          first_loyalty_booking_at: linkedClient[0].first_loyalty_booking_at
-        }
-      }
-    }
-  }
-
-  if (!client) {
+  if (!client || error) {
     redirect('/dashboard?error=client_not_found')
   }
 
+  const supabase = await (await import('@/lib/supabase/server')).createClient()
+
   // Get all bookings from bookings table with event details
-  const { data: bookings, error } = await supabase
+  const { data: bookings, error: bookingsError } = await supabase
     .from('bookings')
     .select(`
       *,
@@ -83,8 +52,8 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
     .is('deleted_at', null)
     .order('created_at', { ascending: false })
 
-  if (error) {
-    console.error('Error fetching bookings:', error)
+  if (bookingsError) {
+    console.error('Error fetching bookings:', bookingsError)
   }
 
   // Get loyalty transactions for points calculation

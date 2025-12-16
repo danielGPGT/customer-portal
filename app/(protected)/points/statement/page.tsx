@@ -1,52 +1,25 @@
-import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { TransactionList } from '@/components/points/transaction-list'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import { getClient } from '@/lib/utils/get-client'
+
+// Points statement can be cached briefly
+export const revalidate = 60
 
 export default async function PointsStatementPage() {
-  const supabase = await createClient()
-  
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { client, user, error } = await getClient()
 
   if (!user) {
     redirect('/login')
   }
 
-  // Get client data
-  // Get client data by auth_user_id
-  let { data: client } = await supabase
-    .from('clients')
-    .select('*')
-    .eq('auth_user_id', user.id)
-    .single()
-
-  // If client not found, try to link by email
-  if (!client && user.email) {
-    const { data: linkedClient } = await supabase
-      .rpc('link_client_to_user', { p_user_id: user.id })
-
-    if (linkedClient && linkedClient.length > 0) {
-      const { data: retryClient } = await supabase
-        .from('clients')
-        .select('*')
-        .eq('auth_user_id', user.id)
-        .single()
-      
-      if (retryClient) {
-        client = retryClient
-      } else {
-        client = linkedClient[0]
-      }
-    }
-  }
-
-  if (!client) {
+  if (!client || error) {
     redirect('/dashboard?error=client_not_found')
   }
+
+  const supabase = await (await import('@/lib/supabase/server')).createClient()
 
   // Get recent transactions (first 20)
   const { data: transactions } = await supabase

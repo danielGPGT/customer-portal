@@ -109,38 +109,53 @@ export function TransactionList({
         .range(page * 20, (page + 1) * 20 - 1)
 
       if (!error && data && data.length > 0) {
-        // Get booking references for new transactions
-        const transactionsWithBookings = await Promise.all(
-          data.map(async (tx) => {
-            if (tx.source_reference_id && (tx.source_type === 'purchase' || tx.source_type === 'redemption')) {
-              const { data: booking } = await supabase
-                .from('bookings')
-                .select(`
-                  booking_reference,
-                  event_id,
-                  events (
-                    name
-                  )
-                `)
-                .eq('id', tx.source_reference_id)
-                .is('deleted_at', null)
-                .maybeSingle()
-              
-              if (booking) {
-                return {
-                  ...tx,
-                  booking_reference: booking.booking_reference || null,
-                  event_name: (booking.events as { name?: string } | null)?.name || null,
-                }
-              }
-            }
+        // Batch booking lookups to avoid N+1 queries
+        const bookingIds = data
+          .filter(tx => tx.source_reference_id && (tx.source_type === 'purchase' || tx.source_type === 'redemption'))
+          .map(tx => tx.source_reference_id as string)
+          .filter((id, index, self) => self.indexOf(id) === index)
+
+        let bookingMap = new Map<string, { booking_reference: string | null; event_name: string | null }>()
+
+        if (bookingIds.length > 0) {
+          const { data: bookings } = await supabase
+            .from('bookings')
+            .select(`
+              id,
+              booking_reference,
+              events (
+                name
+              )
+            `)
+            .in('id', bookingIds)
+            .is('deleted_at', null)
+
+          if (bookings) {
+            bookings.forEach((booking) => {
+              bookingMap.set(booking.id, {
+                booking_reference: booking.booking_reference || null,
+                event_name: (booking.events as { name?: string } | null)?.name || null,
+              })
+            })
+          }
+        }
+
+        const transactionsWithBookings = data.map((tx) => {
+          if (tx.source_reference_id && (tx.source_type === 'purchase' || tx.source_type === 'redemption')) {
+            const booking = bookingMap.get(tx.source_reference_id as string)
             return {
               ...tx,
-              booking_reference: null,
-              event_name: null,
+              booking_reference: booking?.booking_reference ?? null,
+              event_name: booking?.event_name ?? null,
             }
-          })
-        )
+          }
+
+          return {
+            ...tx,
+            booking_reference: null,
+            event_name: null,
+          }
+        })
 
         setTransactions(prev => [...prev, ...transactionsWithBookings])
         setPage(prev => prev + 1)

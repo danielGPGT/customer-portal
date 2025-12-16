@@ -14,6 +14,9 @@ interface PointsPageProps {
   searchParams: Promise<{ page?: string }>
 }
 
+// Points overview can be cached briefly
+export const revalidate = 60
+
 export default async function PointsPage({ searchParams }: PointsPageProps) {
   const pageStartTime = performance.now()
   console.log('[Points Page] Starting page load...')
