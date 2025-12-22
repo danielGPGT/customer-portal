@@ -185,7 +185,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
             {!canEditContactFields && (
               <p className="text-[11px] sm:text-xs text-muted-foreground">
                 Because flights have already been booked for this trip, we can no longer change core contact details
-                (name, email, phone, date of birth, passport). Please contact support if any of these are incorrect.
+                (name, email, phone, date of birth, passport, nationality, and address). Please contact support if any of these are incorrect.
               </p>
             )}
             <h3 className="text-sm font-semibold text-foreground">Personal Information</h3>
@@ -272,7 +272,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                   <FormItem>
                     <FormLabel>Nationality</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="British" />
+                      <Input {...field} placeholder="British" disabled={!canEditContactFields} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -306,7 +306,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                 <FormItem>
                   <FormLabel>Address Line 1</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="123 Main Street" />
+                    <Input {...field} placeholder="123 Main Street" disabled={!canEditContactFields} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -320,7 +320,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                 <FormItem>
                   <FormLabel>Address Line 2</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Apartment, suite, etc." />
+                    <Input {...field} placeholder="Apartment, suite, etc." disabled={!canEditContactFields} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -335,7 +335,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                   <FormItem>
                     <FormLabel>City</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="London" />
+                      <Input {...field} placeholder="London" disabled={!canEditContactFields} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -349,7 +349,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                   <FormItem>
                     <FormLabel>State/Province</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Greater London" />
+                      <Input {...field} placeholder="Greater London" disabled={!canEditContactFields} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -363,7 +363,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                   <FormItem>
                     <FormLabel>Postal Code</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="SW1A 1AA" />
+                      <Input {...field} placeholder="SW1A 1AA" disabled={!canEditContactFields} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -378,7 +378,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                 <FormItem>
                   <FormLabel>Country</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="United Kingdom" />
+                    <Input {...field} placeholder="United Kingdom" disabled={!canEditContactFields} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
