@@ -87,6 +87,25 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
     .eq('booking_id', booking.id)
     .order('applied_at', { ascending: false })
 
+  // Get tickets data for ticket components
+  const ticketComponents = booking.booking_components?.filter(
+    (comp: any) => comp.component_type === 'ticket' && comp.component_id && !comp.deleted_at
+  ) || []
+  
+  const ticketIds = ticketComponents.map((comp: any) => comp.component_id).filter(Boolean)
+  
+  const { data: tickets } = ticketIds.length > 0
+    ? await supabase
+        .from('tickets')
+        .select('id, ticket_days')
+        .in('id', ticketIds)
+    : { data: [] }
+  
+  // Create a map of ticket_id -> ticket_days for easy lookup
+  const ticketDaysMap = new Map(
+    (tickets || []).map((ticket: any) => [ticket.id, ticket.ticket_days])
+  )
+
   // Use booking fields directly (from migration - these are now on bookings table)
   const pointsEarned = booking.points_earned || 0
   const pointsUsed = booking.points_used || 0
@@ -191,6 +210,7 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
         bookingId={bookingId}
         travelers={booking.booking_travelers || []}
         components={booking.booking_components || []}
+        ticketDaysMap={ticketDaysMap}
         flights={booking.bookings_flights || []}
         payments={booking.booking_payments || []}
         pointsUsed={enrichedBooking.points_used}

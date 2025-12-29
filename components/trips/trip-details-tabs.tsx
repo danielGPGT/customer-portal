@@ -45,6 +45,9 @@ interface TripDetailsTabsProps {
   earnTransaction?: any
   spendTransaction?: any
   redemptions?: any[]
+  
+  // Tickets
+  ticketDaysMap?: Map<string, string | null>
 }
 
 export function TripDetailsTabs({
@@ -72,7 +75,8 @@ export function TripDetailsTabs({
   isCancelled,
   earnTransaction,
   spendTransaction,
-  redemptions
+  redemptions,
+  ticketDaysMap
 }: TripDetailsTabsProps) {
   // --- Edit lock logic (4 weeks before event start) ---
   const TEST_EDIT_LOCK_STATE: 'auto' | 'locked' | 'unlocked' = 'auto' // change for testing
@@ -182,6 +186,7 @@ export function TripDetailsTabs({
         <BookingComponentsSection 
           components={components} 
           currency={currency}
+          ticketDaysMap={ticketDaysMap}
         />
         <FlightsSection 
           flights={flights} 

@@ -55,7 +55,6 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
   if (bookingsError) {
     console.error('Error fetching bookings:', bookingsError)
   }
-
   // Get loyalty transactions for points calculation
   const { data: loyaltyTransactions } = await supabase
     .from('loyalty_transactions')
