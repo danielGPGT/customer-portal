@@ -79,7 +79,7 @@ export function TopHeader({
         </Button>
 
         {/* Logo */}
-        <div className="flex items-center">
+        <Link href="/" className="flex items-center">
           <Image
             src={logoSrc}
             alt="Grand Prix Grand Tours"
@@ -90,7 +90,7 @@ export function TopHeader({
             quality={100}
             unoptimized
           />
-        </div>
+        </Link>
       </div>
 
       {/* Center: Search */}
