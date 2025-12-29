@@ -1,6 +1,7 @@
 'use client'
 
-import { useFormState, useFormStatus } from 'react-dom'
+import { useActionState } from 'react'
+import { useFormStatus } from 'react-dom'
 import Link from 'next/link'
 import { Loader2, Lock, Eye, EyeOff } from 'lucide-react'
 import { Input } from '@/components/ui/input'
@@ -16,7 +17,7 @@ const INITIAL_FORM_STATE: ChangePasswordFormState = {
 }
 
 export function ChangePasswordForm() {
-  const [state, formAction] = useFormState<ChangePasswordFormState, FormData>(
+  const [state, formAction] = useActionState<ChangePasswordFormState, FormData>(
     changePasswordAction,
     INITIAL_FORM_STATE
   )

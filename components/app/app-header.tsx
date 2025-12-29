@@ -32,7 +32,6 @@ const pageTitles: Record<string, string> = {
   '/trips/past': 'Past Trips',
   '/trips/cancelled': 'Cancelled Trips',
   '/refer': 'Referral Center',
-  '/refer/my-referrals': 'My Referrals',
   '/refer/terms': 'Referral Terms',
   '/profile': 'Profile & Settings',
   '/profile/edit': 'Edit Profile',

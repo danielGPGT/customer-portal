@@ -1,51 +1,18 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { PointsCalculator } from '@/components/points/points-calculator'
-import { Lightbulb, BookOpen, UserPlus, Gift, ArrowRight, FileText } from 'lucide-react'
+import { Lightbulb, Plane, UserPlus, Gift, ArrowRight, FileText, TrendingUp, Coins } from 'lucide-react'
 import Link from 'next/link'
+import { getClient } from '@/lib/utils/get-client'
 
 export default async function PointsEarnPage() {
   const supabase = await createClient()
-  
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { client, user } = await getClient()
 
-  if (!user) {
+  if (!user || !client) {
     redirect('/login')
-  }
-
-  // Get client data by auth_user_id
-  let { data: client } = await supabase
-    .from('clients')
-    .select('*')
-    .eq('auth_user_id', user.id)
-    .single()
-
-  // If client not found, try to link by email
-  if (!client && user.email) {
-    const { data: linkedClient } = await supabase
-      .rpc('link_client_to_user', { p_user_id: user.id })
-
-    if (linkedClient && linkedClient.length > 0) {
-      const { data: retryClient } = await supabase
-        .from('clients')
-        .select('*')
-        .eq('auth_user_id', user.id)
-        .single()
-      
-      if (retryClient) {
-        client = retryClient
-      } else {
-        client = linkedClient[0]
-      }
-    }
-  }
-
-  if (!client) {
-    redirect('/dashboard?error=client_not_found')
   }
 
   // Get loyalty settings
@@ -78,103 +45,139 @@ export default async function PointsEarnPage() {
   const currencySymbol = currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Page Header */}
-      <div>
+      <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">How to Earn Points</h1>
+        <p className="text-muted-foreground">
+          Discover all the ways you can accumulate points and unlock rewards
+        </p>
       </div>
 
       {/* Earning Rate Info Card */}
-      <Card>
+      <Card className="border-primary/20 bg-primary/5">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Lightbulb className="h-5 w-5 text-primary" />
-            Earning Rate
+            <TrendingUp className="h-5 w-5 text-primary" />
+            Your Earning Rate
           </CardTitle>
+          <CardDescription>
+            Points are automatically credited to your account after booking confirmation
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <p className="text-base">
-            You earn {pointsPerPound} points for every {currencySymbol}1 you spend on trips
-          </p>
-          <p className="text-base font-medium">
-            That's 1 point for every {currencySymbol}{Math.round(1 / pointsPerPound).toLocaleString()}!
-          </p>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <p className="text-base">
+              You earn points every time you book with Grand Prix Grand Tours.
+            </p>
+            <ul className="space-y-2 text-sm text-muted-foreground list-disc list-inside ml-2">
+              <li>For every {currencySymbol}20 you spend, you earn 1 point</li>
+              <li>1 point = {currencySymbol}1 to use on a future booking</li>
+              <li>Points for each trip are added to your account once your booking is confirmed</li>
+              <li>You'll also see a full breakdown of how your points were earned</li>
+            </ul>
+          </div>
         </CardContent>
       </Card>
 
       {/* Ways to Earn */}
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Ways to Earn</h2>
-        <div className="space-y-4">
-          {/* Book Trips */}
-          <Card>
+      <div className="space-y-4">
+        <div>
+          <h2 className="text-2xl font-semibold mb-2">Ways to Earn Points</h2>
+          <p className="text-muted-foreground">
+            Multiple opportunities to boost your points balance
+          </p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {/* Book Your Motorsport Experience */}
+          <Card className="flex flex-col">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <span className="text-xl">1️⃣</span>
-                <span>Book Trips</span>
-              </CardTitle>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Plane className="h-5 w-5 text-primary" />
+                </div>
+                <CardTitle className="text-lg">Book Your Motorsport Experience!</CardTitle>
+              </div>
+              <CardDescription>
+                Earn points automatically on every booking
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-base text-muted-foreground">
-                Earn points on every booking you make with us.
+            <CardContent className="flex-1 flex flex-col space-y-4">
+              <p className="text-sm text-muted-foreground flex-1">
+                You earn points every time you book with Grand Prix Grand Tours. Points are added to your account once your booking is confirmed, and you'll see a full breakdown of how your points were earned.
               </p>
-              <div className="p-4 bg-muted rounded-lg">
-                <p className="text-sm font-medium mb-1">Example:</p>
-                <p className="text-sm text-muted-foreground">
-                  {currencySymbol}4,500 booking = {Math.round(4500 * pointsPerPound).toLocaleString()} points
+              <div className="p-3 bg-muted/50 rounded-lg border">
+                <p className="text-xs font-medium text-muted-foreground mb-1">Example:</p>
+                <p className="text-sm font-semibold">
+                  Spend {currencySymbol}4,500 → Earn {Math.round(4500 / 20).toLocaleString()} points
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  You'll see this total in your points hub.
                 </p>
               </div>
-              <Button asChild variant="outline" className="w-full">
-                <Link href="/trips" className="flex items-center justify-between">
-                  <span>Browse Events</span>
+              <Button asChild className="w-full">
+                <a 
+                  href="https://www.grandprixgrandtours.com/f1-packages/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2"
+                >
+                  <span>Explore Races</span>
                   <ArrowRight className="h-4 w-4" />
-                </Link>
+                </a>
               </Button>
             </CardContent>
           </Card>
 
-          {/* Refer Friends */}
-          <Card>
+          {/* Refer A Friend */}
+          <Card className="flex flex-col">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <span className="text-xl">2️⃣</span>
-                <span>Refer Friends</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-base text-muted-foreground">
-                Get {settings?.referral_bonus_referee || 100} bonus points when your friend signs up, plus another {settings?.referral_bonus_referrer || 100} points when they make their first booking!
-              </p>
-              <div className="p-4 bg-muted rounded-lg">
-                <p className="text-sm font-medium">
-                  Total: {(settings?.referral_bonus_referee || 100) + (settings?.referral_bonus_referrer || 100)} points per referral
-                </p>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <UserPlus className="h-5 w-5 text-primary" />
+                </div>
+                <CardTitle className="text-lg">Refer A Friend</CardTitle>
               </div>
+              <CardDescription>
+                Share your unique link and earn 100 points per referral
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex-1 flex flex-col space-y-4">
+              <ul className="text-sm text-muted-foreground space-y-2 list-disc list-inside flex-1">
+                <li>Your friend automatically receives 100 points when they sign up</li>
+                <li>You earn 100 points when they make their first booking</li>
+                <li>Your total points earned will be visible in your points hub</li>
+              </ul>
               <Button asChild variant="outline" className="w-full">
-                <Link href="/refer" className="flex items-center justify-between">
-                  <span>Start Referring</span>
+                <Link href="/refer" className="flex items-center justify-center gap-2">
                   <UserPlus className="h-4 w-4" />
+                  <span>Start Referring</span>
                 </Link>
               </Button>
             </CardContent>
           </Card>
 
-          {/* Sign Up with Referral */}
-          <Card>
+          {/* Sign Up Via Referral */}
+          <Card className="flex flex-col">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <span className="text-xl">3️⃣</span>
-                <span>Sign Up with Referral</span>
-              </CardTitle>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Gift className="h-5 w-5 text-primary" />
+                </div>
+                <CardTitle className="text-lg">Sign Up Via Referral</CardTitle>
+              </div>
+              <CardDescription>
+                Welcome bonus for new members
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-base text-muted-foreground">
-                If you signed up using a friend's referral link, you already got {settings?.referral_bonus_referee || 100} bonus points!
+            <CardContent className="flex-1 flex flex-col space-y-4">
+              <p className="text-sm text-muted-foreground flex-1">
+                If you joined us using a friend's referral link, you already received 100 points in your account.
               </p>
-              <Button asChild variant="outline" className="w-full">
-                <Link href="/points/statement" className="flex items-center justify-between">
-                  <span>Check your statement</span>
+              <Button asChild variant="outline" className="w-full mt-auto">
+                <Link href="/points/statement" className="flex items-center justify-center gap-2">
                   <FileText className="h-4 w-4" />
+                  <span>View Statement</span>
                 </Link>
               </Button>
             </CardContent>
@@ -183,8 +186,13 @@ export default async function PointsEarnPage() {
       </div>
 
       {/* Points Calculator */}
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Points Calculator</h2>
+      <div className="space-y-4">
+        <div>
+          <h2 className="text-2xl font-semibold mb-2">Points Calculator</h2>
+          <p className="text-muted-foreground">
+            Calculate how many points you'll earn on your next booking
+          </p>
+        </div>
         <PointsCalculator 
           pointsPerPound={pointsPerPound}
           pointValue={pointValue}
@@ -193,25 +201,48 @@ export default async function PointsEarnPage() {
       </div>
 
       {/* Earning History */}
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Your Earning History</h2>
+      <div className="space-y-4">
+        <div>
+          <h2 className="text-2xl font-semibold mb-2">Your Earning History</h2>
+          <p className="text-muted-foreground">
+            Track your points accumulation over time
+          </p>
+        </div>
         <Card>
-          <CardContent className="p-6 space-y-4">
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Total Earned:</span>
-                <span className="text-lg font-bold">{client.lifetime_points_earned?.toLocaleString() || 0} points</span>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Coins className="h-5 w-5 text-primary" />
+              Lifetime Points Summary
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Total Points Earned</p>
+                  <p className="text-2xl font-bold mt-1">
+                    {client.lifetime_points_earned?.toLocaleString() || 0}
+                  </p>
+                </div>
+                <Coins className="h-8 w-8 text-primary opacity-50" />
               </div>
-              <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">From {totalBookings} booking{totalBookings !== 1 ? 's' : ''}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">From {totalReferrals} referral{totalReferrals !== 1 ? 's' : ''}</span>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-3 bg-background rounded-lg border">
+                  <p className="text-xs text-muted-foreground mb-1">From Bookings</p>
+                  <p className="text-lg font-semibold">{totalBookings}</p>
+                  <p className="text-xs text-muted-foreground mt-1">booking{totalBookings !== 1 ? 's' : ''}</p>
+                </div>
+                <div className="p-3 bg-background rounded-lg border">
+                  <p className="text-xs text-muted-foreground mb-1">From Referrals</p>
+                  <p className="text-lg font-semibold">{totalReferrals}</p>
+                  <p className="text-xs text-muted-foreground mt-1">referral{totalReferrals !== 1 ? 's' : ''}</p>
+                </div>
               </div>
             </div>
-            <Button asChild variant="outline" className="w-full">
-              <Link href="/points/statement" className="flex items-center justify-between">
-                <span>View Statement</span>
+            <Button asChild className="w-full">
+              <Link href="/points/statement" className="flex items-center justify-center gap-2">
+                <FileText className="h-4 w-4" />
+                <span>View Full Statement</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>

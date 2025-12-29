@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useFormState, useFormStatus } from 'react-dom'
+import { useActionState } from 'react'
+import { useFormStatus } from 'react-dom'
 import Link from 'next/link'
 import { Loader2, Mail, Phone, CalendarRange } from 'lucide-react'
 import { Input } from '@/components/ui/input'
@@ -37,7 +38,7 @@ interface EditProfileFormProps {
 }
 
 export function EditProfileForm({ initialValues }: EditProfileFormProps) {
-  const [state, formAction] = useFormState<ProfileFormState, FormData>(
+  const [state, formAction] = useActionState<ProfileFormState, FormData>(
     updateProfileAction,
     INITIAL_FORM_STATE
   )

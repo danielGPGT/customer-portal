@@ -1,10 +1,10 @@
 import { cache } from 'react'
 import { createClient } from '@/lib/supabase/server'
-import { normalizePortalTypes, canAccessClientPortal } from '@/lib/utils/portal-access'
+import { normalizePortalTypes, canAccessClientPortal, type PortalType } from '@/lib/utils/portal-access'
 
 type CachedClient = {
   client: any
-  portalAccess: string[]
+  portalAccess: PortalType[]
   expiresAt: number
 }
 
@@ -23,7 +23,7 @@ const getCachedClient = (userId: string) => {
   return cached
 }
 
-const setCachedClient = (userId: string, client: any, portalAccess: string[]) => {
+const setCachedClient = (userId: string, client: any, portalAccess: PortalType[]) => {
   clientCache.set(userId, {
     client,
     portalAccess,

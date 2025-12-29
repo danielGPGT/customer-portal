@@ -98,10 +98,6 @@ const navigationItems: NavItem[] = [
     title: "Referral Center",
     url: "/refer",
     icon: UserPlus,
-    subItems: [
-      { title: "Refer Hub", url: "/refer" },
-      { title: "My Referrals", url: "/refer/my-referrals" },
-    ],
   },
   {
     title: "Profile & Settings",

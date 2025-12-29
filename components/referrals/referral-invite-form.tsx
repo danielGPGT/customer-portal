@@ -1,7 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { useFormState, useFormStatus } from "react-dom"
+import { useActionState } from "react"
+import { useFormStatus } from "react-dom"
 import { toast } from "@/hooks/use-toast"
 import { submitReferralInvite } from "@/app/(protected)/refer/actions"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -25,7 +26,7 @@ function SubmitButton() {
 }
 
 export function ReferralInviteForm() {
-  const [state, formAction] = useFormState(submitReferralInvite, initialState)
+  const [state, formAction] = useActionState(submitReferralInvite, initialState)
 
   React.useEffect(() => {
     if (state?.success) {

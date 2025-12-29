@@ -31,9 +31,7 @@ export default async function ProtectedLayout({
 
   return (
     <LayoutWrapper user={user} client={client}>
-      <div className="">
-        {children}
-      </div>
+      {children}
     </LayoutWrapper>
   )
 }

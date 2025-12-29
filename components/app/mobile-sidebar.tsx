@@ -54,10 +54,6 @@ const navigationItems: NavItem[] = [
     title: "Referrals",
     url: "/refer",
     icon: UserPlus,
-    subItems: [
-      { title: "Refer Hub", url: "/refer" },
-      { title: "My Referrals", url: "/refer/my-referrals" },
-    ],
   },
 
 ]
@@ -198,14 +194,14 @@ export function MobileSidebar({ open, onOpenChange }: MobileSidebarProps) {
           })}
         </div>
 
-        {/* Apply Now Button */}
+        {/* Refer a Friend Button */}
         <div className="px-4 pb-4 mt-auto">
           <Button
-            className="w-full bg-primary hover:bg-primary-700 text-primary-foreground"
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
             asChild
           >
-            <Link href="/apply" onClick={() => onOpenChange(false)}>
-              Apply Now
+            <Link href="/refer" onClick={() => onOpenChange(false)}>
+              Refer a Friend
             </Link>
           </Button>
         </div>

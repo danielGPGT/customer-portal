@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Search, Type, BarChart3, Bell, User, Menu, X, Coins } from "lucide-react"
+import { Search, Menu, X, Coins, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -103,8 +103,7 @@ export function TopHeader({
             className="pl-9 h-9 w-full bg-background dark:bg-base-950 border-border text-foreground dark:text-primary-foreground placeholder:text-muted-foreground"
             onKeyDown={(e) => {
               if (e.key === 'Enter' && searchQuery.trim()) {
-                // Handle search
-                console.log('Searching for:', searchQuery)
+                // TODO: Implement search functionality
               }
             }}
           />
@@ -113,8 +112,6 @@ export function TopHeader({
 
       {/* Right: Icons */}
       <div className="flex items-center gap-2 ml-auto">
-
-
         {/* Theme Toggle - Desktop only */}
         <div className="hidden lg:flex">
           <ThemeToggle />
