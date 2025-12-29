@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { NotificationsPopover } from "@/components/app/notifications-popover"
 import { ThemeToggle } from "@/components/app/theme-toggle"
+import { SearchDropdown } from "@/components/app/search-dropdown"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -33,6 +34,7 @@ const pageTitles: Record<string, string> = {
   '/trips/cancelled': 'Cancelled Trips',
   '/refer': 'Referral Center',
   '/refer/terms': 'Referral Terms',
+  '/search': 'Search Results',
   '/profile': 'Profile & Settings',
   '/profile/edit': 'Edit Profile',
   '/profile/security': 'Security Settings',
@@ -52,6 +54,7 @@ export function AppHeader({ clientId }: { clientId: string }) {
   const [user, setUser] = React.useState<any>(null)
   const [client, setClient] = React.useState<any>(null)
   const [searchQuery, setSearchQuery] = React.useState("")
+  const [searchFocused, setSearchFocused] = React.useState(false)
 
   React.useEffect(() => {
     const fetchUser = async () => {
@@ -118,20 +121,29 @@ export function AppHeader({ clientId }: { clientId: string }) {
           </h1>
           <div className="hidden md:flex flex-1 max-w-lg items-center gap-2 ml-4">
             <div className="relative flex-1 w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
               <Input
                 type="search"
-                placeholder="Search trips, points, notifications..."
+                placeholder="Search pages..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9 h-9 w-full bg-background/50 border-sidebar-border focus-visible:bg-background transition-colors"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && searchQuery.trim()) {
-                    // Handle search - can be implemented later
-                    console.log('Searching for:', searchQuery)
-                  }
+                onFocus={() => setSearchFocused(true)}
+                onBlur={(e) => {
+                  // Delay to allow link clicks
+                  setTimeout(() => setSearchFocused(false), 200)
                 }}
+                className="pl-9 h-9 w-full bg-background/50 border-sidebar-border focus-visible:bg-background transition-colors"
               />
+              {searchFocused && searchQuery.trim() && (
+                <SearchDropdown 
+                  query={searchQuery} 
+                  clientId={clientId}
+                  onSelect={() => {
+                    setSearchFocused(false)
+                    setSearchQuery("")
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>

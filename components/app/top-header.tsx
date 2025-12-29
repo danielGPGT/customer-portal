@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { NotificationsPopover } from "@/components/app/notifications-popover"
 import { ThemeToggle } from "@/components/app/theme-toggle"
+import { SearchDropdown } from "@/components/app/search-dropdown"
 import Image from "next/image"
 import { useTheme } from "next-themes"
 import Link from "next/link"
@@ -35,6 +36,7 @@ export function TopHeader({
   client 
 }: TopHeaderProps) {
   const [searchQuery, setSearchQuery] = React.useState("")
+  const [searchFocused, setSearchFocused] = React.useState(false)
   const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
 
@@ -94,19 +96,29 @@ export function TopHeader({
       {/* Center: Search */}
       <div className="flex-1 max-w-md mx-4 hidden md:flex">
         <div className="relative w-full">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
           <Input
             type="search"
-            placeholder="Type to search..."
+            placeholder="Search pages..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 h-9 w-full bg-background dark:bg-base-950 border-border text-foreground dark:text-primary-foreground placeholder:text-muted-foreground"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && searchQuery.trim()) {
-                // TODO: Implement search functionality
-              }
+            onFocus={() => setSearchFocused(true)}
+            onBlur={(e) => {
+              // Delay to allow link clicks
+              setTimeout(() => setSearchFocused(false), 200)
             }}
+            className="pl-9 h-9 w-full bg-background dark:bg-base-950 border-border text-foreground dark:text-primary-foreground placeholder:text-muted-foreground"
           />
+          {searchFocused && searchQuery.trim() && (
+            <SearchDropdown 
+              query={searchQuery} 
+              clientId={clientId}
+              onSelect={() => {
+                setSearchFocused(false)
+                setSearchQuery("")
+              }}
+            />
+          )}
         </div>
       </div>
 
