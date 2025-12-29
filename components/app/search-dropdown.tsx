@@ -91,3 +91,5 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
     </div>
   )
 }
+
+
