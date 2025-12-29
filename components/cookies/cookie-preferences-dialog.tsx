@@ -2,17 +2,9 @@
 
 import * as React from "react"
 import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
-import { Cookie, Info } from "lucide-react"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Card, CardContent } from "@/components/ui/card"
+import { X } from "lucide-react"
+import Link from "next/link"
 
 const COOKIE_CONSENT_KEY = 'cookie-consent'
 const COOKIE_PREFERENCES_KEY = 'cookie-preferences'
@@ -49,152 +41,81 @@ export function CookiePreferencesDialog({ open, onOpenChange }: CookiePreference
     }
   }, [])
 
-  const handleSave = () => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, 'true')
-    localStorage.setItem(COOKIE_PREFERENCES_KEY, JSON.stringify(preferences))
-    onOpenChange(false)
-    // Optionally reload the page to apply changes
-    window.location.reload()
-  }
-
   const handleAcceptAll = () => {
     const allAccepted: CookiePreferences = {
       necessary: true,
       analytics: true,
       marketing: true,
     }
-    setPreferences(allAccepted)
     localStorage.setItem(COOKIE_CONSENT_KEY, 'true')
     localStorage.setItem(COOKIE_PREFERENCES_KEY, JSON.stringify(allAccepted))
     onOpenChange(false)
-    window.location.reload()
   }
 
-  const handleRejectAll = () => {
-    const allRejected: CookiePreferences = {
-      necessary: true, // Necessary cookies are always required
+  const handleEssentialOnly = () => {
+    const essentialOnly: CookiePreferences = {
+      necessary: true,
       analytics: false,
       marketing: false,
     }
-    setPreferences(allRejected)
     localStorage.setItem(COOKIE_CONSENT_KEY, 'true')
-    localStorage.setItem(COOKIE_PREFERENCES_KEY, JSON.stringify(allRejected))
+    localStorage.setItem(COOKIE_PREFERENCES_KEY, JSON.stringify(essentialOnly))
     onOpenChange(false)
-    window.location.reload()
   }
 
-  if (!mounted) {
+  const handleSave = () => {
+    localStorage.setItem(COOKIE_CONSENT_KEY, 'true')
+    localStorage.setItem(COOKIE_PREFERENCES_KEY, JSON.stringify(preferences))
+    onOpenChange(false)
+  }
+
+  if (!mounted || !open) {
     return null
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <div className="flex items-center gap-2">
-            <Cookie className="h-5 w-5 text-primary" />
-            <DialogTitle>Cookie Preferences</DialogTitle>
-          </div>
-          <DialogDescription>
-            Manage your cookie preferences. You can enable or disable different types of cookies below.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="space-y-6 py-4">
-          {/* Necessary Cookies */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="necessary" className="text-base font-semibold">
-                  Necessary Cookies
-                </Label>
-                <p className="text-sm text-muted-foreground">
-                  These cookies are essential for the website to function properly. They cannot be disabled.
-                </p>
-              </div>
-              <Switch
-                id="necessary"
-                checked={preferences.necessary}
-                disabled
-                className="opacity-50"
-              />
-            </div>
-            <Alert>
-              <Info className="h-4 w-4" />
-              <AlertDescription className="text-xs">
-                Necessary cookies include authentication tokens, session management, and security features.
-              </AlertDescription>
-            </Alert>
+    <Card className="fixed bottom-4 right-4 z-50 w-[360px] shadow-lg border">
+      <CardContent className="">
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <h3 className="font-semibold text-base">About cookies on this site</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              We use cookies and similar technologies to collect information about how our site is used. 
+              This helps us analyse traffic and improve our services. You can choose to accept all cookies 
+              or only those necessary for the site to function.
+            </p>
           </div>
 
-          {/* Analytics Cookies */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="analytics" className="text-base font-semibold">
-                  Analytics Cookies
-                </Label>
-                <p className="text-sm text-muted-foreground">
-                  These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously.
-                </p>
-              </div>
-              <Switch
-                id="analytics"
-                checked={preferences.analytics}
-                onCheckedChange={(checked) =>
-                  setPreferences((prev) => ({ ...prev, analytics: checked }))
-                }
-              />
-            </div>
+          <div className="flex flex-col gap-2">
+            <Button onClick={handleAcceptAll} className="w-full">
+              Accept all cookies
+            </Button>
+            <Button variant="outline" onClick={handleEssentialOnly} className="w-full">
+              Essential cookies only
+            </Button>
+            <Button variant="outline" onClick={handleSave} className="w-full">
+              Save preferences
+            </Button>
           </div>
 
-          {/* Marketing Cookies */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="marketing" className="text-base font-semibold">
-                  Marketing Cookies
-                </Label>
-                <p className="text-sm text-muted-foreground">
-                  These cookies are used to deliver personalized advertisements and track campaign performance.
-                </p>
-              </div>
-              <Switch
-                id="marketing"
-                checked={preferences.marketing}
-                onCheckedChange={(checked) =>
-                  setPreferences((prev) => ({ ...prev, marketing: checked }))
-                }
-              />
-            </div>
+          <div className="pt-2 border-t">
+            <Link 
+              href="/terms" 
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Terms and conditions
+            </Link>
           </div>
-
-          {/* Info Section */}
-          <Alert>
-            <Info className="h-4 w-4" />
-            <AlertDescription className="text-xs">
-              Your preferences are stored locally in your browser. You can change these settings at any time.
-              For more information, please see our{' '}
-              <a href="/privacy" className="text-primary hover:underline">
-                Privacy Policy
-              </a>
-              .
-            </AlertDescription>
-          </Alert>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-2 justify-end pt-4 border-t">
-          <Button variant="outline" onClick={handleRejectAll}>
-            Reject All
-          </Button>
-          <Button variant="outline" onClick={handleAcceptAll}>
-            Accept All
-          </Button>
-          <Button onClick={handleSave}>
-            Save Preferences
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+        <button
+          onClick={() => onOpenChange(false)}
+          className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors"
+          aria-label="Close"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </CardContent>
+    </Card>
   )
 }
