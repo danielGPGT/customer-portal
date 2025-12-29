@@ -5,6 +5,7 @@ import { TopHeader } from '@/components/app/top-header'
 import { NavBar } from '@/components/app/nav-bar'
 import { MobileSidebar } from '@/components/app/mobile-sidebar'
 import { AppFooter } from '@/components/app/app-footer'
+import { CookieBanner } from '@/components/cookies/cookie-banner'
 
 interface LayoutWrapperProps {
   children: React.ReactNode
@@ -47,6 +48,9 @@ export function LayoutWrapper({
       </main>
 
       <AppFooter />
+      
+      {/* Cookie Banner */}
+      <CookieBanner />
     </div>
   )
 }

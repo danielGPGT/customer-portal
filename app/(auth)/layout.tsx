@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { AuthNavbar } from '@/components/auth/auth-navbar'
 import { AuthRightNav } from '@/components/auth/auth-right-nav'
+import { CookieBanner } from '@/components/cookies/cookie-banner'
 
 export const metadata: Metadata = {
   title: 'Account | Customer Loyalty Portal',
@@ -49,7 +50,7 @@ export default function AuthLayout({
       <div 
         className="hidden lg:flex lg:flex-1 lg:flex-col relative min-h-screen"
         style={{
-          backgroundImage: 'url(/assets/images/67b4ad50c55779bb94474065_Canada-Home-Tile-1-min-e1741342952168.webp)',
+          backgroundImage: 'url(/assets/images/67b47522e00a9d3b8432bdd7_67b4739ca8ab15bb14dcff85_Singapore-Home-Tile-min.avif)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -73,13 +74,10 @@ export default function AuthLayout({
           </div>
         </div>
 
-        {/* Cookie Management Button - Bottom Right */}
-        <div className="relative z-10 flex justify-end items-end px-6 xl:px-12 pb-6 lg:pb-8">
-          <button className="text-xs text-white/80 bg-black/30 hover:bg-black/50 px-3 py-1.5 rounded transition-colors">
-            Manage cookies
-          </button>
-        </div>
       </div>
+      
+      {/* Cookie Banner */}
+      <CookieBanner />
     </div>
   )
 }
