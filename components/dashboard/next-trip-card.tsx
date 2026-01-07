@@ -267,7 +267,7 @@ export function NextTripCard({ booking }: NextTripCardProps) {
           </Link>
         </Button>
         <Button asChild variant="outline" size="icon" className="shrink-0">
-          <Link href={`/trips/${booking.booking_id}?tab=travelers`} title="Manage Travelers">
+          <Link href={`/trips/${booking.booking_id}?tab=travelers`} title="Manage Travellers">
             <Users className="h-4 w-4" />
           </Link>
         </Button>
