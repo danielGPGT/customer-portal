@@ -163,7 +163,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
               clientCreatedOrLinked = true
             toast({
               title: 'Account linked',
-              description: 'Your existing client record has been linked! Please check your email to verify. (Referral code was invalid)',
+              description: 'Your existing client record has been linked! (Referral code was invalid)',
             })
           } else {
             throw referralError
@@ -172,7 +172,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
             clientCreatedOrLinked = true
           toast({
             title: 'Success! 🎉',
-            description: 'Account created with 100 bonus points! Check your email to verify.',
+            description: 'Account created with 100 bonus points!',
           })
         }
       } else {
@@ -229,7 +229,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
 
           toast({
             title: 'Account linked! 🎉',
-            description: `Your existing client record has been linked to your portal account.${preservedPoints} Please check your email to verify.`,
+            description: `Your existing client record has been linked to your portal account.${preservedPoints}`,
           })
         } else {
           // New client - create record
@@ -275,7 +275,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
                   clientCreatedOrLinked = true
                 toast({
                   title: 'Account linked! 🎉',
-                  description: 'Your existing account has been linked. Please check your email to verify.',
+                  description: 'Your existing account has been linked.',
                 })
               } else {
                 throw clientError
@@ -287,7 +287,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
               clientCreatedOrLinked = true
             toast({
               title: 'Success! 🎉',
-              description: 'Account created! Check your email to verify.',
+              description: 'Account created!',
             })
           }
         }
@@ -295,7 +295,9 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
 
         // If we get here, everything succeeded
         if (clientCreatedOrLinked) {
-      router.push('/login?verified=false')
+          // Clear any cached client data to ensure fresh fetch after login
+          // Use window.location to force a full page reload and clear caches
+          window.location.href = '/login?verified=false&signedup=true'
         }
       } catch (stepError: any) {
         // If auth user was created but client wasn't, clean up the auth user

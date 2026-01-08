@@ -96,7 +96,7 @@ export default async function EditProfilePage() {
       <Separator />
       <p className="text-sm text-muted-foreground">
         Need to change something else?{' '}
-        <Link href="mailto:support@grandprixgrandtours.com" className="text-primary underline-offset-4 hover:underline">
+        <Link href="mailto:bookings@grandprixgrandtours.com" className="text-primary underline-offset-4 hover:underline">
           Contact support
         </Link>
         .

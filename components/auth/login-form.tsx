@@ -56,8 +56,9 @@ export function LoginForm() {
         description: 'Successfully logged in',
       })
 
-      router.push('/')
-      router.refresh()
+      // Force a full page reload to ensure all server-side data is fresh
+      // This is especially important after signup when client data was just created
+      window.location.href = '/'
     } catch (error: any) {
       console.error('Login error:', error)
       toast({

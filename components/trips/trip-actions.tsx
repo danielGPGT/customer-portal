@@ -81,7 +81,7 @@ Please assist me with:
 
 Thank you`
 
-    const mailtoLink = `mailto:support@grandprixgrandtours.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    const mailtoLink = `mailto:bookings@grandprixgrandtours.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
     window.location.href = mailtoLink
   }
 

@@ -28,10 +28,10 @@ export default function ContactPage() {
                 Send us an email and we'll get back to you as soon as possible.
               </p>
               <a 
-                href="mailto:support@grandprixgrandtours.com" 
+                href="mailto:bookings@grandprixgrandtours.com" 
                 className="text-primary hover:underline text-sm font-medium"
               >
-                support@grandprixgrandtours.com
+                bookings@grandprixgrandtours.com
               </a>
             </div>
           </div>

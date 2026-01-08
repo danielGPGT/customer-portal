@@ -36,7 +36,7 @@ export default function FAQPage() {
     },
     {
       question: "What if I notice incorrect points in my account?",
-      answer: "If you notice any discrepancies with your points balance or transactions, please contact our support team immediately. We'll investigate and correct any errors. You can reach us at support@grandprixgrandtours.com or call us during business hours."
+      answer: "If you notice any discrepancies with your points balance or transactions, please contact our support team immediately. We'll investigate and correct any errors. You can reach us at bookings@grandprixgrandtours.com or call us during business hours."
     },
     {
       question: "How do I update my profile information?",

@@ -34,8 +34,8 @@ export default function AuthLayout({
           <div className="w-full max-w-md mx-auto">
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
               If you have questions email us at{' '}
-              <a href="mailto:support@grandprixgrandtours.com" className="text-primary hover:underline">
-                support@grandprixgrandtours.com
+              <a href="mailto:bookings@grandprixgrandtours.com" className="text-primary hover:underline">
+                booking@grandprixgrandtours.com
               </a>
               {' '}or call us at (UK) 0203 474 0512 or (US) 213 808 6027. For more detail go to{' '}
               <a href="https://www.grandprixgrandtours.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">

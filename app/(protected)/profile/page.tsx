@@ -239,7 +239,7 @@ export default async function ProfilePage() {
           <CardContent className="space-y-4">
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button asChild variant="default" className="flex-1">
-                <Link href="mailto:support@grandprixgrandtours.com">
+                <Link href="mailto:bookings@grandprixgrandtours.com">
                   <HelpCircle className="mr-2 h-4 w-4" />
                   Email support
                 </Link>
