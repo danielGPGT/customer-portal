@@ -3,7 +3,6 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ThemeToggle } from "@/components/app/theme-toggle"
 
 export function AuthRightNav() {
   const pathname = usePathname()
@@ -50,9 +49,6 @@ export function AuthRightNav() {
       >
         Log In
       </Link>
-      <div className="hidden xl:flex items-center ml-2">
-        <ThemeToggle />
-      </div>
     </nav>
   )
 }

@@ -4,15 +4,9 @@ import Link from 'next/link'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { getClient } from '@/lib/utils/get-client'
-import { NextTripCard } from '@/components/dashboard/next-trip-card'
-import { PointsBalanceCard } from '@/components/dashboard/points-balance-card'
-import { RecentActivityCard } from '@/components/dashboard/recent-activity-card'
-import { ReferralHighlight } from '@/components/dashboard/referral-highlight'
-import { DashboardHeroCard } from '@/components/dashboard/dashboard-hero-card'
-import { DashboardPillsRow } from '@/components/dashboard/dashboard-pills-row'
-import { UpcomingTripsCarousel } from '@/components/dashboard/upcoming-trips-carousel'
-import { DashboardActivityList } from '@/components/dashboard/dashboard-activity-list'
-import { DashboardStatsCard } from '@/components/dashboard/dashboard-stats-card'
+import { DashboardHeader } from '@/components/dashboard/dashboard-header'
+import { UpcomingTrips } from '@/components/dashboard/upcoming-trips'
+import { EarnRedeemCards } from '@/components/dashboard/earn-redeem-cards'
 
 interface DashboardPageProps {
   searchParams: Promise<{ error?: string }>
@@ -35,11 +29,11 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     redirect('/login?error=setup_failed')
   }
 
-  // Get loyalty settings for referral bonus
+  // Get loyalty settings for referral bonus and points info
   const supabase = await (await import('@/lib/supabase/server')).createClient()
   const { data: settings } = await supabase
     .from('loyalty_settings')
-    .select('referral_bonus_referee, referral_bonus_referrer')
+    .select('referral_bonus_referee, referral_bonus_referrer, currency, points_per_pound, point_value, redemption_increment, min_redemption_points')
     .eq('id', 1)
     .single()
 
@@ -155,6 +149,12 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           city,
           country
         )
+      ),
+      booking_components!booking_components_booking_id_fkey (
+        id,
+        component_type,
+        component_data,
+        component_snapshot
       )
     `)
     .eq('client_id', client.id)
@@ -162,25 +162,67 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     .is('deleted_at', null)
     .order('created_at', { ascending: false })
 
-  // Find the next upcoming trip (first one with start_date in the future)
+  // Helper function to extract check-in/check-out dates from hotel room components
+  const getHotelDates = (booking: any) => {
+    const hotelComponents = booking.booking_components?.filter(
+      (comp: any) => comp.component_type === 'hotel_room'
+    ) || []
+
+    if (hotelComponents.length === 0) return { checkIn: null, checkOut: null }
+
+    // Find the earliest check-in date
+    let earliestCheckIn: string | null = null
+    let latestCheckOut: string | null = null
+
+    hotelComponents.forEach((comp: any) => {
+      const data = comp.component_data || comp.component_snapshot || {}
+      const checkIn = data.check_in || data.checkIn
+      const checkOut = data.check_out || data.checkOut
+
+      if (checkIn) {
+        if (!earliestCheckIn || new Date(checkIn) < new Date(earliestCheckIn)) {
+          earliestCheckIn = checkIn
+        }
+      }
+      if (checkOut) {
+        if (!latestCheckOut || new Date(checkOut) > new Date(latestCheckOut)) {
+          latestCheckOut = checkOut
+        }
+      }
+    })
+
+    return { checkIn: earliestCheckIn, checkOut: latestCheckOut }
+  }
+
+  // Find the next upcoming trip (first one with check-in date in the future)
   let nextTrip: any = null
   if (upcomingBookings) {
     const tripsWithDates = upcomingBookings
-      .map(booking => ({
-        ...booking,
-        event_start_date: booking.events?.start_date || null,
-        event_end_date: booking.events?.end_date || null,
-        event_name: booking.events?.name || null,
-      }))
+      .map(booking => {
+        const hotelDates = getHotelDates(booking)
+        return {
+          ...booking,
+          check_in_date: hotelDates.checkIn,
+          check_out_date: hotelDates.checkOut,
+          event_start_date: booking.events?.start_date || null,
+          event_end_date: booking.events?.end_date || null,
+          event_name: booking.events?.name || null,
+        }
+      })
       .filter(booking => {
-        if (!booking.event_start_date) return false
-        const startDate = new Date(booking.event_start_date)
+        // Use check-in date if available, otherwise fall back to event start date
+        const tripStartDate = booking.check_in_date || booking.event_start_date
+        if (!tripStartDate) return false
+        const startDate = new Date(tripStartDate)
         return startDate >= today
       })
       .sort((a, b) => {
-        const dateA = a.event_start_date ? new Date(a.event_start_date).getTime() : Infinity
-        const dateB = b.event_start_date ? new Date(b.event_start_date).getTime() : Infinity
-        return dateA - dateB
+        // Sort by check-in date if available, otherwise event start date
+        const dateA = a.check_in_date || a.event_start_date
+        const dateB = b.check_in_date || b.event_start_date
+        const timeA = dateA ? new Date(dateA).getTime() : Infinity
+        const timeB = dateB ? new Date(dateB).getTime() : Infinity
+        return timeA - timeB
       })
 
     if (tripsWithDates.length > 0) {
@@ -197,8 +239,10 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         booking_id: trip.id,
         booking_reference: trip.booking_reference,
         event_name: trip.event_name,
-        event_start_date: trip.event_start_date,
-        event_end_date: trip.event_end_date,
+        check_in_date: trip.check_in_date,
+        check_out_date: trip.check_out_date,
+        event_start_date: trip.event_start_date, // Keep for fallback
+        event_end_date: trip.event_end_date, // Keep for fallback
         booking_status: mapStatus(trip.status),
         is_first_loyalty_booking: trip.is_first_loyalty_booking || false,
         events: trip.events,
@@ -319,89 +363,69 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   const errorInfo = error ? errorMessages[error] : null
 
   return (
-    <div className="space-y-8 pb-8 w-full max-w-full overflow-x-hidden">
-      {errorInfo && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>{errorInfo.title}</AlertTitle>
-          <AlertDescription>{errorInfo.description}</AlertDescription>
-        </Alert>
-      )}
-      
-      {/* Main Grid: Left hero/content + Right stats column */}
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] w-full max-w-full">
-        {/* Left Column: Hero, Pills, Main Content */}
-        <div className="space-y-6 min-w-0 w-full max-w-full">
-          {/* Hero Banner */}
-          <DashboardHeroCard
-            firstName={client?.first_name || 'Customer'}
-            nextTripId={nextTrip?.id}
-            pointsBalance={client?.points_balance || 0}
-          />
-
-          {/* Pills Row */}
-          <DashboardPillsRow
-            upcomingTripsCount={upcomingTripsCount}
-            pointsBalance={client?.points_balance || 0}
-            friendsReferred={totalInvites}
-          />
-
-          {/* Upcoming Trips Carousel */}
-          {upcomingBookings && upcomingBookings.length > 0 && (
-            <UpcomingTripsCarousel
-              trips={upcomingBookings
-                .map((booking) => ({
-                  id: booking.id,
-                  booking_reference: booking.booking_reference,
-                  event_name: booking.events?.name || null,
-                  event_start_date: booking.events?.start_date || null,
-                  event_end_date: booking.events?.end_date || null,
-                  booking_status: (() => {
-                    const mapStatus = (status: string): 'pending' | 'confirmed' | 'completed' | 'cancelled' => {
-                      if (status === 'cancelled' || status === 'refunded') return 'cancelled'
-                      if (status === 'confirmed' || status === 'completed')
-                        return status === 'completed' ? 'completed' : 'confirmed'
-                      return 'pending'
-                    }
-                    return mapStatus(booking.status)
-                  })(),
-                  events: booking.events,
-                }))
-                .filter((trip) => {
-                  if (!trip.event_start_date) return false
-                  return new Date(trip.event_start_date) >= today
-                })
-                .slice(0, 5)}
-            />
-          )}
-
-        </div>
-
-        {/* Right Column: Stats, Activity & Referrals (full height sidebar) */}
-        <div className="space-y-6 min-w-0">
-          {/* Stats Card with Progress */}
-          <DashboardStatsCard
-            firstName={client?.first_name || 'Customer'}
-            profileImageUrl={client?.avatar_url || null}
-            progressPercentage={progressPercentage}
-            monthlyActivity={monthlyActivity}
-          />
-
-          {/* Activity List */}
-          <DashboardActivityList transactions={recentTransactions} trips={recentTrips} />
-        </div>
-      </div>
-
-      {/* Referral Highlight - Full Width */}
-      <div className="w-full max-w-full">
-        <ReferralHighlight
-          totalInvites={totalInvites}
-          completedReferrals={completedReferrals}
-          totalPointsEarned={totalPointsEarned}
-          referralBonusPerFriend={settings?.referral_bonus_referrer || 100}
+    <>
+      {/* Full-Width Dashboard Header - Breaks out of container */}
+      <div className="relative">
+        <DashboardHeader
+          firstName={client?.first_name || 'Customer'}
+          pointsBalance={client?.points_balance || 0}
+          lifetimePointsSpent={client?.lifetime_points_spent || 0}
+          redemptionIncrement={settings?.redemption_increment || 100}
+          minRedemptionPoints={settings?.min_redemption_points || 100}
         />
       </div>
-    </div>
+
+        {/* Main Content Container */}
+        <div className="space-y-8 pb-8 w-full max-w-full overflow-x-hidden mt-8">
+          {errorInfo && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>{errorInfo.title}</AlertTitle>
+              <AlertDescription>{errorInfo.description}</AlertDescription>
+            </Alert>
+          )}
+          
+          {/* Upcoming Trips Section */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Upcoming Trip</h2>
+              <p className="text-muted-foreground">
+                Your next adventure is just around the corner. View details and manage your upcoming trip.
+              </p>
+            </div>
+            <UpcomingTrips
+              trip={nextTrip ? {
+                id: nextTrip.id,
+                booking_id: nextTrip.booking_id,
+                booking_reference: nextTrip.booking_reference,
+                event_name: nextTrip.event_name,
+                check_in_date: nextTrip.check_in_date,
+                check_out_date: nextTrip.check_out_date,
+                event_start_date: nextTrip.event_start_date,
+                event_end_date: nextTrip.event_end_date,
+                booking_status: nextTrip.booking_status,
+                is_first_loyalty_booking: nextTrip.is_first_loyalty_booking,
+                events: nextTrip.events,
+              } : null}
+            />
+          </div>
+
+          {/* How to Earn & Redeem Cards */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Points Guide</h2>
+              <p className="text-muted-foreground">
+                Learn how to earn and redeem points to maximize your rewards.
+              </p>
+            </div>
+            <EarnRedeemCards
+              currency={settings?.currency || 'GBP'}
+              pointsPerPound={settings?.points_per_pound || 0.05}
+              pointValue={settings?.point_value || 1}
+            />
+          </div>
+        </div>
+    </>
   )
 }
 

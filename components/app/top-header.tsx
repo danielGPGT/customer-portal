@@ -14,7 +14,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { NotificationsPopover } from "@/components/app/notifications-popover"
-import { ThemeToggle } from "@/components/app/theme-toggle"
 import { SearchDropdown } from "@/components/app/search-dropdown"
 import Image from "next/image"
 import { useTheme } from "next-themes"
@@ -124,11 +123,6 @@ export function TopHeader({
 
       {/* Right: Icons */}
       <div className="flex items-center gap-2 ml-auto">
-        {/* Theme Toggle - Desktop only */}
-        <div className="hidden lg:flex">
-          <ThemeToggle />
-        </div>
-
         {/* Notifications */}
         <NotificationsPopover clientId={clientId} />
 

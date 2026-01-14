@@ -16,7 +16,6 @@ import { cn } from "@/lib/utils"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import Image from "next/image"
 import { useTheme } from "next-themes"
-import { ThemeToggle } from "@/components/app/theme-toggle"
 
 interface NavItem {
   title: string
@@ -110,10 +109,6 @@ export function MobileSidebar({ open, onOpenChange }: MobileSidebarProps) {
               quality={100}
               unoptimized
             />
-          </div>
-          {/* Theme Toggle - visible on tablet and below, hidden on desktop */}
-          <div className="flex lg:hidden">
-            <ThemeToggle />
           </div>
         </div>
 

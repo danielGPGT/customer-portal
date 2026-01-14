@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { NotificationsPopover } from "@/components/app/notifications-popover"
-import { ThemeToggle } from "@/components/app/theme-toggle"
 import { SearchDropdown } from "@/components/app/search-dropdown"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -150,9 +149,6 @@ export function AppHeader({ clientId }: { clientId: string }) {
 
         {/* Right Actions */}
         <div className="flex items-center gap-2">
-          {/* Theme Toggle */}
-          <ThemeToggle />
-
           {/* Separator */}
           <Separator orientation="vertical" className="h-6" />
 
