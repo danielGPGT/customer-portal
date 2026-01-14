@@ -83,9 +83,9 @@ export function DashboardHeader({
         />
 
         {/* Content - Welcome Text and Cards */}
-        <div className="relative flex flex-col items-center justify-center px-4 md:px-8 py-6 sm:py-8 md:py-16 lg:py-22">
+        <div className="relative flex flex-col px-4 md:px-16 py-6 sm:py-8 md:py-16 lg:py-16 justify-center mx-auto">
           {/* Welcome Section */}
-          <div className="text-center mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-2xl w-full">
+          <div className="mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-2xl w-full">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-3 md:mb-4">
               Welcome {firstName}
             </h1>
@@ -96,7 +96,7 @@ export function DashboardHeader({
           </div>
 
           {/* Stats Cards */}
-          <div className="w-full max-w-5xl">
+          <div className="w-full">
             {/* Mobile Carousel */}
             <div className="sm:hidden w-full">
               <Carousel opts={{ align: 'start' }} className="w-full">

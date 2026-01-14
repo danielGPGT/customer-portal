@@ -21,7 +21,7 @@ export function LayoutWrapper({
   const [sidebarOpen, setSidebarOpen] = React.useState(false)
 
   return (
-    <div className="flex min-h-screen mx-auto flex-col">
+    <div className="flex min-h-screen mx-auto flex-col px-4 lg:px-4">
       {/* Top Header - Fixed */}
       <TopHeader
         onMenuClick={() => setSidebarOpen(!sidebarOpen)}
@@ -44,7 +44,7 @@ export function LayoutWrapper({
 
       {/* Main Content Area */}
       <main className="flex-1 pt-20 lg:pt-36 pb-10 overflow-x-hidden">
-        <div className="container mx-auto px-4 lg:px-0">
+        <div className="mx-auto w-full container">
           {children}
         </div>
       </main>

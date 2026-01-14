@@ -365,6 +365,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   return (
     <>
       {/* Full-Width Dashboard Header - Breaks out of container */}
+
       <div className="relative">
         <DashboardHeader
           firstName={client?.first_name || 'Customer'}
@@ -425,6 +426,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
             />
           </div>
         </div>
+ 
     </>
   )
 }

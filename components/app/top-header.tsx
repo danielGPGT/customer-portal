@@ -46,8 +46,8 @@ export function TopHeader({
 
   // Determine which logo to use based on theme
   const logoSrc = mounted && resolvedTheme === 'dark' 
-    ? "/assets/images/gpgt-logo.png" 
-    : "/assets/images/gpgt-logo-light.png"
+    ? "/assets/images/gpgt-logo-light.png" 
+    : "/assets/images/gpgt-logo.png"
 
   const userInitials = client?.first_name && client?.last_name
     ? `${client.first_name[0] || ''}${client.last_name[0] || ''}`.toUpperCase()
@@ -58,7 +58,7 @@ export function TopHeader({
     : client?.email || user?.email || "User"
 
   return (
-    <header className="bg-card text-foreground border-b border-border h-16 flex items-center px-4 lg:px-6 z-50 fixed top-0 left-0 right-0">
+    <header className="bg-secondary-1000 text-foreground border-b border-border h-16 flex items-center px-4 lg:px-6 z-50 fixed top-0 left-0 right-0">
       <div className="container mx-auto flex items-center">
       {/* Left: Menu + Logo */}
       <div className="flex items-center gap-3">
@@ -66,7 +66,7 @@ export function TopHeader({
         <Button
           variant="ghost"
           size="icon"
-          className="lg:hidden text-foreground hover:bg-accent h-9 w-9"
+          className="lg:hidden text-background hover:bg-accent h-9 w-9"
           onClick={onMenuClick}
         >
           {isSidebarOpen ? (
@@ -95,7 +95,7 @@ export function TopHeader({
       {/* Center: Search */}
       <div className="flex-1 max-w-md mx-4 hidden md:flex">
         <div className="relative w-full">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white pointer-events-none z-10" />
           <Input
             type="search"
             placeholder="Search pages..."
@@ -106,7 +106,7 @@ export function TopHeader({
               // Delay to allow link clicks
               setTimeout(() => setSearchFocused(false), 200)
             }}
-            className="pl-9 h-9 w-full bg-background dark:bg-base-950 border-border text-foreground dark:text-primary-foreground placeholder:text-muted-foreground"
+            className="pl-9 h-9 w-full bg-secondary-1000 border-border text-white placeholder:text-white"
           />
           {searchFocused && searchQuery.trim() && (
             <SearchDropdown 
@@ -134,12 +134,12 @@ export function TopHeader({
             <div className="relative">
               <DropdownMenuTrigger asChild>
                 <Button
-                  variant="ghost"
-                  className="relative h-9 w-9 rounded-full text-foreground dark:text-primary-foreground hover:bg-accent p-0"
+                  variant="default"
+                  className="relative h-9 w-9 rounded-full p-0"
                 >
-                  <Avatar className="h-8 w-8 border border-border">
+                  <Avatar className="h-8 w-8">
                     <AvatarImage src="" alt={userName} />
-                    <AvatarFallback className="bg-muted text-foreground dark:text-primary-foreground text-xs">
+                    <AvatarFallback className="text-foreground text-xs">
                       {userInitials}
                     </AvatarFallback>
                   </Avatar>
@@ -187,24 +187,24 @@ export function TopHeader({
           <Link href="/points" className="flex items-center">
             {/* Mobile: Compact version */}
             <Button
-              variant="outline"
-              className="md:hidden items-center gap-1.5 h-9 px-2.5 border-border hover:bg-accent text-foreground"
+              variant="default"
+              className="md:hidden items-center gap-1.5 h-9 px-2.5 "
             >
-              <Coins className="h-4 w-4 text-primary" />
+              <Coins className="h-4 w-4 text-background" />
               <span className="font-semibold text-sm">
                 {client.points_balance?.toLocaleString() || 0}
               </span>
             </Button>
             {/* Desktop: Full version */}
             <Button
-              variant="outline"
-              className="hidden md:flex items-center gap-2 h-9 px-3 border-border hover:bg-accent text-foreground"
+              variant="default"
+              className="hidden md:flex items-center gap-2 h-9 px-3"
             >
-              <Coins className="h-4 w-4 text-primary" />
+              <Coins className="h-4 w-4 text-background" />
               <span className="font-semibold text-sm">
                 {client.points_balance?.toLocaleString() || 0}
               </span>
-              <span className="text-xs text-muted-foreground hidden lg:inline">
+              <span className="text-xs hidden lg:inline">
                 points
               </span>
             </Button>

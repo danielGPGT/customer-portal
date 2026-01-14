@@ -131,12 +131,12 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
         <Button
           variant="ghost"
           size="icon"
-          className="relative h-9 w-9 text-foreground dark:text-primary-foreground hover:bg-accent"
+          className="relative h-9 w-9 text-background dark:text-primary-foreground hover:bg-secondary-950"
         >
-          <Bell className="h-4 w-4" />
+          <Bell className="h-4 w-4 text-background" />
           {unreadCount > 0 && (
             <Badge
-              variant="destructive"
+              variant="default"
               className="absolute -right-1 -top-1 h-5 w-5 flex items-center justify-center p-0 text-xs font-semibold"
             >
               {unreadCount > 9 ? '9+' : unreadCount}
