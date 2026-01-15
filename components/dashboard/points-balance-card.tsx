@@ -89,7 +89,7 @@ export function PointsBalanceCard({
           className="w-full bg-white/20 hover:bg-white/30 text-primary-foreground border-white/30 backdrop-blur-sm"
         >
           <Link href="/points">
-            View Points Statement
+            View Points Hub
             <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </Button>

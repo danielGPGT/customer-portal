@@ -150,7 +150,7 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
         if (metadata.booking_id) {
           return `/trips/${metadata.booking_id}?tab=points`
         }
-        return '/points/statement'
+        return '/points'
       
       case 'referral_signup':
       case 'referral_completed':

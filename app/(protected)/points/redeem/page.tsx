@@ -331,7 +331,7 @@ export default async function PointsRedeemPage() {
               </div>
             </div>
             <Button asChild className="w-full">
-              <Link href="/points/statement" className="flex items-center justify-center gap-2">
+              <Link href="/points" className="flex items-center justify-center gap-2">
                 <FileText className="h-4 w-4" />
                 <span>View Full Statement</span>
                 <ArrowRight className="h-4 w-4" />

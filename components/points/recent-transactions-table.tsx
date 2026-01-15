@@ -103,7 +103,7 @@ export function RecentTransactionsTable({
         <div className="flex items-center justify-between gap-2">
           <CardTitle className="text-base sm:text-lg">Activity</CardTitle>
           <Button asChild variant="ghost" size="sm" className="shrink-0">
-            <Link href="/points/statement" className="flex items-center gap-1 sm:gap-2">
+            <Link href="/points" className="flex items-center gap-1 sm:gap-2">
               <span className="hidden sm:inline">View All</span>
               <span className="sm:hidden">All</span>
               <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />

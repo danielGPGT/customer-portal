@@ -134,7 +134,7 @@ export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLo
             ) : hasBookedFlights ? (
               <div className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2">
                 <p className="text-[11px] sm:text-xs text-blue-900 font-medium">
-                  You can still update traveller details, but name, email, phone, and date of birth are locked because flights have been booked.
+                  You can still update traveller details, but name, email, phone, date of birth, passport, nationality, and address are locked because flights have been booked.
                 </p>
               </div>
             ) : daysUntilLock !== null ? (

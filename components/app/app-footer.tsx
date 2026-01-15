@@ -17,7 +17,6 @@ const footerLinks = [
       { label: 'Points overview', href: '/points' },
       { label: 'How to earn', href: '/points/earn' },
       { label: 'How to redeem', href: '/points/redeem' },
-      { label: 'Statement', href: '/points/statement' },
     ],
   },
   {

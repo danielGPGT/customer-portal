@@ -39,7 +39,6 @@ const navigationItems: NavItem[] = [
     icon: Coins,
     subItems: [
       { title: "Points Overview", url: "/points" },
-      { title: "Statement", url: "/points/statement" },
       { title: "How to Earn", url: "/points/earn" },
       { title: "How to Redeem", url: "/points/redeem" },
     ],

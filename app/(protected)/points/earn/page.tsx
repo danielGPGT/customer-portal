@@ -173,7 +173,7 @@ export default async function PointsEarnPage() {
                 If you joined us using a friend's referral link, you already received 100 points in your account.
               </p>
               <Button asChild variant="outline" className="w-full mt-auto">
-                <Link href="/points/statement" className="flex items-center justify-center gap-2">
+                <Link href="/points" className="flex items-center justify-center gap-2">
                   <FileText className="h-4 w-4" />
                   <span>View Statement</span>
                 </Link>

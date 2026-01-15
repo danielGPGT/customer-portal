@@ -21,7 +21,6 @@ interface SearchDropdownProps {
 const allPages: PageResult[] = [
   { title: 'Dashboard', url: '/', icon: Home, description: 'View your overview' },
   { title: 'Points Hub', url: '/points', icon: Coins, description: 'View your points balance' },
-  { title: 'Points Statement', url: '/points/statement', icon: FileText, description: 'View transaction history' },
   { title: 'How to Earn Points', url: '/points/earn', icon: TrendingUp, description: 'Learn how to earn points' },
   { title: 'How to Redeem Points', url: '/points/redeem', icon: Gift, description: 'Learn how to redeem points' },
   { title: 'Trip Management', url: '/trips', icon: Plane, description: 'Manage your trips' },

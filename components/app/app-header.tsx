@@ -24,7 +24,6 @@ const pageTitles: Record<string, string> = {
   '/': 'Dashboard',
   '/dashboard': 'Dashboard',
   '/points': 'Points Hub',
-  '/points/statement': 'Points Statement',
   '/points/earn': 'How to Earn Points',
   '/points/redeem': 'How to Redeem Points',
   '/trips': 'Trip Management',

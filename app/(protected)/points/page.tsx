@@ -505,7 +505,7 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
 
 
       </div>
-      {/* Statistics Cards */}
+      {/* Statistics Cards 
       <div className="space-y-4">
         <div className="md:hidden">
           <Carousel opts={{ align: "start" }} className="px-2">
@@ -594,7 +594,7 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
             }
           />
         </div>
-      </div>
+      </div>*/}
 
       {/* Transactions Table */}
       <div className="space-y-4">
