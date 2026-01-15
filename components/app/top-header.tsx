@@ -129,7 +129,7 @@ export function TopHeader({
         
 
         {/* User Profile */}
-        {user && (
+        {user && (mounted ? (
           <DropdownMenu modal={false}>
             <div className="relative">
               <DropdownMenuTrigger asChild>
@@ -181,7 +181,21 @@ export function TopHeader({
             </DropdownMenuContent>
             </div>
           </DropdownMenu>
-        )}
+        ) : (
+          <Button
+            variant="default"
+            className="relative h-9 w-9 rounded-full p-0"
+            disabled
+          >
+            <Avatar className="h-8 w-8">
+              <AvatarImage src="" alt={userName} />
+              <AvatarFallback className="text-foreground text-xs">
+                {userInitials}
+              </AvatarFallback>
+            </Avatar>
+            <span className="sr-only">User menu</span>
+          </Button>
+        ))}
         {/* Points Wallet */}
         {client && (
           <Link href="/points" className="flex items-center">

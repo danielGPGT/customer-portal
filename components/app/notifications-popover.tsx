@@ -30,7 +30,13 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
   const [unreadCount, setUnreadCount] = React.useState(0)
   const [isLoading, setIsLoading] = React.useState(true)
   const [isOpen, setIsOpen] = React.useState(false)
+  const [mounted, setMounted] = React.useState(false)
   const supabase = createClient()
+
+  // Avoid hydration mismatch by only rendering Radix UI components after mount
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
 
   React.useEffect(() => {
     if (!clientId) return
@@ -123,6 +129,21 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
       default:
         return '📢'
     }
+  }
+
+  // Render placeholder during SSR to avoid hydration mismatch
+  if (!mounted) {
+    return (
+      <Button
+        variant="ghost"
+        size="icon"
+        className="relative h-9 w-9 text-background dark:text-primary-foreground hover:bg-secondary-950"
+        disabled
+      >
+        <Bell className="h-4 w-4 text-background" />
+        <span className="sr-only">Notifications</span>
+      </Button>
+    )
   }
 
   return (

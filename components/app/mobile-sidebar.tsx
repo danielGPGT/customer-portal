@@ -13,7 +13,7 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"
 import Image from "next/image"
 import { useTheme } from "next-themes"
 
@@ -96,6 +96,7 @@ export function MobileSidebar({ open, onOpenChange }: MobileSidebarProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="left" className="w-[280px] p-0 bg-sidebar">
+        <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
         {/* Sidebar Header */}
         <div className="bg-card border-b border-border h-14 flex items-center justify-between px-4">
           <div className="flex items-center">

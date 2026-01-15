@@ -54,6 +54,12 @@ export function AppHeader({ clientId }: { clientId: string }) {
   const [client, setClient] = React.useState<any>(null)
   const [searchQuery, setSearchQuery] = React.useState("")
   const [searchFocused, setSearchFocused] = React.useState(false)
+  const [mounted, setMounted] = React.useState(false)
+
+  // Avoid hydration mismatch by only rendering Radix UI components after mount
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
 
   React.useEffect(() => {
     const fetchUser = async () => {
@@ -156,7 +162,7 @@ export function AppHeader({ clientId }: { clientId: string }) {
           <NotificationsPopover clientId={clientId} />
 
           {/* User Menu */}
-          {user && (
+          {user && (mounted ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -198,7 +204,21 @@ export function AppHeader({ clientId }: { clientId: string }) {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          )}
+          ) : (
+            <Button
+              variant="ghost"
+              className="relative h-9 w-9 rounded-full"
+              disabled
+            >
+              <Avatar className="h-8 w-8">
+                <AvatarImage src="" alt={userName} />
+                <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+                  {userInitials}
+                </AvatarFallback>
+              </Avatar>
+              <span className="sr-only">User menu</span>
+            </Button>
+          ))}
         </div>
       </div>
     </header>

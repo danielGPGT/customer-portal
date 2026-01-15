@@ -96,7 +96,7 @@ export function DashboardHeader({
           </div>
 
           {/* Stats Cards */}
-          <div className="w-full">
+          <div className="w-full pt-12">
             {/* Mobile Carousel */}
             <div className="sm:hidden w-full">
               <Carousel opts={{ align: 'start' }} className="w-full">
