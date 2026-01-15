@@ -264,7 +264,8 @@ export function UpcomingTrips({ trip }: UpcomingTripsProps) {
               fill
               className="object-cover"
               priority
-              unoptimized
+              sizes="(max-width: 768px) 100vw, 50vw"
+              quality={85}
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-primary/20 to-primary/10" />
@@ -347,3 +348,6 @@ export function UpcomingTrips({ trip }: UpcomingTripsProps) {
     </div>
   )
 }
+
+// Ensure the export is available
+export { UpcomingTrips }

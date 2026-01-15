@@ -30,51 +30,64 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
 
   const supabase = await (await import('@/lib/supabase/server')).createClient()
 
-  // Get all bookings from bookings table with event details
-  const { data: bookings, error: bookingsError } = await supabase
-    .from('bookings')
-    .select(`
-      *,
-      events (
-        id,
-        name,
-        location,
-        start_date,
-        end_date,
-        event_image,
-        venue_id,
-        venues (
+  // OPTIMIZED: Parallel fetch all data
+  const [
+    { data: bookings, error: bookingsError },
+    { data: loyaltyTransactions },
+    { data: redemptions },
+    { data: settings },
+  ] = await Promise.all([
+    // Get all bookings from bookings table with event details
+    supabase
+      .from('bookings')
+      .select(`
+        *,
+        events (
+          id,
           name,
-          city,
-          country
+          location,
+          start_date,
+          end_date,
+          event_image,
+          venue_id,
+          venues (
+            name,
+            city,
+            country
+          )
+        ),
+        booking_components!booking_components_booking_id_fkey (
+          id,
+          component_type,
+          component_data,
+          component_snapshot
         )
-      ),
-      booking_components!booking_components_booking_id_fkey (
-        id,
-        component_type,
-        component_data,
-        component_snapshot
-      )
-    `)
-    .eq('client_id', client.id)
-    .is('deleted_at', null)
-    .order('created_at', { ascending: false })
+      `)
+      .eq('client_id', client.id)
+      .is('deleted_at', null)
+      .order('created_at', { ascending: false }),
+    // Get loyalty transactions for points calculation (only needed fields)
+    supabase
+      .from('loyalty_transactions')
+      .select('id, points, source_type, source_reference_id')
+      .eq('client_id', client.id)
+      .in('source_type', ['purchase', 'redemption', 'refund']),
+    // Get redemptions for discount info (only needed fields)
+    supabase
+      .from('redemptions')
+      .select('id, booking_id, points_redeemed, discount_amount, transaction_id')
+      .eq('client_id', client.id),
+    // Get loyalty settings for currency formatting
+    supabase
+      .from('loyalty_settings')
+      .select('currency, point_value')
+      .eq('id', 1)
+      .single(),
+  ])
 
   if (bookingsError) {
     console.error('Error fetching bookings:', bookingsError)
   }
-  // Get loyalty transactions for points calculation
-  const { data: loyaltyTransactions } = await supabase
-    .from('loyalty_transactions')
-    .select('*')
-    .eq('client_id', client.id)
-    .in('source_type', ['purchase', 'redemption', 'refund'])
-
-  // Get redemptions for discount info
-  const { data: redemptions } = await supabase
-    .from('redemptions')
-    .select('*')
-    .eq('client_id', client.id)
 
   // Get client's first loyalty booking date to check if booking is first
   const firstLoyaltyBookingAt = client.first_loyalty_booking_at
@@ -252,13 +265,6 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
         return 0
     }
   })
-
-  // Get loyalty settings for currency formatting
-  const { data: settings } = await supabase
-    .from('loyalty_settings')
-    .select('currency, point_value')
-    .eq('id', 1)
-    .single()
 
   const pointValue = settings?.point_value || 1
 

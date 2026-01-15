@@ -2,6 +2,9 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { PageHeader } from '@/components/app/page-header'
 import { getClient } from '@/lib/utils/get-client'
+
+// Search results should be fresh
+export const revalidate = 0
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Plane, Coins, FileText, Calendar, MapPin } from 'lucide-react'

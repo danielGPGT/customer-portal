@@ -86,8 +86,8 @@ export function TopHeader({
             height={60}
             className="h-8 w-auto"
             priority
-            quality={100}
-            unoptimized
+            quality={90}
+            sizes="200px"
           />
         </Link>
       </div>

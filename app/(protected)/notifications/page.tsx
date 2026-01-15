@@ -4,6 +4,9 @@ import { PageHeader } from '@/components/app/page-header'
 import { getClient } from '@/lib/utils/get-client'
 import { NotificationsList } from '@/components/notifications/notifications-list'
 
+// Notifications should be fresh
+export const revalidate = 0
+
 export default async function NotificationsPage() {
   const { client, user } = await getClient()
 

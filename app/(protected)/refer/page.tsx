@@ -2,6 +2,9 @@ import { redirect } from 'next/navigation'
 
 import { createClient } from '@/lib/supabase/server'
 import { PageHeader } from '@/components/app/page-header'
+
+// Referral page can be cached briefly
+export const revalidate = 60
 import { ReferFriendBanner } from '@/components/points/refer-friend-banner'
 import { ReferralShareCard } from '@/components/points/referral-share-card'
 import { ReferralInviteForm } from '@/components/referrals/referral-invite-form'

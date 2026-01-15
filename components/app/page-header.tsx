@@ -25,7 +25,8 @@ export function PageHeader({
             fill
             className="object-cover"
             priority
-            unoptimized
+            sizes="100vw"
+            quality={85}
           />
         </div>
 

@@ -2,6 +2,9 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { PageHeader } from '@/components/app/page-header'
 import { getClient } from '@/lib/utils/get-client'
+
+// Profile page can be cached briefly
+export const revalidate = 60
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'

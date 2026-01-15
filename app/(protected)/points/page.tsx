@@ -7,7 +7,14 @@ import { ReferAFriendWidget } from '@/components/points/refer-a-friend-widget'
 import { ReferFriendBanner } from '@/components/points/refer-friend-banner'
 import { StatisticsCard } from '@/components/points/statistics-card'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
-import { LoyaltyTransactionsTable } from '@/components/points/loyalty-transactions-table'
+import dynamic from 'next/dynamic'
+
+const LoyaltyTransactionsTable = dynamic(
+  () => import('@/components/points/loyalty-transactions-table').then(mod => ({ default: mod.LoyaltyTransactionsTable })),
+  { 
+    loading: () => <div className="h-64 flex items-center justify-center"><div className="text-muted-foreground">Loading transactions...</div></div>
+  }
+)
 import { UserPlus, Coins, CreditCard, Plane } from 'lucide-react'
 import { getClient } from '@/lib/utils/get-client'
 
