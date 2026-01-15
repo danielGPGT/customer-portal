@@ -1,13 +1,11 @@
 import { Skeleton } from "@/components/ui/skeleton"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { PageHeaderSkeleton } from "@/components/ui/page-header-skeleton"
 
 export default function PointsRedeemLoading() {
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div>
-        <Skeleton className="h-9 w-64" />
-      </div>
+    <div className="space-y-8">
+      <PageHeaderSkeleton />
 
       {/* Redemption Rate Info Card */}
       <Card>

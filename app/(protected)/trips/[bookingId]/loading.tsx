@@ -2,31 +2,13 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
+import { PageHeaderSkeleton } from "@/components/ui/page-header-skeleton"
 
 export default function TripDetailsLoading() {
   return (
     <div className="space-y-6">
-      {/* Back Button & Header */}
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" disabled>
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <Skeleton className="h-9 w-64" />
-      </div>
-
       {/* Trip Details Header Skeleton */}
-      <Card>
-        <CardContent className="p-6">
-          <div className="space-y-4">
-            <Skeleton className="h-32 w-full rounded-lg" />
-            <div className="space-y-2">
-              <Skeleton className="h-7 w-3/4" />
-              <Skeleton className="h-5 w-1/2" />
-              <Skeleton className="h-4 w-1/3" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <PageHeaderSkeleton />
 
       {/* Booking Overview Card Skeleton */}
       <Card>

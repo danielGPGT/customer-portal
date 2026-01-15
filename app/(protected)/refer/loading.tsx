@@ -1,14 +1,11 @@
 import { Skeleton } from "@/components/ui/skeleton"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { PageHeaderSkeleton } from "@/components/ui/page-header-skeleton"
 
 export default function ReferPageLoading() {
   return (
     <div className="space-y-8">
-      {/* Header Skeleton */}
-      <div className="space-y-2">
-        <Skeleton className="h-9 w-80" />
-        <Skeleton className="h-5 w-96" />
-      </div>
+      <PageHeaderSkeleton />
 
       {/* Refer Friend Banner Skeleton */}
       <Card>

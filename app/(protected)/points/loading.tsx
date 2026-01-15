@@ -1,14 +1,11 @@
 import { Skeleton } from "@/components/ui/skeleton"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { PageHeaderSkeleton } from "@/components/ui/page-header-skeleton"
 
 export default function PointsPageLoading() {
   return (
     <div className="h-full w-full space-y-6">
-      {/* Header Skeleton */}
-      <div>
-        <Skeleton className="h-9 w-64 mb-2" />
-        <Skeleton className="h-5 w-96" />
-      </div>
+      <PageHeaderSkeleton />
 
       {/* Top Row: Points Balance Card + Refer a Friend Banner */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

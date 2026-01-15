@@ -1,25 +1,23 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { PageHeaderSkeleton } from '@/components/ui/page-header-skeleton'
 
 export default function TripsLoading() {
   return (
     <div className="space-y-6">
-      <div>
-        <Skeleton className="h-8 w-48 mb-2" />
-        <Skeleton className="h-4 w-64" />
-      </div>
+      <PageHeaderSkeleton />
 
       <Tabs defaultValue="upcoming" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="upcoming" disabled>
-            <Skeleton className="h-4 w-20" />
+        <TabsList className="grid w-full lg:w-fit grid-cols-3 h-auto gap-1 sm:gap-2">
+          <TabsTrigger value="upcoming" disabled className="text-[10px] sm:text-xs md:text-sm px-2 sm:px-4 md:px-6 py-2 sm:py-2.5">
+            Upcoming Trip
           </TabsTrigger>
-          <TabsTrigger value="past" disabled>
-            <Skeleton className="h-4 w-16" />
+          <TabsTrigger value="past" disabled className="text-[10px] sm:text-xs md:text-sm px-2 sm:px-4 md:px-6 py-2 sm:py-2.5">
+            Past Trips
           </TabsTrigger>
-          <TabsTrigger value="cancelled" disabled>
-            <Skeleton className="h-4 w-24" />
+          <TabsTrigger value="all" disabled className="text-[10px] sm:text-xs md:text-sm px-2 sm:px-4 md:px-6 py-2 sm:py-2.5">
+            All Trips
           </TabsTrigger>
         </TabsList>
       </Tabs>
