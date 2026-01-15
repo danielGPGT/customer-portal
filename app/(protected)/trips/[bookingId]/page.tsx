@@ -87,6 +87,45 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
     .eq('booking_id', booking.id)
     .order('applied_at', { ascending: false })
 
+  // Helper function to extract check-in/check-out dates from hotel room components
+  const getHotelDates = (booking: any) => {
+    const hotelComponents = booking.booking_components?.filter(
+      (comp: any) => comp.component_type === 'hotel_room' && !comp.deleted_at
+    ) || []
+
+    if (hotelComponents.length === 0) return { checkIn: null, checkOut: null }
+
+    // Find the earliest check-in date
+    let earliestCheckIn: string | null = null
+    let latestCheckOut: string | null = null
+
+    hotelComponents.forEach((comp: any) => {
+      const data = comp.component_data || comp.component_snapshot || {}
+      const checkIn = data.check_in || data.checkIn
+      const checkOut = data.check_out || data.checkOut
+
+      if (checkIn) {
+        if (!earliestCheckIn || new Date(checkIn) < new Date(earliestCheckIn)) {
+          earliestCheckIn = checkIn
+        }
+      }
+      if (checkOut) {
+        if (!latestCheckOut || new Date(checkOut) > new Date(latestCheckOut)) {
+          latestCheckOut = checkOut
+        }
+      }
+    })
+
+    return { checkIn: earliestCheckIn, checkOut: latestCheckOut }
+  }
+
+  // Get hotel dates (check-in/check-out)
+  const hotelDates = getHotelDates(booking)
+  
+  // Use check-in/check-out dates if available, otherwise fall back to event dates
+  const tripStartDate = hotelDates.checkIn || booking.events?.start_date || null
+  const tripEndDate = hotelDates.checkOut || booking.events?.end_date || null
+
   // Get tickets data for ticket components
   const ticketComponents = booking.booking_components?.filter(
     (comp: any) => comp.component_type === 'ticket' && comp.component_id && !comp.deleted_at
@@ -127,6 +166,9 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
     event_name: booking.events?.name || null,
     event_start_date: booking.events?.start_date || null,
     event_end_date: booking.events?.end_date || null,
+    // Trip dates (hotel check-in/out or event dates)
+    trip_start_date: tripStartDate,
+    trip_end_date: tripEndDate,
     total_amount: booking.total_price,
     booking_status: mapStatus(booking.status),
     points_earned: pointsEarned,
@@ -173,16 +215,9 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
       {/* Header */}
       <TripDetailsHeader
         eventName={eventName}
-        bookingStatus={enrichedBooking.booking_status}
-        isCancelled={enrichedBooking.booking_status === 'cancelled'}
-      />
-
-      {/* Overview Card */}
-      <BookingOverviewCard
-        eventName={eventName}
         eventLocation={eventLocation}
-        eventStartDate={enrichedBooking.event_start_date || enrichedBooking.events?.start_date}
-        eventEndDate={enrichedBooking.event_end_date || enrichedBooking.events?.end_date}
+        tripStartDate={enrichedBooking.trip_start_date}
+        tripEndDate={enrichedBooking.trip_end_date}
         bookingReference={enrichedBooking.booking_reference}
         bookingStatus={enrichedBooking.booking_status}
         totalAmount={enrichedBooking.total_amount}
@@ -190,14 +225,15 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
         pointsEarned={enrichedBooking.points_earned}
         pointsUsed={enrichedBooking.points_used}
         isFirstLoyaltyBooking={enrichedBooking.is_first_loyalty_booking}
+        eventImage={enrichedBooking.events?.event_image}
       />
 
       {/* Tabbed Content */}
       <TripDetailsTabs
         eventName={eventName}
         eventLocation={eventLocation}
-        eventStartDate={enrichedBooking.event_start_date || enrichedBooking.events?.start_date}
-        eventEndDate={enrichedBooking.event_end_date || enrichedBooking.events?.end_date}
+        eventStartDate={enrichedBooking.trip_start_date}
+        eventEndDate={enrichedBooking.trip_end_date}
         eventImage={enrichedBooking.events?.event_image}
         bookingReference={enrichedBooking.booking_reference}
         bookedAt={enrichedBooking.booked_at}
@@ -228,8 +264,8 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
           booking={enrichedBooking}
           eventName={eventName}
           location={eventLocation}
-          startDate={enrichedBooking.event_start_date || enrichedBooking.events?.start_date}
-          endDate={enrichedBooking.event_end_date || enrichedBooking.events?.end_date}
+          startDate={enrichedBooking.trip_start_date}
+          endDate={enrichedBooking.trip_end_date}
         />
       )}
     </div>

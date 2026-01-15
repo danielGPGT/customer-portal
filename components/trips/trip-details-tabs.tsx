@@ -131,7 +131,7 @@ export function TripDetailsTabs({
           Overview
         </TabsTrigger>
         <TabsTrigger value="travelers" className="text-[10px] sm:text-xs md:text-sm px-2 sm:px-4 md:px-6 py-2 sm:py-2.5">
-          Travelers
+          Travellers
         </TabsTrigger>
         <TabsTrigger value="included" className="text-[10px] sm:text-xs md:text-sm px-2 sm:px-4 md:px-6 py-2 sm:py-2.5">
           Included

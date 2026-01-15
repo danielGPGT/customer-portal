@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 
 import { createClient } from '@/lib/supabase/server'
+import { PageHeader } from '@/components/app/page-header'
 import { ReferFriendBanner } from '@/components/points/refer-friend-banner'
 import { ReferralShareCard } from '@/components/points/referral-share-card'
 import { ReferralInviteForm } from '@/components/referrals/referral-invite-form'
@@ -111,12 +112,10 @@ export default async function ReferralPage() {
 
   return (
     <div className="space-y-8">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold">Refer friends, earn rewards</h1>
-        <p className="text-sm text-muted-foreground">
-          Invite your network to book with us and both of you unlock exclusive loyalty bonuses.
-        </p>
-      </div>
+      <PageHeader
+        title="Refer Friends, Earn Rewards"
+        description="Invite your network to book with us and both of you unlock exclusive loyalty bonuses"
+      />
 
       {programDisabled && (
         <Alert variant="destructive">

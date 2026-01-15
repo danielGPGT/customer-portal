@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { PageHeader } from '@/components/app/page-header'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { PointsCalculator } from '@/components/points/points-calculator'
@@ -46,13 +47,10 @@ export default async function PointsEarnPage() {
 
   return (
     <div className="space-y-8">
-      {/* Page Header */}
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">How to Earn Points</h1>
-        <p className="text-muted-foreground">
-          Discover all the ways you can accumulate points and unlock rewards
-        </p>
-      </div>
+      <PageHeader
+        title="How to Earn Points"
+        description="Discover all the ways you can accumulate points and unlock rewards"
+      />
 
       {/* Earning Rate Info Card */}
       <Card className="border-primary/20 bg-primary/5">

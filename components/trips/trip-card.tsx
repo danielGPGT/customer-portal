@@ -46,7 +46,7 @@ interface Booking {
   } | null
 }
 
-type TripTab = 'upcoming' | 'past' | 'cancelled'
+type TripTab = 'upcoming' | 'past' | 'all'
 
 interface TripCardProps {
   booking: Booking
@@ -123,7 +123,7 @@ const extractImageUrl = (imageData: any): string | null => {
   return null
 }
 
-export function TripCard({ booking, variant, currency, pointValue }: TripCardProps) {
+export function TripCard({ booking, variant, pointValue }: TripCardProps) {
   const eventName = booking.event_name || booking.events?.name || 'Event'
 
   const venue = booking.events?.venues as { name?: string; city?: string; country?: string } | null

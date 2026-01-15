@@ -3,8 +3,10 @@ import { TripTabs } from '@/components/trips/trip-tabs'
 import { TripList } from '@/components/trips/trip-list'
 import { EmptyTripState } from '@/components/trips/empty-trip-state'
 import { getClient } from '@/lib/utils/get-client'
+import { UpcomingTrips } from '@/components/dashboard/upcoming-trips'
+import { PageHeader } from '@/components/app/page-header'
 
-type TripTab = 'upcoming' | 'past' | 'cancelled'
+type TripTab = 'upcoming' | 'past' | 'all'
 
 interface TripsPageProps {
   searchParams: Promise<{ tab?: string }>
@@ -46,6 +48,12 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
           city,
           country
         )
+      ),
+      booking_components!booking_components_booking_id_fkey (
+        id,
+        component_type,
+        component_data,
+        component_snapshot
       )
     `)
     .eq('client_id', client.id)
@@ -71,8 +79,42 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
   // Get client's first loyalty booking date to check if booking is first
   const firstLoyaltyBookingAt = client.first_loyalty_booking_at
 
+  // Helper function to extract check-in/check-out dates from hotel room components
+  const getHotelDates = (booking: any) => {
+    const hotelComponents = booking.booking_components?.filter(
+      (comp: any) => comp.component_type === 'hotel_room'
+    ) || []
+
+    if (hotelComponents.length === 0) return { checkIn: null, checkOut: null }
+
+    // Find the earliest check-in date
+    let earliestCheckIn: string | null = null
+    let latestCheckOut: string | null = null
+
+    hotelComponents.forEach((comp: any) => {
+      const data = comp.component_data || comp.component_snapshot || {}
+      const checkIn = data.check_in || data.checkIn
+      const checkOut = data.check_out || data.checkOut
+
+      if (checkIn) {
+        if (!earliestCheckIn || new Date(checkIn) < new Date(earliestCheckIn)) {
+          earliestCheckIn = checkIn
+        }
+      }
+      if (checkOut) {
+        if (!latestCheckOut || new Date(checkOut) > new Date(latestCheckOut)) {
+          latestCheckOut = checkOut
+        }
+      }
+    })
+
+    return { checkIn: earliestCheckIn, checkOut: latestCheckOut }
+  }
+
   // Enrich bookings with loyalty data
   const enrichedBookings = (bookings || []).map((booking) => {
+    const hotelDates = getHotelDates(booking)
+    
     // Map bookings.status to portal-friendly status
     const mapStatus = (status: string): 'pending' | 'confirmed' | 'completed' | 'cancelled' => {
       if (status === 'cancelled' || status === 'refunded') return 'cancelled'
@@ -122,6 +164,10 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
       event_start_date: booking.events?.start_date || null,
       event_end_date: booking.events?.end_date || null,
       
+      // Hotel dates
+      check_in_date: hotelDates.checkIn,
+      check_out_date: hotelDates.checkOut,
+      
       // Financial
       total_amount: booking.total_price,
       currency: booking.currency || 'GBP',
@@ -170,8 +216,9 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
           endDate < today && 
           (booking.booking_status === 'confirmed' || booking.booking_status === 'completed')
         )
-      case 'cancelled':
-        return booking.booking_status === 'cancelled'
+      case 'all':
+        // Show all bookings except cancelled
+        return booking.booking_status !== 'cancelled'
       default:
         return false
     }
@@ -181,7 +228,7 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
   const tabCounts: Record<TripTab, number> = {
     upcoming: filterByTab('upcoming').length,
     past: filterByTab('past').length,
-    cancelled: filterByTab('cancelled').length,
+    all: filterByTab('all').length,
   }
 
   const filteredBookings = filterByTab(activeTab)
@@ -198,11 +245,9 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
       case 'past':
         // Most recent first
         return bDate.getTime() - aDate.getTime()
-      case 'cancelled':
-        // Most recently cancelled first
-        const aUpdated = new Date(a.updated_at || a.created_at)
-        const bUpdated = new Date(b.updated_at || b.created_at)
-        return bUpdated.getTime() - aUpdated.getTime()
+      case 'all':
+        // Most recent first
+        return bDate.getTime() - aDate.getTime()
       default:
         return 0
     }
@@ -219,12 +264,10 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl lg:text-3xl font-bold">My Trips</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          View and manage your bookings
-        </p>
-      </div>
+      <PageHeader
+        title="My Trips"
+        description="View and manage your bookings"
+      />
 
       <TripTabs activeTab={activeTab} counts={tabCounts} />
 

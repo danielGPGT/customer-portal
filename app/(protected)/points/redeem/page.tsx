@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { PageHeader } from '@/components/app/page-header'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { RedemptionCalculator } from '@/components/points/redemption-calculator'
@@ -72,13 +73,10 @@ export default async function PointsRedeemPage() {
 
   return (
     <div className="space-y-8">
-      {/* Page Header */}
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">How to Redeem Points</h1>
-        <p className="text-muted-foreground">
-          Turn your points into savings on your next Grand Prix adventure
-        </p>
-      </div>
+      <PageHeader
+        title="How to Redeem Points"
+        description="Turn your points into savings on your next Grand Prix adventure"
+      />
 
       {/* Redemption Rate Info Card */}
       <Card className="border-primary/20 bg-primary/5">

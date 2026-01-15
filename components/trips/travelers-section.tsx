@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Users, User, Mail, Phone, MapPin, Edit2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -38,6 +39,7 @@ export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLo
   const [selectedTraveler, setSelectedTraveler] = useState<Traveler | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [timeRemaining, setTimeRemaining] = useState<string | null>(null)
+  const [localTravelers, setLocalTravelers] = useState<Traveler[]>(travelers)
 
   // Live countdown timer until lockDate
   useEffect(() => {
@@ -74,12 +76,17 @@ export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLo
     return () => clearInterval(id)
   }, [lockDate, isEditLocked])
 
-  if (!travelers || travelers.length === 0) {
+  // Update local travelers when prop changes
+  useEffect(() => {
+    setLocalTravelers(travelers)
+  }, [travelers])
+
+  if (!localTravelers || localTravelers.length === 0) {
     return null
   }
 
   // Filter out deleted travelers
-  const activeTravelers = travelers.filter(t => !t.deleted_at)
+  const activeTravelers = localTravelers.filter(t => !t.deleted_at)
 
   if (activeTravelers.length === 0) {
     return null
@@ -111,7 +118,7 @@ export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLo
           <div className="space-y-1.5">
             <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
               <Users className="h-4 w-4 sm:h-5 sm:w-5" />
-              Travelers ({activeTravelers.length})
+              Travellers ({activeTravelers.length})
             </CardTitle>
             {/* Lock / info note */}
             {isEditLocked ? (
@@ -127,7 +134,7 @@ export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLo
             ) : hasBookedFlights ? (
               <div className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2">
                 <p className="text-[11px] sm:text-xs text-blue-900 font-medium">
-                  You can still update traveller details, but name, email, phone, date of birth, passport, nationality, and address are locked because flights have been booked.
+                  You can still update traveller details, but name, email, phone, and date of birth are locked because flights have been booked.
                 </p>
               </div>
             ) : daysUntilLock !== null ? (
@@ -162,7 +169,7 @@ export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLo
                     </h4>
                     {traveler.traveler_type === 'lead' && (
                       <span className="text-[10px] sm:text-xs bg-primary/10 text-primary px-1.5 sm:px-2 py-0.5 rounded shrink-0">
-                        Lead Traveler
+                        Lead Traveller
                       </span>
                     )}
                   </div>
@@ -198,18 +205,6 @@ export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLo
                   <div className="text-muted-foreground">
                     <span className="font-medium">Date of Birth:</span>{' '}
                     {formatDate(traveler.date_of_birth)}
-                  </div>
-                )}
-
-                {traveler.nationality && (
-                  <div className="text-muted-foreground">
-                    <span className="font-medium">Nationality:</span> {traveler.nationality}
-                  </div>
-                )}
-
-                {traveler.passport_number && (
-                  <div className="text-muted-foreground">
-                    <span className="font-medium">Passport:</span> {traveler.passport_number}
                   </div>
                 )}
 
@@ -251,14 +246,43 @@ export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLo
         </CardContent>
       </Card>
 
-      {/* Traveler Edit Drawer */}
+      {/* Traveller Edit Drawer */}
       <TravelerEditDrawer
         traveler={selectedTraveler}
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
-        onSuccess={() => {
-          // Refresh the page to show updated data
-          window.location.reload()
+        onSuccess={async (updatedTraveler) => {
+          // Optimistically update local state with the updated traveler
+          if (updatedTraveler) {
+            setLocalTravelers(prev => 
+              prev.map(t => t.id === updatedTraveler.id ? updatedTraveler : t)
+            )
+          } else {
+            // If no updated traveler provided, silently refetch all travelers for this booking
+            // We need to get the booking_id from the first traveler
+            if (localTravelers.length > 0) {
+              const supabase = createClient()
+              // Fetch the booking_id from the first traveler
+              const { data: travelerData } = await supabase
+                .from('booking_travelers')
+                .select('booking_id')
+                .eq('id', localTravelers[0].id)
+                .single()
+              
+              if (travelerData?.booking_id) {
+                const { data: updatedData } = await supabase
+                  .from('booking_travelers')
+                  .select('*')
+                  .eq('booking_id', travelerData.booking_id)
+                  .is('deleted_at', null)
+                  .order('created_at', { ascending: true })
+                
+                if (updatedData) {
+                  setLocalTravelers(updatedData as Traveler[])
+                }
+              }
+            }
+          }
         }}
         canEditContactFields={!hasBookedFlights}
       />

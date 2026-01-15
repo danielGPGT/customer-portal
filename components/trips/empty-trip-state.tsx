@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Plane, History, XCircle, Calendar } from 'lucide-react'
 import Link from 'next/link'
 
-type TripTab = 'upcoming' | 'past' | 'cancelled'
+type TripTab = 'upcoming' | 'past' | 'all'
 
 interface EmptyTripStateProps {
   tab: TripTab
@@ -30,13 +30,13 @@ const emptyStateConfig = {
       href: '/trips?tab=upcoming'
     }
   },
-  cancelled: {
-    icon: XCircle,
-    title: 'No cancelled trips',
-    description: 'You don\'t have any cancelled bookings.',
+  all: {
+    icon: Plane,
+    title: 'No trips found',
+    description: 'You don\'t have any bookings yet.',
     action: {
-      label: 'View All Trips',
-      href: '/trips?tab=upcoming'
+      label: 'Browse Events',
+      href: '#'
     }
   }
 }

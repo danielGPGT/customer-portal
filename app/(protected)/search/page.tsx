@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { PageHeader } from '@/components/app/page-header'
 import { getClient } from '@/lib/utils/get-client'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -129,15 +130,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Search Results</h1>
-        <p className="text-muted-foreground">
-          {hasResults 
+      <PageHeader
+        title="Search Results"
+        description={
+          hasResults 
             ? `Found ${allResults.length} result${allResults.length !== 1 ? 's' : ''} for "${query}"`
             : `No results found for "${query}"`
-          }
-        </p>
-      </div>
+        }
+      />
 
       {!hasResults ? (
         <Card>

@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { PageHeader } from '@/components/app/page-header'
 import { ArrowLeft, UserCog } from 'lucide-react'
 import { getClient } from '@/lib/utils/get-client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -53,20 +54,16 @@ export default async function EditProfilePage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Link href="/profile" className="flex items-center gap-1 hover:text-foreground">
-            <ArrowLeft className="h-4 w-4" />
-            Back to profile
-          </Link>
-        </div>
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Edit profile</h1>
-          <p className="text-muted-foreground">
-            Update your personal information and keep your contact details current.
-          </p>
-        </div>
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <Link href="/profile" className="flex items-center gap-1 hover:text-foreground">
+          <ArrowLeft className="h-4 w-4" />
+          Back to profile
+        </Link>
       </div>
+      <PageHeader
+        title="Edit Profile"
+        description="Update your personal information and keep your contact details current"
+      />
 
       <Card>
         <CardHeader>

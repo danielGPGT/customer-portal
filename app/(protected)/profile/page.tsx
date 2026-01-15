@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import { PageHeader } from '@/components/app/page-header'
 import { getClient } from '@/lib/utils/get-client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -98,12 +99,10 @@ export default async function ProfilePage() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Profile & Settings</h1>
-        <p className="text-muted-foreground">
-          Manage your personal information, security settings, and communication preferences.
-        </p>
-      </div>
+      <PageHeader
+        title="Profile & Settings"
+        description="Manage your personal information, security settings, and communication preferences"
+      />
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">

@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { PageHeader } from '@/components/app/page-header'
 import { TransactionList } from '@/components/points/transaction-list'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -78,17 +79,17 @@ export default async function PointsStatementPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" asChild>
           <Link href="/points">
             <ArrowLeft className="h-4 w-4" />
           </Link>
         </Button>
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Points Statement</h1>
-        </div>
       </div>
+      <PageHeader
+        title="Points Statement"
+        description="View your complete points transaction history"
+      />
 
       {/* Current Balance */}
       <div className="rounded-lg border bg-card p-4">

@@ -23,8 +23,6 @@ const travelerSchema = z.object({
   email: z.string().email('Invalid email address').optional().or(z.literal('')),
   phone: z.string().max(50, 'Phone number is too long').optional().or(z.literal('')),
   date_of_birth: z.string().optional().or(z.literal('')),
-  passport_number: z.string().max(50, 'Passport number is too long').optional().or(z.literal('')),
-  nationality: z.string().max(100, 'Nationality is too long').optional().or(z.literal('')),
   address_line1: z.string().max(200, 'Address is too long').optional().or(z.literal('')),
   address_line2: z.string().max(200, 'Address is too long').optional().or(z.literal('')),
   city: z.string().max(100, 'City is too long').optional().or(z.literal('')),
@@ -63,7 +61,7 @@ interface TravelerEditDrawerProps {
   traveler: Traveler | null
   open: boolean
   onOpenChange: (open: boolean) => void
-  onSuccess?: () => void
+  onSuccess?: (updatedTraveler?: Traveler) => void
   // When false, core contact fields (name/email/phone) are read-only
   canEditContactFields: boolean
 }
@@ -82,8 +80,6 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
       email: '',
       phone: '',
       date_of_birth: '',
-      passport_number: '',
-      nationality: '',
       address_line1: '',
       address_line2: '',
       city: '',
@@ -105,8 +101,6 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         email: traveler.email || '',
         phone: traveler.phone || '',
         date_of_birth: traveler.date_of_birth ? traveler.date_of_birth.split('T')[0] : '',
-        passport_number: traveler.passport_number || '',
-        nationality: traveler.nationality || '',
         address_line1: traveler.address_line1 || '',
         address_line2: traveler.address_line2 || '',
         city: traveler.city || '',
@@ -134,8 +128,6 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         email: data.email || null,
         phone: data.phone || null,
         date_of_birth: data.date_of_birth || null,
-        passport_number: data.passport_number || null,
-        nationality: data.nationality || null,
         address_line1: data.address_line1 || null,
         address_line2: data.address_line2 || null,
         city: data.city || null,
@@ -148,34 +140,36 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         updated_at: new Date().toISOString(),
       }
 
-      const { error } = await supabase
+      const { data: updatedData, error } = await supabase
         .from('booking_travelers')
         .update(updateData)
         .eq('id', traveler.id)
+        .select()
+        .single()
 
       if (error) throw error
 
       toast({
-        title: 'Traveler updated! ✅',
+        title: 'Traveller updated! ✅',
         description: `${data.first_name} ${data.last_name}'s information has been updated.`,
       })
 
       onOpenChange(false)
-      router.refresh()
-      onSuccess?.()
+      // Pass updated traveler data to onSuccess callback for optimistic update
+      onSuccess?.(updatedData as Traveler)
     } catch (error: any) {
       console.error('Error updating traveler:', error)
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: error.message || 'Failed to update traveler information',
+        description: error.message || 'Failed to update traveller information',
       })
     } finally {
       setIsLoading(false)
     }
   }
 
-  const travelerName = traveler ? `${traveler.first_name} ${traveler.last_name}` : 'Traveler'
+  const travelerName = traveler ? `${traveler.first_name} ${traveler.last_name}` : 'Traveller'
   const isLead = traveler?.traveler_type === 'lead'
 
   const FormFields = () => (
@@ -185,7 +179,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
             {!canEditContactFields && (
               <p className="text-[11px] sm:text-xs text-muted-foreground">
                 Because flights have already been booked for this trip, we can no longer change core contact details
-                (name, email, phone, date of birth, passport, nationality, and address). Please contact support if any of these are incorrect.
+                (name, email, phone, and date of birth). Please contact support if any of these are incorrect.
               </p>
             )}
             <h3 className="text-sm font-semibold text-foreground">Personal Information</h3>
@@ -250,49 +244,19 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <FormField
-                control={form.control}
-                name="date_of_birth"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date of Birth</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} disabled={!canEditContactFields} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="nationality"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nationality</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="British" disabled={!canEditContactFields} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="passport_number"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Passport Number</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="123456789" disabled={!canEditContactFields} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="date_of_birth"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Date of Birth</FormLabel>
+                  <FormControl>
+                    <Input type="date" {...field} disabled={!canEditContactFields} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           {/* Address */}
@@ -306,7 +270,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                 <FormItem>
                   <FormLabel>Address Line 1</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="123 Main Street" disabled={!canEditContactFields} />
+                    <Input {...field} placeholder="123 Main Street" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -320,7 +284,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                 <FormItem>
                   <FormLabel>Address Line 2</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Apartment, suite, etc." disabled={!canEditContactFields} />
+                    <Input {...field} placeholder="Apartment, suite, etc." />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -335,7 +299,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                   <FormItem>
                     <FormLabel>City</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="London" disabled={!canEditContactFields} />
+                      <Input {...field} placeholder="London" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -349,7 +313,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                   <FormItem>
                     <FormLabel>State/Province</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Greater London" disabled={!canEditContactFields} />
+                      <Input {...field} placeholder="Greater London" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -363,7 +327,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                   <FormItem>
                     <FormLabel>Postal Code</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="SW1A 1AA" disabled={!canEditContactFields} />
+                      <Input {...field} placeholder="SW1A 1AA" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -378,7 +342,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                 <FormItem>
                   <FormLabel>Country</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="United Kingdom" disabled={!canEditContactFields} />
+                    <Input {...field} placeholder="United Kingdom" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -503,15 +467,15 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
           <div className="flex flex-col h-full overflow-hidden">
             <SheetHeader className="px-6 pt-6 pb-4 border-b shrink-0">
               <SheetTitle>
-                Edit Traveler: {travelerName}
+                Edit Traveller: {travelerName}
                 {isLead && (
                   <span className="ml-2 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded">
-                    Lead Traveler
+                    Lead Traveller
                   </span>
                 )}
               </SheetTitle>
               <SheetDescription>
-                Update traveler information. Changes will be saved immediately.
+                Update traveller information. Changes will be saved immediately.
               </SheetDescription>
             </SheetHeader>
             <div className="flex-1 min-h-0 overflow-hidden px-6 pt-6 pb-4">
@@ -529,15 +493,15 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         <div className="flex flex-col h-full overflow-hidden">
           <DrawerHeader className="px-4 pt-4 pb-3 border-b shrink-0">
             <DrawerTitle>
-              Edit Traveler: {travelerName}
+              Edit Traveller: {travelerName}
               {isLead && (
                 <span className="ml-2 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded">
-                  Lead Traveler
+                  Lead Traveller
                 </span>
               )}
             </DrawerTitle>
             <DrawerDescription>
-              Update traveler information. Changes will be saved immediately.
+              Update traveller information. Changes will be saved immediately.
             </DrawerDescription>
           </DrawerHeader>
           <div className="flex-1 min-h-0 px-4 pt-4 flex flex-col overflow-hidden">

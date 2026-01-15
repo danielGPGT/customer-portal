@@ -22,7 +22,8 @@ interface Notification {
   notification_type: string
   read: boolean
   created_at: string
-  action_url?: string
+  action_url?: string | null
+  metadata?: any
 }
 
 export function NotificationsPopover({ clientId }: { clientId: string }) {
@@ -126,8 +127,51 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
         return '✈️'
       case 'booking_cancelled':
         return '❌'
+      case 'promotion':
+        return '🎁'
       default:
         return '📢'
+    }
+  }
+
+  const getNotificationUrl = (notification: Notification): string => {
+    // If action_url is provided, use it
+    if (notification.action_url) {
+      return notification.action_url
+    }
+
+    // Otherwise, route based on notification type and metadata
+    const metadata = notification.metadata || {}
+    
+    switch (notification.notification_type) {
+      case 'points_earned':
+      case 'points_spent':
+        // If there's a booking_id in metadata, link to that booking's points section
+        if (metadata.booking_id) {
+          return `/trips/${metadata.booking_id}?tab=points`
+        }
+        return '/points/statement'
+      
+      case 'referral_signup':
+      case 'referral_completed':
+        return '/refer'
+      
+      case 'booking_confirmed':
+      case 'booking_cancelled':
+        if (metadata.booking_id) {
+          return `/trips/${metadata.booking_id}`
+        }
+        return '/trips'
+      
+      case 'promotion':
+        if (metadata.url) {
+          return metadata.url
+        }
+        return '/notifications'
+      
+      case 'system':
+      default:
+        return '/notifications'
     }
   }
 
@@ -201,17 +245,19 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
             </div>
           ) : (
             <div className="divide-y">
-              {notifications.map((notification) => (
-                <Link
-                  key={notification.id}
-                  href={notification.action_url || '#'}
-                  onClick={() => {
-                    if (!notification.read) {
-                      markAsRead(notification.id)
-                    }
-                  }}
-                  className="block p-4 hover:bg-accent transition-colors"
-                >
+              {notifications.map((notification) => {
+                const url = getNotificationUrl(notification)
+                return (
+                  <Link
+                    key={notification.id}
+                    href={url}
+                    onClick={() => {
+                      if (!notification.read) {
+                        markAsRead(notification.id)
+                      }
+                    }}
+                    className="block p-4 hover:bg-accent transition-colors"
+                  >
                   <div className="flex items-start gap-3">
                     <span className="text-lg shrink-0">
                       {getNotificationIcon(notification.notification_type)}
@@ -240,7 +286,8 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
                     </div>
                   </div>
                 </Link>
-              ))}
+                )
+              })}
             </div>
           )}
         </ScrollArea>

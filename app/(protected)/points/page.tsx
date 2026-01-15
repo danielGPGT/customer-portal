@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { PageHeader } from '@/components/app/page-header'
 import { PointsBalanceCard } from '@/components/points/points-balance-card'
 import { PointsStatsCards } from '@/components/points/points-stats-cards'
 import { ReferAFriendWidget } from '@/components/points/refer-a-friend-widget'
@@ -468,10 +469,10 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
 
   return (
     <div className="h-full w-full space-y-6">
-      <div>
-      <h1 className="text-3xl font-bold">Points Overview</h1>
-      <p className="text-sm text-muted-foreground">View and manage your loyalty point transactions</p>
-      </div>
+      <PageHeader
+        title="Points Overview"
+        description="View and manage your loyalty point transactions"
+      />
             
       {/* Top Row: Points Balance Card + Refer a Friend Widget */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
