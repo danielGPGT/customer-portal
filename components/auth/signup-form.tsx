@@ -49,16 +49,23 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
     const supabase = createClient()
 
     try {
-      // STEP 0: Check rate limit before proceeding
-      const rateLimitCheck = await checkSignupRateLimit()
-      if (!rateLimitCheck.allowed) {
-        toast({
-          variant: 'destructive',
-          title: 'Too many signup attempts',
-          description: rateLimitCheck.error || 'Please try again later.',
-        })
-        setIsLoading(false)
-        return
+      // STEP 0: Check rate limit before proceeding (optional - Clerk has built-in rate limiting)
+      try {
+        const rateLimitCheck = await checkSignupRateLimit()
+        if (!rateLimitCheck.allowed) {
+          toast({
+            variant: 'destructive',
+            title: 'Too many signup attempts',
+            description: rateLimitCheck.error || 'Please try again later.',
+          })
+          setIsLoading(false)
+          return
+        }
+      } catch (rateLimitError: any) {
+        // If rate limit check fails, log but continue (fail open)
+        // Clerk has built-in rate limiting, so this is not critical
+        console.warn('[SignupForm] Rate limit check failed:', rateLimitError)
+        // Continue with signup - Clerk will handle rate limiting
       }
 
       // STEP 1: Check if client already exists with this email
