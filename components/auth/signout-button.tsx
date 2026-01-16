@@ -13,7 +13,16 @@ export function SignOutButton({ children, className, asChild }: SignOutButtonPro
   const { signOut } = useClerk()
 
   const handleSignOut = async () => {
-    await signOut({ redirectUrl: '/sign-in' })
+    try {
+      await signOut()
+      // Use window.location for a full page reload after sign-out
+      // This ensures the session is fully cleared and prevents blank screens
+      window.location.href = '/login'
+    } catch (error) {
+      console.error('Sign out error:', error)
+      // Fallback to redirect even if signOut fails
+      window.location.href = '/login'
+    }
   }
 
   // If asChild, clone the child element and add onClick handler
