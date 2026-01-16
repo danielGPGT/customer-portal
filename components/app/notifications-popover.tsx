@@ -32,7 +32,6 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
   const [isLoading, setIsLoading] = React.useState(true)
   const [isOpen, setIsOpen] = React.useState(false)
   const [mounted, setMounted] = React.useState(false)
-  const supabase = createClient()
 
   // Avoid hydration mismatch by only rendering Radix UI components after mount
   React.useEffect(() => {
@@ -41,6 +40,8 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
 
   React.useEffect(() => {
     if (!clientId) return
+
+    const supabase = createClient()
 
     // Fetch notifications
     const fetchNotifications = async () => {
@@ -80,9 +81,10 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [clientId, supabase])
+  }, [clientId])
 
   const markAsRead = async (notificationId: string) => {
+    const supabase = createClient()
     const { error } = await supabase
       .from('notifications')
       .update({ read: true, read_at: new Date().toISOString() })
@@ -100,6 +102,7 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
     const unreadIds = notifications.filter((n) => !n.read).map((n) => n.id)
     if (unreadIds.length === 0) return
 
+    const supabase = createClient()
     const { error } = await supabase
       .from('notifications')
       .update({ read: true, read_at: new Date().toISOString() })
@@ -175,23 +178,10 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
     }
   }
 
-  // Render placeholder during SSR to avoid hydration mismatch
-  if (!mounted) {
-    return (
-      <Button
-        variant="ghost"
-        size="icon"
-        className="relative h-9 w-9 text-background dark:text-primary-foreground hover:bg-secondary-950"
-        disabled
-      >
-        <Bell className="h-4 w-4 text-background" />
-        <span className="sr-only">Notifications</span>
-      </Button>
-    )
-  }
-
+  // Always render Popover to avoid hooks order changing
+  // But disable interaction until mounted
   return (
-    <Popover open={isOpen} onOpenChange={setIsOpen}>
+    <Popover open={mounted ? isOpen : false} onOpenChange={mounted ? setIsOpen : undefined}>
       <PopoverTrigger asChild>
         <Button
           variant="ghost"
@@ -248,16 +238,16 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
               {notifications.map((notification) => {
                 const url = getNotificationUrl(notification)
                 return (
-                  <Link
-                    key={notification.id}
+                <Link
+                  key={notification.id}
                     href={url}
-                    onClick={() => {
-                      if (!notification.read) {
-                        markAsRead(notification.id)
-                      }
-                    }}
-                    className="block p-4 hover:bg-accent transition-colors"
-                  >
+                  onClick={() => {
+                    if (!notification.read) {
+                      markAsRead(notification.id)
+                    }
+                  }}
+                  className="block p-4 hover:bg-accent transition-colors"
+                >
                   <div className="flex items-start gap-3">
                     <span className="text-lg shrink-0">
                       {getNotificationIcon(notification.notification_type)}

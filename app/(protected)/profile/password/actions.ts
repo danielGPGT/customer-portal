@@ -52,14 +52,12 @@ export async function changePasswordAction(
   }
 
   const data = parsed.data
-  const supabase = await createClient()
 
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser()
+  // Get Clerk user
+  const { auth } = await import('@clerk/nextjs/server')
+  const { userId } = await auth()
 
-  if (userError || !user) {
+  if (!userId) {
     return {
       status: 'error',
       message: 'You must be signed in to change your password.',
@@ -67,26 +65,27 @@ export async function changePasswordAction(
     }
   }
 
-  // Update password
-  const { error: updateError } = await supabase.auth.updateUser({
-    password: data.newPassword,
-  })
+  // Update password using Clerk Backend SDK
+  try {
+    const { clerkClient } = await import('@clerk/nextjs/server')
+    await clerkClient().users.updateUserPassword(userId, {
+      newPassword: data.newPassword,
+    })
 
-  if (updateError) {
-    console.error('Error updating password:', updateError)
+    await revalidatePath('/profile/password')
+
     return {
-      status: 'error',
-      message: updateError.message || 'Unable to update your password. Please try again.',
+      status: 'success',
+      message: 'Your password has been updated successfully.',
       errors: {},
     }
-  }
-
-  await revalidatePath('/profile/password')
-
-  return {
-    status: 'success',
-    message: 'Your password has been updated successfully.',
-    errors: {},
+  } catch (error: any) {
+    console.error('Error updating password:', error)
+    return {
+      status: 'error',
+      message: error.message || 'Unable to update your password. Please try again.',
+      errors: {},
+    }
   }
 }
 

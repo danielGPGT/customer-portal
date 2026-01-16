@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
+import { getClient } from '@/lib/utils/get-client'
 import { checkServerRateLimit } from '@/lib/utils/rate-limit-server'
 import { getBaseUrl } from '@/lib/utils/get-base-url'
 
@@ -28,13 +29,9 @@ export async function submitReferralInvite(
     }
   }
 
-  const supabase = await createClient()
+  const { client, user } = await getClient()
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
+  if (!user || !client) {
     return { error: 'You must be signed in.' }
   }
 
@@ -45,38 +42,7 @@ export async function submitReferralInvite(
     return { error: 'Please enter a valid email address.' }
   }
 
-  // Get client data by auth_user_id
-  let { data: client, error: clientError } = await supabase
-    .from('clients')
-    .select('id')
-    .eq('auth_user_id', user.id)
-    .single()
-
-  // If client not found, try to link by email
-  if ((clientError || !client) && user.email) {
-    const { data: linkedClient } = await supabase
-      .rpc('link_client_to_user', { p_user_id: user.id })
-
-    if (linkedClient && linkedClient.length > 0) {
-      const { data: retryClient } = await supabase
-        .from('clients')
-        .select('id')
-        .eq('auth_user_id', user.id)
-        .single()
-      
-      if (retryClient) {
-        client = retryClient
-        clientError = null
-      } else {
-        client = { id: linkedClient[0].id }
-        clientError = null
-      }
-    }
-  }
-
-  if (clientError || !client) {
-    return { error: 'Unable to find your profile. Please try again.' }
-  }
+  const supabase = await createClient()
 
   // Get or create the client's persistent referral code
   const { data: referralCode, error: codeError } = await supabase.rpc('get_or_create_referral_code', {

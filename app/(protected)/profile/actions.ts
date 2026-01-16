@@ -84,12 +84,11 @@ export async function updateProfileAction(
   const data = parsed.data
   const supabase = await createClient()
 
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser()
+  // Get Clerk user instead of Supabase auth user
+  const { getClerkUser } = await import('@/lib/clerk/server')
+  const clerkUser = await getClerkUser()
 
-  if (userError || !user) {
+  if (!clerkUser) {
     return {
       status: 'error',
       message: 'You must be signed in to update your profile.',
@@ -131,11 +130,12 @@ export async function updateProfileAction(
     updatePayload.address = null
   }
 
+  // Verify that the client ID belongs to the current Clerk user
   const { error: clientUpdateError } = await supabase
     .from('clients')
     .update(updatePayload)
     .eq('id', data.clientId)
-    .eq('auth_user_id', user.id)
+    .eq('clerk_user_id', clerkUser.id)
 
   if (clientUpdateError) {
     console.error('Error updating client profile:', clientUpdateError)
@@ -146,25 +146,8 @@ export async function updateProfileAction(
     }
   }
 
-  const metadata = {
-    first_name: data.firstName.trim(),
-    last_name: data.lastName.trim(),
-    phone: data.phone,
-    date_of_birth: data.dateOfBirth,
-  }
-
-  const { error: authUpdateError } = await supabase.auth.updateUser({
-    data: metadata,
-  })
-
-  if (authUpdateError) {
-    console.error('Error updating auth profile:', authUpdateError)
-    return {
-      status: 'error',
-      message: authUpdateError.message || 'Unable to update your account right now.',
-      errors: initialErrors,
-    }
-  }
+  // Note: Clerk user metadata is managed through Clerk's dashboard or API
+  // We update the client record in Supabase which is the source of truth for profile data
 
   await Promise.all([revalidatePath('/profile'), revalidatePath('/profile/edit')])
 

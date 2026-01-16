@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createClient } from '@/lib/supabase/client'
+import { useSignIn } from '@clerk/nextjs'
 import { loginSchema, type LoginInput } from '@/lib/utils/validation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,11 +12,11 @@ import { Label } from '@/components/ui/label'
 import { useToast } from '@/hooks/use-toast'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { checkLoginRateLimit } from '@/app/(auth)/login/actions'
 
 export function LoginForm() {
   const router = useRouter()
   const { toast } = useToast()
+  const { signIn, setActive, isLoaded } = useSignIn()
   const [isLoading, setIsLoading] = useState(false)
 
   const {
@@ -28,43 +28,44 @@ export function LoginForm() {
   })
 
   const onSubmit = async (data: LoginInput) => {
+    if (!isLoaded || !signIn) {
+      return
+    }
+
     setIsLoading(true)
-    const supabase = createClient()
 
     try {
-      // Check rate limit before attempting login
-      const rateLimitCheck = await checkLoginRateLimit()
-      if (!rateLimitCheck.allowed) {
-        toast({
-          variant: 'destructive',
-          title: 'Too many login attempts',
-          description: rateLimitCheck.error || 'Please try again later.',
-        })
-        setIsLoading(false)
-        return
-      }
-
-      const { error } = await supabase.auth.signInWithPassword({
-        email: data.email,
+      const result = await signIn.create({
+        identifier: data.email,
         password: data.password,
       })
 
-      if (error) throw error
+      if (result.status === 'complete') {
+        // Set the active session
+        await setActive({ session: result.createdSessionId })
 
-      toast({
-        title: 'Welcome back! 👋',
-        description: 'Successfully logged in',
-      })
+        toast({
+          title: 'Welcome back! 👋',
+          description: 'Successfully logged in',
+        })
 
-      // Force a full page reload to ensure all server-side data is fresh
-      // This is especially important after signup when client data was just created
-      window.location.href = '/'
+        // Use window.location for a full page reload to ensure session is properly set
+        // This prevents timing issues with middleware and protected routes
+        window.location.href = '/dashboard'
+      } else {
+        // Handle other statuses (e.g., needs verification)
+        toast({
+          variant: 'destructive',
+          title: 'Additional verification required',
+          description: 'Please check your email for verification instructions.',
+        })
+      }
     } catch (error: any) {
       console.error('Login error:', error)
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: error.message || 'Invalid email or password',
+        description: error.errors?.[0]?.message || 'Invalid email or password',
       })
     } finally {
       setIsLoading(false)
@@ -116,7 +117,7 @@ export function LoginForm() {
         Log In
       </Button>
 
-      <p className="text-center text-sm text-gray-600">
+      <p className="text-center text-sm text-muted-foreground">
         Don't have an account?{' '}
         <Link href="/signup" className="text-primary hover:underline">
           Sign up

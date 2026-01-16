@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { NotificationsPopover } from "@/components/app/notifications-popover"
 import { SearchDropdown } from "@/components/app/search-dropdown"
+import { SignOutButton } from "@/components/auth/signout-button"
 import Image from "next/image"
 import { useTheme } from "next-themes"
 import Link from "next/link"
@@ -129,13 +130,14 @@ export function TopHeader({
         
 
         {/* User Profile */}
-        {user && (mounted ? (
+        {user && (
           <DropdownMenu modal={false}>
             <div className="relative">
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="default"
                   className="relative h-9 w-9 rounded-full p-0"
+                  disabled={!mounted}
                 >
                   <Avatar className="h-8 w-8">
                     <AvatarImage src="" alt={userName} />
@@ -150,52 +152,34 @@ export function TopHeader({
               <div 
                 className="absolute top-full right-0 w-full h-2 -mb-2 z-50 pointer-events-none"
               />
-              <DropdownMenuContent align="end" className="w-56" sideOffset={1}>
-              <DropdownMenuLabel>
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{userName}</p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {client?.email || user?.email}
-                  </p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <a href="/profile" className="cursor-pointer">
-                  <User className="mr-2 h-4 w-4" />
-                  Profile
-                </a>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={async () => {
-                  const { createClient } = await import('@/lib/supabase/client')
-                  const supabase = createClient()
-                  await supabase.auth.signOut()
-                  window.location.href = '/login'
-                }}
-                className="text-destructive focus:text-destructive cursor-pointer"
-              >
-                Log out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
+              {mounted && (
+                <DropdownMenuContent align="end" className="w-56" sideOffset={1}>
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{userName}</p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {client?.email || user?.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <a href="/profile" className="cursor-pointer">
+                      <User className="mr-2 h-4 w-4" />
+                      Profile
+                    </a>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <SignOutButton className="text-destructive focus:text-destructive cursor-pointer w-full text-left">
+                      Log out
+                    </SignOutButton>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              )}
             </div>
           </DropdownMenu>
-        ) : (
-          <Button
-            variant="default"
-            className="relative h-9 w-9 rounded-full p-0"
-            disabled
-          >
-            <Avatar className="h-8 w-8">
-              <AvatarImage src="" alt={userName} />
-              <AvatarFallback className="text-foreground text-xs">
-                {userInitials}
-              </AvatarFallback>
-            </Avatar>
-            <span className="sr-only">User menu</span>
-          </Button>
-        ))}
+        )}
         {/* Points Wallet */}
         {client && (
           <Link href="/points" className="flex items-center">

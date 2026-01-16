@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 
 import { createClient } from '@/lib/supabase/server'
+import { getClient } from '@/lib/utils/get-client'
 import { PageHeader } from '@/components/app/page-header'
 
 // Referral page can be cached briefly
@@ -14,45 +15,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 export default async function ReferralPage() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { client, user, error } = await getClient()
 
   if (!user) {
     redirect('/login')
   }
 
-  // Get client data by auth_user_id
-  let { data: client } = await supabase
-    .from('clients')
-    .select('id, first_name')
-    .eq('auth_user_id', user.id)
-    .single()
-
-  // If client not found, try to link by email
-  if (!client && user.email) {
-    const { data: linkedClient } = await supabase
-      .rpc('link_client_to_user', { p_user_id: user.id })
-
-    if (linkedClient && linkedClient.length > 0) {
-      const { data: retryClient } = await supabase
-        .from('clients')
-        .select('id, first_name')
-        .eq('auth_user_id', user.id)
-        .single()
-      
-      if (retryClient) {
-        client = retryClient
-      } else {
-        client = { id: linkedClient[0].id, first_name: linkedClient[0].first_name }
-      }
-    }
-  }
-
-  if (!client) {
+  if (!client || error) {
     redirect('/dashboard?error=client_not_found')
   }
+
+  const supabase = await createClient()
 
   const { data: settings } = await supabase
     .from('loyalty_settings')

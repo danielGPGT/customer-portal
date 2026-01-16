@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { PageHeader } from '@/components/app/page-header'
 import { getClient } from '@/lib/utils/get-client'
+import { SignOutButton } from '@/components/auth/signout-button'
 
 // Profile page can be cached briefly
 export const revalidate = 60
@@ -74,7 +75,7 @@ export default async function ProfilePage() {
     },
     {
       label: 'Phone number',
-      value: client.phone || user.user_metadata?.phone || 'Not provided',
+      value: client.phone || user?.phoneNumber || 'Not provided',
       icon: Phone,
     },
     {
@@ -266,13 +267,15 @@ export default async function ProfilePage() {
             <CardDescription>End your current session on this device.</CardDescription>
           </CardHeader>
           <CardContent>
-            <form action="/auth/signout" method="post" className="space-y-3">
-              <Button type="submit" variant="destructive" className="w-full">
-                <LogOut className="mr-2 h-4 w-4" />
-                Log out
-              </Button>
+            <form className="space-y-3">
+              <SignOutButton className="w-full">
+                <Button type="button" variant="destructive" className="w-full">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Log out
+                </Button>
+              </SignOutButton>
               <p className="text-xs text-muted-foreground">
-                You’ll be redirected to the login page and can sign back in anytime.
+                You'll be redirected to the sign-in page and can sign back in anytime.
               </p>
             </form>
           </CardContent>

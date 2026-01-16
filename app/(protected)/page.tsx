@@ -16,18 +16,34 @@ interface DashboardPageProps {
 export const revalidate = 60
 
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
+  console.log('[DashboardPage] Starting dashboard page render...')
   const params = await searchParams
   const error = params.error
+  console.log('[DashboardPage] Search params error:', error)
+  
+  console.log('[DashboardPage] Calling getClient()...')
   const { client, user, error: clientError } = await getClient()
+  console.log('[DashboardPage] getClient() result:', {
+    hasUser: !!user,
+    userId: user?.id,
+    hasClient: !!client,
+    clientId: client?.id,
+    error: clientError
+  })
 
   // Layout should already have enforced auth, but keep a defensive check
   if (!user) {
-    redirect('/login')
+    console.log('[DashboardPage] No user, redirecting to /sign-in')
+    redirect('/sign-in')
   }
 
   if (!client || clientError) {
-    redirect('/login?error=setup_failed')
+    console.log('[DashboardPage] No client or clientError, redirecting to /sign-in?error=setup_failed')
+    redirect('/sign-in?error=setup_failed')
   }
+
+  console.log('[DashboardPage] All checks passed, proceeding with data fetching...')
+  console.log('[DashboardPage] Client data:', { id: client.id, email: client.email, points: client.points_balance })
 
   // Get loyalty settings for referral bonus and points info
   const supabase = await (await import('@/lib/supabase/server')).createClient()
@@ -129,7 +145,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   const today = new Date()
   today.setHours(0, 0, 0, 0)
   
-  const { data: upcomingBookings } = await supabase
+  const { data: upcomingBookings, error: upcomingBookingsError } = await supabase
     .from('bookings')
     .select(`
       id,
@@ -161,6 +177,12 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     .in('status', ['confirmed', 'pending_payment', 'provisional'])
     .is('deleted_at', null)
     .order('created_at', { ascending: false })
+
+  if (upcomingBookingsError) {
+    console.error('[Dashboard] Error fetching upcoming bookings:', upcomingBookingsError)
+    console.error('[Dashboard] Client ID:', client.id)
+    console.error('[Dashboard] Client clerk_user_id:', client.clerk_user_id)
+  }
 
   // Helper function to extract check-in/check-out dates from hotel room components
   const getHotelDates = (booking: any) => {
@@ -200,7 +222,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     const tripsWithDates = upcomingBookings
       .map(booking => {
         const hotelDates = getHotelDates(booking)
-        return {
+        const result = {
           ...booking,
           check_in_date: hotelDates.checkIn,
           check_out_date: hotelDates.checkOut,
@@ -208,13 +230,18 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           event_end_date: booking.events?.end_date || null,
           event_name: booking.events?.name || null,
         }
+        return result
       })
       .filter(booking => {
         // Use check-in date if available, otherwise fall back to event start date
         const tripStartDate = booking.check_in_date || booking.event_start_date
-        if (!tripStartDate) return false
+        
+        if (!tripStartDate) {
+          return false
+        }
         const startDate = new Date(tripStartDate)
-        return startDate >= today
+        const isFuture = startDate >= today
+        return isFuture
       })
       .sort((a, b) => {
         // Sort by check-in date if available, otherwise event start date
@@ -224,7 +251,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         const timeB = dateB ? new Date(dateB).getTime() : Infinity
         return timeA - timeB
       })
-
+    
     if (tripsWithDates.length > 0) {
       const trip = tripsWithDates[0]
       // Map status to portal-friendly status
@@ -362,6 +389,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 
   const errorInfo = error ? errorMessages[error] : null
 
+  console.log('[DashboardPage] About to return JSX - rendering dashboard UI')
+  
   return (
     <>
       {/* Full-Width Dashboard Header - Breaks out of container */}

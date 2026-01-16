@@ -18,7 +18,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useClerkAuth } from "@/lib/clerk/client"
 import { createClient } from "@/lib/supabase/client"
+import { SignOutButton } from "@/components/auth/signout-button"
 
 const pageTitles: Record<string, string> = {
   '/': 'Dashboard',
@@ -47,9 +49,8 @@ export function AppHeader({ clientId }: { clientId: string }) {
   const { toggleSidebar } = useSidebar()
   const pathname = usePathname()
   const router = useRouter()
-  const supabase = createClient()
+  const clerkAuth = useClerkAuth()
 
-  const [user, setUser] = React.useState<any>(null)
   const [client, setClient] = React.useState<any>(null)
   const [searchQuery, setSearchQuery] = React.useState("")
   const [searchFocused, setSearchFocused] = React.useState(false)
@@ -61,28 +62,27 @@ export function AppHeader({ clientId }: { clientId: string }) {
   }, [])
 
   React.useEffect(() => {
-    const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        setUser(user)
+    const fetchClient = async () => {
+      if (clerkAuth?.userId && !clerkAuth.isLoading) {
+        const supabase = createClient()
         const { data: clientData } = await supabase
           .from('clients')
           .select('*')
-          .eq('user_id', user.id)
+          .eq('clerk_user_id', clerkAuth.userId)
           .single()
         if (clientData) {
           setClient(clientData)
         }
       }
     }
-    fetchUser()
-  }, [supabase])
+    // Only fetch if user is loaded and we have a userId
+    if (clerkAuth?.userId && !clerkAuth.isLoading) {
+      fetchClient()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clerkAuth?.userId, clerkAuth?.isLoading])
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    router.push('/login')
-    router.refresh()
-  }
+  // SignOutButton component handles signout now
 
   const pageTitle = React.useMemo(() => {
     for (const [path, title] of Object.entries(pageTitles)) {
@@ -95,11 +95,11 @@ export function AppHeader({ clientId }: { clientId: string }) {
 
   const userInitials = client?.first_name && client?.last_name
     ? `${client.first_name[0] || ''}${client.last_name[0] || ''}`.toUpperCase()
-    : client?.email?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "U"
+    : client?.email?.[0]?.toUpperCase() || clerkAuth?.email?.[0]?.toUpperCase() || "U"
 
   const userName = client?.first_name && client?.last_name
     ? `${client.first_name} ${client.last_name}`
-    : client?.email || user?.email || "User"
+    : client?.email || clerkAuth?.email || "User"
 
   return (
     <header className="sticky top-0 z-40 bg-sidebar w-full border-none ">
@@ -161,12 +161,13 @@ export function AppHeader({ clientId }: { clientId: string }) {
           <NotificationsPopover clientId={clientId} />
 
           {/* User Menu */}
-          {user && (mounted ? (
+          {clerkAuth?.userId && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
                   className="relative h-9 w-9 rounded-full"
+                  disabled={!mounted}
                 >
                   <Avatar className="h-8 w-8">
                     <AvatarImage src="" alt={userName} />
@@ -177,47 +178,34 @@ export function AppHeader({ clientId }: { clientId: string }) {
                   <span className="sr-only">User menu</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{userName}</p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                      {client?.email || user?.email}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <a href="/profile" className="cursor-pointer">
-                    <Settings className="mr-2 h-4 w-4" />
-                    Profile & Settings
-                  </a>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={handleSignOut}
-                  className="text-destructive focus:text-destructive cursor-pointer"
-                >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
+              {mounted && (
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{userName}</p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {client?.email || clerkAuth?.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <a href="/profile" className="cursor-pointer">
+                      <Settings className="mr-2 h-4 w-4" />
+                      Profile & Settings
+                    </a>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <SignOutButton className="text-destructive focus:text-destructive cursor-pointer w-full text-left flex items-center gap-2">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Log out
+                    </SignOutButton>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              )}
             </DropdownMenu>
-          ) : (
-            <Button
-              variant="ghost"
-              className="relative h-9 w-9 rounded-full"
-              disabled
-            >
-              <Avatar className="h-8 w-8">
-                <AvatarImage src="" alt={userName} />
-                <AvatarFallback className="bg-primary text-primary-foreground text-xs">
-                  {userInitials}
-                </AvatarFallback>
-              </Avatar>
-              <span className="sr-only">User menu</span>
-            </Button>
-          ))}
+          )}
         </div>
       </div>
     </header>

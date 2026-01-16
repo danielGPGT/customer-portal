@@ -92,6 +92,13 @@ const extractImageUrl = (imageData: any): string | null => {
 }
 
 export function UpcomingTrips({ trip }: UpcomingTripsProps) {
+  useEffect(() => {
+    console.log('[UpcomingTrips] Client-side: UpcomingTrips mounted', {
+      hasTrip: !!trip,
+      tripId: trip?.id
+    })
+  }, [trip])
+  
   // No upcoming trips state
   if (!trip) {
     return (

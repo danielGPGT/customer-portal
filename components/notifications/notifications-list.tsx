@@ -32,12 +32,27 @@ interface NotificationsListProps {
 export function NotificationsList({ notifications: initialNotifications, clientId }: NotificationsListProps) {
   const [notifications, setNotifications] = React.useState<Notification[]>(initialNotifications)
   const [isLoading, setIsLoading] = React.useState(false)
-  const supabase = createClient()
   const router = useRouter()
   const { toast } = useToast()
 
+  const fetchNotifications = React.useCallback(async () => {
+    const supabase = createClient()
+    const { data, error } = await supabase
+      .from('notifications')
+      .select('*')
+      .eq('client_id', clientId)
+      .order('created_at', { ascending: false })
+
+    if (!error && data) {
+      setNotifications(data)
+    }
+  }, [clientId])
+
   // Subscribe to real-time updates
   React.useEffect(() => {
+    if (!clientId) return
+
+    const supabase = createClient()
     const channel = supabase
       .channel('notifications-list')
       .on(
@@ -55,24 +70,16 @@ export function NotificationsList({ notifications: initialNotifications, clientI
       )
       .subscribe()
 
+    // Initial fetch
+    fetchNotifications()
+
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [clientId, supabase])
-
-  const fetchNotifications = async () => {
-    const { data, error } = await supabase
-      .from('notifications')
-      .select('*')
-      .eq('client_id', clientId)
-      .order('created_at', { ascending: false })
-
-    if (!error && data) {
-      setNotifications(data)
-    }
-  }
+  }, [clientId, fetchNotifications])
 
   const markAsRead = async (notificationId: string) => {
+    const supabase = createClient()
     const { error } = await supabase
       .from('notifications')
       .update({ read: true, read_at: new Date().toISOString() })
@@ -90,6 +97,7 @@ export function NotificationsList({ notifications: initialNotifications, clientI
     if (unreadIds.length === 0) return
 
     setIsLoading(true)
+    const supabase = createClient()
     const { error } = await supabase
       .from('notifications')
       .update({ read: true, read_at: new Date().toISOString() })

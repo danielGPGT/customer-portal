@@ -44,10 +44,10 @@ export default async function EditProfilePage() {
 
   const initialValues = {
     clientId: client.id,
-    firstName: client.first_name || user.user_metadata?.first_name || '',
-    lastName: client.last_name || user.user_metadata?.last_name || '',
-    email: client.email || user.email || '',
-    phone: client.phone || user.user_metadata?.phone || '',
+    firstName: client.first_name || user?.firstName || '',
+    lastName: client.last_name || user?.lastName || '',
+    email: client.email || user?.email || '',
+    phone: client.phone || user?.phoneNumber || '',
     dateOfBirth: formatDateForInput(client.date_of_birth),
     address,
   }

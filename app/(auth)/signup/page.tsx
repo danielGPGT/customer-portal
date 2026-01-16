@@ -1,7 +1,6 @@
 import { SignupForm } from '@/components/auth/signup-form'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { createClient } from '@/lib/supabase/server'
 import { ReferralSignupBanner } from '@/components/auth/referral-signup-banner'
+import { createClient } from '@/lib/supabase/server'
 
 interface SignupPageProps {
   searchParams: Promise<{ ref?: string }>
@@ -9,67 +8,61 @@ interface SignupPageProps {
 
 export default async function SignupPage({ searchParams }: SignupPageProps) {
   const params = await searchParams
-  const referralCode = params.ref || null
+  const referralCode = params.ref ? params.ref.toUpperCase().trim() : null
 
-  // If referral code provided, validate it and fetch referrer info for banner
-  let referrerInfo: { firstName?: string; isValid?: boolean } | null = null
+  // Validate referral code if provided
+  let isValidReferral = false
+  let referrerName: string | undefined = undefined
+
   if (referralCode) {
-    const supabase = await createClient()
-    
-    // Normalize the code: uppercase and trim whitespace
-    const normalizedCode = referralCode.toUpperCase().trim()
-    
-    const { data: validity, error: validityError } = await supabase.rpc('check_referral_validity', {
-      p_referral_code: normalizedCode,
-    })
+    try {
+      const supabase = await createClient()
+      const { data: validityArray, error } = await supabase.rpc('check_referral_validity', {
+        p_referral_code: referralCode,
+      })
 
-    if (!validityError && validity && validity.length > 0) {
-      const validation = validity[0]
-      const isValid = validation.is_valid === true
-      
-      // If valid, fetch referrer's name
-      let firstName: string | undefined
-      if (isValid && validation.referrer_client_id) {
-        const { data: referrer } = await supabase
-          .from('clients')
-          .select('first_name')
-          .eq('id', validation.referrer_client_id)
-          .single()
-        
-        firstName = referrer?.first_name
+      // check_referral_validity returns a TABLE, so we get an array
+      const validity = Array.isArray(validityArray) && validityArray.length > 0 ? validityArray[0] : null
+
+      if (validity && validity.is_valid) {
+        isValidReferral = true
+        // Optionally fetch referrer name
+        if (validity.referrer_client_id) {
+          const { data: referrer } = await supabase
+            .from('clients')
+            .select('first_name, last_name')
+            .eq('id', validity.referrer_client_id)
+            .single()
+          
+          if (referrer) {
+            referrerName = `${referrer.first_name} ${referrer.last_name}`.trim()
+          }
+        }
       }
-      
-      referrerInfo = {
-        firstName,
-        isValid,
-      }
-    } else {
-      referrerInfo = { 
-        isValid: false,
-      }
+    } catch (error) {
+      console.error('Error validating referral code:', error)
+      // Continue with signup even if validation fails
     }
   }
 
   return (
-    <div className="space-y-4">
-      {referralCode && referrerInfo && (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">Create your account</h1>
+        <p className="text-muted-foreground mt-2">
+          Join our loyalty program and start earning points on every trip
+        </p>
+      </div>
+
+      {referralCode && (
         <ReferralSignupBanner
           referralCode={referralCode}
-          referrerName={referrerInfo.firstName}
-          isValid={referrerInfo.isValid}
+          referrerName={referrerName}
+          isValid={isValidReferral}
         />
       )}
-    <Card className="border-gray-200 shadow-sm">
-      <CardHeader className="space-y-1 pb-6">
-        <CardTitle className="text-2xl font-bold text-center">Create your account</CardTitle>
-        <CardDescription className="text-center">
-          Join our loyalty program and start earning points
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-          <SignupForm initialReferralCode={referralCode || undefined} />
-      </CardContent>
-    </Card>
+
+      <SignupForm initialReferralCode={referralCode || undefined} />
     </div>
   )
 }

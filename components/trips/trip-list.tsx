@@ -57,10 +57,10 @@ export function TripList({ bookings, tab, pointValue }: TripListProps) {
       case 'all':
         // Most recent first
         return bDate.getTime() - aDate.getTime()
-      default:
-        return 0
-    }
-  })
+        default:
+          return 0
+      }
+    })
 
   const hasResults = sortedBookings.length > 0
 
@@ -129,8 +129,8 @@ export function TripList({ bookings, tab, pointValue }: TripListProps) {
                     <p className="text-sm text-muted-foreground">
                       {sortedBookings.length - 1} {sortedBookings.length === 2 ? 'trip' : 'trips'} coming up
                     </p>
-                  </div>
-                  
+      </div>
+
                   <div className="md:hidden -mx-4 px-4">
                     <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory">
                       {sortedBookings.slice(1).map((booking) => (
@@ -140,10 +140,10 @@ export function TripList({ bookings, tab, pointValue }: TripListProps) {
                             variant={tab}
                             pointValue={pointValue}
                           />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+          </div>
+                ))}
+              </div>
+            </div>
 
                   <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
                     {sortedBookings.slice(1).map((booking) => (
@@ -153,40 +153,40 @@ export function TripList({ bookings, tab, pointValue }: TripListProps) {
                         variant={tab}
                         pointValue={pointValue}
                       />
-                    ))}
-                  </div>
-                </div>
-              )}
+                ))}
+              </div>
             </div>
           )}
+        </div>
+      )}
 
           {/* For past and all tabs, show all trips in grid */}
           {tab !== 'upcoming' && (
-            <>
-              <div className="md:hidden -mx-4 px-4">
-                <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory">
-                  {sortedBookings.map((booking) => (
-                    <div key={booking.id} className="min-w-[280px] snap-start">
-                      <TripCard
-                        booking={booking}
-                        variant={tab}
-                        pointValue={pointValue}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
-                {sortedBookings.map((booking) => (
+        <>
+          <div className="md:hidden -mx-4 px-4">
+            <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory">
+              {sortedBookings.map((booking) => (
+                <div key={booking.id} className="min-w-[280px] snap-start">
                   <TripCard
-                    key={booking.id}
                     booking={booking}
                     variant={tab}
                     pointValue={pointValue}
                   />
-                ))}
-              </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
+            {sortedBookings.map((booking) => (
+          <TripCard
+            key={booking.id}
+            booking={booking}
+            variant={tab}
+            pointValue={pointValue}
+          />
+        ))}
+      </div>
             </>
           )}
         </>

@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { Coins, ShoppingCart, Target, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import {
@@ -23,6 +24,13 @@ export function DashboardHeader({
   redemptionIncrement = 100,
   minRedemptionPoints = 100,
 }: DashboardHeaderProps) {
+  React.useEffect(() => {
+    console.log('[DashboardHeader] Client-side: DashboardHeader mounted', {
+      firstName,
+      pointsBalance
+    })
+  }, [firstName, pointsBalance])
+  
   // Calculate next milestone and progress
   const currentPoints = pointsBalance
   let nextMilestone: number

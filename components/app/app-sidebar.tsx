@@ -116,11 +116,7 @@ export function AppSidebar({ user, client }: { user: any; client: any }) {
   const router = useRouter()
   const supabase = createClient()
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    router.push("/login")
-    router.refresh()
-  }
+  // SignOutButton component handles signout now
 
   const userInitials = client?.first_name && client?.last_name
     ? `${client.first_name[0] || ''}${client.last_name[0] || ''}`.toUpperCase()
@@ -241,12 +237,11 @@ export function AppSidebar({ user, client }: { user: any; client: any }) {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={handleSignOut}
-              className="text-destructive focus:text-destructive"
-            >
-              <LogOut className="mr-2 h-4 w-4" />
-              Log out
+            <DropdownMenuItem asChild>
+              <SignOutButton className="text-destructive focus:text-destructive cursor-pointer w-full text-left flex items-center gap-2">
+                <LogOut className="mr-2 h-4 w-4" />
+                Log out
+              </SignOutButton>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
