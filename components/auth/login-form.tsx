@@ -12,12 +12,14 @@ import { Label } from '@/components/ui/label'
 import { useToast } from '@/hooks/use-toast'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
+import { SocialLoginButtons } from './social-login-buttons'
 
 export function LoginForm() {
   const router = useRouter()
   const { toast } = useToast()
   const { signIn, setActive, isLoaded } = useSignIn()
   const [isLoading, setIsLoading] = useState(false)
+  const [isRedirecting, setIsRedirecting] = useState(false)
   const [pendingVerification, setPendingVerification] = useState(false)
   const [verificationCode, setVerificationCode] = useState('')
   const [userEmail, setUserEmail] = useState('')
@@ -63,9 +65,19 @@ export function LoginForm() {
           description: 'Successfully logged in',
         })
 
+        // Immediately show loading state to prevent any component rendering during redirect
+        setIsRedirecting(true)
+        setIsLoading(true)
+
+        // Longer delay to ensure session cookie is fully propagated to server
+        // This prevents timing issues where protected layout runs before session is available
+        // 500ms gives the cookie time to be sent with the next request
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
         // Use window.location for a full page reload to ensure session is properly set
-        // This prevents timing issues with middleware and protected routes
+        // This triggers a fresh server-side render with the session cookie available
         window.location.href = '/dashboard'
+        return // Exit early to prevent any further rendering
       } else if (result.status === 'needs_second_factor') {
         // Two-factor authentication required (Client Trust or MFA)
         const emailFactor = result.supportedSecondFactors?.find(
@@ -205,7 +217,17 @@ export function LoginForm() {
           description: 'Successfully logged in',
         })
 
+        // Immediately show loading state to prevent any component rendering during redirect
+        setIsRedirecting(true)
+        setIsLoading(true)
+
+        // Longer delay to ensure session cookie is fully propagated to server
+        // This prevents timing issues where protected layout runs before session is available
+        // 500ms gives the cookie time to be sent with the next request
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
         window.location.href = '/dashboard'
+        return // Exit early to prevent any further rendering
       } else {
         toast({
           variant: 'destructive',
@@ -234,6 +256,16 @@ export function LoginForm() {
   }
 
   // Show verification form if pending
+  // Show loading spinner during redirect to prevent rendering dashboard
+  if (isRedirecting) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-muted-foreground">Redirecting to dashboard...</p>
+      </div>
+    )
+  }
+
   if (pendingVerification) {
     return (
       <form onSubmit={handleVerification} className="space-y-4">
@@ -367,6 +399,8 @@ export function LoginForm() {
         {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         Log In
       </Button>
+
+      <SocialLoginButtons mode="sign-in" />
 
       <p className="text-center text-sm text-muted-foreground">
         Don't have an account?{' '}

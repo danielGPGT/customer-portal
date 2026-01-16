@@ -131,28 +131,27 @@ export function TopHeader({
 
         {/* User Profile */}
         {user && (
-          <DropdownMenu modal={false}>
-            <div className="relative">
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="default"
-                  className="relative h-9 w-9 rounded-full p-0"
-                  disabled={!mounted}
-                >
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src="" alt={userName} />
-                    <AvatarFallback className="text-foreground text-xs">
-                      {userInitials}
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="sr-only">User menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              {/* Invisible bridge to cover the gap */}
-              <div 
-                className="absolute top-full right-0 w-full h-2 -mb-2 z-50 pointer-events-none"
-              />
-              {mounted && (
+          mounted ? (
+            <DropdownMenu modal={false}>
+              <div className="relative">
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="default"
+                    className="relative h-9 w-9 rounded-full p-0"
+                  >
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src="" alt={userName} />
+                      <AvatarFallback className="text-foreground text-xs">
+                        {userInitials}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="sr-only">User menu</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                {/* Invisible bridge to cover the gap */}
+                <div 
+                  className="absolute top-full right-0 w-full h-2 -mb-2 z-50 pointer-events-none"
+                />
                 <DropdownMenuContent align="end" className="w-56" sideOffset={1}>
                   <DropdownMenuLabel>
                     <div className="flex flex-col space-y-1">
@@ -176,9 +175,23 @@ export function TopHeader({
                     </SignOutButton>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
-              )}
-            </div>
-          </DropdownMenu>
+              </div>
+            </DropdownMenu>
+          ) : (
+            <Button
+              variant="default"
+              className="relative h-9 w-9 rounded-full p-0"
+              disabled
+            >
+              <Avatar className="h-8 w-8">
+                <AvatarImage src="" alt={userName} />
+                <AvatarFallback className="text-foreground text-xs">
+                  {userInitials}
+                </AvatarFallback>
+              </Avatar>
+              <span className="sr-only">User menu</span>
+            </Button>
+          )
         )}
         {/* Points Wallet */}
         {client && (

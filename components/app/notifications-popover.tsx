@@ -178,10 +178,32 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
     }
   }
 
-  // Always render Popover to avoid hooks order changing
-  // But disable interaction until mounted
+  // Render simple button during SSR to avoid hydration mismatch
+  // Then render Popover after mount when Radix UI IDs are stable
+  if (!mounted) {
+    return (
+      <Button
+        variant="ghost"
+        size="icon"
+        className="relative h-9 w-9 text-background dark:text-primary-foreground hover:bg-secondary-950"
+        disabled
+      >
+        <Bell className="h-4 w-4 text-background" />
+        {unreadCount > 0 && (
+          <Badge
+            variant="default"
+            className="absolute -right-1 -top-1 h-5 w-5 flex items-center justify-center p-0 text-xs font-semibold"
+          >
+            {unreadCount > 9 ? '9+' : unreadCount}
+          </Badge>
+        )}
+        <span className="sr-only">Notifications</span>
+      </Button>
+    )
+  }
+
   return (
-    <Popover open={mounted ? isOpen : false} onOpenChange={mounted ? setIsOpen : undefined}>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="ghost"

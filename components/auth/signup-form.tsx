@@ -14,6 +14,7 @@ import { useToast } from '@/hooks/use-toast'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { checkSignupRateLimit } from '@/app/(auth)/signup/actions'
+import { SocialLoginButtons } from './social-login-buttons'
 
 interface SignupFormProps {
   initialReferralCode?: string
@@ -625,8 +626,9 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
             }
             
             console.log('[SignupForm] Client verified, redirecting to dashboard')
-            // Small delay to ensure session is fully propagated
-            await new Promise(resolve => setTimeout(resolve, 500))
+            // Small delay to ensure session is fully propagated before navigation
+            // Reduced from 500ms to 200ms to avoid user delay while still ensuring session is set
+            await new Promise(resolve => setTimeout(resolve, 200))
             window.location.href = '/dashboard'
           } else {
             throw new Error('Failed to create or link client record')
@@ -866,6 +868,8 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         Create Account
       </Button>
+
+      <SocialLoginButtons mode="sign-up" referralCode={initialReferralCode} />
 
       <p className="text-center text-sm text-muted-foreground">
         Already have an account?{' '}

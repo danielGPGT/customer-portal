@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ErrorSuppression } from "@/components/error-suppression";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -34,6 +35,7 @@ export default function RootLayout({
             enableSystem={false}
             disableTransitionOnChange
           >
+            <ErrorSuppression />
             {children}
             <Toaster />
           </ThemeProvider>
