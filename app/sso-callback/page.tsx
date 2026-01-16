@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useSignIn, useSignUp, useUser } from '@clerk/nextjs'
 import { Loader2 } from 'lucide-react'
 
-export default function SSOCallbackPage() {
+function SSOCallbackContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { signIn, isLoaded: signInLoaded } = useSignIn()
@@ -179,5 +179,22 @@ export default function SSOCallbackPage() {
         <p className="text-muted-foreground">Completing sign-in...</p>
       </div>
     </div>
+  )
+}
+
+export default function SSOCallbackPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="text-center space-y-4">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+            <p className="text-muted-foreground">Loading...</p>
+          </div>
+        </div>
+      }
+    >
+      <SSOCallbackContent />
+    </Suspense>
   )
 }
