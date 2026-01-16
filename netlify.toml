@@ -7,3 +7,5 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  # Use legacy peer deps to handle React version conflicts with Clerk
+  NPM_FLAGS = "--legacy-peer-deps"
