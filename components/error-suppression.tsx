@@ -8,6 +8,61 @@ import { useEffect } from 'react'
  * and do not affect production builds
  */
 export function ErrorSuppression() {
+  // Set up error handlers immediately (before useEffect runs)
+  // This ensures we catch errors as early as possible
+  if (typeof window !== 'undefined') {
+    // Only suppress in development
+    if (process.env.NODE_ENV === 'development') {
+      // Suppress uncaught exceptions (set up synchronously)
+      const handleError = (event: ErrorEvent) => {
+        const message = event.message || event.error?.message || event.toString() || ''
+        const stack = event.error?.stack || ''
+        
+        // Suppress specific development-only errors related to React/Next.js performance measurement
+        if (
+          message.includes('Failed to execute \'measure\' on \'Performance\'') ||
+          message.includes('cannot have a negative time stamp') ||
+          message.includes('negative time stamp') ||
+          message.includes('Rendered more hooks than during the previous render') ||
+          (message.includes('DashboardPage') && (message.includes('negative') || message.includes('Performance'))) ||
+          stack.includes('flushComponentPerformance') ||
+          stack.includes('flushInitialRenderPerformance')
+        ) {
+          // Prevent the error from showing in console or UI
+          event.preventDefault()
+          event.stopPropagation()
+          event.stopImmediatePropagation()
+          return false
+        }
+      }
+
+      // Suppress unhandled promise rejections
+      const handleRejection = (event: PromiseRejectionEvent) => {
+        const message = event.reason?.message || String(event.reason) || ''
+        const stack = event.reason?.stack || ''
+        
+        // Suppress specific development-only errors
+        if (
+          message.includes('Failed to execute \'measure\' on \'Performance\'') ||
+          message.includes('cannot have a negative time stamp') ||
+          message.includes('negative time stamp') ||
+          message.includes('Rendered more hooks than during the previous render') ||
+          (message.includes('DashboardPage') && (message.includes('negative') || message.includes('Performance'))) ||
+          stack.includes('flushComponentPerformance') ||
+          stack.includes('flushInitialRenderPerformance')
+        ) {
+          // Prevent the error from showing in console
+          event.preventDefault()
+          return false
+        }
+      }
+
+      // Add listeners immediately (synchronously)
+      window.addEventListener('error', handleError, true) // Use capture phase
+      window.addEventListener('unhandledrejection', handleRejection, true) // Use capture phase
+    }
+  }
+
   useEffect(() => {
     // Only suppress in development
     if (process.env.NODE_ENV !== 'development') {
@@ -34,58 +89,12 @@ export function ErrorSuppression() {
       originalError.apply(console, args)
     }
 
-    // Suppress uncaught exceptions (React throws these as exceptions, not just console.error)
-    const handleError = (event: ErrorEvent) => {
-      const message = event.message || event.error?.message || event.toString() || ''
-      const stack = event.error?.stack || ''
-      
-      // Suppress specific development-only errors related to React/Next.js performance measurement
-      if (
-        message.includes('Failed to execute \'measure\' on \'Performance\'') ||
-        message.includes('cannot have a negative time stamp') ||
-        message.includes('negative time stamp') ||
-        message.includes('Rendered more hooks than during the previous render') ||
-        (message.includes('DashboardPage') && (message.includes('negative') || message.includes('Performance'))) ||
-        stack.includes('flushComponentPerformance') ||
-        stack.includes('flushInitialRenderPerformance')
-      ) {
-        // Prevent the error from showing in console or UI
-        event.preventDefault()
-        event.stopPropagation()
-        event.stopImmediatePropagation()
-        return false
-      }
-    }
-
-    // Suppress unhandled promise rejections
-    const handleRejection = (event: PromiseRejectionEvent) => {
-      const message = event.reason?.message || String(event.reason) || ''
-      const stack = event.reason?.stack || ''
-      
-      // Suppress specific development-only errors
-      if (
-        message.includes('Failed to execute \'measure\' on \'Performance\'') ||
-        message.includes('cannot have a negative time stamp') ||
-        message.includes('negative time stamp') ||
-        message.includes('Rendered more hooks than during the previous render') ||
-        (message.includes('DashboardPage') && (message.includes('negative') || message.includes('Performance'))) ||
-        stack.includes('flushComponentPerformance') ||
-        stack.includes('flushInitialRenderPerformance')
-      ) {
-        // Prevent the error from showing in console
-        event.preventDefault()
-        return false
-      }
-    }
-
-    window.addEventListener('error', handleError)
-    window.addEventListener('unhandledrejection', handleRejection)
-
+    // Note: Error handlers are already set up synchronously above
+    // This useEffect only handles console.error suppression
     // Cleanup on unmount
     return () => {
       console.error = originalError
-      window.removeEventListener('error', handleError)
-      window.removeEventListener('unhandledrejection', handleRejection)
+      // Note: We don't remove the synchronous error handlers as they persist for the page lifetime
     }
   }, [])
 
