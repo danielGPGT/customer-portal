@@ -18,30 +18,38 @@ export default function AuthLayout({
       {/* Left side - Auth Form (White Background) */}
       <div className="flex-1 flex flex-col bg-background min-h-screen">
         {/* Logo in top-left */}
-        <div className="px-4 sm:px-6 lg:px-8 xl:px-12 pt-6 lg:pt-8">
+        <div className="px-4 sm:px-6 lg:px-8 xl:px-12 pt-4 sm:pt-6 lg:pt-8">
           <AuthNavbar />
         </div>
 
         {/* Auth Form - Centered */}
-        <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-8 xl:px-12 py-8">
+        <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-8">
           <div className="w-full max-w-md mx-auto">
             {children}
           </div>
         </div>
 
-        {/* Footer Contact Info */}
-        <div className="px-4 sm:px-6 lg:px-8 xl:px-12 pb-6 lg:pb-8">
+        {/* Footer Contact Info - Mobile Optimized */}
+        <div className="px-4 sm:px-6 lg:px-8 xl:px-12 pb-4 sm:pb-6 lg:pb-8">
           <div className="w-full max-w-md mx-auto">
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              If you have questions email us at{' '}
-              <a href="mailto:bookings@grandprixgrandtours.com" className="text-primary hover:underline">
-                booking@grandprixgrandtours.com
-              </a>
-              {' '}or call us at (UK) 0203 474 0512 or (US) 213 808 6027. For more detail go to{' '}
-              <a href="https://www.grandprixgrandtours.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                www.grandprixgrandtours.com
-              </a>
-            </p>
+            <div className="space-y-2 text-xs sm:text-sm text-muted-foreground">
+              <p className="leading-relaxed">
+                Questions? Email us at{' '}
+                <a href="mailto:bookings@grandprixgrandtours.com" className="text-primary hover:underline font-medium">
+                  bookings@grandprixgrandtours.com
+                </a>
+              </p>
+              <p className="leading-relaxed">
+                Call us: <a href="tel:+442034740512" className="text-primary hover:underline font-medium">(UK) 0203 474 0512</a>{' '}
+                or <a href="tel:+12138086027" className="text-primary hover:underline font-medium">(US) 213 808 6027</a>
+              </p>
+              <p className="leading-relaxed">
+                Visit{' '}
+                <a href="https://www.grandprixgrandtours.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
+                  grandprixgrandtours.com
+                </a>
+              </p>
+            </div>
           </div>
         </div>
       </div>

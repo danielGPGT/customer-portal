@@ -1,4 +1,10 @@
+import type { Metadata } from 'next'
 import { LoginForm } from '@/components/auth/login-form'
+
+export const metadata: Metadata = {
+  title: 'Sign In | Grand Prix Grand Tours Portal',
+  description: 'Sign in to your account to access your loyalty points, trips, and exclusive rewards',
+}
 
 export default function LoginPage() {
   return (

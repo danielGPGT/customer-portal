@@ -1,6 +1,12 @@
+import type { Metadata } from 'next'
 import { SignupForm } from '@/components/auth/signup-form'
 import { ReferralSignupBanner } from '@/components/auth/referral-signup-banner'
 import { createClient } from '@/lib/supabase/server'
+
+export const metadata: Metadata = {
+  title: 'Sign Up | Grand Prix Grand Tours Portal',
+  description: 'Create your account and join our loyalty program to start earning points on every trip',
+}
 
 interface SignupPageProps {
   searchParams: Promise<{ ref?: string }>

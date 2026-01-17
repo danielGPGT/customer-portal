@@ -1,5 +1,11 @@
+import type { Metadata } from 'next'
 import { ResetPasswordForm } from '@/components/auth/reset-password-form'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+
+export const metadata: Metadata = {
+  title: 'Reset Password | Grand Prix Grand Tours Portal',
+  description: 'Enter your new password to complete the password reset process',
+}
 
 export default function ResetPasswordPage() {
   return (
