@@ -173,10 +173,20 @@ function SSOCallbackContent() {
   }, [signInLoaded, signUpLoaded])
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="text-center space-y-4">
-        <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
-        <p className="text-muted-foreground">Completing sign-in...</p>
+    <div className="flex min-h-screen items-center justify-center bg-background">
+      <div className="text-center space-y-6 px-4">
+        <div className="flex justify-center">
+          <div className="relative">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+            <div className="absolute inset-0 rounded-full border-4 border-primary/20"></div>
+          </div>
+        </div>
+        <div className="space-y-2">
+          <h2 className="text-xl font-semibold">Completing sign-in</h2>
+          <p className="text-sm text-muted-foreground">
+            Please wait while we finish setting up your account...
+          </p>
+        </div>
       </div>
     </div>
   )
@@ -186,10 +196,20 @@ export default function SSOCallbackPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen items-center justify-center">
-          <div className="text-center space-y-4">
-            <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
-            <p className="text-muted-foreground">Loading...</p>
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <div className="text-center space-y-6 px-4">
+            <div className="flex justify-center">
+              <div className="relative">
+                <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                <div className="absolute inset-0 rounded-full border-4 border-primary/20"></div>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <h2 className="text-xl font-semibold">Loading</h2>
+              <p className="text-sm text-muted-foreground">
+                Please wait...
+              </p>
+            </div>
           </div>
         </div>
       }

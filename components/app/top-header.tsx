@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Search, Menu, X, Coins, User } from "lucide-react"
-import { useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -36,7 +35,7 @@ export function TopHeader({
   user,
   client 
 }: TopHeaderProps) {
-  const { user: clerkUser } = useUser()
+
   const [searchQuery, setSearchQuery] = React.useState("")
   const [searchFocused, setSearchFocused] = React.useState(false)
   const { resolvedTheme } = useTheme()
@@ -60,8 +59,8 @@ export function TopHeader({
     ? `${client.first_name} ${client.last_name}`
     : client?.email || user?.email || "User"
 
-  // Get Clerk avatar URL if available
-  const avatarUrl = clerkUser?.imageUrl || null
+  // Get avatar URL from user prop (Clerk user object has imageUrl property)
+  const avatarUrl = user?.imageUrl || null
 
   return (
     <header className="bg-secondary-1000 text-foreground border-b border-border h-16 flex items-center px-4 lg:px-6 z-50 fixed top-0 left-0 right-0">
