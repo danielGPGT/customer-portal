@@ -31,7 +31,8 @@ function SSOCallbackContent() {
               // Sign-in successful
               hasRedirected.current = true
               await signIn.setActive({ session: signInResult.createdSessionId })
-              window.location.href = '/dashboard'
+              // Redirect to / instead of /dashboard to avoid redirect chain
+              window.location.href = '/'
               return
             }
           } catch (signInError: any) {
@@ -140,7 +141,8 @@ function SSOCallbackContent() {
             }
 
             hasRedirected.current = true
-            window.location.href = '/dashboard'
+            // Redirect to / instead of /dashboard to avoid redirect chain
+            window.location.href = '/'
             return
           }
           } catch (signUpError: any) {

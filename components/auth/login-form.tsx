@@ -76,7 +76,8 @@ export function LoginForm() {
         
         // Use window.location for a full page reload to ensure session is properly set
         // This triggers a fresh server-side render with the session cookie available
-        window.location.href = '/dashboard'
+        // Redirect to / instead of /dashboard to avoid redirect chain
+        window.location.href = '/'
         return // Exit early to prevent any further rendering
       } else if (result.status === 'needs_second_factor') {
         // Two-factor authentication required (Client Trust or MFA)
@@ -226,7 +227,8 @@ export function LoginForm() {
         // 500ms gives the cookie time to be sent with the next request
         await new Promise(resolve => setTimeout(resolve, 500))
         
-        window.location.href = '/dashboard'
+        // Redirect to / instead of /dashboard to avoid redirect chain
+        window.location.href = '/'
         return // Exit early to prevent any further rendering
       } else {
         toast({

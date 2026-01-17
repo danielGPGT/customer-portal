@@ -110,8 +110,8 @@ export function ForgotPasswordForm() {
           description: 'Your password has been successfully reset.',
         })
 
-        // Redirect to dashboard
-        window.location.href = '/dashboard'
+        // Redirect to / instead of /dashboard to avoid redirect chain
+        window.location.href = '/'
       }
     } catch (error: any) {
       toast({

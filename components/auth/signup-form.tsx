@@ -341,7 +341,8 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
           if (clientCreatedOrLinked) {
             // Use window.location for a full page reload to ensure session is properly set
             // This prevents timing issues with middleware and protected routes
-            window.location.href = '/dashboard'
+            // Redirect to / instead of /dashboard to avoid redirect chain
+            window.location.href = '/'
           }
         } catch (stepError: any) {
           // Re-throw to be caught by outer catch block
@@ -629,7 +630,8 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
             // Small delay to ensure session is fully propagated before navigation
             // Reduced from 500ms to 200ms to avoid user delay while still ensuring session is set
             await new Promise(resolve => setTimeout(resolve, 200))
-            window.location.href = '/dashboard'
+            // Redirect to / instead of /dashboard to avoid redirect chain
+            window.location.href = '/'
           } else {
             throw new Error('Failed to create or link client record')
           }
