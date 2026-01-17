@@ -1,15 +1,22 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import { PageHeader } from '@/components/app/page-header'
 import { getClient } from '@/lib/utils/get-client'
+import { getClerkUser } from '@/lib/clerk/server'
 import { SignOutButton } from '@/components/auth/signout-button'
+
+export const metadata: Metadata = {
+  title: 'Profile & Settings | Grand Prix Grand Tours Portal',
+  description: 'Manage your profile, account settings, and preferences',
+}
 
 // Profile page can be cached briefly
 export const revalidate = 60
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
 import {
   Mail,
@@ -37,9 +44,10 @@ const formatDate = (dateString?: string | null) => {
 
 export default async function ProfilePage() {
   const { client, user, error } = await getClient()
+  const clerkUser = await getClerkUser()
 
   if (!user) {
-    redirect('/login')
+    redirect('/sign-in')
   }
 
   if (error === 'no_client_access') {
@@ -60,6 +68,9 @@ export default async function ProfilePage() {
     client.first_name && client.last_name
       ? `${client.first_name[0] || ''}${client.last_name[0] || ''}`.toUpperCase()
       : client.email?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'
+
+  // Get Clerk avatar URL if available
+  const avatarUrl = clerkUser?.imageUrl || null
 
   const loyaltyStatus = client.status || 'Active'
   const memberSince = formatDate(client.loyalty_enrolled_at)
@@ -122,11 +133,13 @@ export default async function ProfilePage() {
           <CardContent className="space-y-6">
             <div className="flex items-center gap-4">
               <Avatar className="h-14 w-14">
+                {avatarUrl && (
+                  <AvatarImage src={avatarUrl} alt={displayName} />
+                )}
                 <AvatarFallback className="text-lg font-semibold">{userInitials}</AvatarFallback>
               </Avatar>
               <div>
                 <p className="text-xl font-semibold leading-tight">{displayName}</p>
-
               </div>
             </div>
 
@@ -198,10 +211,6 @@ export default async function ProfilePage() {
             </div>
 
             <Separator />
-
-            <Button asChild variant="outline" className="w-full">
-              <Link href="/points/statement">View statement</Link>
-            </Button>
           </CardContent>
         </Card>
 
@@ -245,12 +254,6 @@ export default async function ProfilePage() {
                 <Link href="mailto:bookings@grandprixgrandtours.com">
                   <HelpCircle className="mr-2 h-4 w-4" />
                   Email support
-                </Link>
-              </Button>
-              <Button asChild variant="ghost" className="flex-1 border border-dashed">
-                <Link href="/support">
-                  <ShieldCheck className="mr-2 h-4 w-4" />
-                  Visit help centre
                 </Link>
               </Button>
             </div>

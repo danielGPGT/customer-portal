@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { PageHeader } from '@/components/app/page-header'
 import { ArrowLeft, Lock, ShieldCheck } from 'lucide-react'
@@ -6,11 +7,16 @@ import { getClient } from '@/lib/utils/get-client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ChangePasswordForm } from '@/components/profile/change-password-form'
 
+export const metadata: Metadata = {
+  title: 'Change Password | Grand Prix Grand Tours Portal',
+  description: 'Update your account password to keep your account secure',
+}
+
 export default async function ChangePasswordPage() {
   const { client, user, error } = await getClient()
 
   if (!user) {
-    redirect('/login')
+    redirect('/sign-in')
   }
 
   if (error === 'no_client_access') {

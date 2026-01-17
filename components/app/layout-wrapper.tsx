@@ -20,13 +20,7 @@ export function LayoutWrapper({
 }: LayoutWrapperProps) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false)
 
-  React.useEffect(() => {
-    console.log('[LayoutWrapper] Client-side: LayoutWrapper mounted', {
-      hasUser: !!user,
-      hasClient: !!client,
-      clientId: client?.id
-    })
-  }, [user, client])
+  // LayoutWrapper mounted - no debug logs needed
 
   return (
     <div className="flex min-h-screen mx-auto flex-col px-4 lg:px-4">

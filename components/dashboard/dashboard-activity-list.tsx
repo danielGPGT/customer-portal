@@ -111,6 +111,7 @@ export function DashboardActivityList({ transactions, trips }: DashboardActivity
           <CardTitle className="text-base font-semibold">Your Activity</CardTitle>
           <Link
             href="/points"
+            prefetch={true}
             className="text-xs font-medium text-primary hover:underline"
           >
             See all
@@ -133,6 +134,7 @@ export function DashboardActivityList({ transactions, trips }: DashboardActivity
                 <Link
                   key={activity.id}
                   href="/points"
+                  prefetch={true}
                   className="group flex items-center gap-3 p-3 transition-colors hover:bg-accent/40"
                 >
                   <div className={cn('flex h-8 w-8 items-center justify-center rounded-lg border', typeInfo.className)}>
@@ -166,6 +168,7 @@ export function DashboardActivityList({ transactions, trips }: DashboardActivity
                 <Link
                   key={activity.id}
                   href={`/trips/${trip.id}`}
+                  prefetch={true}
                   className="group flex items-center gap-3 p-3 transition-colors hover:bg-accent/40"
                 >
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg border bg-primary/10 text-primary">

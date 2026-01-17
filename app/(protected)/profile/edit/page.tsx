@@ -1,11 +1,18 @@
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { PageHeader } from '@/components/app/page-header'
 import { ArrowLeft, UserCog } from 'lucide-react'
 import { getClient } from '@/lib/utils/get-client'
+import { getClerkUser } from '@/lib/clerk/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { EditProfileForm } from '@/components/profile/edit-profile-form'
+
+export const metadata: Metadata = {
+  title: 'Edit Profile | Grand Prix Grand Tours Portal',
+  description: 'Update your personal information and profile details',
+}
 
 const formatDateForInput = (dateString?: string | null) => {
   if (!dateString) return ''
@@ -18,7 +25,7 @@ export default async function EditProfilePage() {
   const { client, user, error } = await getClient()
 
   if (!user) {
-    redirect('/login')
+    redirect('/sign-in')
   }
 
   if (error === 'no_client_access') {

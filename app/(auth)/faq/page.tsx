@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/accordion"
 
 export const metadata: Metadata = {
-  title: 'Frequently Asked Questions | Customer Loyalty Portal',
+  title: 'Frequently Asked Questions | Grand Prix Grand Tours Portal',
   description: 'Common questions about the loyalty program',
 }
 

@@ -22,6 +22,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
+import { useUser } from "@clerk/nextjs"
 import {
   Sidebar,
   SidebarContent,
@@ -112,6 +113,7 @@ const navigationItems: NavItem[] = [
 ]
 
 export function AppSidebar({ user, client }: { user: any; client: any }) {
+  const { user: clerkUser } = useUser()
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
@@ -125,6 +127,9 @@ export function AppSidebar({ user, client }: { user: any; client: any }) {
   const userName = client?.first_name && client?.last_name
     ? `${client.first_name} ${client.last_name}`
     : client?.email || user?.email || "User"
+
+  // Get Clerk avatar URL if available
+  const avatarUrl = clerkUser?.imageUrl || null
 
   const isActive = (url: string) => {
     if (url === "/") {
@@ -182,7 +187,7 @@ export function AppSidebar({ user, client }: { user: any; client: any }) {
                   isActive={pathname === "/notifications"}
                   tooltip="Notifications"
                 >
-                  <Link href="/notifications">
+                  <Link href="/notifications" prefetch={true}>
                     <Bell className="h-4 w-4" />
                     <span>Notifications</span>
                   </Link>
@@ -201,7 +206,9 @@ export function AppSidebar({ user, client }: { user: any; client: any }) {
               className="w-full justify-start gap-3 h-auto py-2 px-2 hover:bg-sidebar-accent data-[collapsible=icon]:justify-center"
             >
               <Avatar className="h-8 w-8 shrink-0">
-                <AvatarImage src="" alt={userName} />
+                {avatarUrl && (
+                  <AvatarImage src={avatarUrl} alt={userName} />
+                )}
                 <AvatarFallback className="bg-primary text-primary-foreground text-xs">
                   {userInitials}
                 </AvatarFallback>
@@ -225,13 +232,13 @@ export function AppSidebar({ user, client }: { user: any; client: any }) {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/profile">
+              <Link href="/profile" prefetch={true}>
                 <User className="mr-2 h-4 w-4" />
                 Profile
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/profile/preferences">
+              <Link href="/profile/preferences" prefetch={true}>
                 <Settings className="mr-2 h-4 w-4" />
                 Preferences
               </Link>
@@ -303,7 +310,7 @@ function NavigationItem({
                     asChild
                     isActive={pathname === subItem.url}
                   >
-                    <Link href={subItem.url}>
+                    <Link href={subItem.url} prefetch={true}>
                       <span>{subItem.title}</span>
                     </Link>
                   </SidebarMenuSubButton>
@@ -323,7 +330,7 @@ function NavigationItem({
         isActive={isActive}
         tooltip={item.title}
       >
-        <Link href={item.url}>
+        <Link href={item.url} prefetch={true}>
           <item.icon className="h-4 w-4" />
           <span>{item.title}</span>
         </Link>

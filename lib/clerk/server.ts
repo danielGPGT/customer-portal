@@ -7,12 +7,9 @@ import { createClient } from "@/lib/supabase/server";
  * Retries currentUser() if it fails initially (timing issue after sign-in)
  */
 export async function getClerkUser() {
-  console.log('[getClerkUser] Starting getClerkUser()...')
   const { userId } = await auth();
-  console.log('[getClerkUser] auth() returned userId:', userId)
   
   if (!userId) {
-    console.log('[getClerkUser] No userId, returning null')
     return null;
   }
 
@@ -20,27 +17,13 @@ export async function getClerkUser() {
   // This might fail immediately after sign-in due to session cookie propagation
   let user = null;
   try {
-    console.log('[getClerkUser] Calling currentUser() (first attempt)...')
     user = await currentUser();
-    console.log('[getClerkUser] currentUser() succeeded:', {
-      id: user?.id,
-      email: user?.emailAddresses[0]?.emailAddress,
-      firstName: user?.firstName
-    })
   } catch (error) {
-    console.warn('[getClerkUser] currentUser() failed (first attempt):', error)
     // currentUser() might fail if session isn't fully loaded yet
     // Retry once more - sometimes the session needs a moment to be available
     try {
-      console.log('[getClerkUser] Retrying currentUser()...')
       user = await currentUser();
-      console.log('[getClerkUser] currentUser() succeeded on retry:', {
-        id: user?.id,
-        email: user?.emailAddresses[0]?.emailAddress,
-        firstName: user?.firstName
-      })
     } catch (retryError) {
-      console.warn('[getClerkUser] currentUser() failed on retry:', retryError)
       // If retry also fails, continue with minimal user object
       // The email and other data will be available on the next request once session is fully loaded
     }
@@ -56,14 +39,12 @@ export async function getClerkUser() {
       phoneNumber: user.phoneNumbers[0]?.phoneNumber || null,
       imageUrl: user.imageUrl || null,
     };
-    console.log('[getClerkUser] Returning full user object:', { id: result.id, email: result.email })
     return result;
   }
 
   // If currentUser() still fails after retry but we have userId,
   // return a minimal user object with just the userId
   // This allows the flow to continue - email will be fetched from database if needed
-  console.log('[getClerkUser] currentUser() failed, returning minimal user object with userId only')
   return {
     id: userId,
     email: null, // Will be fetched from database or retried

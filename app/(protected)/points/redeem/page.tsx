@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import { PageHeader } from '@/components/app/page-header'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -7,6 +8,11 @@ import { RedemptionCalculator } from '@/components/points/redemption-calculator'
 import { Gift, Calendar, CheckCircle, AlertTriangle, Info, Lightbulb, FileText, ArrowRight, Coins, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { getClient } from '@/lib/utils/get-client'
+
+export const metadata: Metadata = {
+  title: 'How to Redeem Points | Grand Prix Grand Tours Portal',
+  description: 'Learn how to redeem your loyalty points for discounts on bookings',
+}
 
 export default async function PointsRedeemPage() {
   const supabase = await createClient()

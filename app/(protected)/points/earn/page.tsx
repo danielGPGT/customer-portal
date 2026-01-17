@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import { PageHeader } from '@/components/app/page-header'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -7,6 +8,11 @@ import { PointsCalculator } from '@/components/points/points-calculator'
 import { Lightbulb, Plane, UserPlus, Gift, ArrowRight, FileText, TrendingUp, Coins } from 'lucide-react'
 import Link from 'next/link'
 import { getClient } from '@/lib/utils/get-client'
+
+export const metadata: Metadata = {
+  title: 'How to Earn Points | Grand Prix Grand Tours Portal',
+  description: 'Learn how to earn loyalty points through bookings, referrals, and more',
+}
 
 export default async function PointsEarnPage() {
   const supabase = await createClient()

@@ -1,8 +1,14 @@
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { PageHeader } from '@/components/app/page-header'
 import { getClient } from '@/lib/utils/get-client'
 import { NotificationsList } from '@/components/notifications/notifications-list'
+
+export const metadata: Metadata = {
+  title: 'Notifications | Grand Prix Grand Tours Portal',
+  description: 'View your account notifications and updates',
+}
 
 // Notifications should be fresh
 export const revalidate = 0

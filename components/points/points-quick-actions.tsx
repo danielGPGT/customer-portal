@@ -15,7 +15,7 @@ export function PointsQuickActions() {
               Refer a friend for 100 points
             </p>
             <Button asChild variant="outline" className="w-full">
-              <Link href="/refer" className="flex items-center justify-between">
+              <Link href="/refer" prefetch={true} className="flex items-center justify-between">
                 <span>Start Referring</span>
                 <UserPlus className="h-4 w-4" />
               </Link>
@@ -31,7 +31,7 @@ export function PointsQuickActions() {
               View your trip history
             </p>
             <Button asChild variant="outline" className="w-full">
-              <Link href="/trips" className="flex items-center justify-between">
+              <Link href="/trips" prefetch={true} className="flex items-center justify-between">
                 <span>My Trips</span>
                 <Plane className="h-4 w-4" />
               </Link>

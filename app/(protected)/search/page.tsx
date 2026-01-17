@@ -1,7 +1,13 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import { PageHeader } from '@/components/app/page-header'
 import { getClient } from '@/lib/utils/get-client'
+
+export const metadata: Metadata = {
+  title: 'Search Results | Grand Prix Grand Tours Portal',
+  description: 'Search for trips, transactions, and bookings',
+}
 
 // Search results should be fresh
 export const revalidate = 0

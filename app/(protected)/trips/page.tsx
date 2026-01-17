@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import { TripTabs } from '@/components/trips/trip-tabs'
 import { TripList } from '@/components/trips/trip-list'
 import { EmptyTripState } from '@/components/trips/empty-trip-state'
@@ -10,6 +11,11 @@ type TripTab = 'upcoming' | 'past' | 'all'
 
 interface TripsPageProps {
   searchParams: Promise<{ tab?: string }>
+}
+
+export const metadata: Metadata = {
+  title: 'My Trips | Grand Prix Grand Tours Portal',
+  description: 'View and manage your upcoming trips, past trips, and trip history',
 }
 
 // Trips overview doesn't need to be fully dynamic

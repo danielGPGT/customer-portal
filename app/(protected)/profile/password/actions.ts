@@ -80,7 +80,6 @@ export async function changePasswordAction(
       errors: {},
     }
   } catch (error: any) {
-    console.error('Error updating password:', error)
     return {
       status: 'error',
       message: error.message || 'Unable to update your password. Please try again.',

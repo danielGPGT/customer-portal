@@ -81,6 +81,7 @@ export function AppFooter() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
+                      prefetch={true}
                       className="inline-flex items-center gap-1 font-medium text-muted-foreground transition hover:text-primary"
                     >
                       {link.label}
@@ -96,13 +97,13 @@ export function AppFooter() {
         <div className="mt-12 flex flex-col gap-3 border-t pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Grand Prix Grand Tours. All rights reserved.</p>
           <div className="flex flex-wrap gap-4">
-            <Link href="/privacy" className="hover:text-primary">
+            <Link href="/privacy" prefetch={true} className="hover:text-primary">
               Privacy
             </Link>
-            <Link href="/terms" className="hover:text-primary">
+            <Link href="/terms" prefetch={true} className="hover:text-primary">
               Terms
             </Link>
-            <Link href="/accessibility" className="hover:text-primary">
+            <Link href="/accessibility" prefetch={true} className="hover:text-primary">
               Accessibility
             </Link>
           </div>

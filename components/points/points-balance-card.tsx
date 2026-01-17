@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { MoreVertical, Wallet, ChevronDown, ChevronUp } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -116,11 +117,15 @@ export function PointsBalanceCard({
 
         {/* Metrics List */}
         <div className="space-y-0 flex flex-col md:flex-row gap-2 mt-4">
-          <Button variant="outline" className="">
-            How to earn points?
+          <Button variant="outline" asChild className="">
+            <Link href="/points/earn" prefetch={true}>
+              How to earn points?
+            </Link>
           </Button>
-          <Button variant="default" className="">
-            How to redeem points?
+          <Button variant="default" asChild className="">
+            <Link href="/points/redeem" prefetch={true}>
+              How to redeem points?
+            </Link>
           </Button>
         </div>
 

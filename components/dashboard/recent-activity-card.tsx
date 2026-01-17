@@ -102,6 +102,7 @@ export function RecentActivityCard({ transactions, trips }: RecentActivityCardPr
             <span>Points activity</span>
             <Link
               href="/points"
+              prefetch={true}
               className="inline-flex items-center gap-1 text-[11px] font-medium text-primary hover:underline"
             >
               View all
@@ -184,6 +185,7 @@ export function RecentActivityCard({ transactions, trips }: RecentActivityCardPr
             <span>Recent trips</span>
             <Link
               href="/trips"
+              prefetch={true}
               className="inline-flex items-center gap-1 text-[11px] font-medium text-primary hover:underline"
             >
               View all
@@ -224,6 +226,7 @@ export function RecentActivityCard({ transactions, trips }: RecentActivityCardPr
                     )}
                     <Link
                       href={`/trips/${trip.id}`}
+                      prefetch={true}
                       className="inline-flex items-center gap-1 text-[11px] font-medium text-primary hover:underline"
                     >
                       View trip

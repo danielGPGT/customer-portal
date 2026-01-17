@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import { PageHeader } from '@/components/app/page-header'
 import { PointsBalanceCard } from '@/components/points/points-balance-card'
 import { PointsStatsCards } from '@/components/points/points-stats-cards'
@@ -20,6 +21,11 @@ import { getClient } from '@/lib/utils/get-client'
 
 interface PointsPageProps {
   searchParams: Promise<{ page?: string }>
+}
+
+export const metadata: Metadata = {
+  title: 'Points Hub | Grand Prix Grand Tours Portal',
+  description: 'View your loyalty points balance, transaction history, and referral statistics',
 }
 
 // Points overview can be cached briefly

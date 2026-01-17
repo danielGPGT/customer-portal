@@ -100,7 +100,7 @@ export function NextTripCard({ booking }: NextTripCardProps) {
             Start planning your next adventure! Book a trip to start earning loyalty points.
           </p>
           <Button asChild variant="default">
-            <Link href="/trips">
+            <Link href="/trips" prefetch={true}>
               View All Trips
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
@@ -261,18 +261,18 @@ export function NextTripCard({ booking }: NextTripCardProps) {
 
       <CardFooter className="border-t bg-muted/30 p-4 gap-2">
         <Button asChild variant="default" className="flex-1">
-          <Link href={`/trips/${booking.booking_id}`}>
+          <Link href={`/trips/${booking.booking_id}`} prefetch={true}>
             View Details
             <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </Button>
         <Button asChild variant="outline" size="icon" className="shrink-0">
-          <Link href={`/trips/${booking.booking_id}?tab=travelers`} title="Manage Travelers">
+          <Link href={`/trips/${booking.booking_id}?tab=travelers`} prefetch={true} title="Manage Travelers">
             <Users className="h-4 w-4" />
           </Link>
         </Button>
         <Button asChild variant="outline" size="icon" className="shrink-0">
-          <Link href={`/trips/${booking.booking_id}?tab=included`} title="View Flights">
+          <Link href={`/trips/${booking.booking_id}?tab=included`} prefetch={true} title="View Flights">
             <Plane className="h-4 w-4" />
           </Link>
         </Button>

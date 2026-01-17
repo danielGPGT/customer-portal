@@ -1,4 +1,5 @@
 import { redirect, notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
@@ -12,6 +13,11 @@ interface TripDetailsPageProps {
   params: Promise<{ bookingId: string }>
 }
 
+export const metadata: Metadata = {
+  title: 'Trip Details | Grand Prix Grand Tours Portal',
+  description: 'View detailed information about your trip including itinerary, travellers, and payment details',
+}
+
 // Trip details can be cached briefly
 export const revalidate = 60
 
@@ -20,7 +26,7 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
   const { bookingId } = await params
 
   if (!user) {
-    redirect('/login')
+    redirect('/sign-in')
   }
 
   if (!client || error) {
@@ -29,63 +35,50 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
 
   const supabase = await (await import('@/lib/supabase/server')).createClient()
 
-  // Get booking details from bookings table with all related data
-  const { data: booking, error: bookingError } = await supabase
-    .from('bookings')
-    .select(`
-      *,
-      events (
-        id,
-        name,
-        location,
-        start_date,
-        end_date,
-        event_image,
-        venue_id,
-        venues (
+  // OPTIMIZED: Parallel fetch booking and loyalty settings (they're independent)
+  const [
+    { data: booking, error: bookingError },
+    { data: settings }
+  ] = await Promise.all([
+    // Get booking details from bookings table with all related data
+    supabase
+      .from('bookings')
+      .select(`
+        *,
+        events (
+          id,
           name,
-          city,
-          country
-        )
-      ),
-      booking_travelers!booking_travelers_booking_id_fkey (*),
-      booking_payments!booking_payments_booking_id_fkey (*),
-      booking_components!booking_components_booking_id_fkey (*),
-      bookings_flights!bookings_flights_booking_id_fkey (*)
-    `)
-    .eq('id', bookingId)
-    .eq('client_id', client.id)
-    .is('deleted_at', null)
-    .single()
+          location,
+          start_date,
+          end_date,
+          event_image,
+          venue_id,
+          venues (
+            name,
+            city,
+            country
+          )
+        ),
+        booking_travelers!booking_travelers_booking_id_fkey (*),
+        booking_payments!booking_payments_booking_id_fkey (*),
+        booking_components!booking_components_booking_id_fkey (*),
+        bookings_flights!bookings_flights_booking_id_fkey (*)
+      `)
+      .eq('id', bookingId)
+      .eq('client_id', client.id)
+      .is('deleted_at', null)
+      .single(),
+    // Get loyalty settings (independent of booking)
+    supabase
+      .from('loyalty_settings')
+      .select('currency, point_value')
+      .eq('id', 1)
+      .single()
+  ])
 
   if (bookingError || !booking) {
-    console.error('Error fetching booking:', bookingError)
     notFound()
   }
-
-  // Get loyalty transactions for this booking (for transaction details)
-  const { data: earnTransaction } = booking.earn_transaction_id
-    ? await supabase
-        .from('loyalty_transactions')
-        .select('*')
-        .eq('id', booking.earn_transaction_id)
-        .single()
-    : { data: null }
-
-  const { data: spendTransaction } = booking.spend_transaction_id
-    ? await supabase
-        .from('loyalty_transactions')
-        .select('*')
-        .eq('id', booking.spend_transaction_id)
-        .single()
-    : { data: null }
-
-  // Get redemption(s) for this booking (there may be multiple)
-  const { data: redemptions } = await supabase
-    .from('redemptions')
-    .select('*')
-    .eq('booking_id', booking.id)
-    .order('applied_at', { ascending: false })
 
   // Helper function to extract check-in/check-out dates from hotel room components
   const getHotelDates = (booking: any) => {
@@ -95,7 +88,6 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
 
     if (hotelComponents.length === 0) return { checkIn: null, checkOut: null }
 
-    // Find the earliest check-in date
     let earliestCheckIn: string | null = null
     let latestCheckOut: string | null = null
 
@@ -132,13 +124,44 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
   ) || []
   
   const ticketIds = ticketComponents.map((comp: any) => comp.component_id).filter(Boolean)
-  
-  const { data: tickets } = ticketIds.length > 0
-    ? await supabase
-        .from('tickets')
-        .select('id, ticket_days')
-        .in('id', ticketIds)
-    : { data: [] }
+
+  // OPTIMIZED: Parallel fetch transactions, redemptions, and tickets (they're independent of each other)
+  const [
+    { data: earnTransaction },
+    { data: spendTransaction },
+    { data: redemptions },
+    { data: tickets }
+  ] = await Promise.all([
+    // Get earn transaction (if exists)
+    booking.earn_transaction_id
+      ? supabase
+          .from('loyalty_transactions')
+          .select('*')
+          .eq('id', booking.earn_transaction_id)
+          .single()
+      : Promise.resolve({ data: null }),
+    // Get spend transaction (if exists)
+    booking.spend_transaction_id
+      ? supabase
+          .from('loyalty_transactions')
+          .select('*')
+          .eq('id', booking.spend_transaction_id)
+          .single()
+      : Promise.resolve({ data: null }),
+    // Get redemption(s) for this booking
+    supabase
+      .from('redemptions')
+      .select('*')
+      .eq('booking_id', booking.id)
+      .order('applied_at', { ascending: false }),
+    // Get tickets data (if any ticket components exist)
+    ticketIds.length > 0
+      ? supabase
+          .from('tickets')
+          .select('id, ticket_days')
+          .in('id', ticketIds)
+      : Promise.resolve({ data: [] })
+  ])
   
   // Create a map of ticket_id -> ticket_days for easy lookup
   const ticketDaysMap = new Map(
@@ -183,13 +206,6 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
     booked_at: booking.created_at
   }
 
-  // Get loyalty settings
-  const { data: settings } = await supabase
-    .from('loyalty_settings')
-    .select('currency, point_value')
-    .eq('id', 1)
-    .single()
-
   const defaultCurrency = settings?.currency || 'GBP'
   const currency = booking.currency || defaultCurrency
   const pointValue = settings?.point_value || 1
@@ -206,7 +222,7 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
     <div className="space-y-4 sm:space-y-6">
       {/* Back Button */}
       <Button asChild variant="ghost" className="mb-2 h-8 sm:h-10 px-2 sm:px-4">
-        <Link href="/trips">
+        <Link href="/trips" prefetch={true}>
           <ArrowLeft className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
           <span className="text-xs sm:text-sm">Back to Trips</span>
         </Link>

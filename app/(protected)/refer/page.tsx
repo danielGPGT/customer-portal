@@ -1,8 +1,14 @@
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 
 import { createClient } from '@/lib/supabase/server'
 import { getClient } from '@/lib/utils/get-client'
 import { PageHeader } from '@/components/app/page-header'
+
+export const metadata: Metadata = {
+  title: 'Referral Center | Grand Prix Grand Tours Portal',
+  description: 'Refer friends and earn bonus loyalty points when they book',
+}
 
 // Referral page can be cached briefly
 export const revalidate = 60

@@ -300,7 +300,7 @@ export function TripCard({ booking, variant, pointValue }: TripCardProps) {
 
       <CardFooter className="border-t bg-muted/40 p-4">
         <Button asChild variant="default" className="w-full">
-          <Link href={`/trips/${booking.booking_id}`}>
+          <Link href={`/trips/${booking.booking_id}`} prefetch={true}>
             View Details
             <ArrowRight className="ml-2 h-4 w-4" />
           </Link>

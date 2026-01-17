@@ -14,8 +14,13 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Customer Loyalty Portal",
+  title: "Grand Prix Grand Tours Portal",
   description: "View and manage your loyalty points, trips, and referrals",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export default function RootLayout({

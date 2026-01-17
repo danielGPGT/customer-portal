@@ -114,7 +114,7 @@ export function UpcomingTrips({ trip }: UpcomingTripsProps) {
             </p>
           </div>
           <Button asChild size="lg" className="mt-4">
-            <Link href="/trips">
+            <Link href="/trips" prefetch={true}>
               Browse Trips
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
@@ -253,7 +253,7 @@ export function UpcomingTrips({ trip }: UpcomingTripsProps) {
           {/* Action Button */}
           <div>
             <Button asChild className="w-full sm:w-auto">
-              <Link href={`/trips/${trip.booking_id}`}>
+              <Link href={`/trips/${trip.booking_id}`} prefetch={true}>
                 View Trip Details
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>

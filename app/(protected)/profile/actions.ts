@@ -96,8 +96,8 @@ export async function updateProfileAction(
     }
   }
 
-  // Build address JSONB object (only include if at least one field is provided)
-  const addressData = data.address
+  // Build address JSONB object (always include address, even if fields are null/empty)
+  const addressData = data.address || {}
   const hasAddressData =
     addressData &&
     (addressData.address_line1 ||
@@ -115,7 +115,8 @@ export async function updateProfileAction(
     updated_at: new Date().toISOString(),
   }
 
-  // Only include address if there's actual data
+  // Always build address object if we have any data
+  // This ensures the address column is updated properly with the correct format
   if (hasAddressData) {
     updatePayload.address = {
       address_line1: addressData.address_line1 || null,
@@ -126,7 +127,7 @@ export async function updateProfileAction(
       country: addressData.country || null,
     }
   } else {
-    // If all fields are empty, set address to null
+    // If all fields are empty/null, set address to null
     updatePayload.address = null
   }
 
@@ -138,7 +139,6 @@ export async function updateProfileAction(
     .eq('clerk_user_id', clerkUser.id)
 
   if (clientUpdateError) {
-    console.error('Error updating client profile:', clientUpdateError)
     return {
       status: 'error',
       message: 'We could not update your profile. Please try again.',
@@ -146,10 +146,32 @@ export async function updateProfileAction(
     }
   }
 
-  // Note: Clerk user metadata is managed through Clerk's dashboard or API
-  // We update the client record in Supabase which is the source of truth for profile data
+  // Sync profile updates to Clerk user metadata
+  // This ensures Clerk user data stays in sync with application data
+  try {
+    const { clerkClient } = await import('@clerk/nextjs/server')
+    const { auth: getAuth } = await import('@clerk/nextjs/server')
+    const { userId } = await getAuth()
+    
+    if (userId) {
+      await clerkClient().users.updateUser(userId, {
+        firstName: data.firstName.trim(),
+        lastName: data.lastName.trim(),
+        // Note: Phone and email require verification flows, so we don't update them here
+        // They should be managed through Clerk's email/phone verification flows
+      })
+    }
+  } catch (clerkError) {
+    // If Clerk update fails, log but don't fail the whole operation
+    // The Supabase update already succeeded, so the profile is updated in our system
+    // Clerk metadata is secondary - it's nice to have but not critical
+  }
 
-  await Promise.all([revalidatePath('/profile'), revalidatePath('/profile/edit')])
+  // Don't revalidate immediately - causes component remount which overwrites form state with cached data
+  // The form already has the correct saved values, so no need to refetch immediately
+  // Cache will expire naturally (60s) and fresh data will load on next navigation
+  // If we need to invalidate cache, do it after a delay or on next page load
+  // await Promise.all([revalidatePath('/profile'), revalidatePath('/profile/edit')])
 
   const successMessage = 'Profile updated successfully.'
 

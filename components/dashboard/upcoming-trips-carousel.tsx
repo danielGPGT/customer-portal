@@ -112,7 +112,7 @@ export function UpcomingTripsCarousel({ trips }: UpcomingTripsCarouselProps) {
               No upcoming trips yet. Book your first trip to get started!
             </p>
             <Button asChild variant="default" className="mt-4">
-              <Link href="/trips">View All Trips</Link>
+              <Link href="/trips" prefetch={true}>View All Trips</Link>
             </Button>
           </CardContent>
         </Card>
@@ -211,7 +211,7 @@ export function UpcomingTripsCarousel({ trips }: UpcomingTripsCarouselProps) {
                   )}
                 </div>
                 <Button asChild variant="default" className="w-full" size="sm">
-                  <Link href={`/trips/${trip.id}`}>
+                  <Link href={`/trips/${trip.id}`} prefetch={true}>
                     View Details
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>

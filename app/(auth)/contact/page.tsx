@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Mail, Phone, Globe } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Contact Us | Customer Loyalty Portal',
+  title: 'Contact Us | Grand Prix Grand Tours Portal',
   description: 'Get in touch with our support team',
 }
 

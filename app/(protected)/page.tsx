@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -12,66 +13,62 @@ interface DashboardPageProps {
   searchParams: Promise<{ error?: string }>
 }
 
+export const metadata: Metadata = {
+  title: 'Dashboard | Grand Prix Grand Tours Portal',
+  description: 'View your loyalty points, upcoming trips, and manage your account',
+}
+
 // Cache this dashboard page for 60 seconds to reduce repeat Supabase work
 export const revalidate = 60
 
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
-  console.log('[DashboardPage] Starting dashboard page render...')
   const params = await searchParams
   const error = params.error
-  console.log('[DashboardPage] Search params error:', error)
   
-  console.log('[DashboardPage] Calling getClient()...')
   const { client, user, error: clientError } = await getClient()
-  console.log('[DashboardPage] getClient() result:', {
-    hasUser: !!user,
-    userId: user?.id,
-    hasClient: !!client,
-    clientId: client?.id,
-    error: clientError
-  })
 
   // Layout should already have enforced auth, but keep a defensive check
   if (!user) {
-    console.log('[DashboardPage] No user, redirecting to /sign-in')
     redirect('/sign-in')
   }
 
   if (!client || clientError) {
-    console.log('[DashboardPage] No client or clientError, redirecting to /sign-in?error=setup_failed')
     redirect('/sign-in?error=setup_failed')
   }
 
-  console.log('[DashboardPage] All checks passed, proceeding with data fetching...')
-  console.log('[DashboardPage] Client data:', { id: client.id, email: client.email, points: client.points_balance })
-
-  // Get loyalty settings for referral bonus and points info
   const supabase = await (await import('@/lib/supabase/server')).createClient()
-  const { data: settings } = await supabase
-    .from('loyalty_settings')
-    .select('referral_bonus_referee, referral_bonus_referrer, currency, points_per_pound, point_value, redemption_increment, min_redemption_points')
-    .eq('id', 1)
-    .single()
 
-  // Get referral data
-  const { data: referralData } = await supabase
-    .from('referrals')
-    .select('referral_code, referral_link')
-    .eq('referrer_client_id', client.id)
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle()
+  // OPTIMIZED: Parallel fetch settings, referrals, and recent transactions (they're independent)
+  const [
+    { data: settings },
+    { data: referralData },
+    { data: recentTransactionsRaw }
+  ] = await Promise.all([
+    // Get loyalty settings for referral bonus and points info
+    supabase
+      .from('loyalty_settings')
+      .select('referral_bonus_referee, referral_bonus_referrer, currency, points_per_pound, point_value, redemption_increment, min_redemption_points')
+      .eq('id', 1)
+      .single(),
+    // Get referral data
+    supabase
+      .from('referrals')
+      .select('referral_code, referral_link')
+      .eq('referrer_client_id', client.id)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    // Get compact recent loyalty transactions (for dashboard activity card)
+    supabase
+      .from('loyalty_transactions')
+      .select('id, transaction_type, source_type, points, description, created_at, source_reference_id')
+      .eq('client_id', client.id)
+      .order('created_at', { ascending: false })
+      .limit(3)
+  ])
 
   // Get referrer bonus points from loyalty settings (what the user gets when someone books)
   const referrerBonusPoints = settings?.referral_bonus_referrer || 100
-
-  // Get compact recent loyalty transactions (for dashboard activity card)
-  const { data: recentTransactionsRaw } = await supabase
-    .from('loyalty_transactions')
-    .select('id, transaction_type, source_type, points, description, created_at, source_reference_id')
-    .eq('client_id', client.id)
-    .order('created_at', { ascending: false })
-    .limit(3)
 
   // Enrich with booking reference and event name where applicable (batch query)
   let recentTransactions: {
@@ -179,9 +176,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     .order('created_at', { ascending: false })
 
   if (upcomingBookingsError) {
-    console.error('[Dashboard] Error fetching upcoming bookings:', upcomingBookingsError)
-    console.error('[Dashboard] Client ID:', client.id)
-    console.error('[Dashboard] Client clerk_user_id:', client.clerk_user_id)
+    // Error fetching upcoming bookings - will show empty state
   }
 
   // Helper function to extract check-in/check-out dates from hotel room components
@@ -388,8 +383,6 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   }
 
   const errorInfo = error ? errorMessages[error] : null
-
-  console.log('[DashboardPage] About to return JSX - rendering dashboard UI')
   
   return (
     <>

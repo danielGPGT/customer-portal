@@ -50,7 +50,7 @@ export function DashboardHeroCard({
                   size="lg"
                   className="bg-background text-foreground hover:bg-background/90 shadow-lg"
                 >
-                  <Link href={`/trips/${nextTripId}`}>
+                  <Link href={`/trips/${nextTripId}`} prefetch={true}>
                     View Next Trip
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
@@ -61,7 +61,7 @@ export function DashboardHeroCard({
                   size="lg"
                   className="bg-background text-foreground hover:bg-background/90 shadow-lg"
                 >
-                  <Link href="/trips">
+                  <Link href="/trips" prefetch={true}>
                     View All Trips
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
@@ -73,7 +73,7 @@ export function DashboardHeroCard({
                 variant="outline"
                 className="border-2 border-primary-foreground/20 bg-transparent text-primary-foreground hover:bg-primary-foreground/10"
               >
-                <Link href="/points/earn">
+                <Link href="/points/earn" prefetch={true}>
                   Earn More Points
                   <Sparkles className="ml-2 h-4 w-4" />
                 </Link>

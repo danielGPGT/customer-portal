@@ -59,13 +59,13 @@ export function PointsExpiringAlert({
         </div>
         <div className="flex flex-col sm:flex-row gap-2">
           <Button asChild variant={daysRemaining <= 7 ? "default" : "outline"} size="sm">
-            <Link href="/points/redeem" className="flex items-center gap-2">
+            <Link href="/points/redeem" prefetch={true} className="flex items-center gap-2">
               Redeem Now
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
           <Button asChild variant="ghost" size="sm">
-            <Link href="/trips">
+            <Link href="/trips" prefetch={true}>
               Book a Trip
             </Link>
           </Button>

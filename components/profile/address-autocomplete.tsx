@@ -31,6 +31,20 @@ export function AddressAutocomplete({ initialAddress, onAddressChange, errors }:
     country: initialAddress?.country || '',
   })
 
+  // Sync internal state when initialAddress changes (e.g., after server refresh)
+  useEffect(() => {
+    if (initialAddress) {
+      setAddress({
+        address_line1: initialAddress.address_line1 || '',
+        address_line2: initialAddress.address_line2 || '',
+        city: initialAddress.city || '',
+        state: initialAddress.state || '',
+        postal_code: initialAddress.postal_code || '',
+        country: initialAddress.country || '',
+      })
+    }
+  }, [initialAddress])
+
   const [isLoading, setIsLoading] = useState(false)
   const [suggestions, setSuggestions] = useState<any[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
@@ -188,7 +202,6 @@ export function AddressAutocomplete({ initialAddress, onAddressChange, errors }:
           <Input
             ref={inputRef}
             id="address_line1"
-            name="address_line1"
             type="text"
             value={address.address_line1}
             onChange={(e) => handleInputChange('address_line1', e.target.value)}
@@ -284,7 +297,6 @@ function FormField({ label, name, value, onChange, placeholder, error }: FormFie
       <Label htmlFor={name}>{label}</Label>
       <Input
         id={name}
-        name={name}
         type="text"
         value={value}
         onChange={onChange}

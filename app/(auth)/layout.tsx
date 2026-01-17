@@ -4,7 +4,7 @@ import { AuthRightNav } from '@/components/auth/auth-right-nav'
 import { CookieBanner } from '@/components/cookies/cookie-banner'
 
 export const metadata: Metadata = {
-  title: 'Account | Customer Loyalty Portal',
+  title: 'Account | Grand Prix Grand Tours Portal',
   description: 'Sign in or create an account to access your loyalty program',
 }
 

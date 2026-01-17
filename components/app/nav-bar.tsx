@@ -150,6 +150,7 @@ export function NavBar() {
                       <DropdownMenuItem key={subItem.url} asChild>
                         <Link
                           href={subItem.url}
+                          prefetch={true}
                           className={cn(
                             "cursor-pointer",
                             pathname === subItem.url && "bg-accent text-accent-foreground"
@@ -177,7 +178,7 @@ export function NavBar() {
                   : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
               )}
             >
-              <Link href={item.url}>
+              <Link href={item.url} prefetch={true}>
                 <item.icon className={cn(
                   "h-4 w-4 mr-2",
                   itemActive ? "text-accent-foreground" : "text-muted-foreground"
@@ -194,7 +195,7 @@ export function NavBar() {
         className="bg-primary hover:bg-primary-700 text-primary-foreground h-9 px-4 ml-4 hidden md:flex"
         asChild
       >
-        <Link href="/refer">Refer a friend</Link>
+        <Link href="/refer" prefetch={true}>Refer a friend</Link>
       </Button>
       </div>
     </nav>

@@ -101,6 +101,9 @@ export function AppHeader({ clientId }: { clientId: string }) {
     ? `${client.first_name} ${client.last_name}`
     : client?.email || clerkAuth?.email || "User"
 
+  // Get Clerk avatar URL if available
+  const avatarUrl = clerkAuth?.imageUrl || null
+
   return (
     <header className="sticky top-0 z-40 bg-sidebar w-full border-none ">
       <div className="flex h-14 items-center gap-4 px-4 lg:px-6">
@@ -170,7 +173,9 @@ export function AppHeader({ clientId }: { clientId: string }) {
                   disabled={!mounted}
                 >
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src="" alt={userName} />
+                    {avatarUrl && (
+                      <AvatarImage src={avatarUrl} alt={userName} />
+                    )}
                     <AvatarFallback className="bg-primary text-primary-foreground text-xs">
                       {userInitials}
                     </AvatarFallback>

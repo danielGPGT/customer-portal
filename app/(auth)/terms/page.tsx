@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 export const metadata: Metadata = {
-  title: 'Terms & Conditions | Customer Loyalty Portal',
+  title: 'Terms & Conditions | Grand Prix Grand Tours Portal',
   description: 'Terms and conditions for the loyalty program',
 }
 

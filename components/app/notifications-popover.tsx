@@ -222,7 +222,7 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
           <span className="sr-only">Notifications</span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-0" align="end">
+      <PopoverContent className="max-w-80 p-0 ml-4" align="end">
         <div className="flex items-center justify-between px-4 py-3 border-b">
           <div className="flex items-center gap-2">
             <h4 className="font-semibold text-sm">Notifications</h4>
@@ -263,6 +263,7 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
                 <Link
                   key={notification.id}
                     href={url}
+                    prefetch={true}
                   onClick={() => {
                     if (!notification.read) {
                       markAsRead(notification.id)
@@ -311,7 +312,7 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
               className="w-full text-xs"
               asChild
             >
-              <Link href="/notifications" onClick={() => setIsOpen(false)}>
+              <Link href="/notifications" prefetch={true} onClick={() => setIsOpen(false)}>
                 View all notifications
               </Link>
             </Button>
