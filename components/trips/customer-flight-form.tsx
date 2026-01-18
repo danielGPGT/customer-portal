@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
 import { useToast } from '@/hooks/use-toast'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -69,6 +69,7 @@ interface CustomerFlightFormProps {
 
 export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, flightId, editingSegment }: CustomerFlightFormProps) {
   const router = useRouter()
+  const pathname = usePathname()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   // Separate state for each field to prevent cross-contamination
@@ -525,7 +526,10 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
       })
 
       onOpenChange(false)
-      router.refresh()
+      // Force immediate refresh to show updated data
+      setTimeout(() => {
+        router.push(pathname)
+      }, 100)
       onSuccess?.()
       
       // Reset form

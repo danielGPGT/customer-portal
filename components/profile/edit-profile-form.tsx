@@ -5,6 +5,7 @@ import { useActionState } from 'react'
 import { useFormStatus } from 'react-dom'
 import Link from 'next/link'
 import { useUser } from '@clerk/nextjs'
+import { useRouter, usePathname } from 'next/navigation'
 import { Loader2, Mail, Phone, CalendarRange, Upload, X, User } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -43,6 +44,8 @@ interface EditProfileFormProps {
 export function EditProfileForm({ initialValues }: EditProfileFormProps) {
   const { user, isLoaded } = useUser()
   const { toast } = useToast()
+  const router = useRouter()
+  const pathname = usePathname()
   const [state, formAction] = useActionState<ProfileFormState, FormData>(
     updateProfileAction,
     INITIAL_FORM_STATE
@@ -147,10 +150,15 @@ export function EditProfileForm({ initialValues }: EditProfileFormProps) {
     }
   }, [initialValues])
 
-  // Save to sessionStorage on successful save
+  // Save to sessionStorage on successful save and refresh router
   useEffect(() => {
     if (state.status === 'success') {
       saveToStorage({ ...formData }, { ...address })
+      
+      // Force immediate refresh to show updated data
+      setTimeout(() => {
+        router.push(pathname)
+      }, 100)
       
       // Clear saved data after cache expires
       const timer = setTimeout(() => {
@@ -161,7 +169,7 @@ export function EditProfileForm({ initialValues }: EditProfileFormProps) {
 
       return () => clearTimeout(timer)
     }
-  }, [state.status, formData, address])
+  }, [state.status, formData, address, router, pathname])
 
   // Avatar upload state
   const [avatarFile, setAvatarFile] = useState<File | null>(null)

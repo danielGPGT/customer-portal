@@ -2,7 +2,9 @@
 
 import { useActionState } from 'react'
 import { useFormStatus } from 'react-dom'
+import { useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter, usePathname } from 'next/navigation'
 import { Loader2, Settings2 } from 'lucide-react'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -32,12 +34,24 @@ interface PreferencesFormProps {
 }
 
 export function PreferencesForm({ initialValues, baseCurrency }: PreferencesFormProps) {
+  const router = useRouter()
+  const pathname = usePathname()
   const [state, formAction] = useActionState<PreferencesFormState, FormData>(
     updatePreferencesAction,
     INITIAL_FORM_STATE
   )
 
   const [selectedCurrency, setSelectedCurrency] = useState(initialValues.preferredCurrency)
+
+  // Refresh router on successful update
+  useEffect(() => {
+    if (state.status === 'success') {
+      // Force immediate refresh to show updated currency
+      setTimeout(() => {
+        router.push(pathname)
+      }, 100)
+    }
+  }, [state.status, router, pathname])
 
   const supportedCurrencies = CurrencyService.getSupportedCurrencies()
 

@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
 import { useToast } from '@/hooks/use-toast'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter, SheetDescription } from '@/components/ui/sheet'
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter, DrawerDescription } from '@/components/ui/drawer'
 import { Button } from '@/components/ui/button'
@@ -68,6 +68,7 @@ interface TravelerEditDrawerProps {
 
 export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, canEditContactFields }: TravelerEditDrawerProps) {
   const router = useRouter()
+  const pathname = usePathname()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const isDesktop = useMediaQuery('(min-width: 768px)')
@@ -157,6 +158,11 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
       onOpenChange(false)
       // Pass updated traveler data to onSuccess callback for optimistic update
       onSuccess?.(updatedData as Traveler)
+      
+      // Force refresh to show updated data immediately
+      setTimeout(() => {
+        router.push(pathname)
+      }, 100)
     } catch (error: any) {
       console.error('Error updating traveler:', error)
       toast({

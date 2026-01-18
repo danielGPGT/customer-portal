@@ -51,10 +51,9 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
           title: "Currency updated",
           description: `Display currency changed to ${getCurrencyInfo(currency).name}`,
         })
-        // Force refresh to show updated currency immediately
-        // Small delay to ensure server action completes
+        // Force immediate refresh using router.push to bypass Next.js router cache
         setTimeout(() => {
-          router.refresh()
+          router.push(window.location.pathname)
         }, 100)
       } else {
         // Revert optimistic update on error

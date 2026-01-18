@@ -167,11 +167,17 @@ export async function updateProfileAction(
     // Clerk metadata is secondary - it's nice to have but not critical
   }
 
-  // Don't revalidate immediately - causes component remount which overwrites form state with cached data
-  // The form already has the correct saved values, so no need to refetch immediately
-  // Cache will expire naturally (60s) and fresh data will load on next navigation
-  // If we need to invalidate cache, do it after a delay or on next page load
-  // await Promise.all([revalidatePath('/profile'), revalidatePath('/profile/edit')])
+  // Clear client cache so fresh data is fetched
+  const { clearClientCache } = await import('@/lib/utils/get-client')
+  if (clerkUser) {
+    clearClientCache(clerkUser.id)
+  }
+
+  // Revalidate all profile-related paths immediately
+  revalidatePath('/profile', 'page')
+  revalidatePath('/profile/edit', 'page')
+  revalidatePath('/', 'layout') // Revalidate layout to update header
+  revalidateTag('client-data')
 
   const successMessage = 'Profile updated successfully.'
 
