@@ -526,9 +526,9 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
       })
 
       onOpenChange(false)
-      // Force immediate refresh to show updated data
+      // Enterprise-level: Force server-side refresh to bypass all caches
       setTimeout(() => {
-        router.push(pathname)
+        router.refresh()
       }, 100)
       onSuccess?.()
       

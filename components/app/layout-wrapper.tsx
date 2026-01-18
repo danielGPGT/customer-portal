@@ -7,6 +7,8 @@ import { NavBar } from '@/components/app/nav-bar'
 import { MobileSidebar } from '@/components/app/mobile-sidebar'
 import { AppFooter } from '@/components/app/app-footer'
 import { CookieBanner } from '@/components/cookies/cookie-banner'
+import { CurrencyProvider } from '@/components/providers/currency-provider'
+import { getClientPreferredCurrency } from '@/lib/utils/currency'
 
 interface LayoutWrapperProps {
   children: React.ReactNode
@@ -25,6 +27,9 @@ export function LayoutWrapper({
   const pathname = usePathname()
   const router = useRouter()
   const prevPathnameRef = React.useRef(pathname)
+
+  // Get initial currency from client preferences
+  const initialCurrency = getClientPreferredCurrency(client, baseCurrency)
 
   // Check for currency updates on route change
   React.useEffect(() => {
@@ -56,16 +61,21 @@ export function LayoutWrapper({
   // LayoutWrapper mounted - no debug logs needed
 
   return (
-    <div className="flex min-h-screen mx-auto flex-col px-4 lg:px-4">
-      {/* Top Header - Fixed */}
-      <TopHeader
-        onMenuClick={() => setSidebarOpen(!sidebarOpen)}
-        isSidebarOpen={sidebarOpen}
-        clientId={client.id}
-        user={user}
-        client={client}
-        baseCurrency={baseCurrency}
-      />
+    <CurrencyProvider
+      initialCurrency={initialCurrency}
+      clientId={client.id}
+      baseCurrency={baseCurrency}
+    >
+      <div className="flex min-h-screen mx-auto flex-col px-4 lg:px-4">
+        {/* Top Header - Fixed */}
+        <TopHeader
+          onMenuClick={() => setSidebarOpen(!sidebarOpen)}
+          isSidebarOpen={sidebarOpen}
+          clientId={client.id}
+          user={user}
+          client={client}
+          baseCurrency={baseCurrency}
+        />
 
       {/* Navigation Bar - Fixed (Desktop only) */}
       <div className="hidden lg:block">
@@ -85,11 +95,12 @@ export function LayoutWrapper({
         </div>
       </main>
 
-      <AppFooter />
-      
-      {/* Cookie Banner */}
-      <CookieBanner />
-    </div>
+        <AppFooter />
+        
+        {/* Cookie Banner */}
+        <CookieBanner />
+      </div>
+    </CurrencyProvider>
   )
 }
 

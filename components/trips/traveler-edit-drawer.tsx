@@ -159,9 +159,9 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
       // Pass updated traveler data to onSuccess callback for optimistic update
       onSuccess?.(updatedData as Traveler)
       
-      // Force refresh to show updated data immediately
+      // Enterprise-level: Force server-side refresh to bypass all caches
       setTimeout(() => {
-        router.push(pathname)
+        router.refresh()
       }, 100)
     } catch (error: any) {
       console.error('Error updating traveler:', error)

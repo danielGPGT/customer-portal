@@ -21,6 +21,7 @@ import Image from "next/image"
 import { useTheme } from "next-themes"
 import Link from "next/link"
 import { getClientPreferredCurrency, type CurrencyCode } from "@/lib/utils/currency"
+import { useCurrency } from "@/components/providers/currency-provider"
 
 interface TopHeaderProps {
   onMenuClick?: () => void
@@ -39,10 +40,17 @@ export function TopHeader({
   client,
   baseCurrency = 'GBP'
 }: TopHeaderProps) {
-  // Get current preferred currency
-  const preferredCurrency = client 
-    ? getClientPreferredCurrency(client, baseCurrency)
-    : (baseCurrency as CurrencyCode)
+  // Get currency from context (enterprise-level state management)
+  let preferredCurrency: CurrencyCode
+  try {
+    const { currency } = useCurrency()
+    preferredCurrency = currency
+  } catch {
+    // Fallback if context not available (shouldn't happen, but safe fallback)
+    preferredCurrency = client 
+      ? getClientPreferredCurrency(client, baseCurrency)
+      : (baseCurrency as CurrencyCode)
+  }
 
   const [searchQuery, setSearchQuery] = React.useState("")
   const [searchFocused, setSearchFocused] = React.useState(false)

@@ -35,9 +35,15 @@ const setCachedClient = (userId: string, client: any, portalAccess: PortalType[]
 /**
  * Clear client cache for a specific user
  * Call this when client data is updated (e.g., preferences, profile)
+ * Enterprise-level: Clears all cached data immediately
  */
-export const clearClientCache = (userId: string) => {
-  clientCache.delete(userId)
+export const clearClientCache = (userId?: string) => {
+  if (userId) {
+    clientCache.delete(userId)
+  } else {
+    // Clear all caches if no userId provided
+    clientCache.clear()
+  }
 }
 
 /**

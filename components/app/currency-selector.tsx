@@ -12,9 +12,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { getCurrencySymbol, getCurrencyInfo, getSupportedCurrencies, type CurrencyCode } from "@/lib/utils/currency"
-import { updatePreferencesAction } from "@/app/(protected)/profile/preferences/actions"
+import { useCurrency } from "@/components/providers/currency-provider"
 import { toast } from "@/hooks/use-toast"
-import { useRouter } from "next/navigation"
 
 interface CurrencySelectorProps {
   currentCurrency: CurrencyCode
@@ -23,64 +22,28 @@ interface CurrencySelectorProps {
 }
 
 export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: CurrencySelectorProps) {
-  const [isUpdating, setIsUpdating] = React.useState(false)
-  const [optimisticCurrency, setOptimisticCurrency] = React.useState<CurrencyCode | null>(null)
-  const router = useRouter()
+  const { currency, setCurrency, isUpdating } = useCurrency()
   const supportedCurrencies = getSupportedCurrencies()
   
-  // Use optimistic currency if set, otherwise use current
-  const displayCurrency = optimisticCurrency || currentCurrency
+  // Use context currency, fallback to prop
+  const displayCurrency = currency || currentCurrency
   const currentCurrencyInfo = getCurrencyInfo(displayCurrency)
 
-  const handleCurrencyChange = async (currency: CurrencyCode) => {
-    if (currency === currentCurrency) return
-
-    // Optimistic update - show new currency immediately
-    setOptimisticCurrency(currency)
-    setIsUpdating(true)
+  const handleCurrencyChange = async (newCurrency: CurrencyCode) => {
+    if (newCurrency === displayCurrency || isUpdating) return
 
     try {
-      const formData = new FormData()
-      formData.append('client_id', clientId)
-      formData.append('preferred_currency', currency)
-
-      const result = await updatePreferencesAction({ status: 'idle' }, formData)
-
-      if (result.status === 'success') {
-        toast({
-          title: "Currency updated",
-          description: `Display currency changed to ${getCurrencyInfo(currency).name}`,
-        })
-        
-        // Store currency change timestamp to trigger refresh on navigation
-        if (typeof window !== 'undefined') {
-          sessionStorage.setItem('currency-updated', Date.now().toString())
-        }
-        
-        // Force immediate server-side refresh to bypass all caches
-        setTimeout(() => {
-          router.refresh()
-        }, 100)
-      } else {
-        // Revert optimistic update on error
-        setOptimisticCurrency(null)
-        toast({
-          title: "Error",
-          description: result.message || "Failed to update currency preference",
-          variant: "destructive",
-        })
-      }
-    } catch (error) {
-      // Revert optimistic update on error
-      setOptimisticCurrency(null)
-      console.error('Error updating currency:', error)
+      await setCurrency(newCurrency)
+      toast({
+        title: "Currency updated",
+        description: `Display currency changed to ${getCurrencyInfo(newCurrency).name}`,
+      })
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "An unexpected error occurred",
+        description: error.message || "Failed to update currency preference",
         variant: "destructive",
       })
-    } finally {
-      setIsUpdating(false)
     }
   }
 

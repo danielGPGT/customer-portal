@@ -115,21 +115,9 @@ export async function updatePreferencesAction(
     }
   }
 
-  // Revalidate all paths that display currency - use 'page' type to force immediate refresh
-  revalidatePath('/profile', 'page')
-  revalidatePath('/profile/preferences', 'page')
-  revalidatePath('/', 'page') // Dashboard
-  revalidatePath('/points', 'page')
-  revalidatePath('/points/earn', 'page')
-  revalidatePath('/points/redeem', 'page')
-  revalidatePath('/trips', 'page')
-  revalidatePath('/trips/[bookingId]', 'page')
-  
-  // Also revalidate layout to update header currency selector
-  revalidatePath('/', 'layout')
-  
-  // Revalidate client data cache tag
-  revalidateTag('client-data')
+  // Enterprise-level cache invalidation
+  const { invalidateCurrencyCaches } = await import('@/lib/utils/cache-invalidation')
+  await invalidateCurrencyCaches(clerkUser.id)
 
   return {
     status: 'success',

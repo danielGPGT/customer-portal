@@ -167,17 +167,9 @@ export async function updateProfileAction(
     // Clerk metadata is secondary - it's nice to have but not critical
   }
 
-  // Clear client cache so fresh data is fetched
-  const { clearClientCache } = await import('@/lib/utils/get-client')
-  if (clerkUser) {
-    clearClientCache(clerkUser.id)
-  }
-
-  // Revalidate all profile-related paths immediately
-  revalidatePath('/profile', 'page')
-  revalidatePath('/profile/edit', 'page')
-  revalidatePath('/', 'layout') // Revalidate layout to update header
-  revalidateTag('client-data')
+  // Enterprise-level cache invalidation
+  const { invalidateProfileCaches } = await import('@/lib/utils/cache-invalidation')
+  await invalidateProfileCaches(clerkUser.id)
 
   const successMessage = 'Profile updated successfully.'
 
