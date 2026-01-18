@@ -14,7 +14,7 @@ import {
 import { getCurrencySymbol, getCurrencyInfo, getSupportedCurrencies, type CurrencyCode } from "@/lib/utils/currency"
 import { updatePreferencesAction } from "@/app/(protected)/profile/preferences/actions"
 import { toast } from "@/hooks/use-toast"
-import { useRouter, usePathname } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 interface CurrencySelectorProps {
   currentCurrency: CurrencyCode
@@ -27,7 +27,6 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
   const [optimisticCurrency, setOptimisticCurrency] = React.useState<CurrencyCode | null>(null)
   const [dropdownOpen, setDropdownOpen] = React.useState(false)
   const router = useRouter()
-  const pathname = usePathname()
   const supportedCurrencies = getSupportedCurrencies()
   
   // Use optimistic currency if set, otherwise use current
@@ -40,12 +39,11 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
       return
     }
 
-    // Close dropdown immediately on mobile
-    setDropdownOpen(false)
-
     // Optimistic update - show new currency immediately
     setOptimisticCurrency(currency)
     setIsUpdating(true)
+    // Keep dropdown open during update to prevent premature closing on touch devices
+    // We'll close it manually after the update completes
 
     try {
       const formData = new FormData()
@@ -59,15 +57,16 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
           title: "Currency updated",
           description: `Display currency changed to ${getCurrencyInfo(currency).name}`,
         })
-        
-        // Force immediate refresh - use both refresh and push for better mobile compatibility
-        router.refresh()
+        // Close dropdown after successful update
+        setDropdownOpen(false)
+        // Force immediate refresh using router.push to bypass Next.js router cache
         setTimeout(() => {
-          router.push(pathname)
-        }, 150)
+          router.push(window.location.pathname)
+        }, 100)
       } else {
         // Revert optimistic update on error
         setOptimisticCurrency(null)
+        setDropdownOpen(false)
         toast({
           title: "Error",
           description: result.message || "Failed to update currency preference",
@@ -77,6 +76,7 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
     } catch (error) {
       // Revert optimistic update on error
       setOptimisticCurrency(null)
+      setDropdownOpen(false)
       console.error('Error updating currency:', error)
       toast({
         title: "Error",
@@ -88,8 +88,17 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
     }
   }
 
+  // Handle dropdown open state changes - prevent closing during update
+  const handleOpenChange = (open: boolean) => {
+    // Don't allow closing if we're updating (prevents premature close on touch devices)
+    if (!open && isUpdating) {
+      return
+    }
+    setDropdownOpen(open)
+  }
+
   return (
-    <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
+    <DropdownMenu open={dropdownOpen} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
@@ -117,7 +126,11 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
           return (
             <DropdownMenuItem
               key={currency}
-              onClick={() => handleCurrencyChange(currency)}
+              onSelect={() => {
+                // onSelect is more reliable for touch devices than onClick
+                // It fires on both click and touch events
+                handleCurrencyChange(currency)
+              }}
               className={isSelected ? "bg-accent" : ""}
             >
               <div className="flex items-center justify-between w-full">
