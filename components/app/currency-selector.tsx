@@ -12,9 +12,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { getCurrencySymbol, getCurrencyInfo, getSupportedCurrencies, type CurrencyCode } from "@/lib/utils/currency"
+import { cn } from "@/lib/utils"
 import { updatePreferencesAction } from "@/app/(protected)/profile/preferences/actions"
 import { toast } from "@/hooks/use-toast"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 
 interface CurrencySelectorProps {
   currentCurrency: CurrencyCode
@@ -27,6 +28,7 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
   const [optimisticCurrency, setOptimisticCurrency] = React.useState<CurrencyCode | null>(null)
   const [dropdownOpen, setDropdownOpen] = React.useState(false)
   const router = useRouter()
+  const pathname = usePathname()
   const supportedCurrencies = getSupportedCurrencies()
   
   // Use optimistic currency if set, otherwise use current
@@ -39,11 +41,11 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
       return
     }
 
+    // Keep dropdown open during update (important for mobile)
+    // The handleOpenChange will prevent closing while isUpdating is true
     // Optimistic update - show new currency immediately
     setOptimisticCurrency(currency)
     setIsUpdating(true)
-    // Keep dropdown open during update to prevent premature closing on touch devices
-    // We'll close it manually after the update completes
 
     try {
       const formData = new FormData()
@@ -57,12 +59,15 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
           title: "Currency updated",
           description: `Display currency changed to ${getCurrencyInfo(currency).name}`,
         })
+        
         // Close dropdown after successful update
         setDropdownOpen(false)
+        
         // Force immediate refresh using router.push to bypass Next.js router cache
+        // Use a small delay to ensure the dropdown closes first
         setTimeout(() => {
-          router.push(window.location.pathname)
-        }, 100)
+          router.push(pathname)
+        }, 150)
       } else {
         // Revert optimistic update on error
         setOptimisticCurrency(null)
@@ -88,9 +93,9 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
     }
   }
 
-  // Handle dropdown open state changes - prevent closing during update
+  // Handle dropdown open state - prevent closing during update
   const handleOpenChange = (open: boolean) => {
-    // Don't allow closing if we're updating (prevents premature close on touch devices)
+    // Don't allow closing if we're updating (prevents premature close on mobile)
     if (!open && isUpdating) {
       return
     }
@@ -98,7 +103,7 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
   }
 
   return (
-    <DropdownMenu open={dropdownOpen} onOpenChange={handleOpenChange}>
+    <DropdownMenu open={dropdownOpen} onOpenChange={handleOpenChange} modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
@@ -106,16 +111,30 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
           className="h-9 w-9 sm:w-auto gap-1.5 text-white hover:text-white dark:text-primary-foreground hover:bg-secondary-950 px-0 sm:px-2"
           disabled={isUpdating}
         >
-
-          <span className="hidden sm:inline font-medium">
-            {currentCurrencyInfo.symbol} {displayCurrency}
-          </span>
-          <span className="sm:hidden font-medium text-xl">
-            {currentCurrencyInfo.symbol}
-          </span>
+          {isUpdating ? (
+            <span className="text-sm">...</span>
+          ) : (
+            <>
+              <span className="hidden sm:inline font-medium">
+                {currentCurrencyInfo.symbol} {displayCurrency}
+              </span>
+              <span className="sm:hidden font-medium text-xl">
+                {currentCurrencyInfo.symbol}
+              </span>
+            </>
+          )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56 ml-4">
+      <DropdownMenuContent 
+        align="end" 
+        className="w-56 ml-4"
+        onInteractOutside={(e) => {
+          // Prevent closing during update
+          if (isUpdating) {
+            e.preventDefault()
+          }
+        }}
+      >
         <DropdownMenuLabel>Select Currency</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {supportedCurrencies.map((currency) => {
@@ -127,11 +146,15 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
             <DropdownMenuItem
               key={currency}
               onSelect={() => {
-                // onSelect is more reliable for touch devices than onClick
+                // onSelect is more reliable for mobile touch events than onClick
                 // It fires on both click and touch events
                 handleCurrencyChange(currency)
               }}
-              className={isSelected ? "bg-accent" : ""}
+              disabled={isUpdating}
+              className={cn(
+                isSelected && "bg-accent",
+                isUpdating && "opacity-50"
+              )}
             >
               <div className="flex items-center justify-between w-full">
                 <div className="flex items-center gap-2">
