@@ -8,9 +8,9 @@ import { ReferAFriendWidget } from '@/components/points/refer-a-friend-widget'
 import { ReferFriendBanner } from '@/components/points/refer-friend-banner'
 import { StatisticsCard } from '@/components/points/statistics-card'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
-import dynamic from 'next/dynamic'
+import dynamicImport from 'next/dynamic'
 
-const LoyaltyTransactionsTable = dynamic(
+const LoyaltyTransactionsTable = dynamicImport(
   () => import('@/components/points/loyalty-transactions-table').then(mod => ({ default: mod.LoyaltyTransactionsTable })),
   { 
     loading: () => <div className="h-64 flex items-center justify-center"><div className="text-muted-foreground">Loading transactions...</div></div>
@@ -18,6 +18,7 @@ const LoyaltyTransactionsTable = dynamic(
 )
 import { UserPlus, Coins, CreditCard, Plane } from 'lucide-react'
 import { getClient } from '@/lib/utils/get-client'
+import { getClientPreferredCurrency } from '@/lib/utils/currency'
 
 interface PointsPageProps {
   searchParams: Promise<{ page?: string }>
@@ -29,7 +30,9 @@ export const metadata: Metadata = {
 }
 
 // Points overview can be cached briefly
-export const revalidate = 60
+// Dynamic page - no caching to ensure immediate updates when preferences change
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default async function PointsPage({ searchParams }: PointsPageProps) {
   const pageStartTime = performance.now()
@@ -460,7 +463,9 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
     .slice(-6) // Last 6 months
     .reverse()
 
-  const currency = settings?.currency || 'GBP'
+  const baseCurrency = settings?.currency || 'GBP'
+  const preferredCurrency = getClientPreferredCurrency(client, baseCurrency)
+  const currency = baseCurrency // Keep for backward compatibility
 
   const totalPageTime = performance.now() - pageStartTime
   const clientFetchTime = initialDataStartTime - clientStartTime
@@ -499,6 +504,7 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
           minRedemptionPoints={minRedemption}
           redemptionIncrement={redemptionIncrement}
           currency={currency}
+          preferredCurrency={preferredCurrency !== baseCurrency ? preferredCurrency : undefined}
           pointValue={pointValue}
           className="col-span-1 lg:col-span-2"
         />

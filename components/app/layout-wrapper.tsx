@@ -11,12 +11,14 @@ interface LayoutWrapperProps {
   children: React.ReactNode
   user: any
   client: any
+  baseCurrency?: string
 }
 
 export function LayoutWrapper({ 
   children, 
   user, 
-  client 
+  client,
+  baseCurrency = 'GBP'
 }: LayoutWrapperProps) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false)
 
@@ -31,6 +33,7 @@ export function LayoutWrapper({
         clientId={client.id}
         user={user}
         client={client}
+        baseCurrency={baseCurrency}
       />
 
       {/* Navigation Bar - Fixed (Desktop only) */}

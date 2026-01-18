@@ -8,6 +8,8 @@ import { BookingOverviewCard } from '@/components/trips/booking-overview-card'
 import { TripDetailsTabs } from '@/components/trips/trip-details-tabs'
 import { TripActions } from '@/components/trips/trip-actions'
 import { getClient } from '@/lib/utils/get-client'
+import { getClientPreferredCurrency } from '@/lib/utils/currency'
+import { convertDiscountToPreferredCurrency } from '@/lib/utils/currency-conversion'
 
 interface TripDetailsPageProps {
   params: Promise<{ bookingId: string }>
@@ -19,7 +21,9 @@ export const metadata: Metadata = {
 }
 
 // Trip details can be cached briefly
-export const revalidate = 60
+// Dynamic page - no caching to ensure immediate updates when preferences change
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default async function TripDetailsPage({ params }: TripDetailsPageProps) {
   const { client, user, error } = await getClient()
@@ -209,6 +213,14 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
   const defaultCurrency = settings?.currency || 'GBP'
   const currency = booking.currency || defaultCurrency
   const pointValue = settings?.point_value || 1
+  
+  // Get client's preferred currency and convert discount amounts
+  const preferredCurrency = getClientPreferredCurrency(client, defaultCurrency)
+  const discountConversion = await convertDiscountToPreferredCurrency(
+    discountApplied,
+    defaultCurrency,
+    preferredCurrency
+  )
 
   const eventName = enrichedBooking.event_name || enrichedBooking.events?.name || 'Event'
   
@@ -272,6 +284,8 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
         earnTransaction={enrichedBooking.earn_transaction}
         spendTransaction={enrichedBooking.spend_transaction}
         redemptions={enrichedBooking.redemptions}
+        preferredCurrency={preferredCurrency !== defaultCurrency ? preferredCurrency : undefined}
+        discountAppliedConverted={discountConversion.convertedAmount}
       />
 
       {/* Actions */}

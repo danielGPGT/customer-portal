@@ -33,6 +33,14 @@ const setCachedClient = (userId: string, client: any, portalAccess: PortalType[]
 }
 
 /**
+ * Clear client cache for a specific user
+ * Call this when client data is updated (e.g., preferences, profile)
+ */
+export const clearClientCache = (userId: string) => {
+  clientCache.delete(userId)
+}
+
+/**
  * Cached client fetcher - prevents duplicate queries on the same request
  * Uses React cache() to deduplicate requests within the same render
  * Now uses Clerk for authentication instead of Supabase Auth

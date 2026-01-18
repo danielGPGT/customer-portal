@@ -19,7 +19,9 @@ export const metadata: Metadata = {
 }
 
 // Trips overview doesn't need to be fully dynamic
-export const revalidate = 60
+// Dynamic page - no caching to ensure immediate updates when preferences change
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default async function TripsPage({ searchParams }: TripsPageProps) {
   const { client, user, error } = await getClient()

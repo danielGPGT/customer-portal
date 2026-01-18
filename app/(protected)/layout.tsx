@@ -3,6 +3,7 @@ import { auth } from '@clerk/nextjs/server'
 import { LayoutWrapper } from '@/components/app/layout-wrapper'
 import { getClient } from '@/lib/utils/get-client'
 import { canAccessClientPortal } from '@/lib/utils/portal-access'
+import { createClient } from '@/lib/supabase/server'
 
 export default async function ProtectedLayout({
   children,
@@ -60,8 +61,18 @@ export default async function ProtectedLayout({
     redirect('/sign-in?error=setup_failed')
   }
 
+  // Get base currency from loyalty settings
+  const supabase = await createClient()
+  const { data: settings } = await supabase
+    .from('loyalty_settings')
+    .select('currency')
+    .eq('id', 1)
+    .single()
+
+  const baseCurrency = settings?.currency || 'GBP'
+
   return (
-    <LayoutWrapper user={user} client={client}>
+    <LayoutWrapper user={user} client={client} baseCurrency={baseCurrency}>
       {children}
     </LayoutWrapper>
   )

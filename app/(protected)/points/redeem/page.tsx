@@ -8,11 +8,17 @@ import { RedemptionCalculator } from '@/components/points/redemption-calculator'
 import { Gift, Calendar, CheckCircle, AlertTriangle, Info, Lightbulb, FileText, ArrowRight, Coins, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { getClient } from '@/lib/utils/get-client'
+import { getClientPreferredCurrency, getCurrencySymbol, formatCurrencyWithSymbol } from '@/lib/utils/currency'
+import { convertDiscountToPreferredCurrency } from '@/lib/utils/currency-conversion'
 
 export const metadata: Metadata = {
   title: 'How to Redeem Points | Grand Prix Grand Tours Portal',
   description: 'Learn how to redeem your loyalty points for discounts on bookings',
 }
+
+// Dynamic page - no caching to ensure immediate updates when preferences change
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default async function PointsRedeemPage() {
   const supabase = await createClient()
@@ -72,10 +78,24 @@ export default async function PointsRedeemPage() {
   const pointValue = settings?.point_value || 1
   const minRedemption = settings?.min_redemption_points || 100
   const redemptionIncrement = settings?.redemption_increment || 100
-  const currency = settings?.currency || 'GBP'
-  const currencySymbol = currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'
+  const baseCurrency = settings?.currency || 'GBP'
+  const preferredCurrency = getClientPreferredCurrency(client, baseCurrency)
+  const baseCurrencySymbol = getCurrencySymbol(baseCurrency)
+  const preferredCurrencySymbol = getCurrencySymbol(preferredCurrency)
   const usablePoints = availableDiscount.usable_points || Math.floor(availablePoints / redemptionIncrement) * redemptionIncrement
-  const discountValue = usablePoints * pointValue
+  const discountValueBase = usablePoints * pointValue
+  
+  // Convert discount to preferred currency if different
+  const discountConversion = await convertDiscountToPreferredCurrency(
+    discountValueBase,
+    baseCurrency,
+    preferredCurrency
+  )
+  
+  // Convert example amounts to preferred currency
+  const example100Conversion = await convertDiscountToPreferredCurrency(100, baseCurrency, preferredCurrency)
+  const example200Conversion = await convertDiscountToPreferredCurrency(200, baseCurrency, preferredCurrency)
+  const totalSavedConversion = await convertDiscountToPreferredCurrency(totalSaved, baseCurrency, preferredCurrency)
 
   return (
     <div className="space-y-8">
@@ -97,8 +117,12 @@ export default async function PointsRedeemPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <ul className="space-y-2 text-sm text-muted-foreground list-disc list-inside ml-2">
-            <li>Points can be redeemed in {currencySymbol}100 increments</li>
-            <li>Every 100 points = {currencySymbol}100 off your next booking</li>
+            <li>
+              Points can be redeemed in {formatCurrencyWithSymbol(example100Conversion.convertedAmount, preferredCurrency)} increments
+            </li>
+            <li>
+              Every 100 points = {formatCurrencyWithSymbol(example100Conversion.convertedAmount, preferredCurrency)} off your next booking
+            </li>
             <li>Any points leftover stay in your balance and can be used in the future</li>
             <li>Your points will automatically show on any new quote you receive from the Sales Team</li>
           </ul>
@@ -129,10 +153,7 @@ export default async function PointsRedeemPage() {
               <div className="space-y-1.5 pt-4 border-t border-primary-foreground/20">
                 <p className="text-xs opacity-90">You Can Save:</p>
                 <div className="text-3xl font-bold">
-                  {currencySymbol}{discountValue.toLocaleString('en-GB', { 
-                    minimumFractionDigits: 2, 
-                    maximumFractionDigits: 2 
-                  })}
+                  {formatCurrencyWithSymbol(discountConversion.convertedAmount, preferredCurrency)}
                 </div>
                 <p className="text-sm opacity-90">
                   on your next booking!
@@ -230,7 +251,8 @@ export default async function PointsRedeemPage() {
           pointValue={pointValue}
           minRedemption={minRedemption}
           redemptionIncrement={redemptionIncrement}
-          currency={currency}
+          baseCurrency={baseCurrency}
+          preferredCurrency={preferredCurrency !== baseCurrency ? preferredCurrency : undefined}
         />
       </div>
 
@@ -249,12 +271,14 @@ export default async function PointsRedeemPage() {
                 <p className="text-sm font-medium text-muted-foreground mb-2">Example:</p>
                 <div className="space-y-2 text-sm">
                   <p className="font-semibold">You have 285 points</p>
-                  <p className="text-muted-foreground">→ You can redeem {currencySymbol}200 today</p>
+                  <p className="text-muted-foreground">
+                    → You can redeem {formatCurrencyWithSymbol(example200Conversion.convertedAmount, preferredCurrency)} today
+                  </p>
                   <p className="text-muted-foreground">→ 85 points will remain in your balance for next time</p>
                 </div>
               </div>
               <p className="text-xs text-muted-foreground">
-                Points are redeemed in {currencySymbol}100 blocks, so any leftover points stay in your balance for future use.
+                Points are redeemed in {formatCurrencyWithSymbol(example100Conversion.convertedAmount, preferredCurrency)} blocks, so any leftover points stay in your balance for future use.
               </p>
             </div>
           </CardContent>
@@ -273,8 +297,12 @@ export default async function PointsRedeemPage() {
                 <h3 className="font-semibold">Redemption Increments</h3>
               </div>
               <ul className="space-y-1 text-sm text-muted-foreground list-disc list-inside">
-                <li>Points are redeemed in {currencySymbol}100 blocks</li>
-                <li>Every 100 points = {currencySymbol}100 discount</li>
+                <li>
+                  Points are redeemed in {formatCurrencyWithSymbol(example100Conversion.convertedAmount, preferredCurrency)} blocks
+                </li>
+                <li>
+                  Every 100 points = {formatCurrencyWithSymbol(example100Conversion.convertedAmount, preferredCurrency)} discount
+                </li>
                 <li>Any leftover points remain in your balance</li>
               </ul>
             </div>
@@ -323,10 +351,7 @@ export default async function PointsRedeemPage() {
                 <div className="p-3 bg-background rounded-lg border">
                   <p className="text-xs text-muted-foreground mb-1">Total Saved</p>
                   <p className="text-lg font-semibold text-green-600 dark:text-green-400">
-                    {currencySymbol}{totalSaved.toLocaleString('en-GB', { 
-                      minimumFractionDigits: 2, 
-                      maximumFractionDigits: 2 
-                    })}
+                    {formatCurrencyWithSymbol(totalSavedConversion.convertedAmount, preferredCurrency)}
                   </p>
                 </div>
                 <div className="p-3 bg-background rounded-lg border">

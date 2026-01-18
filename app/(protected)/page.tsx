@@ -8,6 +8,7 @@ import { getClient } from '@/lib/utils/get-client'
 import { DashboardHeader } from '@/components/dashboard/dashboard-header'
 import { UpcomingTrips } from '@/components/dashboard/upcoming-trips'
 import { EarnRedeemCards } from '@/components/dashboard/earn-redeem-cards'
+import { getClientPreferredCurrency } from '@/lib/utils/currency'
 
 interface DashboardPageProps {
   searchParams: Promise<{ error?: string }>
@@ -18,8 +19,9 @@ export const metadata: Metadata = {
   description: 'View your loyalty points, upcoming trips, and manage your account',
 }
 
-// Cache this dashboard page for 60 seconds to reduce repeat Supabase work
-export const revalidate = 60
+// Dynamic page - no caching to ensure immediate updates when preferences change
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
   const params = await searchParams
@@ -442,7 +444,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
               </p>
             </div>
             <EarnRedeemCards
-              currency={settings?.currency || 'GBP'}
+              baseCurrency={settings?.currency || 'GBP'}
+              preferredCurrency={getClientPreferredCurrency(client, settings?.currency || 'GBP')}
               pointsPerPound={settings?.points_per_pound || 0.05}
               pointValue={settings?.point_value || 1}
             />

@@ -4,22 +4,28 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { AlertTriangle, ArrowRight, Calendar } from 'lucide-react'
 import Link from 'next/link'
+import { getCurrencySymbol, formatCurrencyWithSymbol } from '@/lib/utils/currency'
 
 interface PointsExpiringAlertProps {
   pointsExpiring: number
   daysRemaining: number
   currency: string
   pointValue: number
+  preferredCurrency?: string
+  discountValueConverted?: number
 }
 
 export function PointsExpiringAlert({
   pointsExpiring,
   daysRemaining,
   currency,
-  pointValue
+  pointValue,
+  preferredCurrency,
+  discountValueConverted
 }: PointsExpiringAlertProps) {
-  const currencySymbol = currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'
-  const discountValue = pointsExpiring * pointValue
+  const displayCurrency = preferredCurrency || currency
+  const discountValueBase = pointsExpiring * pointValue
+  const discountValue = discountValueConverted !== undefined ? discountValueConverted : discountValueBase
 
   if (pointsExpiring === 0 || daysRemaining <= 0) {
     return null
@@ -51,10 +57,10 @@ export function PointsExpiringAlert({
             You have {pointsExpiring.toLocaleString()} points expiring {getMessage()}!
           </p>
           <p className="text-sm text-muted-foreground mt-1">
-            That's {currencySymbol}{discountValue.toLocaleString('en-GB', { 
-              minimumFractionDigits: 2, 
-              maximumFractionDigits: 2 
-            })} worth of discounts. Don't let them go to waste!
+            That's {formatCurrencyWithSymbol(discountValue, displayCurrency)}
+            {preferredCurrency && preferredCurrency !== currency && (
+              <span className="ml-1">({formatCurrencyWithSymbol(discountValueBase, currency)})</span>
+            )} worth of discounts. Don't let them go to waste!
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-2">

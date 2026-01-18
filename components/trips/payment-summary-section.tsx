@@ -2,21 +2,28 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { CreditCard } from 'lucide-react'
+import { getCurrencySymbol, formatCurrencyWithSymbol } from '@/lib/utils/currency'
 
 interface PaymentSummarySectionProps {
   totalAmount: number
   discountApplied: number
   currency: string
+  preferredCurrency?: string
+  discountAppliedConverted?: number
 }
 
 export function PaymentSummarySection({
   totalAmount,
   discountApplied,
-  currency
+  currency,
+  preferredCurrency,
+  discountAppliedConverted
 }: PaymentSummarySectionProps) {
-  const currencySymbol = currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'
+  const currencySymbol = getCurrencySymbol(currency)
+  const displayCurrency = preferredCurrency || currency
   const subtotal = totalAmount + discountApplied
   const totalPaid = totalAmount
+  const discountDisplay = discountAppliedConverted !== undefined ? discountAppliedConverted : discountApplied
 
   return (
     <Card>
@@ -39,7 +46,12 @@ export function PaymentSummarySection({
             <div className="flex items-center justify-between text-green-600">
               <span className="text-xs sm:text-sm">Discount</span>
               <span className="font-medium text-xs sm:text-sm">
-                -{currencySymbol}{discountApplied.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                -{formatCurrencyWithSymbol(discountDisplay, displayCurrency)}
+                {preferredCurrency && preferredCurrency !== currency && (
+                  <span className="ml-1 text-muted-foreground">
+                    ({formatCurrencyWithSymbol(discountApplied, currency)})
+                  </span>
+                )}
               </span>
             </div>
           )}

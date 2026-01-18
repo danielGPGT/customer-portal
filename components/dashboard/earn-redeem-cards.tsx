@@ -1,17 +1,54 @@
+'use client'
+
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { TrendingUp, Sparkles, ArrowRight, Plane, UserPlus, Gift } from 'lucide-react'
+import { getCurrencySymbol, formatCurrencyWithSymbol } from '@/lib/utils/currency'
+import { useEffect, useState } from 'react'
+import { CurrencyService } from '@/lib/currencyService'
 
 interface EarnRedeemCardsProps {
-  currency?: string
+  baseCurrency?: string
+  preferredCurrency?: string
   pointsPerPound?: number
   pointValue?: number
 }
 
-export function EarnRedeemCards({ currency = 'GBP', pointsPerPound = 0.05, pointValue = 1 }: EarnRedeemCardsProps) {
-  const currencySymbol = currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'
+export function EarnRedeemCards({ baseCurrency = 'GBP', preferredCurrency, pointsPerPound = 0.05, pointValue = 1 }: EarnRedeemCardsProps) {
+  const displayCurrency = preferredCurrency || baseCurrency
+  const baseCurrencySymbol = getCurrencySymbol(baseCurrency)
+  const displayCurrencySymbol = getCurrencySymbol(displayCurrency)
   const spendAmount = 20 // For every £20 you spend, you earn 1 point
+  
+  // Convert amounts to preferred currency
+  const [convertedAmounts, setConvertedAmounts] = useState({
+    spend20: 20,
+    pointValue: pointValue,
+    redeem100: 100
+  })
+  
+  useEffect(() => {
+    if (preferredCurrency && preferredCurrency !== baseCurrency) {
+      const convertAmounts = async () => {
+        try {
+          const [spend20Conv, pointValueConv, redeem100Conv] = await Promise.all([
+            CurrencyService.convertCurrency(20, baseCurrency, preferredCurrency),
+            CurrencyService.convertCurrency(pointValue, baseCurrency, preferredCurrency),
+            CurrencyService.convertCurrency(100, baseCurrency, preferredCurrency)
+          ])
+          setConvertedAmounts({
+            spend20: spend20Conv.convertedAmount,
+            pointValue: pointValueConv.convertedAmount,
+            redeem100: redeem100Conv.convertedAmount
+          })
+        } catch (error) {
+          console.error('Error converting currency:', error)
+        }
+      }
+      convertAmounts()
+    }
+  }, [preferredCurrency, baseCurrency, pointValue])
 
   return (
     <div className="grid gap-6 md:grid-cols-2">
@@ -38,11 +75,15 @@ export function EarnRedeemCards({ currency = 'GBP', pointsPerPound = 0.05, point
               <ul className="space-y-1.5 text-sm text-muted-foreground">
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-0.5">•</span>
-                  <span>For every {currencySymbol}{spendAmount} you spend, you earn 1 point</span>
+                  <span>
+                    For every {formatCurrencyWithSymbol(convertedAmounts.spend20, displayCurrency)} you spend, you earn 1 point
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-0.5">•</span>
-                  <span>1 point = {currencySymbol}{pointValue} to use on a future booking</span>
+                  <span>
+                    1 point = {formatCurrencyWithSymbol(convertedAmounts.pointValue, displayCurrency)} to use on a future booking
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-0.5">•</span>
@@ -104,11 +145,15 @@ export function EarnRedeemCards({ currency = 'GBP', pointsPerPound = 0.05, point
               <ul className="space-y-1.5 text-sm text-muted-foreground">
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-0.5">•</span>
-                  <span>Points can be redeemed in {currencySymbol}100 increments</span>
+                  <span>
+                    Points can be redeemed in {formatCurrencyWithSymbol(convertedAmounts.redeem100, displayCurrency)} increments
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-0.5">•</span>
-                  <span>Every 100 points = {currencySymbol}100 off your next booking</span>
+                  <span>
+                    Every 100 points = {formatCurrencyWithSymbol(convertedAmounts.redeem100, displayCurrency)} off your next booking
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-0.5">•</span>

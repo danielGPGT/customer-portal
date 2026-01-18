@@ -45,6 +45,8 @@ interface TripDetailsTabsProps {
   earnTransaction?: any
   spendTransaction?: any
   redemptions?: any[]
+  preferredCurrency?: string
+  discountAppliedConverted?: number
   
   // Tickets
   ticketDaysMap?: Map<string, string | null>
@@ -76,7 +78,9 @@ export function TripDetailsTabs({
   earnTransaction,
   spendTransaction,
   redemptions,
-  ticketDaysMap
+  ticketDaysMap,
+  preferredCurrency,
+  discountAppliedConverted
 }: TripDetailsTabsProps) {
   // --- Edit lock logic (4 weeks before event start) ---
   const TEST_EDIT_LOCK_STATE: 'auto' | 'locked' | 'unlocked' = 'auto' // change for testing
@@ -168,6 +172,8 @@ export function TripDetailsTabs({
           totalAmount={totalAmount}
           discountApplied={discountApplied}
           currency={currency}
+          preferredCurrency={preferredCurrency}
+          discountAppliedConverted={discountAppliedConverted}
         />
       </TabsContent>
 
@@ -204,6 +210,8 @@ export function TripDetailsTabs({
           totalAmount={totalAmount}
           discountApplied={discountApplied}
           currency={currency}
+          preferredCurrency={preferredCurrency}
+          discountAppliedConverted={discountAppliedConverted}
         />
         <PaymentScheduleSection 
           payments={payments}
@@ -223,6 +231,8 @@ export function TripDetailsTabs({
           spendTransaction={spendTransaction}
           redemptions={redemptions}
           isFirstLoyaltyBooking={isFirstLoyaltyBooking}
+          preferredCurrency={preferredCurrency}
+          discountAppliedConverted={discountAppliedConverted}
         />
       </TabsContent>
     </Tabs>

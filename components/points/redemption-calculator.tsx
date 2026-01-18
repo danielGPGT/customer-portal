@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Slider } from '@/components/ui/slider'
 import { Calculator } from 'lucide-react'
+import { getCurrencySymbol, formatCurrencyWithSymbol } from '@/lib/utils/currency'
+import { CurrencyService } from '@/lib/currencyService'
 
 interface RedemptionCalculatorProps {
   availablePoints: number
@@ -13,7 +15,8 @@ interface RedemptionCalculatorProps {
   pointValue: number
   minRedemption: number
   redemptionIncrement: number
-  currency: string
+  baseCurrency: string
+  preferredCurrency?: string
 }
 
 export function RedemptionCalculator({
@@ -22,17 +25,82 @@ export function RedemptionCalculator({
   pointValue,
   minRedemption,
   redemptionIncrement,
-  currency
+  baseCurrency,
+  preferredCurrency
 }: RedemptionCalculatorProps) {
   const [pointsToRedeem, setPointsToRedeem] = React.useState<number>(
     Math.min(usablePoints, Math.floor(usablePoints / redemptionIncrement) * redemptionIncrement)
   )
   const [bookingAmount, setBookingAmount] = React.useState<string>('5000')
-  const currencySymbol = currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'
+  const [bookingAmountInBase, setBookingAmountInBase] = React.useState<number>(5000)
+  const [convertedDiscount, setConvertedDiscount] = React.useState<number | null>(null)
+  const [convertedFinalPrice, setConvertedFinalPrice] = React.useState<number | null>(null)
+  const [isConverting, setIsConverting] = React.useState(false)
+  
+  const hasPreferredCurrency = preferredCurrency && preferredCurrency.toUpperCase() !== baseCurrency.toUpperCase()
+  const displayCurrency = hasPreferredCurrency ? preferredCurrency : baseCurrency
+  const inputCurrency = hasPreferredCurrency ? preferredCurrency : baseCurrency
+  const baseCurrencySymbol = getCurrencySymbol(baseCurrency)
+  const inputCurrencySymbol = getCurrencySymbol(inputCurrency)
 
-  const discount = pointsToRedeem * pointValue
+  const discountBase = pointsToRedeem * pointValue
   const bookingAmountNum = parseFloat(bookingAmount) || 0
-  const finalPrice = Math.max(0, bookingAmountNum - discount)
+  
+  // Convert booking amount from preferred currency to base currency
+  React.useEffect(() => {
+    if (bookingAmountNum > 0 && hasPreferredCurrency) {
+      setIsConverting(true)
+      const convertAmount = async () => {
+        try {
+          const conversion = await CurrencyService.convertCurrency(
+            bookingAmountNum,
+            preferredCurrency!,
+            baseCurrency
+          )
+          setBookingAmountInBase(conversion.convertedAmount)
+        } catch (error) {
+          console.error('[RedemptionCalculator] Error converting booking amount:', error)
+          setBookingAmountInBase(bookingAmountNum)
+        } finally {
+          setIsConverting(false)
+        }
+      }
+      convertAmount()
+    } else {
+      setBookingAmountInBase(bookingAmountNum)
+    }
+  }, [bookingAmountNum, hasPreferredCurrency, preferredCurrency, baseCurrency])
+  
+  const finalPriceBase = Math.max(0, bookingAmountInBase - discountBase)
+  
+  // Convert discount and final price to preferred currency for display
+  React.useEffect(() => {
+    if (hasPreferredCurrency && discountBase > 0) {
+      setIsConverting(true)
+      const convertAmounts = async () => {
+        try {
+          const [discountConv, finalPriceConv] = await Promise.all([
+            CurrencyService.convertCurrency(discountBase, baseCurrency, preferredCurrency!),
+            finalPriceBase > 0 
+              ? CurrencyService.convertCurrency(finalPriceBase, baseCurrency, preferredCurrency!)
+              : Promise.resolve({ convertedAmount: 0, rate: 1, adjustedRate: 1, fromCurrency: baseCurrency, toCurrency: preferredCurrency!, amount: 0 })
+          ])
+          setConvertedDiscount(discountConv.convertedAmount)
+          setConvertedFinalPrice(finalPriceConv.convertedAmount)
+        } catch (error) {
+          console.error('[RedemptionCalculator] Error converting amounts:', error)
+          setConvertedDiscount(null)
+          setConvertedFinalPrice(null)
+        } finally {
+          setIsConverting(false)
+        }
+      }
+      convertAmounts()
+    } else {
+      setConvertedDiscount(null)
+      setConvertedFinalPrice(null)
+    }
+  }, [discountBase, finalPriceBase, hasPreferredCurrency, preferredCurrency, baseCurrency])
 
   // Round to nearest increment
   const handleSliderChange = (value: number[]) => {
@@ -93,7 +161,7 @@ export function RedemptionCalculator({
           <Label htmlFor="booking-amount">Example booking amount:</Label>
           <div className="relative">
             <span className="absolute left-3 top-2.5 text-muted-foreground pointer-events-none">
-              {currencySymbol}
+              {inputCurrencySymbol}
             </span>
             <Input
               id="booking-amount"
@@ -107,6 +175,9 @@ export function RedemptionCalculator({
           </div>
           <p className="text-xs text-muted-foreground">
             (Available: {availablePoints.toLocaleString()} points)
+            {hasPreferredCurrency && (
+              <span className="ml-1">• Enter amount in {preferredCurrency}</span>
+            )}
           </p>
         </div>
 
@@ -115,10 +186,13 @@ export function RedemptionCalculator({
           <div className="flex justify-between items-center">
             <span className="text-sm text-muted-foreground">Discount:</span>
             <span className="text-lg font-bold text-green-600 dark:text-green-400">
-              {currencySymbol}{discount.toLocaleString('en-GB', { 
-                minimumFractionDigits: 2, 
-                maximumFractionDigits: 2 
-              })}
+              {isConverting ? (
+                <span className="text-sm text-muted-foreground">Converting...</span>
+              ) : hasPreferredCurrency && convertedDiscount !== null ? (
+                formatCurrencyWithSymbol(convertedDiscount, preferredCurrency!)
+              ) : (
+                formatCurrencyWithSymbol(discountBase, baseCurrency)
+              )}
             </span>
           </div>
           {bookingAmountNum > 0 && (
@@ -126,26 +200,26 @@ export function RedemptionCalculator({
               <div className="flex justify-between items-center">
                 <span className="text-sm text-muted-foreground">Original Price:</span>
                 <span className="text-sm">
-                  {currencySymbol}{bookingAmountNum.toLocaleString('en-GB', { 
-                    minimumFractionDigits: 2, 
-                    maximumFractionDigits: 2 
-                  })}
+                  {formatCurrencyWithSymbol(bookingAmountNum, inputCurrency)}
                 </span>
               </div>
               <div className="flex justify-between items-center pt-2 border-t">
                 <span className="text-base font-semibold">Final Price:</span>
                 <span className="text-lg font-bold">
-                  {currencySymbol}{finalPrice.toLocaleString('en-GB', { 
-                    minimumFractionDigits: 2, 
-                    maximumFractionDigits: 2 
-                  })}
+                  {isConverting ? (
+                    <span className="text-sm text-muted-foreground">Converting...</span>
+                  ) : hasPreferredCurrency && convertedFinalPrice !== null ? (
+                    formatCurrencyWithSymbol(convertedFinalPrice, preferredCurrency!)
+                  ) : (
+                    formatCurrencyWithSymbol(finalPriceBase, baseCurrency)
+                  )}
                 </span>
               </div>
             </>
           )}
         </div>
 
-        {bookingAmountNum > 0 && finalPrice === 0 && (
+        {bookingAmountNum > 0 && (hasPreferredCurrency && convertedFinalPrice !== null ? convertedFinalPrice : finalPriceBase) === 0 && (
           <div className="bg-green-50 dark:bg-green-950 text-green-800 dark:text-green-200 p-3 rounded-md text-sm">
             🎉 Your points cover the entire booking!
           </div>

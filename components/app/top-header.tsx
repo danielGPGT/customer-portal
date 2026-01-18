@@ -16,9 +16,11 @@ import {
 import { NotificationsPopover } from "@/components/app/notifications-popover"
 import { SearchDropdown } from "@/components/app/search-dropdown"
 import { SignOutButton } from "@/components/auth/signout-button"
+import { CurrencySelector } from "@/components/app/currency-selector"
 import Image from "next/image"
 import { useTheme } from "next-themes"
 import Link from "next/link"
+import { getClientPreferredCurrency, type CurrencyCode } from "@/lib/utils/currency"
 
 interface TopHeaderProps {
   onMenuClick?: () => void
@@ -26,6 +28,7 @@ interface TopHeaderProps {
   clientId: string
   user?: any
   client?: any
+  baseCurrency?: string
 }
 
 export function TopHeader({ 
@@ -33,8 +36,13 @@ export function TopHeader({
   isSidebarOpen = false,
   clientId,
   user,
-  client 
+  client,
+  baseCurrency = 'GBP'
 }: TopHeaderProps) {
+  // Get current preferred currency
+  const preferredCurrency = client 
+    ? getClientPreferredCurrency(client, baseCurrency)
+    : (baseCurrency as CurrencyCode)
 
   const [searchQuery, setSearchQuery] = React.useState("")
   const [searchFocused, setSearchFocused] = React.useState(false)
@@ -128,10 +136,17 @@ export function TopHeader({
 
       {/* Right: Icons */}
       <div className="flex items-center gap-2 ml-auto">
+        {/* Currency Selector */}
+        {client && (
+          <CurrencySelector
+            currentCurrency={preferredCurrency}
+            clientId={clientId}
+            baseCurrency={baseCurrency}
+          />
+        )}
+
         {/* Notifications */}
         <NotificationsPopover clientId={clientId} />
-
-        
 
         {/* User Profile */}
         {user && (

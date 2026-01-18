@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Gift, Sparkles, TrendingUp, Calendar, Info, CheckCircle2 } from 'lucide-react'
 import { format } from 'date-fns'
+import { getCurrencySymbol, formatCurrencyWithSymbol } from '@/lib/utils/currency'
 
 interface LoyaltyPointsSectionProps {
   pointsUsed: number
@@ -17,6 +18,8 @@ interface LoyaltyPointsSectionProps {
   spendTransaction?: any
   redemptions?: any[]
   isFirstLoyaltyBooking: boolean
+  preferredCurrency?: string
+  discountAppliedConverted?: number
 }
 
 export function LoyaltyPointsSection({
@@ -30,9 +33,14 @@ export function LoyaltyPointsSection({
   earnTransaction,
   spendTransaction,
   redemptions = [],
-  isFirstLoyaltyBooking
+  isFirstLoyaltyBooking,
+  preferredCurrency,
+  discountAppliedConverted
 }: LoyaltyPointsSectionProps) {
-  const currencySymbol = currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'
+  const displayCurrency = preferredCurrency || currency
+  const currencySymbol = getCurrencySymbol(currency)
+  const displayCurrencySymbol = getCurrencySymbol(displayCurrency)
+  const discountDisplay = discountAppliedConverted !== undefined ? discountAppliedConverted : discountApplied
   const netPoints = pointsEarned - pointsUsed
 
   const formatDate = (date: string | null | undefined) => {
@@ -69,7 +77,10 @@ export function LoyaltyPointsSection({
                 <Gift className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
                 <span className="font-medium text-xs sm:text-sm">+{pointsUsed.toLocaleString()} points</span>
                 <span className="text-[10px] sm:text-xs text-muted-foreground">
-                  ({currencySymbol}{(pointsUsed * pointValue).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} discount refunded)
+                  ({formatCurrencyWithSymbol(pointsUsed * pointValue, displayCurrency)}
+                  {preferredCurrency && preferredCurrency !== currency && (
+                    <span className="ml-1">({formatCurrencyWithSymbol(pointsUsed * pointValue, currency)})</span>
+                  )} discount refunded)
                 </span>
               </div>
               {spendTransaction && (
@@ -186,7 +197,10 @@ export function LoyaltyPointsSection({
               <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
               <span className="font-medium text-xs sm:text-sm">-{pointsUsed.toLocaleString()} points</span>
               <span className="text-[10px] sm:text-xs text-muted-foreground">
-                ({currencySymbol}{discountApplied.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} discount applied)
+                ({formatCurrencyWithSymbol(discountDisplay, displayCurrency)}
+                {preferredCurrency && preferredCurrency !== currency && (
+                  <span className="ml-1">({formatCurrencyWithSymbol(discountApplied, currency)})</span>
+                )} discount applied)
               </span>
             </div>
             {spendTransaction && (
@@ -207,7 +221,16 @@ export function LoyaltyPointsSection({
                     <div className="flex items-center gap-1.5 sm:gap-2">
                       <Info className="h-2.5 w-2.5 sm:h-3 sm:w-3 shrink-0" />
                       <span>
-                        {redemption.points_redeemed.toLocaleString()} points → {currencySymbol}{redemption.discount_amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        {redemption.points_redeemed.toLocaleString()} points → {formatCurrencyWithSymbol(
+                          parseFloat(redemption.discount_amount?.toString() || '0'),
+                          displayCurrency
+                        )}
+                        {preferredCurrency && preferredCurrency !== currency && (
+                          <span className="ml-1">({formatCurrencyWithSymbol(
+                            parseFloat(redemption.discount_amount?.toString() || '0'),
+                            currency
+                          )})</span>
+                        )}
                         {redemption.applied_at && (
                           <span className="ml-1.5">• {formatDate(redemption.applied_at)}</span>
                         )}

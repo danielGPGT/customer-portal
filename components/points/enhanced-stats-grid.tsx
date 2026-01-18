@@ -3,6 +3,9 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { TrendingUp, TrendingDown, Calendar, Target, DollarSign, Coins } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { formatCurrencyWithSymbol } from '@/lib/utils/currency'
+import { useEffect, useState } from 'react'
+import { CurrencyService } from '@/lib/currencyService'
 
 interface EnhancedStatsGridProps {
   lifetimeEarned: number
@@ -11,7 +14,8 @@ interface EnhancedStatsGridProps {
   averagePerBooking?: number
   totalBookings?: number
   availablePoints: number
-  currency: string
+  baseCurrency: string
+  preferredCurrency?: string
   pointValue: number
 }
 
@@ -22,10 +26,11 @@ export function EnhancedStatsGrid({
   averagePerBooking = 0,
   totalBookings = 0,
   availablePoints,
-  currency,
+  baseCurrency,
+  preferredCurrency,
   pointValue
 }: EnhancedStatsGridProps) {
-  const currencySymbol = currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'
+  const displayCurrency = preferredCurrency || baseCurrency
   const formattedDate = memberSince 
     ? new Date(memberSince).toLocaleDateString('en-GB', { 
         month: 'short', 
@@ -34,7 +39,29 @@ export function EnhancedStatsGrid({
     : 'N/A'
 
   const netPoints = lifetimeEarned - lifetimeSpent
-  const discountValue = availablePoints * pointValue
+  const discountValueBase = availablePoints * pointValue
+  const [discountValue, setDiscountValue] = useState(discountValueBase)
+  
+  useEffect(() => {
+    if (preferredCurrency && preferredCurrency !== baseCurrency) {
+      const convertDiscount = async () => {
+        try {
+          const conversion = await CurrencyService.convertCurrency(
+            discountValueBase,
+            baseCurrency,
+            preferredCurrency
+          )
+          setDiscountValue(conversion.convertedAmount)
+        } catch (error) {
+          console.error('Error converting currency:', error)
+          setDiscountValue(discountValueBase)
+        }
+      }
+      convertDiscount()
+    } else {
+      setDiscountValue(discountValueBase)
+    }
+  }, [preferredCurrency, baseCurrency, discountValueBase])
 
   const stats = [
     {
@@ -71,10 +98,7 @@ export function EnhancedStatsGrid({
     },
     {
       label: "Available Discount",
-      value: currencySymbol + discountValue.toLocaleString('en-GB', { 
-        minimumFractionDigits: 2, 
-        maximumFractionDigits: 2 
-      }),
+      value: formatCurrencyWithSymbol(discountValue, displayCurrency),
       suffix: "",
       icon: DollarSign,
       color: "text-primary",

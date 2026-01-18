@@ -5,26 +5,53 @@ import { Sparkles, TrendingUp, Gift, ArrowRight } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { formatCurrencyWithSymbol } from '@/lib/utils/currency'
+import { useEffect, useState } from 'react'
+import { CurrencyService } from '@/lib/currencyService'
 
 interface PointsBalanceCardProps {
   pointsBalance: number
   lifetimeEarned?: number
   lifetimeSpent?: number
+  baseCurrency?: string
+  preferredCurrency?: string
+  pointValue?: number
 }
 
 export function PointsBalanceCard({
   pointsBalance,
   lifetimeEarned = 0,
   lifetimeSpent = 0,
+  baseCurrency = 'GBP',
+  preferredCurrency,
+  pointValue = 1
 }: PointsBalanceCardProps) {
-  const pointsValue = pointsBalance // Assuming 1 point = £1
+  const displayCurrency = preferredCurrency || baseCurrency
+  const pointsValueBase = pointsBalance * pointValue
   const formattedPoints = pointsBalance.toLocaleString()
-  const formattedValue = pointsValue.toLocaleString('en-GB', {
-    style: 'currency',
-    currency: 'GBP',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  })
+  
+  const [convertedValue, setConvertedValue] = useState(pointsValueBase)
+  
+  useEffect(() => {
+    if (preferredCurrency && preferredCurrency !== baseCurrency) {
+      const convertValue = async () => {
+        try {
+          const conversion = await CurrencyService.convertCurrency(
+            pointsValueBase,
+            baseCurrency,
+            preferredCurrency
+          )
+          setConvertedValue(conversion.convertedAmount)
+        } catch (error) {
+          console.error('Error converting currency:', error)
+          setConvertedValue(pointsValueBase)
+        }
+      }
+      convertValue()
+    } else {
+      setConvertedValue(pointsValueBase)
+    }
+  }, [preferredCurrency, baseCurrency, pointsValueBase])
 
   return (
     <Card className="relative overflow-hidden border-2 bg-gradient-to-br from-primary via-primary/95 to-primary/90 text-primary-foreground shadow-lg">
@@ -56,7 +83,7 @@ export function PointsBalanceCard({
             <span className="text-lg font-medium text-primary-foreground/80 shrink-0">points</span>
           </div>
           <p className="text-sm text-primary-foreground/80 font-medium break-words">
-            {formattedValue} in discounts available
+            {formatCurrencyWithSymbol(convertedValue, displayCurrency)} in discounts available
           </p>
         </div>
 

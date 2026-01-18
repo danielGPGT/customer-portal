@@ -12,7 +12,9 @@ export const metadata: Metadata = {
 }
 
 // Profile page can be cached briefly
-export const revalidate = 60
+// Dynamic page - no caching to ensure immediate updates when preferences change
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -104,12 +106,17 @@ export default async function ProfilePage() {
       icon: UserCog,
     },
     {
+      title: 'Preferences',
+      description: 'Manage currency and display settings',
+      href: '/profile/preferences',
+      icon: Settings2,
+    },
+    {
       title: 'Change password',
       description: 'Keep your account secure',
       href: '/profile/password',
       icon: Lock,
     },
-
   ]
 
   return (

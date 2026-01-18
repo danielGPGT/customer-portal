@@ -8,11 +8,17 @@ import { PointsCalculator } from '@/components/points/points-calculator'
 import { Lightbulb, Plane, UserPlus, Gift, ArrowRight, FileText, TrendingUp, Coins } from 'lucide-react'
 import Link from 'next/link'
 import { getClient } from '@/lib/utils/get-client'
+import { getClientPreferredCurrency, getCurrencySymbol, formatCurrencyWithSymbol } from '@/lib/utils/currency'
+import { convertDiscountToPreferredCurrency } from '@/lib/utils/currency-conversion'
 
 export const metadata: Metadata = {
   title: 'How to Earn Points | Grand Prix Grand Tours Portal',
   description: 'Learn how to earn loyalty points through bookings, referrals, and more',
 }
+
+// Dynamic page - no caching to ensure immediate updates when preferences change
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default async function PointsEarnPage() {
   const supabase = await createClient()
@@ -48,8 +54,15 @@ export default async function PointsEarnPage() {
 
   const pointsPerPound = settings?.points_per_pound || 0.05
   const pointValue = settings?.point_value || 1
-  const currency = settings?.currency || 'GBP'
-  const currencySymbol = currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'
+  const baseCurrency = settings?.currency || 'GBP'
+  const preferredCurrency = getClientPreferredCurrency(client, baseCurrency)
+  const baseCurrencySymbol = getCurrencySymbol(baseCurrency)
+  const preferredCurrencySymbol = getCurrencySymbol(preferredCurrency)
+  
+  // Convert example amounts to preferred currency
+  const example20Conversion = await convertDiscountToPreferredCurrency(20, baseCurrency, preferredCurrency)
+  const example1Conversion = await convertDiscountToPreferredCurrency(1, baseCurrency, preferredCurrency)
+  const example4500Conversion = await convertDiscountToPreferredCurrency(4500, baseCurrency, preferredCurrency)
 
   return (
     <div className="space-y-8">
@@ -75,8 +88,12 @@ export default async function PointsEarnPage() {
               You earn points every time you book with Grand Prix Grand Tours.
             </p>
             <ul className="space-y-2 text-sm text-muted-foreground list-disc list-inside ml-2">
-              <li>For every {currencySymbol}20 you spend, you earn 1 point</li>
-              <li>1 point = {currencySymbol}1 to use on a future booking</li>
+              <li>
+                For every {formatCurrencyWithSymbol(example20Conversion.convertedAmount, preferredCurrency)} you spend, you earn 1 point
+              </li>
+              <li>
+                1 point = {formatCurrencyWithSymbol(example1Conversion.convertedAmount, preferredCurrency)} to use on a future booking
+              </li>
               <li>Points for each trip are added to your account once your booking is confirmed</li>
               <li>You'll also see a full breakdown of how your points were earned</li>
             </ul>
@@ -113,7 +130,7 @@ export default async function PointsEarnPage() {
               <div className="p-3 bg-muted/50 rounded-lg border">
                 <p className="text-xs font-medium text-muted-foreground mb-1">Example:</p>
                 <p className="text-sm font-semibold">
-                  Spend {currencySymbol}4,500 → Earn {Math.round(4500 / 20).toLocaleString()} points
+                  Spend {formatCurrencyWithSymbol(example4500Conversion.convertedAmount, preferredCurrency)} → Earn {Math.round(4500 / 20).toLocaleString()} points
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
                   You'll see this total in your points hub.
@@ -200,7 +217,8 @@ export default async function PointsEarnPage() {
         <PointsCalculator 
           pointsPerPound={pointsPerPound}
           pointValue={pointValue}
-          currency={currency}
+          baseCurrency={baseCurrency}
+          preferredCurrency={preferredCurrency}
         />
       </div>
 

@@ -5,25 +5,93 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Calculator } from 'lucide-react'
+import { getCurrencySymbol, formatCurrencyWithSymbol } from '@/lib/utils/currency'
+import { CurrencyService } from '@/lib/currencyService'
 
 interface PointsCalculatorProps {
   pointsPerPound: number
   pointValue: number
-  currency: string
+  baseCurrency: string
+  preferredCurrency?: string
 }
 
 export function PointsCalculator({ 
   pointsPerPound, 
   pointValue,
-  currency 
+  baseCurrency,
+  preferredCurrency
 }: PointsCalculatorProps) {
   const [amount, setAmount] = React.useState<string>('')
-  const currencySymbol = currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'
+  const [convertedDiscount, setConvertedDiscount] = React.useState<number | null>(null)
+  const [isConverting, setIsConverting] = React.useState(false)
+  const [amountInBaseCurrency, setAmountInBaseCurrency] = React.useState<number>(0)
   
-  const points = amount && !isNaN(parseFloat(amount))
-    ? Math.floor(parseFloat(amount) * pointsPerPound)
+  // Determine display currency - use preferred if provided and different from base, otherwise use base
+  const hasPreferredCurrency = preferredCurrency && preferredCurrency.toUpperCase() !== baseCurrency.toUpperCase()
+  const displayCurrency = hasPreferredCurrency ? preferredCurrency : baseCurrency
+  const inputCurrency = hasPreferredCurrency ? preferredCurrency : baseCurrency
+  const baseCurrencySymbol = getCurrencySymbol(baseCurrency)
+  const inputCurrencySymbol = getCurrencySymbol(inputCurrency)
+  
+  // Convert entered amount from preferred currency to base currency for calculations
+  React.useEffect(() => {
+    const amountNum = amount && !isNaN(parseFloat(amount)) ? parseFloat(amount) : 0
+    
+    if (amountNum > 0 && hasPreferredCurrency) {
+      setIsConverting(true)
+      const convertAmount = async () => {
+        try {
+          // Convert from preferred currency to base currency
+          const conversion = await CurrencyService.convertCurrency(
+            amountNum,
+            preferredCurrency!,
+            baseCurrency
+          )
+          setAmountInBaseCurrency(conversion.convertedAmount)
+        } catch (error) {
+          console.error('[PointsCalculator] Error converting amount:', error)
+          setAmountInBaseCurrency(amountNum) // Fallback to entered amount
+        } finally {
+          setIsConverting(false)
+        }
+      }
+      convertAmount()
+    } else {
+      setAmountInBaseCurrency(amountNum)
+    }
+  }, [amount, hasPreferredCurrency, preferredCurrency, baseCurrency])
+  
+  // Calculate points based on base currency amount
+  const points = amountInBaseCurrency > 0
+    ? Math.floor(amountInBaseCurrency * pointsPerPound)
     : 0
-  const discountValue = points * pointValue
+  const discountValueBase = points * pointValue
+
+  // Convert discount to preferred currency for display
+  React.useEffect(() => {
+    if (hasPreferredCurrency && discountValueBase > 0) {
+      setIsConverting(true)
+      const convertDiscount = async () => {
+        try {
+          const conversion = await CurrencyService.convertCurrency(
+            discountValueBase,
+            baseCurrency,
+            preferredCurrency!
+          )
+          setConvertedDiscount(conversion.convertedAmount)
+        } catch (error) {
+          console.error('[PointsCalculator] Error converting discount:', error)
+          setConvertedDiscount(null)
+        } finally {
+          setIsConverting(false)
+        }
+      }
+      convertDiscount()
+    } else {
+      setConvertedDiscount(null)
+      setIsConverting(false)
+    }
+  }, [discountValueBase, hasPreferredCurrency, preferredCurrency, baseCurrency])
 
   return (
     <Card>
@@ -42,7 +110,7 @@ export function PointsCalculator({
           <Label htmlFor="booking-amount">Enter booking amount:</Label>
           <div className="relative">
             <span className="absolute left-3 top-2.5 text-muted-foreground pointer-events-none">
-              {currencySymbol}
+              {inputCurrencySymbol}
             </span>
             <Input
               id="booking-amount"
@@ -55,6 +123,11 @@ export function PointsCalculator({
               placeholder="4500"
             />
           </div>
+          {hasPreferredCurrency && (
+            <p className="text-xs text-muted-foreground">
+              Enter amount in {preferredCurrency}. Points calculated in {baseCurrency}.
+            </p>
+          )}
         </div>
 
         {amount && !isNaN(parseFloat(amount)) && parseFloat(amount) > 0 && (
@@ -66,10 +139,13 @@ export function PointsCalculator({
             <div className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">Worth:</span>
               <span className="text-lg font-bold text-green-600 dark:text-green-400">
-                {currencySymbol}{discountValue.toLocaleString('en-GB', { 
-                  minimumFractionDigits: 2, 
-                  maximumFractionDigits: 2 
-                })} in discounts
+                {isConverting ? (
+                  <span className="text-sm text-muted-foreground">Converting...</span>
+                ) : hasPreferredCurrency && convertedDiscount !== null ? (
+                  formatCurrencyWithSymbol(convertedDiscount, preferredCurrency!) + ' in discounts'
+                ) : (
+                  formatCurrencyWithSymbol(discountValueBase, baseCurrency) + ' in discounts'
+                )}
               </span>
             </div>
           </div>

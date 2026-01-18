@@ -37,7 +37,7 @@ export default function AuthLayout({
                 Questions? Email us at{' '}
                 <a href="mailto:bookings@grandprixgrandtours.com" className="text-primary hover:underline font-medium">
                   bookings@grandprixgrandtours.com
-                </a>
+              </a>
               </p>
               <p className="leading-relaxed">
                 Call us: <a href="tel:+442034740512" className="text-primary hover:underline font-medium">(UK) 0203 474 0512</a>{' '}
@@ -47,8 +47,8 @@ export default function AuthLayout({
                 Visit{' '}
                 <a href="https://www.grandprixgrandtours.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
                   grandprixgrandtours.com
-                </a>
-              </p>
+              </a>
+            </p>
             </div>
           </div>
         </div>

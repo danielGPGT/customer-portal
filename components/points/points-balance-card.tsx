@@ -12,6 +12,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
+import { getCurrencySymbol, formatCurrencyWithSymbol } from "@/lib/utils/currency"
+import { useEffect, useState } from "react"
+import { CurrencyService } from "@/lib/currencyService"
 
 interface PointsBalanceCardProps {
   pointsBalance: number
@@ -26,6 +29,7 @@ interface PointsBalanceCardProps {
   minRedemptionPoints: number
   redemptionIncrement: number
   currency?: string
+  preferredCurrency?: string
   pointValue?: number
   className?: string
 }
@@ -39,11 +43,34 @@ export function PointsBalanceCard({
   minRedemptionPoints,
   redemptionIncrement,
   currency = "GBP",
+  preferredCurrency,
   pointValue = 1,
   className,
 }: PointsBalanceCardProps) {
-  const currencySymbol = currency === "GBP" ? "£" : currency === "USD" ? "$" : "€"
-  const discountAmount = availableDiscount.discount_amount || availablePoints * pointValue
+  const displayCurrency = preferredCurrency || currency
+  const discountAmountBase = availableDiscount.discount_amount || availablePoints * pointValue
+  const [discountAmount, setDiscountAmount] = useState(discountAmountBase)
+  
+  useEffect(() => {
+    if (preferredCurrency && preferredCurrency !== currency) {
+      const convertDiscount = async () => {
+        try {
+          const conversion = await CurrencyService.convertCurrency(
+            discountAmountBase,
+            currency,
+            preferredCurrency
+          )
+          setDiscountAmount(conversion.convertedAmount)
+        } catch (error) {
+          console.error('Error converting currency:', error)
+          setDiscountAmount(discountAmountBase)
+        }
+      }
+      convertDiscount()
+    } else {
+      setDiscountAmount(discountAmountBase)
+    }
+  }, [preferredCurrency, currency, discountAmountBase])
   
   // Calculate progress to next threshold (same logic as progress card)
   const currentPoints = availablePoints
