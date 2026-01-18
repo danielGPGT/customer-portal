@@ -184,11 +184,10 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
     return (
       <Button
         variant="ghost"
-        size="icon"
-        className="relative h-9 w-9 text-background dark:text-primary-foreground hover:bg-secondary-950"
+        className="relative h-10 w-10 p-0 text-background dark:text-primary-foreground hover:bg-secondary-950"
         disabled
       >
-        <Bell className="h-4 w-4 text-background" />
+        <Bell size={32} className="text-background size-8" />
         {unreadCount > 0 && (
           <Badge
             variant="default"
@@ -207,10 +206,9 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
       <PopoverTrigger asChild>
         <Button
           variant="ghost"
-          size="icon"
-          className="relative h-9 w-9 text-background dark:text-primary-foreground hover:bg-secondary-950"
+          className="relative h-9 w-9 p-0 text-background dark:text-primary-foreground hover:bg-secondary-950"
         >
-          <Bell className="h-4 w-4 text-background" />
+          <Bell size={32} className="text-background size-5" />
           {unreadCount > 0 && (
             <Badge
               variant="default"

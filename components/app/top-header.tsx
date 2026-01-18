@@ -83,21 +83,32 @@ export function TopHeader({
           onClick={onMenuClick}
         >
           {isSidebarOpen ? (
-            <X className="h-5 w-5" />
+            <X className="h-7 w-7" />
           ) : (
-            <Menu className="h-5 w-5" />
+            <Menu className="h-7 w-7" />
           )}
           <span className="sr-only">Toggle menu</span>
         </Button>
 
         {/* Logo */}
         <Link href="/" className="flex items-center">
+          {/* Mobile: Small SVG logo */}
+          <Image
+            src="/assets/images/gpgt-small.svg"
+            alt="Grand Prix Grand Tours"
+            width={80}
+            height={17}
+            className="h-5 w-[80px] md:hidden object-contain"
+            priority
+            sizes="80px"
+          />
+          {/* Desktop: Full logo */}
           <Image
             src={logoSrc}
             alt="Grand Prix Grand Tours"
             width={200}
             height={60}
-            className="h-8 w-auto"
+            className="h-8 w-auto hidden md:block"
             priority
             quality={90}
             sizes="200px"
@@ -135,7 +146,7 @@ export function TopHeader({
       </div>
 
       {/* Right: Icons */}
-      <div className="flex items-center gap-2 ml-auto">
+      <div className="flex items-center gap-1 sm:gap-2 ml-auto">
         {/* Currency Selector */}
         {client && (
           <CurrencySelector

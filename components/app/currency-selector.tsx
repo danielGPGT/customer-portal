@@ -85,19 +85,19 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
         <Button
           variant="ghost"
           size="sm"
-          className="h-9 px-2 gap-1.5 text-white hover:bg-accent hover:text-accent-foreground"
+          className="h-9 w-9 sm:w-auto gap-1.5 text-white hover:text-white dark:text-primary-foreground hover:bg-secondary-950 px-0 sm:px-2"
           disabled={isUpdating}
         >
-          <Globe className="h-4 w-4" />
+
           <span className="hidden sm:inline font-medium">
             {currentCurrencyInfo.symbol} {displayCurrency}
           </span>
-          <span className="sm:hidden font-medium">
+          <span className="sm:hidden font-medium text-xl">
             {currentCurrencyInfo.symbol}
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuContent align="end" className="w-56 ml-4">
         <DropdownMenuLabel>Select Currency</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {supportedCurrencies.map((currency) => {
