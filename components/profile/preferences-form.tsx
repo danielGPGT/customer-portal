@@ -46,9 +46,14 @@ export function PreferencesForm({ initialValues, baseCurrency }: PreferencesForm
   // Refresh router on successful update
   useEffect(() => {
     if (state.status === 'success') {
-      // Force immediate refresh to show updated currency
+      // Store currency change timestamp to trigger refresh on navigation
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('currency-updated', Date.now().toString())
+      }
+      
+      // Force immediate server-side refresh to bypass all caches
       setTimeout(() => {
-        router.push(pathname)
+        router.refresh()
       }, 100)
     }
   }, [state.status, router, pathname])
