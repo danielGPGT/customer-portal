@@ -8,6 +8,7 @@ import { Slider } from '@/components/ui/slider'
 import { Calculator } from 'lucide-react'
 import { getCurrencySymbol, formatCurrencyWithSymbol } from '@/lib/utils/currency'
 import { CurrencyService } from '@/lib/currencyService'
+import { useCurrency } from '@/components/providers/currency-provider'
 
 interface RedemptionCalculatorProps {
   availablePoints: number
@@ -26,8 +27,19 @@ export function RedemptionCalculator({
   minRedemption,
   redemptionIncrement,
   baseCurrency,
-  preferredCurrency
+  preferredCurrency: propPreferredCurrency
 }: RedemptionCalculatorProps) {
+  // Use currency from context (enterprise-level state management)
+  let contextCurrency: string | undefined
+  try {
+    const { currency } = useCurrency()
+    contextCurrency = currency
+  } catch {
+    // Fallback to prop if context not available
+    contextCurrency = propPreferredCurrency
+  }
+  
+  const preferredCurrency = contextCurrency || propPreferredCurrency
   const [pointsToRedeem, setPointsToRedeem] = React.useState<number>(
     Math.min(usablePoints, Math.floor(usablePoints / redemptionIncrement) * redemptionIncrement)
   )
@@ -48,7 +60,13 @@ export function RedemptionCalculator({
   
   // Convert booking amount from preferred currency to base currency
   React.useEffect(() => {
-    if (bookingAmountNum > 0 && hasPreferredCurrency) {
+    // Reset immediately if no preferred currency or currencies match
+    if (!hasPreferredCurrency) {
+      setBookingAmountInBase(bookingAmountNum)
+      return
+    }
+    
+    if (bookingAmountNum > 0) {
       setIsConverting(true)
       const convertAmount = async () => {
         try {
@@ -75,7 +93,15 @@ export function RedemptionCalculator({
   
   // Convert discount and final price to preferred currency for display
   React.useEffect(() => {
-    if (hasPreferredCurrency && discountBase > 0) {
+    // Reset immediately if no preferred currency or currencies match
+    if (!hasPreferredCurrency) {
+      setConvertedDiscount(null)
+      setConvertedFinalPrice(null)
+      setIsConverting(false)
+      return
+    }
+    
+    if (discountBase > 0) {
       setIsConverting(true)
       const convertAmounts = async () => {
         try {
@@ -99,6 +125,7 @@ export function RedemptionCalculator({
     } else {
       setConvertedDiscount(null)
       setConvertedFinalPrice(null)
+      setIsConverting(false)
     }
   }, [discountBase, finalPriceBase, hasPreferredCurrency, preferredCurrency, baseCurrency])
 

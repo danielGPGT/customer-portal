@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Calculator } from 'lucide-react'
 import { getCurrencySymbol, formatCurrencyWithSymbol } from '@/lib/utils/currency'
 import { CurrencyService } from '@/lib/currencyService'
+import { useCurrency } from '@/components/providers/currency-provider'
 
 interface PointsCalculatorProps {
   pointsPerPound: number
@@ -19,8 +20,19 @@ export function PointsCalculator({
   pointsPerPound, 
   pointValue,
   baseCurrency,
-  preferredCurrency
+  preferredCurrency: propPreferredCurrency
 }: PointsCalculatorProps) {
+  // Use currency from context (enterprise-level state management)
+  let contextCurrency: string | undefined
+  try {
+    const { currency } = useCurrency()
+    contextCurrency = currency
+  } catch {
+    // Fallback to prop if context not available
+    contextCurrency = propPreferredCurrency
+  }
+  
+  const preferredCurrency = contextCurrency || propPreferredCurrency
   const [amount, setAmount] = React.useState<string>('')
   const [convertedDiscount, setConvertedDiscount] = React.useState<number | null>(null)
   const [isConverting, setIsConverting] = React.useState(false)
@@ -37,7 +49,13 @@ export function PointsCalculator({
   React.useEffect(() => {
     const amountNum = amount && !isNaN(parseFloat(amount)) ? parseFloat(amount) : 0
     
-    if (amountNum > 0 && hasPreferredCurrency) {
+    // Reset immediately if no preferred currency or currencies match
+    if (!hasPreferredCurrency) {
+      setAmountInBaseCurrency(amountNum)
+      return
+    }
+    
+    if (amountNum > 0) {
       setIsConverting(true)
       const convertAmount = async () => {
         try {
@@ -69,7 +87,14 @@ export function PointsCalculator({
 
   // Convert discount to preferred currency for display
   React.useEffect(() => {
-    if (hasPreferredCurrency && discountValueBase > 0) {
+    // Reset immediately if no preferred currency or currencies match
+    if (!hasPreferredCurrency) {
+      setConvertedDiscount(null)
+      setIsConverting(false)
+      return
+    }
+    
+    if (discountValueBase > 0) {
       setIsConverting(true)
       const convertDiscount = async () => {
         try {

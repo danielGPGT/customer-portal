@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import { formatCurrencyWithSymbol } from '@/lib/utils/currency'
 import { useEffect, useState } from 'react'
 import { CurrencyService } from '@/lib/currencyService'
+import { useCurrency } from '@/components/providers/currency-provider'
 
 interface PointsBalanceCardProps {
   pointsBalance: number
@@ -23,9 +24,20 @@ export function PointsBalanceCard({
   lifetimeEarned = 0,
   lifetimeSpent = 0,
   baseCurrency = 'GBP',
-  preferredCurrency,
+  preferredCurrency: propPreferredCurrency,
   pointValue = 1
 }: PointsBalanceCardProps) {
+  // Use currency from context (enterprise-level state management)
+  let contextCurrency: string | undefined
+  try {
+    const { currency } = useCurrency()
+    contextCurrency = currency
+  } catch {
+    // Fallback to prop if context not available
+    contextCurrency = propPreferredCurrency
+  }
+  
+  const preferredCurrency = contextCurrency || propPreferredCurrency
   const displayCurrency = preferredCurrency || baseCurrency
   const pointsValueBase = pointsBalance * pointValue
   const formattedPoints = pointsBalance.toLocaleString()
@@ -33,24 +45,27 @@ export function PointsBalanceCard({
   const [convertedValue, setConvertedValue] = useState(pointsValueBase)
   
   useEffect(() => {
-    if (preferredCurrency && preferredCurrency !== baseCurrency) {
-      const convertValue = async () => {
-        try {
-          const conversion = await CurrencyService.convertCurrency(
-            pointsValueBase,
-            baseCurrency,
-            preferredCurrency
-          )
-          setConvertedValue(conversion.convertedAmount)
-        } catch (error) {
-          console.error('Error converting currency:', error)
-          setConvertedValue(pointsValueBase)
-        }
-      }
-      convertValue()
-    } else {
+    // Reset to base value immediately if currencies match
+    if (!preferredCurrency || preferredCurrency.toUpperCase() === baseCurrency.toUpperCase()) {
       setConvertedValue(pointsValueBase)
+      return
     }
+
+    // Convert if currencies are different
+    const convertValue = async () => {
+      try {
+        const conversion = await CurrencyService.convertCurrency(
+          pointsValueBase,
+          baseCurrency,
+          preferredCurrency
+        )
+        setConvertedValue(conversion.convertedAmount)
+      } catch (error) {
+        console.error('Error converting currency:', error)
+        setConvertedValue(pointsValueBase)
+      }
+    }
+    convertValue()
   }, [preferredCurrency, baseCurrency, pointsValueBase])
 
   return (

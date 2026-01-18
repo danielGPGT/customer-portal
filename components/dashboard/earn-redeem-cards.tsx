@@ -7,6 +7,7 @@ import { TrendingUp, Sparkles, ArrowRight, Plane, UserPlus, Gift } from 'lucide-
 import { getCurrencySymbol, formatCurrencyWithSymbol } from '@/lib/utils/currency'
 import { useEffect, useState } from 'react'
 import { CurrencyService } from '@/lib/currencyService'
+import { useCurrency } from '@/components/providers/currency-provider'
 
 interface EarnRedeemCardsProps {
   baseCurrency?: string
@@ -15,7 +16,18 @@ interface EarnRedeemCardsProps {
   pointValue?: number
 }
 
-export function EarnRedeemCards({ baseCurrency = 'GBP', preferredCurrency, pointsPerPound = 0.05, pointValue = 1 }: EarnRedeemCardsProps) {
+export function EarnRedeemCards({ baseCurrency = 'GBP', preferredCurrency: propPreferredCurrency, pointsPerPound = 0.05, pointValue = 1 }: EarnRedeemCardsProps) {
+  // Use currency from context (enterprise-level state management)
+  let contextCurrency: string | undefined
+  try {
+    const { currency } = useCurrency()
+    contextCurrency = currency
+  } catch {
+    // Fallback to prop if context not available
+    contextCurrency = propPreferredCurrency
+  }
+  
+  const preferredCurrency = contextCurrency || propPreferredCurrency
   const displayCurrency = preferredCurrency || baseCurrency
   const baseCurrencySymbol = getCurrencySymbol(baseCurrency)
   const displayCurrencySymbol = getCurrencySymbol(displayCurrency)
@@ -29,25 +41,40 @@ export function EarnRedeemCards({ baseCurrency = 'GBP', preferredCurrency, point
   })
   
   useEffect(() => {
-    if (preferredCurrency && preferredCurrency !== baseCurrency) {
-      const convertAmounts = async () => {
-        try {
-          const [spend20Conv, pointValueConv, redeem100Conv] = await Promise.all([
-            CurrencyService.convertCurrency(20, baseCurrency, preferredCurrency),
-            CurrencyService.convertCurrency(pointValue, baseCurrency, preferredCurrency),
-            CurrencyService.convertCurrency(100, baseCurrency, preferredCurrency)
-          ])
-          setConvertedAmounts({
-            spend20: spend20Conv.convertedAmount,
-            pointValue: pointValueConv.convertedAmount,
-            redeem100: redeem100Conv.convertedAmount
-          })
-        } catch (error) {
-          console.error('Error converting currency:', error)
-        }
-      }
-      convertAmounts()
+    // Reset to base values immediately if currencies match
+    if (!preferredCurrency || preferredCurrency.toUpperCase() === baseCurrency.toUpperCase()) {
+      setConvertedAmounts({
+        spend20: 20,
+        pointValue: pointValue,
+        redeem100: 100
+      })
+      return
     }
+
+    // Convert if currencies are different
+    const convertAmounts = async () => {
+      try {
+        const [spend20Conv, pointValueConv, redeem100Conv] = await Promise.all([
+          CurrencyService.convertCurrency(20, baseCurrency, preferredCurrency),
+          CurrencyService.convertCurrency(pointValue, baseCurrency, preferredCurrency),
+          CurrencyService.convertCurrency(100, baseCurrency, preferredCurrency)
+        ])
+        setConvertedAmounts({
+          spend20: spend20Conv.convertedAmount,
+          pointValue: pointValueConv.convertedAmount,
+          redeem100: redeem100Conv.convertedAmount
+        })
+      } catch (error) {
+        console.error('Error converting currency:', error)
+        // Fallback to base values on error
+        setConvertedAmounts({
+          spend20: 20,
+          pointValue: pointValue,
+          redeem100: 100
+        })
+      }
+    }
+    convertAmounts()
   }, [preferredCurrency, baseCurrency, pointValue])
 
   return (

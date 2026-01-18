@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 import { formatCurrencyWithSymbol } from '@/lib/utils/currency'
 import { useEffect, useState } from 'react'
 import { CurrencyService } from '@/lib/currencyService'
+import { useCurrency } from '@/components/providers/currency-provider'
 
 interface EnhancedStatsGridProps {
   lifetimeEarned: number
@@ -27,9 +28,20 @@ export function EnhancedStatsGrid({
   totalBookings = 0,
   availablePoints,
   baseCurrency,
-  preferredCurrency,
+  preferredCurrency: propPreferredCurrency,
   pointValue
 }: EnhancedStatsGridProps) {
+  // Use currency from context (enterprise-level state management)
+  let contextCurrency: string | undefined
+  try {
+    const { currency } = useCurrency()
+    contextCurrency = currency
+  } catch {
+    // Fallback to prop if context not available
+    contextCurrency = propPreferredCurrency
+  }
+  
+  const preferredCurrency = contextCurrency || propPreferredCurrency
   const displayCurrency = preferredCurrency || baseCurrency
   const formattedDate = memberSince 
     ? new Date(memberSince).toLocaleDateString('en-GB', { 
@@ -43,24 +55,27 @@ export function EnhancedStatsGrid({
   const [discountValue, setDiscountValue] = useState(discountValueBase)
   
   useEffect(() => {
-    if (preferredCurrency && preferredCurrency !== baseCurrency) {
-      const convertDiscount = async () => {
-        try {
-          const conversion = await CurrencyService.convertCurrency(
-            discountValueBase,
-            baseCurrency,
-            preferredCurrency
-          )
-          setDiscountValue(conversion.convertedAmount)
-        } catch (error) {
-          console.error('Error converting currency:', error)
-          setDiscountValue(discountValueBase)
-        }
-      }
-      convertDiscount()
-    } else {
+    // Reset to base value immediately if currencies match
+    if (!preferredCurrency || preferredCurrency.toUpperCase() === baseCurrency.toUpperCase()) {
       setDiscountValue(discountValueBase)
+      return
     }
+
+    // Convert if currencies are different
+    const convertDiscount = async () => {
+      try {
+        const conversion = await CurrencyService.convertCurrency(
+          discountValueBase,
+          baseCurrency,
+          preferredCurrency
+        )
+        setDiscountValue(conversion.convertedAmount)
+      } catch (error) {
+        console.error('Error converting currency:', error)
+        setDiscountValue(discountValueBase)
+      }
+    }
+    convertDiscount()
   }, [preferredCurrency, baseCurrency, discountValueBase])
 
   const stats = [

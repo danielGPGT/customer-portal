@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils"
 import { getCurrencySymbol, formatCurrencyWithSymbol } from "@/lib/utils/currency"
 import { useEffect, useState } from "react"
 import { CurrencyService } from "@/lib/currencyService"
+import { useCurrency } from "@/components/providers/currency-provider"
 
 interface PointsBalanceCardProps {
   pointsBalance: number
@@ -43,33 +44,47 @@ export function PointsBalanceCard({
   minRedemptionPoints,
   redemptionIncrement,
   currency = "GBP",
-  preferredCurrency,
+  preferredCurrency: propPreferredCurrency,
   pointValue = 1,
   className,
 }: PointsBalanceCardProps) {
+  // Use currency from context (enterprise-level state management)
+  let contextCurrency: string | undefined
+  try {
+    const { currency: contextCurr } = useCurrency()
+    contextCurrency = contextCurr
+  } catch {
+    // Fallback to prop if context not available
+    contextCurrency = propPreferredCurrency
+  }
+  
+  const preferredCurrency = contextCurrency || propPreferredCurrency
   const displayCurrency = preferredCurrency || currency
   const discountAmountBase = availableDiscount.discount_amount || availablePoints * pointValue
   const [discountAmount, setDiscountAmount] = useState(discountAmountBase)
   
   useEffect(() => {
-    if (preferredCurrency && preferredCurrency !== currency) {
-      const convertDiscount = async () => {
-        try {
-          const conversion = await CurrencyService.convertCurrency(
-            discountAmountBase,
-            currency,
-            preferredCurrency
-          )
-          setDiscountAmount(conversion.convertedAmount)
-        } catch (error) {
-          console.error('Error converting currency:', error)
-          setDiscountAmount(discountAmountBase)
-        }
-      }
-      convertDiscount()
-    } else {
+    // Reset to base value immediately if currencies match
+    if (!preferredCurrency || preferredCurrency.toUpperCase() === currency.toUpperCase()) {
       setDiscountAmount(discountAmountBase)
+      return
     }
+
+    // Convert if currencies are different
+    const convertDiscount = async () => {
+      try {
+        const conversion = await CurrencyService.convertCurrency(
+          discountAmountBase,
+          currency,
+          preferredCurrency
+        )
+        setDiscountAmount(conversion.convertedAmount)
+      } catch (error) {
+        console.error('Error converting currency:', error)
+        setDiscountAmount(discountAmountBase)
+      }
+    }
+    convertDiscount()
   }, [preferredCurrency, currency, discountAmountBase])
   
   // Calculate progress to next threshold (same logic as progress card)
