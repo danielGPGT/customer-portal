@@ -14,7 +14,7 @@ import {
 import { getCurrencySymbol, getCurrencyInfo, getSupportedCurrencies, type CurrencyCode } from "@/lib/utils/currency"
 import { updatePreferencesAction } from "@/app/(protected)/profile/preferences/actions"
 import { toast } from "@/hooks/use-toast"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 
 interface CurrencySelectorProps {
   currentCurrency: CurrencyCode
@@ -25,7 +25,9 @@ interface CurrencySelectorProps {
 export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: CurrencySelectorProps) {
   const [isUpdating, setIsUpdating] = React.useState(false)
   const [optimisticCurrency, setOptimisticCurrency] = React.useState<CurrencyCode | null>(null)
+  const [dropdownOpen, setDropdownOpen] = React.useState(false)
   const router = useRouter()
+  const pathname = usePathname()
   const supportedCurrencies = getSupportedCurrencies()
   
   // Use optimistic currency if set, otherwise use current
@@ -33,7 +35,13 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
   const currentCurrencyInfo = getCurrencyInfo(displayCurrency)
 
   const handleCurrencyChange = async (currency: CurrencyCode) => {
-    if (currency === currentCurrency) return
+    if (currency === currentCurrency) {
+      setDropdownOpen(false)
+      return
+    }
+
+    // Close dropdown immediately on mobile
+    setDropdownOpen(false)
 
     // Optimistic update - show new currency immediately
     setOptimisticCurrency(currency)
@@ -51,10 +59,12 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
           title: "Currency updated",
           description: `Display currency changed to ${getCurrencyInfo(currency).name}`,
         })
-        // Force immediate refresh using router.push to bypass Next.js router cache
+        
+        // Force immediate refresh - use both refresh and push for better mobile compatibility
+        router.refresh()
         setTimeout(() => {
-          router.push(window.location.pathname)
-        }, 100)
+          router.push(pathname)
+        }, 150)
       } else {
         // Revert optimistic update on error
         setOptimisticCurrency(null)
@@ -79,7 +89,7 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
