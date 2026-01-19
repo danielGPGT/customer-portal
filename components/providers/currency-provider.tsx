@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { createContext, useContext, useEffect, useState, useCallback } from "react"
+import { createContext, useContext, useEffect, useState, useCallback, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import type { CurrencyCode } from "@/lib/utils/currency"
 
@@ -40,6 +40,9 @@ export function CurrencyProvider({
   useEffect(() => {
     if (typeof window === 'undefined') return
 
+    // Create BroadcastChannel listener (persistent)
+    const broadcastChannel = new BroadcastChannel('currency-updates')
+    
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'currency-updated' && e.newValue) {
         const updateData = JSON.parse(e.newValue)
@@ -51,7 +54,7 @@ export function CurrencyProvider({
       }
     }
 
-    const handleMessage = (e: MessageEvent) => {
+    const handleBroadcastMessage = (e: MessageEvent) => {
       if (e.data?.type === 'currency-updated' && e.data?.currency !== currency) {
         setCurrencyState(e.data.currency)
         router.refresh()
@@ -59,11 +62,12 @@ export function CurrencyProvider({
     }
 
     window.addEventListener('storage', handleStorageChange)
-    window.addEventListener('message', handleMessage)
+    broadcastChannel.addEventListener('message', handleBroadcastMessage)
 
     return () => {
       window.removeEventListener('storage', handleStorageChange)
-      window.removeEventListener('message', handleMessage)
+      broadcastChannel.removeEventListener('message', handleBroadcastMessage)
+      broadcastChannel.close()
     }
   }, [currency, router])
 
@@ -71,6 +75,7 @@ export function CurrencyProvider({
     if (newCurrency === currency || isUpdating) return
 
     setIsUpdating(true)
+    const previousCurrency = currency // Store previous value for potential revert
     setCurrencyState(newCurrency) // Optimistic update
 
     try {
@@ -98,26 +103,29 @@ export function CurrencyProvider({
             localStorage.removeItem('currency-updated')
           }, 1000)
 
-          // BroadcastChannel for same-origin communication
+          // BroadcastChannel for same-origin communication (same-tab and other tabs)
           const channel = new BroadcastChannel('currency-updates')
           channel.postMessage({
             type: 'currency-updated',
             currency: newCurrency,
             timestamp: Date.now()
           })
-          channel.close()
+          // Keep channel open briefly to ensure message is sent, then close
+          setTimeout(() => {
+            channel.close()
+          }, 100)
         }
 
-        // Force refresh all pages
+        // Force refresh all pages (but components using context will update immediately)
         router.refresh()
       } else {
         // Revert on error
-        setCurrencyState(currency)
+        setCurrencyState(previousCurrency)
         throw new Error(result.message || 'Failed to update currency')
       }
     } catch (error) {
       // Revert on error
-      setCurrencyState(currency)
+      setCurrencyState(previousCurrency)
       throw error
     } finally {
       setIsUpdating(false)
@@ -128,8 +136,14 @@ export function CurrencyProvider({
     router.refresh()
   }, [router])
 
+  // Memoize context value to prevent unnecessary re-renders
+  const contextValue = useMemo(
+    () => ({ currency, setCurrency, isUpdating, refreshAll }),
+    [currency, setCurrency, isUpdating, refreshAll]
+  )
+
   return (
-    <CurrencyContext.Provider value={{ currency, setCurrency, isUpdating, refreshAll }}>
+    <CurrencyContext.Provider value={contextValue}>
       {children}
     </CurrencyContext.Provider>
   )

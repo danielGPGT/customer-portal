@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import dynamic from 'next/dynamic'
 import { Search, Menu, X, Coins, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,8 +14,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { NotificationsPopover } from "@/components/app/notifications-popover"
-import { SearchDropdown } from "@/components/app/search-dropdown"
 import { SignOutButton } from "@/components/auth/signout-button"
 import { CurrencySelector } from "@/components/app/currency-selector"
 import Image from "next/image"
@@ -22,6 +21,17 @@ import { useTheme } from "next-themes"
 import Link from "next/link"
 import { getClientPreferredCurrency, type CurrencyCode } from "@/lib/utils/currency"
 import { useCurrency } from "@/components/providers/currency-provider"
+
+// Dynamically import components that are only shown on user interaction
+const NotificationsPopover = dynamic(() => 
+  import('@/components/app/notifications-popover').then(mod => ({ default: mod.NotificationsPopover })),
+  { ssr: false } // Client-side only
+)
+
+const SearchDropdown = dynamic(() => 
+  import('@/components/app/search-dropdown').then(mod => ({ default: mod.SearchDropdown })),
+  { ssr: false } // Only shown when search is focused
+)
 
 interface TopHeaderProps {
   onMenuClick?: () => void

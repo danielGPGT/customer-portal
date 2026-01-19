@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { LoginForm } from '@/components/auth/login-form'
+import { LoginFormWrapper } from '@/components/auth/login-form-wrapper'
 
 export const metadata: Metadata = {
   title: 'Sign In | Grand Prix Grand Tours Portal',
@@ -15,7 +15,7 @@ export default function LoginPage() {
           Sign in to your account to access your loyalty points and trips
         </p>
       </div>
-      <LoginForm />
+      <LoginFormWrapper />
     </div>
   )
 }

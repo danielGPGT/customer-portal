@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
-import { SignupForm } from '@/components/auth/signup-form'
+import { SignupFormWrapper } from '@/components/auth/signup-form-wrapper'
 import { ReferralSignupBanner } from '@/components/auth/referral-signup-banner'
-import { createClient } from '@/lib/supabase/server'
 
 export const metadata: Metadata = {
   title: 'Sign Up | Grand Prix Grand Tours Portal',
@@ -16,40 +15,9 @@ export default async function SignupPage({ searchParams }: SignupPageProps) {
   const params = await searchParams
   const referralCode = params.ref ? params.ref.toUpperCase().trim() : null
 
-  // Validate referral code if provided
-  let isValidReferral = false
-  let referrerName: string | undefined = undefined
-
-  if (referralCode) {
-    try {
-      const supabase = await createClient()
-      const { data: validityArray, error } = await supabase.rpc('check_referral_validity', {
-        p_referral_code: referralCode,
-      })
-
-      // check_referral_validity returns a TABLE, so we get an array
-      const validity = Array.isArray(validityArray) && validityArray.length > 0 ? validityArray[0] : null
-
-      if (validity && validity.is_valid) {
-        isValidReferral = true
-        // Optionally fetch referrer name
-        if (validity.referrer_client_id) {
-          const { data: referrer } = await supabase
-            .from('clients')
-            .select('first_name, last_name')
-            .eq('id', validity.referrer_client_id)
-            .single()
-          
-          if (referrer) {
-            referrerName = `${referrer.first_name} ${referrer.last_name}`.trim()
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Error validating referral code:', error)
-      // Continue with signup even if validation fails
-    }
-  }
+  // Note: Referral validation moved to client-side in SignupForm component
+  // This prevents blocking the initial page load with a database call
+  // The form will validate the referral code when the user interacts with it
 
   return (
     <div className="space-y-6">
@@ -63,12 +31,12 @@ export default async function SignupPage({ searchParams }: SignupPageProps) {
       {referralCode && (
         <ReferralSignupBanner
           referralCode={referralCode}
-          referrerName={referrerName}
-          isValid={isValidReferral}
+          referrerName={undefined} // Will be fetched client-side if needed
+          isValid={undefined} // Will be validated client-side
         />
       )}
 
-      <SignupForm initialReferralCode={referralCode || undefined} />
+      <SignupFormWrapper initialReferralCode={referralCode || undefined} />
     </div>
   )
 }

@@ -32,13 +32,19 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
   const handleCurrencyChange = async (newCurrency: CurrencyCode) => {
     if (newCurrency === displayCurrency || isUpdating) return
 
+    // Show success toast immediately (optimistic) - UI updates instantly via context
+    const successToast = toast({
+      title: "Currency updated",
+      description: `Display currency changed to ${getCurrencyInfo(newCurrency).name}`,
+    })
+
     try {
+      // setCurrency does optimistic update immediately, then saves to server
       await setCurrency(newCurrency)
-      toast({
-        title: "Currency updated",
-        description: `Display currency changed to ${getCurrencyInfo(newCurrency).name}`,
-      })
+      // If we get here, the update was successful (toast already shown)
     } catch (error: any) {
+      // If error, dismiss the success toast and show error
+      // Note: toast doesn't have dismiss method in this API, so we show error which will appear after
       toast({
         title: "Error",
         description: error.message || "Failed to update currency preference",
@@ -56,7 +62,7 @@ export function CurrencySelector({ currentCurrency, clientId, baseCurrency }: Cu
           className="h-9 w-9 sm:w-auto gap-1.5 text-white hover:text-white dark:text-primary-foreground hover:bg-secondary-950 px-0 sm:px-2"
           disabled={isUpdating}
         >
-
+          <Globe className="h-4 w-4" />
           <span className="hidden sm:inline font-medium">
             {currentCurrencyInfo.symbol} {displayCurrency}
           </span>

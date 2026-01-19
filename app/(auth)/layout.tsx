@@ -1,7 +1,16 @@
 import type { Metadata } from 'next'
-import { AuthNavbar } from '@/components/auth/auth-navbar'
-import { AuthRightNav } from '@/components/auth/auth-right-nav'
-import { CookieBanner } from '@/components/cookies/cookie-banner'
+import dynamic from 'next/dynamic'
+import Image from 'next/image'
+import { CookieBannerWrapper } from '@/components/cookies/cookie-banner-wrapper'
+
+// Dynamically import components to reduce initial bundle size
+const AuthNavbar = dynamic(() => import('@/components/auth/auth-navbar').then(mod => ({ default: mod.AuthNavbar })), {
+  ssr: true, // Can be SSR'd as it's just navigation
+})
+
+const AuthRightNav = dynamic(() => import('@/components/auth/auth-right-nav').then(mod => ({ default: mod.AuthRightNav })), {
+  ssr: true, // Can be SSR'd as it's just navigation
+})
 
 export const metadata: Metadata = {
   title: 'Account | Grand Prix Grand Tours Portal',
@@ -55,15 +64,18 @@ export default function AuthLayout({
       </div>
 
       {/* Right side - Background Image with Navigation & Promotional Content */}
-      <div 
-        className="hidden lg:flex lg:flex-1 lg:flex-col relative min-h-screen"
-        style={{
-          backgroundImage: 'url(/assets/images/67b47522e00a9d3b8432bdd7_67b4739ca8ab15bb14dcff85_Singapore-Home-Tile-min.avif)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      >
+      <div className="hidden lg:flex lg:flex-1 lg:flex-col relative min-h-screen overflow-hidden">
+        {/* Optimized background image using Next.js Image component */}
+        <Image
+          src="/assets/images/67b47522e00a9d3b8432bdd7_67b4739ca8ab15bb14dcff85_Singapore-Home-Tile-min.avif"
+          alt="Grand Prix Grand Tours"
+          fill
+          priority={false} // Don't prioritize - load after main content
+          quality={85}
+          className="object-cover"
+          sizes="50vw"
+          loading="lazy"
+        />
         {/* Dark overlay for better text readability */}
         <div className="absolute inset-0 bg-black/40" />
         
@@ -84,8 +96,8 @@ export default function AuthLayout({
 
       </div>
       
-      {/* Cookie Banner */}
-      <CookieBanner />
+      {/* Cookie Banner - Client component wrapper handles dynamic import with ssr: false */}
+      <CookieBannerWrapper />
     </div>
   )
 }

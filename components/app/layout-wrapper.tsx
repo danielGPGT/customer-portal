@@ -2,13 +2,18 @@
 
 import * as React from "react"
 import { usePathname, useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import { TopHeader } from '@/components/app/top-header'
 import { NavBar } from '@/components/app/nav-bar'
 import { MobileSidebar } from '@/components/app/mobile-sidebar'
-import { AppFooter } from '@/components/app/app-footer'
-import { CookieBanner } from '@/components/cookies/cookie-banner'
 import { CurrencyProvider } from '@/components/providers/currency-provider'
 import { getClientPreferredCurrency } from '@/lib/utils/currency'
+import { CookieBannerWrapper } from '@/components/cookies/cookie-banner-wrapper'
+
+// Dynamically import non-critical components to reduce initial bundle
+const AppFooter = dynamic(() => import('@/components/app/app-footer').then(mod => ({ default: mod.AppFooter })), {
+  ssr: true, // Can be SSR'd
+})
 
 interface LayoutWrapperProps {
   children: React.ReactNode
@@ -97,8 +102,8 @@ export function LayoutWrapper({
 
         <AppFooter />
         
-        {/* Cookie Banner */}
-        <CookieBanner />
+        {/* Cookie Banner - Client component wrapper handles dynamic import with ssr: false */}
+        <CookieBannerWrapper />
       </div>
     </CurrencyProvider>
   )

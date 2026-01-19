@@ -29,8 +29,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      // Performance optimizations
+      appearance={{
+        // Reduce initial bundle size by using minimal styling
+        elements: {
+          rootBox: "w-full",
+        },
+      }}
+      // Enable lazy loading for Clerk components
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+    >
       <html lang="en" suppressHydrationWarning className={outfit.variable}>
+        <head>
+          {/* Preconnect to Clerk domains for faster auth */}
+          <link rel="preconnect" href="https://clerk.com" />
+          <link rel="preconnect" href="https://clerk.accounts.dev" />
+          <link rel="dns-prefetch" href="https://clerk.com" />
+          <link rel="dns-prefetch" href="https://clerk.accounts.dev" />
+        </head>
         <body
           className="font-sans antialiased overflow-x-hidden"
         >

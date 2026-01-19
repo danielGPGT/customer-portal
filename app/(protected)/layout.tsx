@@ -62,6 +62,9 @@ export default async function ProtectedLayout({
   }
 
   // Get base currency from loyalty settings
+  // Note: We can't use unstable_cache here because createClient() uses cookies()
+  // which is a dynamic data source. This is a simple single-row query that's already fast.
+  // React will automatically deduplicate this query within the same request if called multiple times.
   const supabase = await createClient()
   const { data: settings } = await supabase
     .from('loyalty_settings')
