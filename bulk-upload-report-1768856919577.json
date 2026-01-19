@@ -1,0 +1,4264 @@
+{
+  "timestamp": "2026-01-19T21:08:39.577Z",
+  "dryRun": false,
+  "summary": {
+    "total": 425,
+    "success": 424,
+    "errors": 0,
+    "notFound": 1,
+    "totalPoints": 111906
+  },
+  "results": {
+    "success": [
+      {
+        "email": "11amanda@live.co.uk",
+        "clientId": "af8aae5e-2b6f-4849-abde-d525a0202b89",
+        "name": "Amanda Hazlett",
+        "points": 159,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "4cb65fd6-cc1f-44fd-aa17-f48ea141d1fb",
+        "rowNumber": 2
+      },
+      {
+        "email": "6000dh@gmail.com",
+        "clientId": "d3144d3f-dcbc-4b8b-a529-d0ce9090d5f2",
+        "name": "David Harry",
+        "points": 229,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "206ee7c2-afb2-46f7-947b-fce7f1cd70aa",
+        "rowNumber": 3
+      },
+      {
+        "email": "abinayaganapathipillai@gmail.com",
+        "clientId": "a17dac0a-6bad-4820-a9d2-0b52c0290252",
+        "name": "Abinaya Ganapathipillai",
+        "points": 179,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "248c1f55-f4cc-4c5e-8a67-a0809318fda6",
+        "rowNumber": 4
+      },
+      {
+        "email": "admlwb1106@gmail.com",
+        "clientId": "941e9233-c33e-47c5-ae6a-4bf54d14b510",
+        "name": "Martin and Wendy Jones",
+        "points": 176,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "1dd19505-ecd6-4794-b819-77af0e3191ab",
+        "rowNumber": 5
+      },
+      {
+        "email": "adrianjeffery@hotmail.co.uk",
+        "clientId": "8bd62e0a-c38e-42dc-8b98-9618722580a2",
+        "name": "Adrian Jeffery",
+        "points": 599,
+        "oldBalance": 210,
+        "wasEnrolled": true,
+        "transactionId": "e90643e3-804f-4763-b393-5626d0604cd3",
+        "rowNumber": 6
+      },
+      {
+        "email": "alan.harris58@icloud.com",
+        "clientId": "208f861b-16d0-4942-8beb-465dab638ff4",
+        "name": "Alan Harris",
+        "points": 159,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "1dd1a2ea-da92-4c9a-9496-efea79d559fb",
+        "rowNumber": 7
+      },
+      {
+        "email": "alan1aa@yahoo.com",
+        "clientId": "0cd0dac3-e86f-48a5-9632-538c222413fa",
+        "name": "Alan Cook",
+        "points": 172,
+        "oldBalance": 172,
+        "wasEnrolled": true,
+        "transactionId": "607c5576-707c-4d24-9016-c0fd777cd50b",
+        "rowNumber": 8
+      },
+      {
+        "email": "alanhowt@hotmail.co.uk",
+        "clientId": "0b16d323-95db-4db3-862e-56ccc83d02b7",
+        "name": "Alan Houghton",
+        "points": 204,
+        "oldBalance": 204,
+        "wasEnrolled": true,
+        "transactionId": "b9eed006-fce6-4392-aaf8-fa30d2dbd982",
+        "rowNumber": 9
+      },
+      {
+        "email": "alex@iamtanks.co.uk",
+        "clientId": "ae7b70b7-0450-4054-85e9-7946d56bc8f9",
+        "name": "Alex Mackie",
+        "points": 239,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "3935f5fd-57f7-40e7-9b52-a2511bd7c73c",
+        "rowNumber": 10
+      },
+      {
+        "email": "alexander0911@sky.com",
+        "clientId": "4adffc6c-07da-4788-badb-3b8af882ea7c",
+        "name": "Alexander McBeath",
+        "points": 179,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "9ada9a43-57d0-4199-b2d5-96cac12636fe",
+        "rowNumber": 11
+      },
+      {
+        "email": "alexandracorrigan22@icloud.com",
+        "clientId": "5f5194ba-1466-4650-bd18-f70b6fd0dd03",
+        "name": "Alexandra Graham",
+        "points": 213,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "64902924-6468-4277-b5ee-88c9c26f1346",
+        "rowNumber": 12
+      },
+      {
+        "email": "amanda.cardall@gmail.com",
+        "clientId": "c92ad2cf-7e6a-4658-9897-7f452b993aba",
+        "name": "Amanda Cardall",
+        "points": 144,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c77871b7-baf9-48c6-8b2d-9c1cd33f0f15",
+        "rowNumber": 13
+      },
+      {
+        "email": "amandaprout@btinternet.com",
+        "clientId": "96516a3e-81f8-4a5a-85b2-8f2eac7f6701",
+        "name": "Amanda Prout",
+        "points": 150,
+        "oldBalance": 150,
+        "wasEnrolled": true,
+        "transactionId": "c9d6c04e-0942-4b60-a6c3-4c7ae44c0bd9",
+        "rowNumber": 14
+      },
+      {
+        "email": "amylucy87@gmail.com",
+        "clientId": "fe3f9245-4fb3-45d9-ba6b-628de10177ca",
+        "name": "Amy Hulks",
+        "points": 194,
+        "oldBalance": 194,
+        "wasEnrolled": true,
+        "transactionId": "9f66b890-7b71-4541-85ba-7682267f97df",
+        "rowNumber": 15
+      },
+      {
+        "email": "andrea_taylor20@hotmail.co.uk",
+        "clientId": "71b27e39-2241-4d3c-b71b-fd455316893f",
+        "name": "Andrea Taylor",
+        "points": 164,
+        "oldBalance": 294,
+        "wasEnrolled": true,
+        "transactionId": "e5783856-c140-4bf0-90a1-967eda263f62",
+        "rowNumber": 16
+      },
+      {
+        "email": "andrewbarker@bullbrand.co.uk",
+        "clientId": "16878675-41a8-430a-b64d-8b97e139f4b4",
+        "name": "andrew barker",
+        "points": 279,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "2cdaa62a-7048-4f48-8942-f24ce78fd73f",
+        "rowNumber": 17
+      },
+      {
+        "email": "andy666fenwick@hotmail.com",
+        "clientId": "d40821ce-f9ce-4650-9e9e-c2d07818c2b7",
+        "name": "Andrew Fenwick",
+        "points": 239,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "cd066093-cc3f-41c6-ad49-48da858587fe",
+        "rowNumber": 18
+      },
+      {
+        "email": "andybsmith@hotmail.co.uk",
+        "clientId": "aa38f92c-0f3a-423d-b188-3c33aacc6d2b",
+        "name": "Andrew Smith",
+        "points": 199,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e00425fe-f7fe-4b3e-b075-3c29118b592e",
+        "rowNumber": 19
+      },
+      {
+        "email": "andychowne@gmail.com",
+        "clientId": "c02aebd8-7935-4168-900b-7ec545b32339",
+        "name": "Andy Chowne",
+        "points": 239,
+        "oldBalance": 239,
+        "wasEnrolled": true,
+        "transactionId": "f9378ec6-d2b3-4ac8-9f47-379e0de701a3",
+        "rowNumber": 20
+      },
+      {
+        "email": "anita12011@hotmail.co.uk",
+        "clientId": "ffcdaac3-791e-4ebe-abb8-7378cde2de9b",
+        "name": "Anita Nicklin",
+        "points": 209,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e908bb9d-ae5f-49ac-8188-bbedfb888f2d",
+        "rowNumber": 21
+      },
+      {
+        "email": "anna.addamo@bigpond.com",
+        "clientId": "1e9ce53b-6ac6-406e-a8da-43f99b2d903b",
+        "name": "Anna Addamo",
+        "points": 414,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "825d65c9-1548-438c-910a-0b19bd676359",
+        "rowNumber": 22
+      },
+      {
+        "email": "annedearman@hotmail.co.uk",
+        "clientId": "a44afe33-f439-4a88-8827-4356c48420e9",
+        "name": "Anne Dearman",
+        "points": 224,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d5b014aa-f552-4e20-9669-99636e027d31",
+        "rowNumber": 23
+      },
+      {
+        "email": "antcliffjan@gmail.com",
+        "clientId": "1ac3e142-3065-4c8e-a354-a1b605aca947",
+        "name": "Jan Antcliff",
+        "points": 172,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "867a08f6-3e51-45a0-ad12-edc1cef678f5",
+        "rowNumber": 24
+      },
+      {
+        "email": "ap.davies@blueyonder.co.uk",
+        "clientId": "9efbbd25-a733-4da5-a2a0-5b15e65dd50f",
+        "name": "Andrew Davies",
+        "points": 324,
+        "oldBalance": 372,
+        "wasEnrolled": true,
+        "transactionId": "d2098b34-17e7-4a70-a08e-c5d551646356",
+        "rowNumber": 25
+      },
+      {
+        "email": "arichardson@drillstoreukltd.com",
+        "clientId": "8bb8862e-f77f-467c-9ae1-8c3e10dfdfad",
+        "name": "Adrian  Richardson",
+        "points": 224,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "2684c629-9a94-4e11-85a8-ea7a97e2d419",
+        "rowNumber": 26
+      },
+      {
+        "email": "ashleyfroom1912@gmail.com",
+        "clientId": "a945b3be-3f26-43a5-83ea-c6ea1945f33d",
+        "name": "ashley Wilson",
+        "points": 169,
+        "oldBalance": 169,
+        "wasEnrolled": true,
+        "transactionId": "1d7b8312-dc6f-4615-87b9-f76516e326ef",
+        "rowNumber": 27
+      },
+      {
+        "email": "audley1@icloud.com",
+        "clientId": "994558b7-785e-4248-9002-8835f791d615",
+        "name": "Audley Alexander",
+        "points": 913,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "aae69d52-d70a-4202-a528-ced6b8273ad5",
+        "rowNumber": 28
+      },
+      {
+        "email": "bbhomesales@comcast.net",
+        "clientId": "286ad048-440d-4c6e-9d50-b1733b532b77",
+        "name": "Barbara Brenzel",
+        "points": 397,
+        "oldBalance": 359,
+        "wasEnrolled": true,
+        "transactionId": "c47c04ea-2717-4a5b-855b-28313bce66c6",
+        "rowNumber": 29
+      },
+      {
+        "email": "beckydinger@aol.com",
+        "clientId": "034e9862-5935-47dd-b19d-67c9522ff649",
+        "name": "Becky Ding",
+        "points": 414,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "84ed58c5-586a-4fa8-93e8-2fe36682305c",
+        "rowNumber": 30
+      },
+      {
+        "email": "benweston35@hotmail.co.uk",
+        "clientId": "4c49a20a-0882-425b-a121-841463eb28bc",
+        "name": "Ben Weston",
+        "points": 224,
+        "oldBalance": 198,
+        "wasEnrolled": true,
+        "transactionId": "512f59e5-16b6-48c9-9f64-6dbc3d065dd9",
+        "rowNumber": 31
+      },
+      {
+        "email": "bethparker91@gmail.com",
+        "clientId": "1b0101b3-3ab1-4af4-b371-419abaf4536d",
+        "name": "Beth Bleeker",
+        "points": 259,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "9eb8c018-9a23-43f6-89ab-1f583199e214",
+        "rowNumber": 32
+      },
+      {
+        "email": "bethrankine@aol.com",
+        "clientId": "898c279e-3d16-4ef1-a882-5d1605c574f4",
+        "name": "Beth Lewis",
+        "points": 164,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "7ea294ef-a515-4394-9962-ccf363c7fac4",
+        "rowNumber": 33
+      },
+      {
+        "email": "billykingbusiness@gmail.com",
+        "clientId": "026210e6-9866-46fc-b345-eae57f85bf0e",
+        "name": "Billy King",
+        "points": 169,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "5d2b7763-8e2e-48d2-a117-b6b9cebfc038",
+        "rowNumber": 34
+      },
+      {
+        "email": "billynelson83@btinternet.com",
+        "clientId": "301906c4-eb21-4afe-91bd-920e3c3ae50a",
+        "name": "William Nelson",
+        "points": 364,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "840eda89-db00-472b-9c69-f270d0aa1b08",
+        "rowNumber": 35
+      },
+      {
+        "email": "bradley.leonard2012@gmail.com",
+        "clientId": "e5cf6f8e-2a32-4299-a5c5-eb7e70331d3d",
+        "name": "Bradley Leonard",
+        "points": 169,
+        "oldBalance": 169,
+        "wasEnrolled": true,
+        "transactionId": "f632e060-a5c0-4c57-aa81-261b00c153d4",
+        "rowNumber": 36
+      },
+      {
+        "email": "brasilyou@yahoo.co.uk",
+        "clientId": "05d56d81-d439-4bc7-91c0-97840c957cf2",
+        "name": "Ana Almeida",
+        "points": 189,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "65d35f7e-5ab2-4dbb-b4ba-dd3c7e12863a",
+        "rowNumber": 37
+      },
+      {
+        "email": "bryanwinn03@gmail.com",
+        "clientId": "2e5d8d62-bc9b-4556-bb41-00c665dd0453",
+        "name": "Bryan Winn",
+        "points": 334,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "2a9bc74c-e9e3-4585-8ae5-a04429367b3b",
+        "rowNumber": 38
+      },
+      {
+        "email": "buerton2000@yahoo.co.uk",
+        "clientId": "4ff3a6f1-e83d-4269-aa67-a9b9879eaa3f",
+        "name": "Michael Smith",
+        "points": 259,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "a3758f39-5817-4c01-a050-2d0769299d58",
+        "rowNumber": 39
+      },
+      {
+        "email": "bwilliams@bureaukensington.com",
+        "clientId": "b1e02a97-7360-41b5-8e88-e7ce2390e8e9",
+        "name": "Barbara Williams",
+        "points": 134,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f6d57b89-a574-4e38-8d06-f190ca398428",
+        "rowNumber": 40
+      },
+      {
+        "email": "byrneholdings@icloud.com",
+        "clientId": "8c386096-bee3-464c-95a4-c3c43c4e6ac7",
+        "name": "Brent Byrne",
+        "points": 234,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "4d703210-ccbc-4a6e-a3e5-0efa9edcc2d2",
+        "rowNumber": 41
+      },
+      {
+        "email": "callum.donn@outlook.com",
+        "clientId": "8c8952bd-bcc5-40bc-b0e7-79a4e2024ef2",
+        "name": "Callum Donn",
+        "points": 129,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "adde5863-d468-4e2c-a595-78da2004a6c2",
+        "rowNumber": 42
+      },
+      {
+        "email": "carol.culp@eponatravelco.com",
+        "clientId": "1b354279-8c08-4e8b-b007-d8619c20dd73",
+        "name": "Carol Culp",
+        "points": 314,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "fa23df37-0ac2-4c94-8056-cac13ad1bfc6",
+        "rowNumber": 43
+      },
+      {
+        "email": "carolinejack@ymail.com",
+        "clientId": "11f0b70e-8ec7-4dc3-b954-838a18eb9e69",
+        "name": "Caroline Jack",
+        "points": 729,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "888d2e3b-a216-4a25-b239-122135b4b23e",
+        "rowNumber": 44
+      },
+      {
+        "email": "carrinac@gmail.com",
+        "clientId": "7e5d6544-dfe5-45f2-9cab-98adb88850cd",
+        "name": "Carrina Cappadona",
+        "points": 238,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "b1f4b12e-b0ca-460e-b4d3-56b2cff352c0",
+        "rowNumber": 45
+      },
+      {
+        "email": "cawsey4@gmail.com",
+        "clientId": "ecf56e17-993a-4992-b6b5-da15d4c4db15",
+        "name": "Pip Cawsey",
+        "points": 268,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e277a172-fae3-477a-adb6-b6df2e8f5cec",
+        "rowNumber": 46
+      },
+      {
+        "email": "cdonker@tampabay.rr.com",
+        "clientId": "1515aacc-cf3b-4553-9d56-850dd18d8830",
+        "name": "Christine donker",
+        "points": 860,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "099ea26b-81f5-4437-98c0-13f84fcd0900",
+        "rowNumber": 47
+      },
+      {
+        "email": "cfanncl10@gmail.com",
+        "clientId": "4acbc55e-e03d-4fba-93db-94ece4d151fe",
+        "name": "Charlee Andrews",
+        "points": 219,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "1ee4fe16-8530-47ce-bf23-ce9dd2c93588",
+        "rowNumber": 48
+      },
+      {
+        "email": "cheryl.scicluna2@gmail.com",
+        "clientId": "8a2c6272-e191-473f-adff-344565c7af5f",
+        "name": "Cheryl Nolan",
+        "points": 238,
+        "oldBalance": 214,
+        "wasEnrolled": true,
+        "transactionId": "b443950c-ddcc-421e-a1ce-acbce843bc76",
+        "rowNumber": 49
+      },
+      {
+        "email": "chick_chelsie@hotmail.com",
+        "clientId": "d275548f-ea01-4903-af4d-8e8c33ed799a",
+        "name": "Chelsie Watkinson",
+        "points": 349,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "572a9a11-b1e9-483e-866b-d4588c0a418d",
+        "rowNumber": 50
+      },
+      {
+        "email": "chrisjgilbert@btinternet.com",
+        "clientId": "0cb7b213-37c5-437f-802b-e1511fe07728",
+        "name": "Chris Gilbert",
+        "points": 209,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "800ec48c-6c41-4a4c-9cb6-4de01beea8d6",
+        "rowNumber": 51
+      },
+      {
+        "email": "chrisnsmith@btinternet.com",
+        "clientId": "32a4ee96-0930-462f-a7d3-1982cced33de",
+        "name": "Chris Smith",
+        "points": 604,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "ce7582de-5116-4788-9083-40f0173a8558",
+        "rowNumber": 52
+      },
+      {
+        "email": "chrispittner@hotmail.com",
+        "clientId": "05eae2af-ff49-4d5d-89fd-f91f73a16348",
+        "name": "Chris Pittner",
+        "points": 219,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f7634c26-4433-474b-b498-148aba6c5e22",
+        "rowNumber": 53
+      },
+      {
+        "email": "christinewan@bellsouth.net",
+        "clientId": "f36c0313-fa35-4b11-81b0-8e00f4b3046e",
+        "name": "Christine Wan",
+        "points": 358,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "65b6b658-8f91-462f-8314-aeb6d52dff1f",
+        "rowNumber": 54
+      },
+      {
+        "email": "christy.seftonpark@helloworld.com.au",
+        "clientId": "9ffcf523-ed8e-4c2b-8ce7-a3045b245cc3",
+        "name": "Christy Morony",
+        "points": 243,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d6aa2761-2d65-4c5c-adc1-b675c923818b",
+        "rowNumber": 55
+      },
+      {
+        "email": "chrisworrall792@hotmail.com",
+        "clientId": "8bf27bbc-0832-4224-a8bc-58cdd602cfb3",
+        "name": "Chris Worrall",
+        "points": 244,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "856c71af-a799-4245-b70c-d23c23e6c0dd",
+        "rowNumber": 56
+      },
+      {
+        "email": "chyoung200@gmail.com",
+        "clientId": "2d746709-41df-41e6-9a4c-e9aa7dea6461",
+        "name": "Catherine Young",
+        "points": 377,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f4efae69-a186-498a-82c9-2a7b1fdc7efd",
+        "rowNumber": 57
+      },
+      {
+        "email": "cj43mart@gmail.com",
+        "clientId": "e32ddbdc-5587-4a46-9af4-c1dc95c8d440",
+        "name": "Richard Martin",
+        "points": 224,
+        "oldBalance": 224,
+        "wasEnrolled": true,
+        "transactionId": "6c25a89b-1fc1-4e58-ad1b-3ea05158fcaf",
+        "rowNumber": 58
+      },
+      {
+        "email": "cjbrooks321@gmail.com",
+        "clientId": "231973e7-c4eb-49c3-b48e-a7d3995c1e44",
+        "name": "Carol Brooks",
+        "points": 335,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "6f1e8977-9c5b-4ff0-a5c3-b1cc624b7f08",
+        "rowNumber": 59
+      },
+      {
+        "email": "clairehelensmith88@hotmail.co.uk",
+        "clientId": "9bc44ba2-24ae-4831-9e74-288e96ef2bca",
+        "name": "Claire McDowall",
+        "points": 204,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "5d8baae9-e5b0-4f3b-8319-bfaf2a408e72",
+        "rowNumber": 60
+      },
+      {
+        "email": "clare.woods2712@gmail.com",
+        "clientId": "54c63ce0-0015-4405-9dc3-5bde288f5ffc",
+        "name": "Clare Woods",
+        "points": 249,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "8d8ae878-0778-4ec9-af22-fbf128221c5e",
+        "rowNumber": 61
+      },
+      {
+        "email": "clareday24@btinternet.com",
+        "clientId": "57685dbd-d763-4186-9adc-e1af5eed49a4",
+        "name": "Clare Day",
+        "points": 179,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "6a266883-72cb-4777-953b-7cbfe519defa",
+        "rowNumber": 62
+      },
+      {
+        "email": "clarelammas@me.com",
+        "clientId": "f74553d2-e790-4ef3-ae2b-4f4efce32bb7",
+        "name": "Clare Lammas",
+        "points": 189,
+        "oldBalance": 169,
+        "wasEnrolled": true,
+        "transactionId": "d3ab029d-fd3a-4a8b-9c5c-c0c1f69c54b2",
+        "rowNumber": 63
+      },
+      {
+        "email": "claudegosselin@gosselinexpress.com",
+        "clientId": "76478d7c-9933-49cc-9738-544f55936f71",
+        "name": "Claude Gosselin",
+        "points": 270,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "91b0d981-78af-4a1d-b552-b0a8b7a66af1",
+        "rowNumber": 64
+      },
+      {
+        "email": "cnelson180@ymail.com",
+        "clientId": "827f6a70-68ed-48c8-bb52-5e0ff9e7bbfb",
+        "name": "Chris Nelson",
+        "points": 189,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "ced62258-4aec-4f50-98a2-512be91d2200",
+        "rowNumber": 65
+      },
+      {
+        "email": "col224@hotmail.com",
+        "clientId": "bec2cc83-2b81-4088-bdc7-b28b7dccdc7f",
+        "name": "Colin Douglas",
+        "points": 249,
+        "oldBalance": 238,
+        "wasEnrolled": true,
+        "transactionId": "29ef4bf9-d138-4230-9da9-37228520bfd9",
+        "rowNumber": 66
+      },
+      {
+        "email": "colin.payne51@live.co.uk",
+        "clientId": "765d7557-c1ef-4bc5-b8bb-66c563073c3a",
+        "name": "Colin Payne",
+        "points": 304,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d6dea07d-fe85-4064-9823-3c0ae48be4b2",
+        "rowNumber": 67
+      },
+      {
+        "email": "colin@charleswoodlaw.co.uk",
+        "clientId": "bd829870-adf1-401c-a353-3582235ba2b6",
+        "name": "Colin Cant",
+        "points": 209,
+        "oldBalance": 124,
+        "wasEnrolled": true,
+        "transactionId": "a32d7e84-9fc8-497c-8665-66bdc38be758",
+        "rowNumber": 68
+      },
+      {
+        "email": "colin@trianglefiresystems.co.uk",
+        "clientId": "b7e5274f-5b2f-498e-a519-53c45e16395d",
+        "name": "Colin Chantler",
+        "points": 458,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "76d9294d-2093-4799-9f8b-e5e627982a00",
+        "rowNumber": 69
+      },
+      {
+        "email": "colinchapman24@talktalk.net",
+        "clientId": "ed4dc29b-7ef7-4658-8f49-24921a7b790d",
+        "name": "Colin Chapman",
+        "points": 159,
+        "oldBalance": 144,
+        "wasEnrolled": true,
+        "transactionId": "1ac2cdbb-56fe-4280-8c21-2a9503eb194a",
+        "rowNumber": 70
+      },
+      {
+        "email": "conor@mcdermottroe.com",
+        "clientId": "b23af41e-d78f-495c-8ac9-8a2094b19bd3",
+        "name": "Conor McDermottroe",
+        "points": 104,
+        "oldBalance": 104,
+        "wasEnrolled": true,
+        "transactionId": "3a3f43ce-07b0-440c-81ef-45b25828a3e5",
+        "rowNumber": 71
+      },
+      {
+        "email": "corey_harland@hotmail.com",
+        "clientId": "80a889bb-f8db-4e92-ac44-ddf942edce57",
+        "name": "Corey Harland",
+        "points": 278,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d41fc649-54b7-47f3-ad3d-d82c66330809",
+        "rowNumber": 72
+      },
+      {
+        "email": "crheeston@yahoo.co.uk",
+        "clientId": "4cd8be8a-20b4-497e-b8de-d986d238ddcf",
+        "name": "Chantelle Guest",
+        "points": 294,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "9d5cc817-2a9d-4e66-998a-47a32b7a2d1a",
+        "rowNumber": 73
+      },
+      {
+        "email": "d.green979@btinternet.com",
+        "clientId": "4da54d50-3ce6-4849-b85a-33216eb0979b",
+        "name": "Diane Green",
+        "points": 419,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "488758ed-1698-4293-90f6-ac85aa52ef49",
+        "rowNumber": 74
+      },
+      {
+        "email": "dan@cowton.org.uk",
+        "clientId": "477eaacd-8ef3-43c3-89ce-d3eb597a1601",
+        "name": "Dan Cowton",
+        "points": 249,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "54ee7b65-cff0-4f2f-a703-549d79de02ae",
+        "rowNumber": 75
+      },
+      {
+        "email": "danieljamesglancy@gmail.com",
+        "clientId": "6e2ef9e0-67cc-4b55-aafb-fbf15eeac48f",
+        "name": "Daniel Glancy",
+        "points": 0,
+        "oldBalance": 4131,
+        "wasEnrolled": true,
+        "transactionId": "7fbd9a56-0bed-45de-a144-3f9f55e840ee",
+        "rowNumber": 76
+      },
+      {
+        "email": "danieljoshuamartin@hotmail.com",
+        "clientId": "77bd8fbe-aa52-401d-9145-3a57e50b0002",
+        "name": "Daniel Martin",
+        "points": 329,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "50d8c1be-ba8a-4fc4-87eb-33f50af31f77",
+        "rowNumber": 77
+      },
+      {
+        "email": "danielle.c.davies@gmail.com",
+        "clientId": "05a664c0-b23a-4319-a2bb-cc554d5dcd4a",
+        "name": "Danielle Oliver",
+        "points": 134,
+        "oldBalance": 134,
+        "wasEnrolled": true,
+        "transactionId": "cf3e6a57-f083-4e41-aa12-0e1a4268db4c",
+        "rowNumber": 78
+      },
+      {
+        "email": "dannyshields@me.com",
+        "clientId": "dc152e01-c703-4730-af25-3481dea92b58",
+        "name": "Danny Shields",
+        "points": 374,
+        "oldBalance": 200,
+        "wasEnrolled": true,
+        "transactionId": "02b3b0f1-0932-48c2-8a2f-b065d12254b6",
+        "rowNumber": 79
+      },
+      {
+        "email": "darhar2103@sky.com",
+        "clientId": "e83eea6d-d749-49de-a5d9-87d2d31c73b8",
+        "name": "Darren Harvey",
+        "points": 204,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "0d69bc62-0ab7-4fd8-8b14-bd206d37ca1b",
+        "rowNumber": 80
+      },
+      {
+        "email": "darrenbennie88@outlook.com",
+        "clientId": "5ba6640d-b3c6-4b79-a5c4-777cc8b9677c",
+        "name": "Darren Bennie",
+        "points": 229,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "5dcd98da-3317-4545-b26b-f40e20d73d56",
+        "rowNumber": 81
+      },
+      {
+        "email": "darrenmadoo@hotmail.com",
+        "clientId": "ac98f89c-c2da-481a-8ffc-13c8b688c5e0",
+        "name": "Darren Madoo",
+        "points": 239,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "a6f9117b-7702-4010-ac8d-5525d61887e3",
+        "rowNumber": 82
+      },
+      {
+        "email": "daveeastaff@gmail.com",
+        "clientId": "8559cf0b-8dad-40f4-92e1-128f0fa28f44",
+        "name": "Dave Eastaff",
+        "points": 314,
+        "oldBalance": 294,
+        "wasEnrolled": true,
+        "transactionId": "1f19ffb0-51d0-4209-9fc4-aa717760458f",
+        "rowNumber": 83
+      },
+      {
+        "email": "davematt74@gmail.com",
+        "clientId": "10b8db7d-45b2-47e6-87bf-9ac17efa6825",
+        "name": "David Matthews",
+        "points": 354,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "a2451fc7-b846-4636-a956-15b1e1fb0106",
+        "rowNumber": 84
+      },
+      {
+        "email": "david.england@pwp-ltd.co.uk",
+        "clientId": "5f23ba38-9191-475a-a675-ce1d2bc2678b",
+        "name": "David England",
+        "points": 616,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "751acf57-0748-4e2c-b582-1e1ce0054c8e",
+        "rowNumber": 85
+      },
+      {
+        "email": "david.franklin89@gmail.com",
+        "clientId": "30e4ec1c-84fb-4f47-a4b9-514b112ecf64",
+        "name": "David Franklin",
+        "points": 169,
+        "oldBalance": 139,
+        "wasEnrolled": true,
+        "transactionId": "56aa2fb4-69eb-477c-8a57-d5595b654156",
+        "rowNumber": 86
+      },
+      {
+        "email": "davidwilmot27@me.com",
+        "clientId": "29bd82f6-38a7-4b33-9b90-13b901e9b088",
+        "name": "David Wilmot",
+        "points": 184,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f2298cf5-03ab-479d-ba04-42532ce7b9d9",
+        "rowNumber": 87
+      },
+      {
+        "email": "dcbeale@me.com",
+        "clientId": "d32fab54-d594-4dd0-afde-e882e7e8e99a",
+        "name": "David C Beale",
+        "points": 259,
+        "oldBalance": 239,
+        "wasEnrolled": true,
+        "transactionId": "fe4612a2-227b-4f6e-8aa0-999d0154b840",
+        "rowNumber": 88
+      },
+      {
+        "email": "dean.saunders4@gmail.com",
+        "clientId": "be3fee93-00a1-4524-a58c-25b3d227fa4e",
+        "name": "Dean Saunders",
+        "points": 359,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "b4c3b1d7-2459-4cd7-afa2-7f840da766c5",
+        "rowNumber": 89
+      },
+      {
+        "email": "debbie.barnes@marks-and-spencer.com",
+        "clientId": "2ae71c15-dca3-4943-815d-c4941abe1ae3",
+        "name": "Debbie barnes",
+        "points": 264,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "094e35e1-2f8b-4dad-8180-6f9ace8f7a73",
+        "rowNumber": 90
+      },
+      {
+        "email": "debbie@debbiemerry.com",
+        "clientId": "6f3f49e7-ec44-4f7f-836b-fc02d8a8485b",
+        "name": "Debra Merry",
+        "points": 224,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "9a089183-32e7-490a-94c1-a04612a01f40",
+        "rowNumber": 91
+      },
+      {
+        "email": "deborahcawthorn@live.co.uk",
+        "clientId": "99a91ab4-d577-4d8e-b9e5-86bb7d540f66",
+        "name": "Deborah Kelley",
+        "points": 174,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "216fe14c-a669-4d9b-86a1-377cb2524153",
+        "rowNumber": 92
+      },
+      {
+        "email": "deedeehj90@gmail.com",
+        "clientId": "d9416875-b446-4e22-a153-0eed1e00ba50",
+        "name": "Deanna Harvey-James",
+        "points": 194,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "008fb826-7327-437f-b3e6-c064162f1910",
+        "rowNumber": 93
+      },
+      {
+        "email": "delukowicz@icloud.com",
+        "clientId": "ceb9b8f6-fd0f-4efb-a937-2604fa56a428",
+        "name": "Katharine de Lukowicz",
+        "points": 164,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "1ab66d5b-ca7d-4e3c-9739-a5f065bbeb28",
+        "rowNumber": 94
+      },
+      {
+        "email": "dfpullen@gmail.com",
+        "clientId": "8e84b4ed-388d-4a40-b804-e33fe2e77d56",
+        "name": "David Pullen",
+        "points": 305,
+        "oldBalance": 211,
+        "wasEnrolled": true,
+        "transactionId": "482080f1-c903-4f1c-b453-0102fc938b1c",
+        "rowNumber": 95
+      },
+      {
+        "email": "digger01@hotmail.co.uk",
+        "clientId": "f40bdea2-80e2-4eeb-869d-c583b751549c",
+        "name": "Scott Pester",
+        "points": 149,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "b688b176-c9a1-4894-b441-a62f7890d233",
+        "rowNumber": 96
+      },
+      {
+        "email": "dixoncherryl942@gmail.com",
+        "clientId": "ccf49c52-7a82-407e-b87a-a839d8ed64a9",
+        "name": "Cherryl Dixon",
+        "points": 207,
+        "oldBalance": 207,
+        "wasEnrolled": true,
+        "transactionId": "8e3491c3-4734-4970-860c-d839fe95f348",
+        "rowNumber": 97
+      },
+      {
+        "email": "dkmsam55@gmail.com",
+        "clientId": "304c871c-6c45-4f88-bc9e-75acc1086281",
+        "name": "David Milligan",
+        "points": 433,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "ed23de13-d279-47d5-a311-f8d12d982941",
+        "rowNumber": 98
+      },
+      {
+        "email": "dkunselman@productivityteam.com",
+        "clientId": "b303a4a7-6bb1-42fc-b081-5b56953f7a9d",
+        "name": "David Kunselman",
+        "points": 253,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "9c114cc6-2940-44df-9824-c4ecf89d3a95",
+        "rowNumber": 99
+      },
+      {
+        "email": "dlm@westphalia.co.uk",
+        "clientId": "ad9eabeb-7368-45bb-84e7-154783fe6487",
+        "name": "Dan Mills",
+        "points": 437,
+        "oldBalance": 264,
+        "wasEnrolled": true,
+        "transactionId": "0b174f0b-bed9-480a-ba15-f8bb20f9c82e",
+        "rowNumber": 100
+      },
+      {
+        "email": "doneill25@msn.com",
+        "clientId": "10ed2fad-e011-400d-9d73-fc33b11c3bfa",
+        "name": "David ONeill",
+        "points": 469,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "726bec6b-5ad5-48b4-87e1-1ef15747c224",
+        "rowNumber": 101
+      },
+      {
+        "email": "dpffc@hotmail.co.uk",
+        "clientId": "ee94581e-3ebe-4c91-9233-8766aff475fc",
+        "name": "David Perry",
+        "points": 129,
+        "oldBalance": 165,
+        "wasEnrolled": true,
+        "transactionId": "93ac91a1-06df-492d-951c-a6b32ece4234",
+        "rowNumber": 102
+      },
+      {
+        "email": "dpmullaney@gmail.com",
+        "clientId": "e4bf6cc6-e6c5-429b-9622-d5d52f90179a",
+        "name": "Daniel Mullaney",
+        "points": 1278,
+        "oldBalance": 188,
+        "wasEnrolled": true,
+        "transactionId": "2f289f72-8db1-4af9-af96-61e97ac16714",
+        "rowNumber": 103
+      },
+      {
+        "email": "dpoukens19@gmail.com",
+        "clientId": "c18ad3b3-48b4-4ff5-aeb1-2f804c03e8eb",
+        "name": "Deborah Poukens",
+        "points": 209,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "732dd935-8294-46c8-9bf6-c03092a98942",
+        "rowNumber": 104
+      },
+      {
+        "email": "e.grigg3@btinternet.com",
+        "clientId": "a91e960e-67cc-453b-8623-7edcfc6615ed",
+        "name": "Emma Grigg",
+        "points": 240,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "10511f68-9a2f-4eac-aa04-7fa0ce64a51f",
+        "rowNumber": 105
+      },
+      {
+        "email": "edwardsjong@icloud.com",
+        "clientId": "79c53a19-b79d-465c-9898-6f9486f029d7",
+        "name": "Edward Jong",
+        "points": 778,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "095aa714-0cdc-4c63-b4a4-0348191f9b12",
+        "rowNumber": 106
+      },
+      {
+        "email": "eek_claire@yahoo.com",
+        "clientId": "2aafc401-7daf-415f-a134-859259bd3163",
+        "name": "Claire Rawes",
+        "points": 174,
+        "oldBalance": 174,
+        "wasEnrolled": true,
+        "transactionId": "6bf15545-6ad3-4688-9454-8d323f1eee79",
+        "rowNumber": 107
+      },
+      {
+        "email": "eightonefivetwo@yahoo.co.uk",
+        "clientId": "8000a710-7559-468b-8485-cf05f3fa3606",
+        "name": "Samantha Crossley",
+        "points": 214,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "8d1edd9b-5d01-4cec-87b7-8f82fc4a3d26",
+        "rowNumber": 108
+      },
+      {
+        "email": "elainebeesley@outlook.com",
+        "clientId": "f43e5965-749c-485f-8032-e57c2412be75",
+        "name": "Elaine Beesley",
+        "points": 149,
+        "oldBalance": 149,
+        "wasEnrolled": true,
+        "transactionId": "da21ed26-f328-430e-be4a-82a2fa4eeab6",
+        "rowNumber": 109
+      },
+      {
+        "email": "elinorwinter01@gmail.com",
+        "clientId": "6f8cdae9-0f77-4e06-835e-232438ec10fb",
+        "name": "Elinor Winter",
+        "points": 164,
+        "oldBalance": 177,
+        "wasEnrolled": true,
+        "transactionId": "7926fb09-c5af-4fe1-b992-2d14c2ef0cd7",
+        "rowNumber": 110
+      },
+      {
+        "email": "ellenbailie95@gmail.com",
+        "clientId": "fd49fd60-5ecf-4fd2-8384-ef35ccc5a83c",
+        "name": "Ellen McGeehab",
+        "points": 179,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "92054036-e761-43ee-90da-f8aad91b6907",
+        "rowNumber": 111
+      },
+      {
+        "email": "elleq79@hotmail.com",
+        "clientId": "673db03c-6b40-42cd-a782-21c7b679169a",
+        "name": "Elaine Quinn",
+        "points": 239,
+        "oldBalance": 239,
+        "wasEnrolled": true,
+        "transactionId": "8a1fb597-9cb0-4401-af9b-eaee9783bda1",
+        "rowNumber": 112
+      },
+      {
+        "email": "elliepainter05@gmail.com",
+        "clientId": "25ffbef3-5dd9-4737-be6d-43d4ddb5ee7e",
+        "name": "Ellie Painter",
+        "points": 194,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c416ff81-6cae-429a-a0f6-f547d971ba75",
+        "rowNumber": 113
+      },
+      {
+        "email": "elrock98@yahoo.com",
+        "clientId": "956909c9-5406-4dca-ab59-16b24de03cdf",
+        "name": "Richard Ellis",
+        "points": 472,
+        "oldBalance": 149,
+        "wasEnrolled": true,
+        "transactionId": "b591c909-1e95-433d-ba39-5c5ec7c31046",
+        "rowNumber": 114
+      },
+      {
+        "email": "emilyfletcher1@hotmail.co.uk",
+        "clientId": "3864602f-f649-4723-90a5-4d2de1cb36e0",
+        "name": "Emily Hallett",
+        "points": 189,
+        "oldBalance": 189,
+        "wasEnrolled": true,
+        "transactionId": "ff60521e-d510-434f-b74c-a2ff1cbb47cf",
+        "rowNumber": 115
+      },
+      {
+        "email": "emilywynnx@outlook.com",
+        "clientId": "4e8deec2-dcce-4814-b7bf-48228efbfc1c",
+        "name": "Emily Wynn",
+        "points": 224,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "02c0cc2f-9144-43a0-b15b-828b510bf697",
+        "rowNumber": 116
+      },
+      {
+        "email": "emma.jane.corr@gmail.com",
+        "clientId": "1c2f5683-747b-41d2-9ca8-f9c29c07419a",
+        "name": "Emma Corr",
+        "points": 249,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d17e7e0a-c81d-4e22-be65-bfa4f09d8bfc",
+        "rowNumber": 117
+      },
+      {
+        "email": "ericayoung47@hotmail.co.uk",
+        "clientId": "3f92941a-a2e9-4605-97b7-a4a12a4a7650",
+        "name": "Erica Young",
+        "points": 299,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "3a1ba4c9-7016-4092-b281-0b03dc897e9d",
+        "rowNumber": 118
+      },
+      {
+        "email": "euan@fraser-advisors.com",
+        "clientId": "a63fd810-4e7d-4a7c-9b8f-958c357a8e8e",
+        "name": "Euan Fraser",
+        "points": 164,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c585ae61-35c6-454f-89a9-6ab8796fa944",
+        "rowNumber": 119
+      },
+      {
+        "email": "eugene.kalenjuk@hardwickes.com.au",
+        "clientId": "08481d2e-d842-46ca-9594-20d70bfc0c58",
+        "name": "Eugene Kalenjuk",
+        "points": 500,
+        "oldBalance": 500,
+        "wasEnrolled": true,
+        "transactionId": "14d97778-f045-491b-b7a7-77db7d4450b1",
+        "rowNumber": 120
+      },
+      {
+        "email": "fk.plumbingheating@gmail.com",
+        "clientId": "fc0c30ae-2ce8-4301-9ce3-6bb7ae9d3540",
+        "name": "Frazer King",
+        "points": 214,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "b2892615-7f1d-4786-b81c-9eac248c0cdc",
+        "rowNumber": 121
+      },
+      {
+        "email": "franco.rose@bigpond.com",
+        "clientId": "6e18378e-cf06-4f37-81ee-4d888261cb8d",
+        "name": "ROSE FRANCO",
+        "points": 236,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "2981aa4e-af57-4324-8514-ccd5c4236c5a",
+        "rowNumber": 122
+      },
+      {
+        "email": "frankcashman30@gmail.com",
+        "clientId": "599e67de-0b72-4fef-b156-9c52d9635a58",
+        "name": "Frank Cashman",
+        "points": 229,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "899ddddc-c20c-4b61-a825-6e2b4ba6bee3",
+        "rowNumber": 123
+      },
+      {
+        "email": "garethburris@outlook.com",
+        "clientId": "3174ca9a-4fc2-4169-aa3a-36c7d5a938dd",
+        "name": "Gareth Burris",
+        "points": 354,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "4ca896c9-a817-437a-9e94-dd53ed45f7a7",
+        "rowNumber": 124
+      },
+      {
+        "email": "garfield6958@gmail.com",
+        "clientId": "1b101d04-8ffc-46fa-a558-6cf8f2dfdd9c",
+        "name": "Callum McIntosh",
+        "points": 214,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "53a11d00-9f6a-425f-8f92-0e56d8a6ed5a",
+        "rowNumber": 125
+      },
+      {
+        "email": "garry9822819400@aol.com",
+        "clientId": "d98c52d9-c3a8-4d3f-b814-cdad4adad71c",
+        "name": "Garry Smith",
+        "points": 209,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "0956ee6f-a3be-4688-9a0f-f11b5ec16dc9",
+        "rowNumber": 126
+      },
+      {
+        "email": "garthwilson59@gmail.com",
+        "clientId": "e4c6f04b-4374-43a7-9902-4f480aa4e254",
+        "name": "Garth Wilson",
+        "points": 244,
+        "oldBalance": 179,
+        "wasEnrolled": true,
+        "transactionId": "de2daba7-7027-4685-83fb-6eea6b13ccc7",
+        "rowNumber": 127
+      },
+      {
+        "email": "gary.smitherman@hotmail.co.uk",
+        "clientId": "80bf6753-d85c-46f3-ae6c-45551f9ec80a",
+        "name": "Gary Smitherman",
+        "points": 159,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "fe5db6d7-a236-4d2f-b44c-ef4acc5851e2",
+        "rowNumber": 128
+      },
+      {
+        "email": "gavmcmorran@sky.com",
+        "clientId": "96b04cfc-2842-41c4-8b99-f704fd900112",
+        "name": "Gavin Mcmorran",
+        "points": 239,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "1ceae5cc-6758-488e-a0ec-2249cb62bd9e",
+        "rowNumber": 129
+      },
+      {
+        "email": "gazzaspainting@live.com.au",
+        "clientId": "a2ed4208-1ec5-44f3-9e07-d3516b46352f",
+        "name": "Gary Fleet",
+        "points": 197,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "109968a7-5c34-4853-bfa7-595a53b4aa7b",
+        "rowNumber": 130
+      },
+      {
+        "email": "gea@marsdencc.org.uk",
+        "clientId": "ede9cf93-453e-43da-b932-08d32535ad44",
+        "name": "Gareth Ackroyd",
+        "points": 239,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d080cdd5-7cbc-4d50-9bcf-80d275216cc8",
+        "rowNumber": 131
+      },
+      {
+        "email": "geoff@bargewalk.co.uk",
+        "clientId": "28f91333-e339-41ac-a23c-cbea8f725e08",
+        "name": "Geoff Cook",
+        "points": 279,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "abb653c2-4a0f-46eb-b338-8c6a8c723619",
+        "rowNumber": 132
+      },
+      {
+        "email": "geon100@me.com",
+        "clientId": "99590109-9c11-4b81-997f-405c6c74760f",
+        "name": "George Maxwell",
+        "points": 229,
+        "oldBalance": 229,
+        "wasEnrolled": true,
+        "transactionId": "d77a596b-b549-4dad-a10d-8f8a508bb428",
+        "rowNumber": 133
+      },
+      {
+        "email": "georgie.curtis@hotmail.com",
+        "clientId": "fe6d8ac7-dfc8-45d2-87cc-a75e19b028a8",
+        "name": "Georgie Curtis",
+        "points": 149,
+        "oldBalance": 149,
+        "wasEnrolled": true,
+        "transactionId": "eb65a0d7-673e-4e18-8009-4827cdfeed49",
+        "rowNumber": 134
+      },
+      {
+        "email": "gerjudge@yahoo.ie",
+        "clientId": "eabdd900-2859-493f-8ee5-260e025bbf8e",
+        "name": "Gerard judge",
+        "points": 146,
+        "oldBalance": 146,
+        "wasEnrolled": true,
+        "transactionId": "5ae4c020-cc92-4ec8-a401-b113c4375654",
+        "rowNumber": 135
+      },
+      {
+        "email": "gjbundock@hotmail.co.uk",
+        "clientId": "93dfa2bb-7eef-451a-b2db-a2e1a4989180",
+        "name": "Graham Bundock",
+        "points": 304,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "b8ba0337-4ab5-4dc0-a8f5-c32ed2020a44",
+        "rowNumber": 136
+      },
+      {
+        "email": "glynis.mcknight@btinternet.com",
+        "clientId": "eb510ed2-d8c8-4bf2-ab0d-d13704e725d0",
+        "name": "Glynis McKnight",
+        "points": 684,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "382bb455-1764-43df-8a43-07e060de8e31",
+        "rowNumber": 137
+      },
+      {
+        "email": "gpenk1969@gmail.com",
+        "clientId": "88a11579-a07d-40a7-84ec-e930a9e964d2",
+        "name": "gaynor penk",
+        "points": 159,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "ad44aa8a-71ea-4547-997a-217bd722c0cb",
+        "rowNumber": 138
+      },
+      {
+        "email": "grahamecarter193@btinternet.com",
+        "clientId": "4d303259-9486-4431-bc42-98d91d712b50",
+        "name": "Grahame Carter",
+        "points": 324,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f3ce677e-831f-4fc8-ab7b-117371db9054",
+        "rowNumber": 139
+      },
+      {
+        "email": "gregjoseph24@outlook.com",
+        "clientId": "560aac63-658b-4fe6-a8c9-6e1b297202fc",
+        "name": "Greg Joseph",
+        "points": 244,
+        "oldBalance": 244,
+        "wasEnrolled": true,
+        "transactionId": "4633efa7-aa78-46b2-9adb-53ed33863e19",
+        "rowNumber": 140
+      },
+      {
+        "email": "grjns6@gmail.com",
+        "clientId": "301395c9-b8ff-4e92-be88-c1281cb379b3",
+        "name": "Gary Jones",
+        "points": 244,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "5c0f09b8-a7ee-472b-b15b-e1c9c947eddf",
+        "rowNumber": 141
+      },
+      {
+        "email": "harriet.willings@me.com",
+        "clientId": "f434074f-3d33-4003-ab23-790bbe220180",
+        "name": "Harriet Hobbah",
+        "points": 814,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d5902a0a-a1ff-4e98-a3a0-6ea3771ecdc0",
+        "rowNumber": 142
+      },
+      {
+        "email": "harryallen0406@gmail.com",
+        "clientId": "ff07d305-473f-4c40-9306-def44578c480",
+        "name": "Harry Allen",
+        "points": 179,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "3f72c1d5-1346-4fea-8110-3b470a8938f1",
+        "rowNumber": 143
+      },
+      {
+        "email": "hazel_lee@btinternet.com",
+        "clientId": "08acdb45-0c6d-4b98-894a-488cd29ca5dc",
+        "name": "Hazel Lee",
+        "points": 699,
+        "oldBalance": 699,
+        "wasEnrolled": true,
+        "transactionId": "c1f0aa83-fd99-4ac5-bd3e-8ad74ee5dc31",
+        "rowNumber": 144
+      },
+      {
+        "email": "helenbrown13@hotmail.co.uk",
+        "clientId": "90486025-c435-4a75-8217-ea24920c332c",
+        "name": "Helen Brown",
+        "points": 219,
+        "oldBalance": 219,
+        "wasEnrolled": true,
+        "transactionId": "931628bb-1dd4-4a0c-ae5a-c68c5061129e",
+        "rowNumber": 145
+      },
+      {
+        "email": "helenoss@aol.com",
+        "clientId": "89c012b5-ed07-4a33-af8e-94c3f2c5e801",
+        "name": "Helen Osborn",
+        "points": 319,
+        "oldBalance": 319,
+        "wasEnrolled": true,
+        "transactionId": "7f6af764-0d5a-40e2-9fae-1d617fe06849",
+        "rowNumber": 146
+      },
+      {
+        "email": "hid-dy@hotmail.co.uk",
+        "clientId": "83c7f911-5559-484a-9615-78fd5340a897",
+        "name": "John hiddleston",
+        "points": 309,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "69b0cdb2-e939-44d2-ae5d-eec642bac0de",
+        "rowNumber": 147
+      },
+      {
+        "email": "hlbutler8@gmail.com",
+        "clientId": "07f1f005-46ce-4836-a55a-39d22dc0b910",
+        "name": "Hannah Butler",
+        "points": 129,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f58e1e41-0d6c-4450-bc15-ecf557136fc0",
+        "rowNumber": 148
+      },
+      {
+        "email": "hollandsarnd@aol.com",
+        "clientId": "e9a76486-750b-4dd9-b8ff-50bbb022a3ad",
+        "name": "Sandra Lane",
+        "points": 214,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "32a57cac-9bf5-4361-b018-e18ce0a2cb13",
+        "rowNumber": 149
+      },
+      {
+        "email": "hope404@btinternet.com",
+        "clientId": "9365ac91-2500-4147-a5de-d74db0fe1e23",
+        "name": "Amanda Hope",
+        "points": 299,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "7a0cad34-75c9-4b1d-9322-fcd3d3eefef6",
+        "rowNumber": 150
+      },
+      {
+        "email": "hughes.hussey.ann44@gmail.com",
+        "clientId": "9ea01e0e-0361-4e3a-9fc1-7e6ee6711460",
+        "name": "Ann Hughes",
+        "points": 309,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "1ebf32d8-7369-4043-87b0-1f222400a931",
+        "rowNumber": 151
+      },
+      {
+        "email": "hyj2u94@gmail.com",
+        "clientId": "7feb9232-cceb-4671-b384-ac37990faa1b",
+        "name": "YounJin Hwang",
+        "points": 399,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "2654c77d-62d3-4b19-ae30-bf294fc93bbd",
+        "rowNumber": 152
+      },
+      {
+        "email": "iains@flatfivezero.com",
+        "clientId": "5a53b003-5e47-42b6-9065-6ae70eecb75f",
+        "name": "Iain Stewart",
+        "points": 219,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "a2c6ef93-49f1-4dc2-93d8-abf11c43a7a2",
+        "rowNumber": 153
+      },
+      {
+        "email": "ianbat@hotmail.com",
+        "clientId": "eb0914e0-0103-4780-b21f-0060b9929996",
+        "name": "Ian Battersby",
+        "points": 239,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "8856c6a9-ac53-4fde-9fdb-bd659c19ca80",
+        "rowNumber": 154
+      },
+      {
+        "email": "ianmarr8@gmail.com",
+        "clientId": "c89e4171-89da-47b2-bc41-193371d1df48",
+        "name": "Ian Marr",
+        "points": 204,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "2f2ef92d-54b4-4fb5-8220-a3ee7f2220ea",
+        "rowNumber": 155
+      },
+      {
+        "email": "info@dewsburytravel.com",
+        "clientId": "3894fd2a-3f10-4c25-a2d2-a73067c8adc6",
+        "name": "SAJID ACHHALA",
+        "points": 199,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "5ccb0dd3-f351-4d65-bf62-8d3fd953055a",
+        "rowNumber": 156
+      },
+      {
+        "email": "info@greenlanegarage.co.uk",
+        "clientId": "3e07bdda-a34a-4179-ae48-ae93cf27b77b",
+        "name": "Russ Brown",
+        "points": 344,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "ae8da107-ed90-444a-ac61-d34f0bafb5ef",
+        "rowNumber": 157
+      },
+      {
+        "email": "info@topknot.ch",
+        "clientId": "5d30637a-fa23-493f-930f-5300a286fb18",
+        "name": "Rachael  Lindo",
+        "points": 594,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c94f23f8-d084-4b25-873b-14497339b41d",
+        "rowNumber": 158
+      },
+      {
+        "email": "j.sarwa@ntlworld.com",
+        "clientId": "901e676a-54c0-4c95-b4b2-2f3f774fd032",
+        "name": "Jack Sarwa",
+        "points": 224,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f717e784-5f85-40e7-863f-cc69d33af642",
+        "rowNumber": 159
+      },
+      {
+        "email": "ja@chauhan.me.uk",
+        "clientId": "a286a58a-d5ac-43f0-a3f8-424ba21af246",
+        "name": "jay test vid cool",
+        "points": 98,
+        "oldBalance": 100,
+        "wasEnrolled": true,
+        "transactionId": "ad62e1a4-e3e0-4677-b678-9c64a9e44b5f",
+        "rowNumber": 160
+      },
+      {
+        "email": "jackiealdous68@gmail.com",
+        "clientId": "544dff7e-49e0-4e26-a1dc-dc328d429af3",
+        "name": "Jackie Aldous",
+        "points": 279,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d07e7bc6-ee9a-4ba6-8742-9995d47cc221",
+        "rowNumber": 161
+      },
+      {
+        "email": "jackiebt@hotmail.co.uk",
+        "clientId": "ee3a389d-9ee1-4d66-b4fb-dffbfb538060",
+        "name": "Jackie Hamer",
+        "points": 314,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c6531486-3fa5-42bf-b921-3b14ec3aad8a",
+        "rowNumber": 162
+      },
+      {
+        "email": "jae16586@hotmail.com",
+        "clientId": "691cf806-eca6-4c53-9275-95c1ca6f7178",
+        "name": "Jason Wheelhouse",
+        "points": 204,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "2b02661d-02b8-4d76-993f-c3d9cdcc8e82",
+        "rowNumber": 163
+      },
+      {
+        "email": "jaeger2287@aol.com",
+        "clientId": "1a8b7857-f64b-4c46-9eeb-5c3de81294ad",
+        "name": "Brooke Jaeger",
+        "points": 219,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c2fae3f3-41af-48bc-b0f6-3351a70648ef",
+        "rowNumber": 164
+      },
+      {
+        "email": "james.dodwell@btinternet.com",
+        "clientId": "9ccaabf3-4a04-4e1f-bacf-eac4782113d5",
+        "name": "James Dodwell",
+        "points": 156,
+        "oldBalance": 156,
+        "wasEnrolled": true,
+        "transactionId": "575966f0-2734-4ea9-ab5e-a404def899a5",
+        "rowNumber": 165
+      },
+      {
+        "email": "james.ellis12@sky.com",
+        "clientId": "8297ac35-37ba-4503-aa88-0b0b4322fe70",
+        "name": "James Ellis",
+        "points": 164,
+        "oldBalance": 164,
+        "wasEnrolled": true,
+        "transactionId": "22b561f0-ba3b-4d08-89be-b13d866859e0",
+        "rowNumber": 166
+      },
+      {
+        "email": "janet.powley@btinternet.com",
+        "clientId": "b9988b10-9cfe-4f5e-8db5-42024ceff654",
+        "name": "JANET POWLEY",
+        "points": 255,
+        "oldBalance": 179,
+        "wasEnrolled": true,
+        "transactionId": "af4125b5-cd91-4911-9868-7a2e12c61eca",
+        "rowNumber": 167
+      },
+      {
+        "email": "janetjohn97@verizon.net",
+        "clientId": "4a3a881b-bd14-491d-bdd5-a9504396d52b",
+        "name": "John Underdown",
+        "points": 447,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "ef2146c6-65a5-430d-ad59-384ebde3fc98",
+        "rowNumber": 168
+      },
+      {
+        "email": "janev.hassan05@gmail.com",
+        "clientId": "d853119a-c8da-4b18-a9ee-da56d4262aeb",
+        "name": "Janev Hassan",
+        "points": 209,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f862c4ec-6bf3-4320-b504-0d3c7f3bf5a4",
+        "rowNumber": 169
+      },
+      {
+        "email": "janwillcox@outlook.com",
+        "clientId": "4b17e44b-a455-4a7a-8333-526d664011fb",
+        "name": "Jan Willcox",
+        "points": 374,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "71e39259-4b4d-4a74-9052-1b0b20aae731",
+        "rowNumber": 170
+      },
+      {
+        "email": "jashollin@gmail.com",
+        "clientId": "51f1b9c7-26f5-428a-b9d0-e86b2b015fd7",
+        "name": "Jasmine Hollin",
+        "points": 179,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "98c8023d-0433-45f2-9fcb-9e9b1f097e70",
+        "rowNumber": 171
+      },
+      {
+        "email": "jayne.packer@tullon.com",
+        "clientId": "f64e32c2-3b33-402f-bdd8-f5439542ed12",
+        "name": "Jayne Templeton",
+        "points": 214,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "fb22bbae-2464-4c35-873e-7cb22d244e5f",
+        "rowNumber": 172
+      },
+      {
+        "email": "jayne.rodgers@travelcationgroup.com",
+        "clientId": "262a72af-a7b6-4c81-8cf5-88918069c0e9",
+        "name": "MJ Rodgers",
+        "points": 226,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "9208d123-43d7-4b20-ba96-54ccfc02944a",
+        "rowNumber": 173
+      },
+      {
+        "email": "jbuss22c@gmail.com",
+        "clientId": "dd34991f-0f86-44e3-ae27-cfc7b51884e8",
+        "name": "Jane Buss",
+        "points": 449,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "b6dbd278-bb83-456f-8e5d-ae3caea8d5ac",
+        "rowNumber": 174
+      },
+      {
+        "email": "jccarter2608@gmail.com",
+        "clientId": "a87ea71f-8d74-42c5-9286-8341b12cfb16",
+        "name": "Jonathan Carter",
+        "points": 289,
+        "oldBalance": 289,
+        "wasEnrolled": true,
+        "transactionId": "1713f6fb-ad51-42e0-b1be-37dfdc53298c",
+        "rowNumber": 175
+      },
+      {
+        "email": "jcq26@aol.com",
+        "clientId": "7b63bb67-62ba-4d91-9c8f-437149b6570c",
+        "name": "Jacqueline Jones",
+        "points": 354,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "1fddf8bc-9893-4231-935a-0f8dcf530d60",
+        "rowNumber": 176
+      },
+      {
+        "email": "jebjones.jj@googlemail.com",
+        "clientId": "0a3e56f0-816f-4fcb-8ed3-5a39a74592ab",
+        "name": "Joanne Hughes",
+        "points": 214,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "7eeba51a-2389-4467-b3e0-4f1fc08c34e4",
+        "rowNumber": 177
+      },
+      {
+        "email": "jeffgaman@hotmail.co.uk",
+        "clientId": "a5350650-03a8-4408-a116-ecf8c387731d",
+        "name": "Jeff Gaman",
+        "points": 174,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "ff7a28b2-fef6-4918-8e91-232ffb73ebc1",
+        "rowNumber": 178
+      },
+      {
+        "email": "jemckay1@gmail.com",
+        "clientId": "0ede71ef-beff-44e7-a1dd-962234da4066",
+        "name": "Jane McKay",
+        "points": 150,
+        "oldBalance": 139,
+        "wasEnrolled": true,
+        "transactionId": "1ba108d9-40c1-4179-989e-ec8b2c3a84d4",
+        "rowNumber": 179
+      },
+      {
+        "email": "jenniegood@hotmail.co.uk",
+        "clientId": "12fa4f5e-185d-4743-b8b0-0254b0bbc86a",
+        "name": "Jennie Good",
+        "points": 237,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "4e840f8e-372e-42a4-9e0d-be2483684d69",
+        "rowNumber": 180
+      },
+      {
+        "email": "jenny.dahlstrom@education.vic.gov.au",
+        "clientId": "3c9bb01d-81c7-4b34-989f-5f926cff1704",
+        "name": "Jenny dahlstrom",
+        "points": 427,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "845d1d00-ea48-43b0-bce3-ab810dfc3a0b",
+        "rowNumber": 181
+      },
+      {
+        "email": "jessica@amarillotravelnetwork.com",
+        "clientId": "6a4c6095-2b29-4528-bf14-48c9662410d5",
+        "name": "Jessica Grider",
+        "points": 314,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d7a19647-d1b5-40c7-ab68-526e2b27b6c4",
+        "rowNumber": 182
+      },
+      {
+        "email": "jessicayoungx@gmail.com",
+        "clientId": "b1d24cc8-d2f9-4ed5-aa53-fc6113935701",
+        "name": "Jessica Coupe",
+        "points": 199,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e3a3e0ae-c9de-4369-bcb7-525d33ab72ae",
+        "rowNumber": 183
+      },
+      {
+        "email": "jezcooper@hotmail.com",
+        "clientId": "6d2759f0-b847-4391-b99d-9f9dcd5d70c3",
+        "name": "Jez Cooper",
+        "points": 249,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "82d3a46b-eb5d-4947-b7ea-9fe5c0c30527",
+        "rowNumber": 184
+      },
+      {
+        "email": "jf@jf.ie",
+        "clientId": "6bd261dc-3cf8-4c93-9171-4ba27a2a10ce",
+        "name": "Jonathan  Fildes",
+        "points": 239,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "8f80a6a7-4642-40be-9152-7d2aed747d11",
+        "rowNumber": 185
+      },
+      {
+        "email": "jgranados@me.com",
+        "clientId": "40f960b6-d26e-4ee7-95a6-8c228d95d4e1",
+        "name": "Jose Granados",
+        "points": 194,
+        "oldBalance": 194,
+        "wasEnrolled": true,
+        "transactionId": "1c7572f2-08cb-423f-9952-be777eca2dc3",
+        "rowNumber": 186
+      },
+      {
+        "email": "jillblakley@live.co.uk",
+        "clientId": "9722b0b5-712f-46f6-b2b5-d3afe36268f1",
+        "name": "Jill Harshaw",
+        "points": 159,
+        "oldBalance": 159,
+        "wasEnrolled": true,
+        "transactionId": "094cf411-d8ad-4618-977b-d8db62ecc02a",
+        "rowNumber": 187
+      },
+      {
+        "email": "jim.mcnulty@restructa.co.uk",
+        "clientId": "07e7bbae-ff4f-4c99-ad4a-d8857c8a3230",
+        "name": "James McNulty",
+        "points": 164,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c29c4847-0fdf-4245-bf1e-a9f12ccc7f4b",
+        "rowNumber": 188
+      },
+      {
+        "email": "jlcoombs@protonmail.com",
+        "clientId": "d3f65c60-7652-4b78-9df3-783c30f1d255",
+        "name": "John Coombs",
+        "points": 164,
+        "oldBalance": 164,
+        "wasEnrolled": true,
+        "transactionId": "d4e4cf57-a1d1-47ac-89e7-a4a6ad1c8fbd",
+        "rowNumber": 189
+      },
+      {
+        "email": "jmwanat@gmail.com",
+        "clientId": "f96c3def-5513-4ec0-b6de-48f8dd28ff65",
+        "name": "Jennifer Wanat",
+        "points": 434,
+        "oldBalance": 434,
+        "wasEnrolled": true,
+        "transactionId": "b866f20d-27f1-42c2-ba3e-5e4df894fda8",
+        "rowNumber": 190
+      },
+      {
+        "email": "joanna.tait@hotmail.co.uk",
+        "clientId": "d05bb424-b830-4a4d-9e23-bd94fe8714b9",
+        "name": "Jo Rammell",
+        "points": 229,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e584165a-aed6-41d5-853e-5181bd918f92",
+        "rowNumber": 191
+      },
+      {
+        "email": "joelpaul@shaw.ca",
+        "clientId": "74e1d0dc-5ad0-4ab2-92e1-109bdb9a4c52",
+        "name": "Joel Paul",
+        "points": 220,
+        "oldBalance": 209,
+        "wasEnrolled": true,
+        "transactionId": "4ef7fa04-22f5-46f6-bb15-5f266637aae0",
+        "rowNumber": 192
+      },
+      {
+        "email": "john.bartlett2018@gmail.com",
+        "clientId": "7ff47b58-b944-45af-9860-6776e9563666",
+        "name": "John Bartlett",
+        "points": 279,
+        "oldBalance": 279,
+        "wasEnrolled": true,
+        "transactionId": "f73bd29f-380e-4139-b004-0df5976e8751",
+        "rowNumber": 193
+      },
+      {
+        "email": "johndonnan@aol.com",
+        "clientId": "55fbf7cf-c591-41e3-84a2-724e470f261e",
+        "name": "John Donnan",
+        "points": 189,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "5164b382-b8d5-493a-80b5-75c2462bbb54",
+        "rowNumber": 194
+      },
+      {
+        "email": "johnselliman@gmail.com",
+        "clientId": "e67c6bf9-0530-4f07-8dfd-6ef127ec5a2d",
+        "name": "John Elliman",
+        "points": 141,
+        "oldBalance": 141,
+        "wasEnrolled": true,
+        "transactionId": "6c558ed6-bb34-4869-86b8-5dd7e79a4fe0",
+        "rowNumber": 195
+      },
+      {
+        "email": "jomo3159@hotmail.com",
+        "clientId": "6d007c23-f2db-497b-8716-16838ff75032",
+        "name": "John Moore",
+        "points": 379,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "539ea281-7255-42f5-80d9-abd0d33cf98c",
+        "rowNumber": 196
+      },
+      {
+        "email": "jon.unett88@gmail.com",
+        "clientId": "aa5fdb2e-d5cb-4bb6-9b88-5377292da1c7",
+        "name": "Jon Unett",
+        "points": 519,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "9cd50d96-9f6b-4f11-93d2-43b5dd4a4412",
+        "rowNumber": 197
+      },
+      {
+        "email": "jonjezzard@hotmail.com",
+        "clientId": "a544e8c7-baab-4a6d-9b5a-b82d43fdcdcd",
+        "name": "Jon Jezzard",
+        "points": 194,
+        "oldBalance": 199,
+        "wasEnrolled": true,
+        "transactionId": "5d411337-41f0-4049-b490-d6f6e824876e",
+        "rowNumber": 198
+      },
+      {
+        "email": "jordanmusk@icloud.com",
+        "clientId": "d95544a6-0709-4abb-9b90-68c64fcd0550",
+        "name": "Jordan Musk",
+        "points": 449,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "b95d6cb5-c188-4198-9a2a-51ffe1d9012e",
+        "rowNumber": 199
+      },
+      {
+        "email": "jrpearce78@icloud.com",
+        "clientId": "88ef9ebc-7759-4849-80c8-6a4be868607e",
+        "name": "James Pearce",
+        "points": 219,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "09c1d166-b716-48bb-8bff-5a993883b951",
+        "rowNumber": 200
+      },
+      {
+        "email": "jstewart66@live.co.uk",
+        "clientId": "2d762833-2efa-4bbb-ab1d-ee1e5de5bf35",
+        "name": "Jill Stewart",
+        "points": 309,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "22284f4c-696e-40b3-8aea-7c8d4ada95f6",
+        "rowNumber": 201
+      },
+      {
+        "email": "judy.claridge@gmail.com",
+        "clientId": "dfb73e64-1f12-44ed-b35b-bbeb75695bb9",
+        "name": "Judy Claridge",
+        "points": 214,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "26e9b3f7-25f0-4040-bb40-a84da7cba6f8",
+        "rowNumber": 202
+      },
+      {
+        "email": "julia@warrender.ca",
+        "clientId": "eeb9b693-a263-47b7-a73f-103dba9a9369",
+        "name": "Julia Warrender",
+        "points": 374,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c1deadf0-262f-47ce-bcd9-33de221c70f4",
+        "rowNumber": 203
+      },
+      {
+        "email": "julieannhirst@gmail.com",
+        "clientId": "e7cfbe8c-1bd8-46a2-ac3e-497c048dd484",
+        "name": "Julie HIRST",
+        "points": 334,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "69e6bd4f-f551-4e69-8619-f9f6e5a3125f",
+        "rowNumber": 204
+      },
+      {
+        "email": "justhaggis@gmail.com",
+        "clientId": "41ad2c9f-22ff-4bcb-b4b5-3ae6978dc3aa",
+        "name": "Paul Mcdonald",
+        "points": 195,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "9c38a204-341f-4066-a25c-d292e707c660",
+        "rowNumber": 205
+      },
+      {
+        "email": "jwardley@btinternet.com",
+        "clientId": "f3ed8e0a-fb39-43c1-909d-13c81cff3acf",
+        "name": "Jane-Anne Wardley",
+        "points": 229,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "2769430b-d062-47d1-8082-8c9d98d00904",
+        "rowNumber": 206
+      },
+      {
+        "email": "k_graham@bitwisegroup.com",
+        "clientId": "d7edd88a-f1b0-4d8c-b417-58c24b1a2785",
+        "name": "KAREN GRAHAM",
+        "points": 189,
+        "oldBalance": 189,
+        "wasEnrolled": true,
+        "transactionId": "8e44207c-0169-4e68-aae4-1de732b4612f",
+        "rowNumber": 207
+      },
+      {
+        "email": "k.robertson18@outlook.com",
+        "clientId": "7767050d-aff2-43ac-832e-748515cb2d5c",
+        "name": "Kyle Robertson",
+        "points": 639,
+        "oldBalance": 639,
+        "wasEnrolled": true,
+        "transactionId": "f7e160be-56e2-4a36-b922-64c84d100d10",
+        "rowNumber": 208
+      },
+      {
+        "email": "karono@yahoo.com",
+        "clientId": "c05c1ef8-cf9f-4c95-b091-6671d59eccf6",
+        "name": "Karon O'Callaghan",
+        "points": 169,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "7c622584-b91c-4067-98a8-c13fc7505c0d",
+        "rowNumber": 209
+      },
+      {
+        "email": "kartikchandar@hotmail.com",
+        "clientId": "cb3fece5-8ced-4694-b50c-0576b6254811",
+        "name": "Kartik Chandar",
+        "points": 124,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "725fe7db-3a70-4a82-8366-de226d2f5312",
+        "rowNumber": 210
+      },
+      {
+        "email": "kathleen.boswell@retronixsemi.com",
+        "clientId": "025d8f4f-4446-4918-956e-11645b84e06e",
+        "name": "Kathleen Boswell",
+        "points": 239,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e858d987-1501-4170-9ebd-6ca0bb611793",
+        "rowNumber": 211
+      },
+      {
+        "email": "kathryn.wyatt35@gmail.com",
+        "clientId": "6065065a-0902-4a4f-8c21-d008fc3d9759",
+        "name": "Kathryn Wyatt",
+        "points": 249,
+        "oldBalance": 249,
+        "wasEnrolled": true,
+        "transactionId": "65363a2b-b472-4e4c-8530-83b4c76e066c",
+        "rowNumber": 212
+      },
+      {
+        "email": "katiebrown@travelmation.net",
+        "clientId": "4e799f20-0eb7-4e9f-8160-5f2e953116a9",
+        "name": "Katie Brown",
+        "points": 214,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "02031daa-3f63-4b0b-bcec-fe4df9dce19f",
+        "rowNumber": 213
+      },
+      {
+        "email": "katrina.perks@gmail.com",
+        "clientId": "f3c6a0f3-38d7-4418-8b2f-9292f54598bb",
+        "name": "Katrina Perks",
+        "points": 174,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e0343882-b65a-419a-80a1-81a262c41f04",
+        "rowNumber": 214
+      },
+      {
+        "email": "katybear29@gmail.com",
+        "clientId": "b8250c27-30fe-41a7-9c66-2862400f501c",
+        "name": "Catherine Jupina",
+        "points": 691,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "6768ede4-5c2a-49e0-bcf8-96dafd94fc19",
+        "rowNumber": 215
+      },
+      {
+        "email": "kclayds@hotmail.co.uk",
+        "clientId": "c6da4dd5-a4ba-418c-8b63-ac0281019f6d",
+        "name": "Katrina Claydon",
+        "points": 259,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d0d82a04-1c61-4a7e-9e3f-020a66d7326a",
+        "rowNumber": 216
+      },
+      {
+        "email": "kemp60@btinternet.com",
+        "clientId": "6bf01868-4385-42da-9c9d-5c657d7190d4",
+        "name": "Greg Kemp",
+        "points": 159,
+        "oldBalance": 159,
+        "wasEnrolled": true,
+        "transactionId": "07a22db6-456c-4d32-aa8f-2c5d1f4cd6e3",
+        "rowNumber": 217
+      },
+      {
+        "email": "kerri.harvey@hotmail.com",
+        "clientId": "c5b5b00a-d960-4bc2-92df-988273e7bc72",
+        "name": "Kerri Harvey",
+        "points": 199,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "545a939f-62ae-44a9-8824-836b66c900b3",
+        "rowNumber": 218
+      },
+      {
+        "email": "kerrissimpson7@gmail.com",
+        "clientId": "160ebff6-ce64-4558-b2bb-2e8ba4d6993c",
+        "name": "Kerris Simpson",
+        "points": 211,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "0032fbed-5e10-4779-b452-bc05cbf2700f",
+        "rowNumber": 219
+      },
+      {
+        "email": "kevin@kgolding.co.uk",
+        "clientId": "1d2e691f-8ac8-49ba-bcc6-3fcc5a1633c0",
+        "name": "Kevin Golding",
+        "points": 209,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "85a488c7-95bf-4b17-9135-3b155f27df7d",
+        "rowNumber": 220
+      },
+      {
+        "email": "kevintucker99@hotmail.co.uk",
+        "clientId": "474c7ee4-3623-43f6-8fb6-df24d7dfa0f2",
+        "name": "Kevin Tucker",
+        "points": 389,
+        "oldBalance": 389,
+        "wasEnrolled": true,
+        "transactionId": "132c6312-b56e-4dcc-b819-16b28c68b5f6",
+        "rowNumber": 221
+      },
+      {
+        "email": "kim.hiller1@googlemail.com",
+        "clientId": "84d9d1f8-05bd-42dd-8bbb-42030a226d3a",
+        "name": "Kim Hiller",
+        "points": 234,
+        "oldBalance": 234,
+        "wasEnrolled": true,
+        "transactionId": "039ac3c4-27fa-4d7f-a20a-7d014ce0e0d8",
+        "rowNumber": 222
+      },
+      {
+        "email": "klevy210@gmail.com",
+        "clientId": "2f13349e-8c8b-4084-ae36-993ee9568d6f",
+        "name": "Kevin Levy",
+        "points": 319,
+        "oldBalance": 284,
+        "wasEnrolled": true,
+        "transactionId": "3c3dabd8-a0df-401f-8aec-71ac9373a970",
+        "rowNumber": 223
+      },
+      {
+        "email": "l.crayston@hotmail.co.uk",
+        "clientId": "d6d08099-f613-4b7e-b0dd-ffffbd122484",
+        "name": "Laura Crayston",
+        "points": 274,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "b6a4c27c-786a-4bbf-b949-e8e48eeb9aa9",
+        "rowNumber": 224
+      },
+      {
+        "email": "lanalouiseeardley@icloud.com",
+        "clientId": "2b5eeb13-6eb6-499a-8120-02d3d04a2025",
+        "name": "Lana Eardley",
+        "points": 159,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "38ff7ad4-959c-498d-98d9-52e9995d8211",
+        "rowNumber": 225
+      },
+      {
+        "email": "laura_shaw86@hotmail.com",
+        "clientId": "84660039-585f-4faa-b517-292df215a650",
+        "name": "Laura Shaw",
+        "points": 194,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e466609b-8cde-4071-857f-22ba537e96e7",
+        "rowNumber": 226
+      },
+      {
+        "email": "laurajasmine@msn.com",
+        "clientId": "09c7be61-f9b4-4390-828c-d8f510276e8d",
+        "name": "Laura Rich",
+        "points": 204,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "2a143ccc-379f-49d3-acb1-a98a75f1453a",
+        "rowNumber": 227
+      },
+      {
+        "email": "lauramorgan8@hotmail.com",
+        "clientId": "6ebebadb-36ce-4fb5-a53f-da8a32ae4266",
+        "name": "Laura Morgan",
+        "points": 463,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "6249fdbb-139d-4441-8b20-026d2b11fa6c",
+        "rowNumber": 228
+      },
+      {
+        "email": "laurenfrench5@gmail.com",
+        "clientId": "16254a10-dbce-48a5-bbee-26c25cb95c24",
+        "name": "Lauren French",
+        "points": 354,
+        "oldBalance": 204,
+        "wasEnrolled": true,
+        "transactionId": "086cf97c-7e27-4551-92a2-e4b4acd21e72",
+        "rowNumber": 229
+      },
+      {
+        "email": "layleyj@gmail.com",
+        "clientId": "2e6256f2-acff-40e3-84e1-fa62e679077d",
+        "name": "Jenny Layley",
+        "points": 409,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "6accc342-337c-4524-9a72-85e41d76e256",
+        "rowNumber": 230
+      },
+      {
+        "email": "leanneviz@icloud.com",
+        "clientId": "b02057e1-1d22-4b0f-ac4b-835e0eaaba36",
+        "name": "leanne vizer",
+        "points": 224,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "83421c34-b0d8-4012-9d0b-0abe4bae3b55",
+        "rowNumber": 231
+      },
+      {
+        "email": "leighandarty@hotmail.co.uk",
+        "clientId": "de5c5dd3-7e64-4fd7-b7f7-9cf59a08a17e",
+        "name": "Leighan Shaw",
+        "points": 229,
+        "oldBalance": 229,
+        "wasEnrolled": true,
+        "transactionId": "8618886b-d4c7-44cc-8d1a-399015d6f08f",
+        "rowNumber": 232
+      },
+      {
+        "email": "leighthawkins612@gmail.com",
+        "clientId": "3d0b7f0a-ee89-4547-847e-22f1f1a8fd5c",
+        "name": "Leighton Hawkins",
+        "points": 214,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d030a92e-971b-497f-86f4-99bc799d3a0c",
+        "rowNumber": 233
+      },
+      {
+        "email": "lesley72.lh@gmail.com",
+        "clientId": "7360a851-1d18-4f2d-a5ff-cfe8f72d0d95",
+        "name": "Lesley Harvey",
+        "points": 299,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c9f35724-c3db-4e3d-a04f-db3b1c8f5444",
+        "rowNumber": 234
+      },
+      {
+        "email": "lindajordan.2@btopenworld.com",
+        "clientId": "a423de6d-6225-4bfb-8ba0-98a4fee595c7",
+        "name": "Linda Jordan",
+        "points": 219,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "83e00cad-eb0e-4f3f-8c65-2405015418ce",
+        "rowNumber": 235
+      },
+      {
+        "email": "lindy@messengers.net.au",
+        "clientId": "859e69f8-0989-46d4-9e3a-64c3340edda9",
+        "name": "Lindy Messenger",
+        "points": 573,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "132a3c06-0c70-4a65-a486-867c97eb1fb0",
+        "rowNumber": 236
+      },
+      {
+        "email": "liz@briangrieve.co.uk",
+        "clientId": "80e57dd6-aa0b-41dd-8180-9d8e9186dab0",
+        "name": "Liz Grieve",
+        "points": 194,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d95fa04c-708c-4a22-bc60-3e6aec561f6a",
+        "rowNumber": 237
+      },
+      {
+        "email": "lizzie76smith@outlook.com",
+        "clientId": "17ce01a2-4f08-4d5e-a179-f4523602afb4",
+        "name": "Elizabeth Smith",
+        "points": 159,
+        "oldBalance": 159,
+        "wasEnrolled": true,
+        "transactionId": "267d31f3-22a4-4bb4-85b0-28287577c52d",
+        "rowNumber": 238
+      },
+      {
+        "email": "lkr2@verizon.net",
+        "clientId": "e5524002-7aee-4cf9-9ff9-7af453b1c783",
+        "name": "Richard Ono",
+        "points": 149,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d4f5d2b4-c359-4339-b6d4-c0b435b5eb4f",
+        "rowNumber": 239
+      },
+      {
+        "email": "looby16@live.co.uk",
+        "clientId": "931023ff-721d-4793-8852-a84641bd8a15",
+        "name": "Lisa Mahoney",
+        "points": 212,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "7c64e7c5-df06-4a24-8fcb-4f6022e5b604",
+        "rowNumber": 240
+      },
+      {
+        "email": "lorna_ward@hotmail.co.uk",
+        "clientId": "dba8fe12-d557-4225-84b1-d4d6869e8deb",
+        "name": "Lorna Ward",
+        "points": 174,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "6513e7a0-aac2-4107-a15c-926ab52e4ec0",
+        "rowNumber": 241
+      },
+      {
+        "email": "lorna-young@sky.com",
+        "clientId": "3bde893d-cbf0-41b6-ae95-109e4e3b199f",
+        "name": "Elizabeth Young",
+        "points": 284,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "10a474fb-2bf1-41a3-8fc5-4f8cabc5c4d1",
+        "rowNumber": 242
+      },
+      {
+        "email": "lrford288@gmail.com",
+        "clientId": "5455fbbf-07fa-4f7b-9c4e-96bbf717ea7f",
+        "name": "Linette Dancey",
+        "points": 204,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e7375ecd-e350-46b1-9ae0-e61777bea628",
+        "rowNumber": 243
+      },
+      {
+        "email": "lrmongell@marketingme.com",
+        "clientId": "6bf875e5-b179-43ab-af60-7f040dd122b3",
+        "name": "Linda Rose Mongell",
+        "points": 761,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "be8dab93-ae37-4984-8be6-4e69559cdf75",
+        "rowNumber": 244
+      },
+      {
+        "email": "lrussell@uk.ey.com",
+        "clientId": "8ec9b835-db21-4c16-8bdc-d29a1bc10650",
+        "name": "Lindsay Russell",
+        "points": 264,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "42d2e1a3-666a-4058-9216-eb4ae7519823",
+        "rowNumber": 245
+      },
+      {
+        "email": "luke@grandprixgrandtours.com",
+        "clientId": "88b6d457-2905-4a40-96b3-aca46728b047",
+        "name": "luke gould",
+        "points": 0,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d0365586-71d2-41f9-8e4e-597e337eb899",
+        "rowNumber": 246
+      },
+      {
+        "email": "lulu_nye@live.co.uk",
+        "clientId": "d3cd1bfc-32c2-43c3-9120-f8d8d4225891",
+        "name": "Lily Nye",
+        "points": 149,
+        "oldBalance": 149,
+        "wasEnrolled": true,
+        "transactionId": "ba7b531a-6e01-4a5d-85ce-1a40ac68e9e7",
+        "rowNumber": 247
+      },
+      {
+        "email": "lydia.drain@googlemail.com",
+        "clientId": "a9102376-9f12-4855-b153-22a90bacdaea",
+        "name": "Lydia Hirst",
+        "points": 190,
+        "oldBalance": 190,
+        "wasEnrolled": true,
+        "transactionId": "dfa2d3eb-f125-42a8-a4d0-b9cb103a6a0f",
+        "rowNumber": 248
+      },
+      {
+        "email": "lynnedryden@hotmail.com",
+        "clientId": "ecd285aa-75ec-4fe9-be0a-4e4597554055",
+        "name": "Lynne Dryden",
+        "points": 314,
+        "oldBalance": 314,
+        "wasEnrolled": true,
+        "transactionId": "4ca0e48d-eb4f-4e90-8626-427da3873582",
+        "rowNumber": 249
+      },
+      {
+        "email": "lynsey287@aol.com",
+        "clientId": "58c0ff32-9010-42cb-a9fa-73b20819042b",
+        "name": "Lynsey Duncan",
+        "points": 209,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "fa8aa1f6-f223-473b-8fdb-018b122f2ea4",
+        "rowNumber": 250
+      },
+      {
+        "email": "m.bauerle@comcast.net",
+        "clientId": "97685535-be1e-4663-be7e-29cd8080c9c0",
+        "name": "Michael Bauerle",
+        "points": 222,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "caefd9fa-4490-447e-8816-3d274ffaeedb",
+        "rowNumber": 251
+      },
+      {
+        "email": "macymaeball@gmail.com",
+        "clientId": "da5a222c-00e2-48de-b0fe-118b1fe761cc",
+        "name": "Macy Ball",
+        "points": 204,
+        "oldBalance": 204,
+        "wasEnrolled": true,
+        "transactionId": "cf0c6d78-cda4-4b62-b552-a058beeb8f35",
+        "rowNumber": 252
+      },
+      {
+        "email": "maggie.mcmurtry@live.com",
+        "clientId": "ea60092b-d887-4423-89b7-6f65ab249302",
+        "name": "Margaret McMurtry",
+        "points": 139,
+        "oldBalance": 129,
+        "wasEnrolled": true,
+        "transactionId": "33dc2ecd-c0f8-47ee-86cf-7fcf76bc6ef3",
+        "rowNumber": 253
+      },
+      {
+        "email": "mail@lizzieorme.co.uk",
+        "clientId": "8af151e8-5b73-4a26-b899-4ad0c2c7f29c",
+        "name": "Lizzie van Dijk",
+        "points": 219,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c654c069-0e1b-4283-a4b8-f80757631110",
+        "rowNumber": 254
+      },
+      {
+        "email": "manorth56@gmail.com",
+        "clientId": "491a670a-8995-4851-87fe-a540905ba4e6",
+        "name": "Mark North",
+        "points": 189,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f1bf3087-0cb2-42e0-95e7-600431585184",
+        "rowNumber": 255
+      },
+      {
+        "email": "marcgjones01@gmail.com",
+        "clientId": "0472eba4-41fe-4b10-9924-fdc97dc587f9",
+        "name": "Marc Jones",
+        "points": 269,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "fd94f4f8-79b6-4757-9779-9962a39e6cc0",
+        "rowNumber": 256
+      },
+      {
+        "email": "marie81lotr@gmail.com",
+        "clientId": "8e547816-29ed-406b-a7a2-cbe2705348da",
+        "name": "Monica Segoviano",
+        "points": 280,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "017dee92-bd09-404c-a7de-759eb798d828",
+        "rowNumber": 257
+      },
+      {
+        "email": "marilynayre@yahoo.com",
+        "clientId": "c973c1eb-0353-41c7-ae81-6dd1540c4055",
+        "name": "Marilyn Ayre",
+        "points": 342,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "484ede2a-fd6b-42a9-b506-7f210d27d79a",
+        "rowNumber": 258
+      },
+      {
+        "email": "mark_.taylor@icloud.com",
+        "clientId": "3c521c06-ed6e-4ba0-aca8-f6e53f769c19",
+        "name": "Mark Taylor",
+        "points": 239,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "6193f859-8a42-47c1-9546-878539d6521d",
+        "rowNumber": 259
+      },
+      {
+        "email": "mark.j.pratt@icloud.com",
+        "clientId": "38ab9f2f-4ced-42a5-ad88-fc9caa92049f",
+        "name": "Mark Pratt",
+        "points": 174,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c1f23f06-3bd1-4df5-b558-67d5d7301632",
+        "rowNumber": 260
+      },
+      {
+        "email": "mark.wc.ltd@gmail.com",
+        "clientId": "60f16a85-e5fe-4a05-8f66-9d39262aaec6",
+        "name": "Mark Clapton",
+        "points": 264,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "49caab8e-819b-4333-a861-e0d0b3ce354b",
+        "rowNumber": 261
+      },
+      {
+        "email": "markday100@hotmail.co.uk",
+        "clientId": "1a6f6195-860f-4a03-ba9c-767aa941d453",
+        "name": "Mark Day",
+        "points": 699,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "49da1c99-a7fd-4631-9991-b69f38903c91",
+        "rowNumber": 262
+      },
+      {
+        "email": "marklittletree@hotmail.com",
+        "clientId": "b0a864d6-5ee1-45af-9a61-2f53b8321bcc",
+        "name": "Mark Daniels",
+        "points": 274,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e913ab49-73ce-45e9-b273-0afeb3e06c71",
+        "rowNumber": 263
+      },
+      {
+        "email": "martineggett82@gmail.com",
+        "clientId": "5522665b-7b68-4cd4-aafe-b0cfc6fec8b7",
+        "name": "Martin Eggett",
+        "points": 119,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "00a8ac20-f3bd-4a13-9501-8a5e3ad5c8e3",
+        "rowNumber": 264
+      },
+      {
+        "email": "martinlavelle30@googlemail.com",
+        "clientId": "dabd1dce-4bb7-49ee-b944-994c3329197e",
+        "name": "Martin Lavelle",
+        "points": 294,
+        "oldBalance": 199,
+        "wasEnrolled": true,
+        "transactionId": "da9b2e78-a669-434d-995e-9a0ab16da6e3",
+        "rowNumber": 265
+      },
+      {
+        "email": "martintaylor77@googlemail.com",
+        "clientId": "5c09e76c-b834-4186-bd61-2408bcc512cf",
+        "name": "Martin Taylor",
+        "points": 194,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c047433f-0ed2-44bb-9d35-b85a9d248147",
+        "rowNumber": 266
+      },
+      {
+        "email": "martynalner@martynalner.f9.co.uk",
+        "clientId": "245d465b-937c-4801-bcdd-bc98832415f3",
+        "name": "Martyn Alner",
+        "points": 264,
+        "oldBalance": 174,
+        "wasEnrolled": true,
+        "transactionId": "563badc9-943d-441e-a415-1c39adb7ffda",
+        "rowNumber": 267
+      },
+      {
+        "email": "mathesongregor@gmail.com",
+        "clientId": "711e2edf-9c0b-431b-821e-848c093f1e79",
+        "name": "Gregor Matheson",
+        "points": 544,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "1b011660-71b7-4cb8-bebb-64d41038f1e7",
+        "rowNumber": 268
+      },
+      {
+        "email": "matt.sib@talk21.com",
+        "clientId": "a1895770-9faf-4b41-92e7-85798e5d897a",
+        "name": "Matthew Scarrott",
+        "points": 224,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "dd72620b-7793-4ece-a20d-15e51c02cba6",
+        "rowNumber": 269
+      },
+      {
+        "email": "mattchristian78@gmail.com",
+        "clientId": "0e37f55c-a0c6-4e7a-b725-e4c4aa82344f",
+        "name": "Matt Christian",
+        "points": 280,
+        "oldBalance": 254,
+        "wasEnrolled": true,
+        "transactionId": "d85ca883-f12f-488e-9bc4-ab30b761b6cc",
+        "rowNumber": 270
+      },
+      {
+        "email": "mazehome@talktalk.net",
+        "clientId": "83b980c0-b5fc-4e20-a98a-de48e2b6537c",
+        "name": "Paul May",
+        "points": 309,
+        "oldBalance": 309,
+        "wasEnrolled": true,
+        "transactionId": "52afa3a3-8c21-4f8c-9b82-d1bb9fa7f6f8",
+        "rowNumber": 271
+      },
+      {
+        "email": "mccarthywilliam1@hotmail.com",
+        "clientId": "3d1708e7-8595-4c4b-935b-d0577af518c9",
+        "name": "Liam McCarthy",
+        "points": 319,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e378c099-0be1-4f2b-a19d-93539930a078",
+        "rowNumber": 272
+      },
+      {
+        "email": "mcdonnj9@tcd.ie",
+        "clientId": "439f8549-00c7-4a85-b354-72e2194cbf76",
+        "name": "Joseph McDonnell",
+        "points": 129,
+        "oldBalance": 129,
+        "wasEnrolled": true,
+        "transactionId": "d3c8758e-57d5-4a95-838e-8a4b601b4f5c",
+        "rowNumber": 273
+      },
+      {
+        "email": "mckinnell2012@hotmail.co.uk",
+        "clientId": "1572b80d-ec37-4681-8c3c-9aeec4242ef6",
+        "name": "Cameron Mckinnell",
+        "points": 324,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "1878bf16-e7ac-4765-892c-647264714f9f",
+        "rowNumber": 274
+      },
+      {
+        "email": "memoralessar@gmail.com",
+        "clientId": "c92ede31-fa9a-4322-8f3f-b234be0c2574",
+        "name": "Maria Morales",
+        "points": 374,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "dd5a8f00-07a1-45a8-bc10-fe6b1c3d10fb",
+        "rowNumber": 275
+      },
+      {
+        "email": "mhaldron@yahoo.co.uk",
+        "clientId": "45345ec2-13bb-4b7a-bc9c-0f2494b636c5",
+        "name": "Marc Haldron",
+        "points": 144,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f39977fa-40d7-47cc-81c7-93568426824c",
+        "rowNumber": 276
+      },
+      {
+        "email": "mhl1958@btinternet.com",
+        "clientId": "8483d013-2cf6-414b-b294-19b75000f5ad",
+        "name": "Malcolm Lofts",
+        "points": 434,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "3535f7e0-dc64-42ce-8eb2-fc8ad98aa46f",
+        "rowNumber": 277
+      },
+      {
+        "email": "michaelerteljr@gmail.com",
+        "clientId": "523636ad-13b0-4736-9eda-4e4d4106af76",
+        "name": "Mike Ertel",
+        "points": 266,
+        "oldBalance": 239,
+        "wasEnrolled": true,
+        "transactionId": "28f4e98d-6b10-4273-8ced-c963712e6b07",
+        "rowNumber": 278
+      },
+      {
+        "email": "michaeljlucking@hotmail.com",
+        "clientId": "b07abd63-d5b9-4cbd-90a3-eeb611771dac",
+        "name": "Michael Lucking",
+        "points": 224,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "54ad9cab-54e9-42c9-8349-89fcec36a72b",
+        "rowNumber": 279
+      },
+      {
+        "email": "michelle1rankin@gmail.com",
+        "clientId": "0b9db5e7-77f7-4104-86c8-126473fa47b3",
+        "name": "Michelle Rankin",
+        "points": 219,
+        "oldBalance": 219,
+        "wasEnrolled": true,
+        "transactionId": "fa810d6c-e654-47f4-b3c9-d921e60fed44",
+        "rowNumber": 280
+      },
+      {
+        "email": "mikegray1234567890@gmail.com",
+        "clientId": "02d6527f-8b58-43fb-9ce9-bef1d303aeb3",
+        "name": "michael Gray",
+        "points": 229,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "ddd6076a-d1ce-4a58-a88a-891661047778",
+        "rowNumber": 281
+      },
+      {
+        "email": "mikewainhouse@gmail.com",
+        "clientId": "a65f4a9b-bb64-4081-99a9-9c334c0ac74d",
+        "name": "Mike Wainhouse",
+        "points": 195,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "a311f0c4-541c-40c8-bfc7-1645dbb58837",
+        "rowNumber": 282
+      },
+      {
+        "email": "mknowland@live.co.uk",
+        "clientId": "09d193eb-92a7-4034-aa12-13499b422354",
+        "name": "Mike Knowland",
+        "points": 259,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "68666ade-92f6-40aa-9ad0-95143e5c8f5d",
+        "rowNumber": 283
+      },
+      {
+        "email": "moss.annmarie@gmail.com",
+        "clientId": "fc8fcbfa-b0cd-4fff-a56c-923aa1abde5b",
+        "name": "Ann-Marie Moss",
+        "points": 259,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "3c4a2a1a-50b3-4955-977d-e5b4023a5b64",
+        "rowNumber": 284
+      },
+      {
+        "email": "mperinebeard@gmail.com",
+        "clientId": "2f94d7d7-7d1f-46d7-8aec-b1080eb2fcee",
+        "name": "Martha Perine Beard",
+        "points": 271,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "9ec0cf18-7f93-4e23-8ff7-2c82921a5900",
+        "rowNumber": 285
+      },
+      {
+        "email": "mpogden@outlook.com",
+        "clientId": "eb8857de-89b3-44ee-85ff-a538899fe64d",
+        "name": "Martin Ogden",
+        "points": 224,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c9dd5726-c58d-4ca6-b6b2-190f880f5221",
+        "rowNumber": 286
+      },
+      {
+        "email": "mswales5@gmail.com",
+        "clientId": "adfff381-66f4-4672-94a4-e8df9bd929ca",
+        "name": "Mark Swales",
+        "points": 139,
+        "oldBalance": 139,
+        "wasEnrolled": true,
+        "transactionId": "f1476962-a807-4fad-97fe-ad07658b6c6c",
+        "rowNumber": 287
+      },
+      {
+        "email": "mummacleod@hotmail.co.uk",
+        "clientId": "34859fc7-4e21-4e49-82c1-68ace0793353",
+        "name": "Jane Macleod",
+        "points": 174,
+        "oldBalance": 174,
+        "wasEnrolled": true,
+        "transactionId": "948622a6-30c5-422a-87f7-918c8191f8e9",
+        "rowNumber": 288
+      },
+      {
+        "email": "mwctyrrell@gmail.com",
+        "clientId": "fc3cfba9-f185-41ec-ae26-5cd784938acf",
+        "name": "Mark Tyrrell",
+        "points": 401,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "9930908a-90c7-464a-8793-31ad4c99a786",
+        "rowNumber": 289
+      },
+      {
+        "email": "n.watkinson@leeds.ac.uk",
+        "clientId": "cb2416e5-aa4c-4279-b4c2-1735194a9336",
+        "name": "Natalie Watkinson",
+        "points": 174,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e74ed8ad-4840-4a33-ad1f-d820aec460d3",
+        "rowNumber": 290
+      },
+      {
+        "email": "natalie.quinn3@icloud.com",
+        "clientId": "397bd872-48be-487b-94f2-bc592eea0444",
+        "name": "Natalie Quinn",
+        "points": 244,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "a04b7c2b-0088-485c-a687-146d4dbede1d",
+        "rowNumber": 291
+      },
+      {
+        "email": "neil.cameron287@gmail.com",
+        "clientId": "2807709d-ac4a-48b1-b93a-4c02070291f1",
+        "name": "Neil Cameron",
+        "points": 329,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "0271ed17-a8a5-4f94-8504-c129e0fc2503",
+        "rowNumber": 292
+      },
+      {
+        "email": "neilross306@btinternet.com",
+        "clientId": "b02d83c3-2a9b-4509-a3b2-f6aeda67dfd2",
+        "name": "Neil Ross",
+        "points": 184,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "ba529058-f260-4bef-9b2a-3e76cbc5acb0",
+        "rowNumber": 293
+      },
+      {
+        "email": "nickhernandez6217@yahoo.com",
+        "clientId": "6654e955-3da1-4063-b2ad-2c1cc5e1a3ca",
+        "name": "Nicholas Hernandez",
+        "points": 384,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "a92b4b53-bf2d-4884-a672-1f8ee519bdf5",
+        "rowNumber": 294
+      },
+      {
+        "email": "nicolajamie@me.com",
+        "clientId": "96551cb5-0b0b-4091-babc-5be756e98182",
+        "name": "Nicola Holmes",
+        "points": 234,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "62019c6a-8e79-458c-98cb-e43eb6f06805",
+        "rowNumber": 295
+      },
+      {
+        "email": "nigel.pinegar@sky.com",
+        "clientId": "5d7bb575-39df-45b8-bbb2-053058f06e7f",
+        "name": "Nigel Pinegar",
+        "points": 274,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d2229f23-f4ce-4ff1-acc8-cf6e04bd924a",
+        "rowNumber": 296
+      },
+      {
+        "email": "norwood@topdecktravel.com.au",
+        "clientId": "4e794031-5b5d-4a5b-a719-ec5c44a620ee",
+        "name": "clare horton",
+        "points": 173,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e88ff082-c01e-4d82-b7b6-d897bf43d7b5",
+        "rowNumber": 297
+      },
+      {
+        "email": "o.hoes@ziggo.nl",
+        "clientId": "e232e60d-fcc9-434d-8238-c978305b9e83",
+        "name": "Onno Hoes",
+        "points": 115,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "4cb7adb3-1aa4-484f-bb3c-82e5328e6be5",
+        "rowNumber": 298
+      },
+      {
+        "email": "oconnorjack4161@gmail.com",
+        "clientId": "e0ca7b73-f820-4913-9d14-5fbb420a9ee9",
+        "name": "Jack O’Connor",
+        "points": 193,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "1f7b3a2b-8ae2-4954-9e91-ce59baa74148",
+        "rowNumber": 299
+      },
+      {
+        "email": "olivermiles975@yahoo.com",
+        "clientId": "bab25f81-2734-4691-994e-814aba1067ca",
+        "name": "Oliver Duff",
+        "points": 299,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e1188a3d-8a6a-4c2a-ada1-c4b50a883e66",
+        "rowNumber": 300
+      },
+      {
+        "email": "oliviamiller35@icloud.com",
+        "clientId": "73914505-f433-4dd9-b33e-171335b3428f",
+        "name": "Olivia Miller",
+        "points": 144,
+        "oldBalance": 144,
+        "wasEnrolled": true,
+        "transactionId": "517070f0-887f-4e80-b751-b7ae1c1e38c8",
+        "rowNumber": 301
+      },
+      {
+        "email": "operations@trophyevents.co.uk",
+        "clientId": "cd1efd84-2987-4541-88b1-c1d3a31462b9",
+        "name": "Trophy Events",
+        "points": 787,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "0608e816-9dfd-4728-9093-752b3cce887d",
+        "rowNumber": 302
+      },
+      {
+        "email": "ortonsarah6@gmail.com",
+        "clientId": "ec96480b-2d16-4af8-b138-71c301f10db9",
+        "name": "Sarah Orton",
+        "points": 259,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "6144fe23-9acd-4a8e-9915-491540504f78",
+        "rowNumber": 303
+      },
+      {
+        "email": "p.savage3@virginmedia.com",
+        "clientId": "ebf32f96-706a-450f-ac14-85b4eb31e705",
+        "name": "Pete Savage",
+        "points": 149,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f5c754f2-df9d-4859-8535-d50938c7022d",
+        "rowNumber": 304
+      },
+      {
+        "email": "pamelalucido@icloud.com",
+        "clientId": "28c81487-c664-4d6b-89b8-9f3cf5509ec1",
+        "name": "Pamela Worswick Lucido",
+        "points": 264,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "71e7cf8b-be69-47de-932e-991c680cab51",
+        "rowNumber": 305
+      },
+      {
+        "email": "patricia.mcalinden4565@btinternet.com",
+        "clientId": "05d6a30d-3841-401a-a93d-9192a0796bef",
+        "name": "Patricia McAlinden",
+        "points": 224,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "219a3158-7b40-4c60-bc3f-fbd67c9cec26",
+        "rowNumber": 306
+      },
+      {
+        "email": "patrick@henchoz.co.uk",
+        "clientId": "aff545f9-fb33-4412-9750-06a6b8338419",
+        "name": "Patrick Henchoz",
+        "points": 569,
+        "oldBalance": 569,
+        "wasEnrolled": true,
+        "transactionId": "0d185c68-b006-4883-8796-90f7d37eb1ac",
+        "rowNumber": 307
+      },
+      {
+        "email": "patrickfaure17@outlook.com",
+        "clientId": "437c6a49-f4bd-4bd2-a99c-a997a84d66cf",
+        "name": "Patrick Faure",
+        "points": 434,
+        "oldBalance": 434,
+        "wasEnrolled": true,
+        "transactionId": "9f4203e8-dee1-4b8f-ab7b-e8e427feb487",
+        "rowNumber": 308
+      },
+      {
+        "email": "paul.cooper883@btopenworld.com",
+        "clientId": "dffda6b3-a9d8-4c38-a38a-213ca1a2820b",
+        "name": "PAUL COOPER",
+        "points": 199,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "4a45d7e8-874a-4513-826f-1f7ca3624257",
+        "rowNumber": 309
+      },
+      {
+        "email": "paulwheelhouse@aol.com",
+        "clientId": "8e4aa652-ecd2-4fa5-8344-9548e34dda66",
+        "name": "Paul Wheelhouse",
+        "points": 259,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "acbb4a05-3199-46d8-a358-f370571dc0ca",
+        "rowNumber": 310
+      },
+      {
+        "email": "pdberry352@gmail.com",
+        "clientId": "cedbf2e9-807d-485a-8624-0801e21121a5",
+        "name": "Paul Berry",
+        "points": 199,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "ce163adc-1b78-4239-9ff8-b8e39a6b235a",
+        "rowNumber": 311
+      },
+      {
+        "email": "pennydclarke@gmail.com",
+        "clientId": "5a48df7c-cf30-4d5b-82b1-6a865587d84f",
+        "name": "Penny Clarke",
+        "points": 174,
+        "oldBalance": 174,
+        "wasEnrolled": true,
+        "transactionId": "01b4676b-40da-4c20-89f7-5c1a3d4934e5",
+        "rowNumber": 312
+      },
+      {
+        "email": "petensarahgrand@aol.com",
+        "clientId": "5efddec2-ee1e-4dcb-a669-f13fc2f6ab8f",
+        "name": "Peter Grandidge",
+        "points": 164,
+        "oldBalance": 164,
+        "wasEnrolled": true,
+        "transactionId": "5f6dfb3a-880d-48ca-9e6f-eeb4abb9d64a",
+        "rowNumber": 313
+      },
+      {
+        "email": "petertrk33@gmail.com",
+        "clientId": "0c6d6d04-3fb4-468f-9bcd-fa1d7e9c2efd",
+        "name": "Peter Trickey",
+        "points": 284,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "368b0a4e-d4b3-462c-bff3-562b1e17b73f",
+        "rowNumber": 314
+      },
+      {
+        "email": "philip@trophyevents.co.uk",
+        "clientId": "220e2c2e-68cb-43ef-903f-21e066ad488f",
+        "name": "Philip Campbell",
+        "points": 204,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "a1aa9040-cfd3-4864-915e-205160c5d25c",
+        "rowNumber": 315
+      },
+      {
+        "email": "phillrow23@gmail.com",
+        "clientId": "6d20b5fc-29e8-4d51-a3e3-fdda5f3fa304",
+        "name": "Phillip rowlands",
+        "points": 264,
+        "oldBalance": 279,
+        "wasEnrolled": true,
+        "transactionId": "58816602-10d8-4f40-b30b-b9c83fc83f87",
+        "rowNumber": 316
+      },
+      {
+        "email": "philwestmail@gmail.com",
+        "clientId": "ed924b30-3769-489e-adc0-d2c482c2ee84",
+        "name": "Phil West",
+        "points": 317,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "4f0bc2e7-9b85-4b3a-a08f-47d6fcfd02d4",
+        "rowNumber": 317
+      },
+      {
+        "email": "pmsdavis@gmail.com",
+        "clientId": "4544bba5-f2d0-4ae8-a884-214cb54235ef",
+        "name": "Paul Davis",
+        "points": 239,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "72de3924-f984-47e8-8970-fa0c0ee2f58a",
+        "rowNumber": 318
+      },
+      {
+        "email": "prigby1989@gmail.com",
+        "clientId": "9d7fd7c8-bd1b-40e7-96d5-21e9360bca27",
+        "name": "Philip Rigby",
+        "points": 203,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "b78720bb-0a42-4c90-9cbf-b96cb52a3dbb",
+        "rowNumber": 319
+      },
+      {
+        "email": "pulse.electrics.kingslynn@gmail.com",
+        "clientId": "67d5bceb-9e80-48a1-862c-09c8b0425a35",
+        "name": "Juliet Pulsford-harris",
+        "points": 269,
+        "oldBalance": 269,
+        "wasEnrolled": true,
+        "transactionId": "9266b815-5c13-4719-a97e-8f8f55f79f1b",
+        "rowNumber": 320
+      },
+      {
+        "email": "rachelfarmer292@gmail.com",
+        "clientId": "25e36199-afc8-4d20-a49b-683c4a726ed0",
+        "name": "Rachel Farmer",
+        "points": 249,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "77ab4202-2fd1-49fc-a830-3271d6b76e8c",
+        "rowNumber": 321
+      },
+      {
+        "email": "raedavison@hotmail.com",
+        "clientId": "8a09be4d-d320-4574-880d-48190607e912",
+        "name": "Rae Davison",
+        "points": 184,
+        "oldBalance": 165,
+        "wasEnrolled": true,
+        "transactionId": "d8816e29-6f67-4166-bc51-0b4d58ac284b",
+        "rowNumber": 322
+      },
+      {
+        "email": "raspolzino@gmail.com",
+        "clientId": "c9939d75-d5b8-4c34-8940-c50e81fccff8",
+        "name": "Robert Spolzino",
+        "points": 194,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c8c75026-34d2-4496-9e30-76cf9aa67ee9",
+        "rowNumber": 323
+      },
+      {
+        "email": "ravvi1963@gmail.com",
+        "clientId": "7900f143-7923-4914-be31-01161d02d0e3",
+        "name": "Ricky Nicholson",
+        "points": 199,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "06950acd-a477-4e9a-ac1f-23f2b008129d",
+        "rowNumber": 324
+      },
+      {
+        "email": "rbowers@talktalk.net",
+        "clientId": "b607c9a8-0c2f-475f-a1e1-9bba9df4077d",
+        "name": "Richard Bowers",
+        "points": 289,
+        "oldBalance": 289,
+        "wasEnrolled": true,
+        "transactionId": "53216d8b-6538-4249-b5c7-b1995ee51bda",
+        "rowNumber": 325
+      },
+      {
+        "email": "rdhpocklington@hotmail.co.uk",
+        "clientId": "bdcc801d-168c-42dc-9919-2923eb1b51a0",
+        "name": "Rozalinde Pocklington",
+        "points": 184,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "a0bd4b1d-de32-453b-b168-5e162e58b525",
+        "rowNumber": 326
+      },
+      {
+        "email": "rdoonga@hotmail.com",
+        "clientId": "6761b3d1-6b0a-4639-a2d3-0052c213b790",
+        "name": "rita doonga",
+        "points": 114,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "6aeb870c-1ce1-48d4-997a-1aaed4222e2f",
+        "rowNumber": 327
+      },
+      {
+        "email": "re@ruthendacott.co.uk",
+        "clientId": "fde80c0b-1bda-4671-8a48-2a06c2376df5",
+        "name": "Ruth Endacott",
+        "points": 294,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "87bd07fd-f19e-42fc-b876-3309b1266c40",
+        "rowNumber": 328
+      },
+      {
+        "email": "rebeccalou20@hotmail.com",
+        "clientId": "5526bc39-1fd5-4c77-8ac2-7d1d82c8806b",
+        "name": "Rebecca Stone",
+        "points": 164,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "edc72792-cb9c-4f5f-a9d0-b6bd131e953d",
+        "rowNumber": 329
+      },
+      {
+        "email": "rhianhknight@gmail.com",
+        "clientId": "00614454-bc08-409c-8ce7-22fd7e2f44fc",
+        "name": "Rhian Knight",
+        "points": 214,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "609346b3-9cd8-4292-87da-34d9ef55b1d2",
+        "rowNumber": 330
+      },
+      {
+        "email": "richard.brown823@hotmail.co.uk",
+        "clientId": "d80d67b8-fad4-4d19-aa62-ed7bbf7c6485",
+        "name": "Richard Brown",
+        "points": 749,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f1d81d8c-1d6c-4353-a730-a3142d49c0b5",
+        "rowNumber": 331
+      },
+      {
+        "email": "richard.shadforth@premierbuildingproducts.co.uk",
+        "clientId": "070c43a3-9933-4b48-b0cb-88928ed3a0aa",
+        "name": "Richard Shadforth",
+        "points": 479,
+        "oldBalance": 479,
+        "wasEnrolled": true,
+        "transactionId": "74d0b606-f827-4ec0-a70c-3ace51b6b56c",
+        "rowNumber": 332
+      },
+      {
+        "email": "richardcurran71@gmail.com",
+        "clientId": "11dcb0f1-d907-4f64-b533-f674c3deaf28",
+        "name": "Richard Curran",
+        "points": 154,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "b5ae058f-08e6-4788-afbb-2a74f874ef94",
+        "rowNumber": 333
+      },
+      {
+        "email": "richatcordwainer@btinternet.com",
+        "clientId": "58d6187f-87b1-488e-ab40-fe1b3c390b92",
+        "name": "Richard Jones",
+        "points": 194,
+        "oldBalance": 194,
+        "wasEnrolled": true,
+        "transactionId": "6c0c20e1-8ea8-497c-92bb-d9d8929c40e3",
+        "rowNumber": 334
+      },
+      {
+        "email": "richstocks75@gmail.com",
+        "clientId": "bae3d95f-20a7-4204-9ddb-b537f849c0e6",
+        "name": "Rich Stocks",
+        "points": 174,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "89ba0e53-cf14-4b48-9f3b-e687d6a5a061",
+        "rowNumber": 335
+      },
+      {
+        "email": "rob@dalesjoinery.co.uk",
+        "clientId": "e640b216-5af0-4258-8920-76528838eef0",
+        "name": "Rob Wright",
+        "points": 259,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "78c40153-dc42-45ef-aec0-88b9bf63b99c",
+        "rowNumber": 336
+      },
+      {
+        "email": "robcsl@icloud.com",
+        "clientId": "d2e19834-87c1-4d5d-b34a-e366c4b353d4",
+        "name": "Robert Evans",
+        "points": 249,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "9715881e-697f-45dd-a60a-d90d5c765ae6",
+        "rowNumber": 337
+      },
+      {
+        "email": "robert.ranford1@gmail.com",
+        "clientId": "ebc9cc5c-d533-45ec-9b44-109c1cf84490",
+        "name": "Robert Ranford",
+        "points": 224,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "387dfc14-451d-4702-a2f3-483cb8b87129",
+        "rowNumber": 338
+      },
+      {
+        "email": "robertsharp62@live.co.uk",
+        "clientId": "bcaa564f-78f6-4948-bfa4-f20e25c10a84",
+        "name": "Robert Sharp",
+        "points": 114,
+        "oldBalance": 109,
+        "wasEnrolled": true,
+        "transactionId": "4ef435b4-31aa-4c00-a404-9558c3ee0651",
+        "rowNumber": 339
+      },
+      {
+        "email": "robnsar@bigpond.net.au",
+        "clientId": "9f4631c4-83a3-4065-b23c-afd03c03176b",
+        "name": "Robert Willmett",
+        "points": 626,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "a46cfb65-d355-4c99-bea3-9422f9154adb",
+        "rowNumber": 340
+      },
+      {
+        "email": "rodmason@me.com",
+        "clientId": "dfea4bb6-46af-4180-90ec-9d0b5c1831bc",
+        "name": "Rod Mason",
+        "points": 244,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "2eacc09d-5d91-4a75-9f5c-860b42a07838",
+        "rowNumber": 341
+      },
+      {
+        "email": "ross.slater@hotmail.co.uk",
+        "clientId": "4088e788-a60a-4fd8-9af3-ccd2d18b7b05",
+        "name": "Ross Slater",
+        "points": 379,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e3dc15f4-aea1-4646-8065-3019957d9ef3",
+        "rowNumber": 342
+      },
+      {
+        "email": "runfree555@gmail.com",
+        "clientId": "88c8478c-6496-4c60-9e2e-7da1b0bf9782",
+        "name": "Dwayne Anningson",
+        "points": 199,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "a4633bb8-154a-4417-832a-650e0b0af12f",
+        "rowNumber": 343
+      },
+      {
+        "email": "ruth.taihirion@sky.com",
+        "clientId": "4194dc11-8396-4b38-88d4-f40c36b3404d",
+        "name": "Ruth Smith",
+        "points": 169,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "6185eedd-1e59-4f0a-87f6-cb9409e54842",
+        "rowNumber": 344
+      },
+      {
+        "email": "ruthhackett57@gmail.com",
+        "clientId": "f93b3fd2-c38f-46af-8964-cc66fdc25132",
+        "name": "Joanne Hackett",
+        "points": 179,
+        "oldBalance": 179,
+        "wasEnrolled": true,
+        "transactionId": "92138901-3e73-414c-9c2a-e3af1963bffd",
+        "rowNumber": 345
+      },
+      {
+        "email": "s.bettison@sky.com",
+        "clientId": "efae3b8e-5c5a-44aa-9288-53749b823fa6",
+        "name": "shaun bettison",
+        "points": 254,
+        "oldBalance": 254,
+        "wasEnrolled": true,
+        "transactionId": "ffe94259-3a08-4ada-b877-3d17cc27642c",
+        "rowNumber": 346
+      },
+      {
+        "email": "sally@birkwoodplant.co.uk",
+        "clientId": "868a046a-2539-45ef-ab3a-61a76af7cab5",
+        "name": "Sally Ramskill",
+        "points": 239,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f4422e78-2623-42ff-9853-175b39db8fcf",
+        "rowNumber": 347
+      },
+      {
+        "email": "sallypeck@ntlworld.com",
+        "clientId": "e63943e8-6954-4a35-bcc5-7ca102319b8c",
+        "name": "Sally Peck",
+        "points": 239,
+        "oldBalance": 239,
+        "wasEnrolled": true,
+        "transactionId": "8387ccc8-5076-429c-a780-104d3e8648b6",
+        "rowNumber": 348
+      },
+      {
+        "email": "samantha.purves@btinternet.com",
+        "clientId": "9066f58a-dfcc-42af-8248-0d27b46c4067",
+        "name": "Samantha Purves",
+        "points": 364,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "ce22f2ff-cf33-4321-bad7-a5cb69c45d4e",
+        "rowNumber": 349
+      },
+      {
+        "email": "samjquiat@gmail.com",
+        "clientId": "3c42346c-f98e-4a15-8b2e-95d9fb92759c",
+        "name": "Sam Quiat",
+        "points": 182,
+        "oldBalance": 164,
+        "wasEnrolled": true,
+        "transactionId": "36699549-6860-485a-8568-52702666d6ca",
+        "rowNumber": 350
+      },
+      {
+        "email": "sandralynnatkin@gmail.com",
+        "clientId": "e80ff00f-8407-45ad-961f-e3f5e4f19353",
+        "name": "Sandra Atkin",
+        "points": 224,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "cfaf6095-030f-4f91-b19b-8bc476da5000",
+        "rowNumber": 351
+      },
+      {
+        "email": "sanford212@gmail.com",
+        "clientId": "8493b21c-bba8-4255-a063-d4f9787537fd",
+        "name": "Sanford Santacroce",
+        "points": 209,
+        "oldBalance": 174,
+        "wasEnrolled": true,
+        "transactionId": "41e68c36-3561-42e1-9a77-475f0064ca1c",
+        "rowNumber": 352
+      },
+      {
+        "email": "saradavison@duck.com",
+        "clientId": "ace7868b-9c43-41d1-a924-b0c9088a0592",
+        "name": "Sara Davison",
+        "points": 249,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "da3cf797-f5d6-4cbf-b898-e74fb7360643",
+        "rowNumber": 353
+      },
+      {
+        "email": "sarah.rogers200@ntlworld.com",
+        "clientId": "3218872d-344b-478a-b00f-032ca6a4ccf6",
+        "name": "Sarah Swift",
+        "points": 229,
+        "oldBalance": 229,
+        "wasEnrolled": true,
+        "transactionId": "b74291df-1b50-4445-9158-5fc5d3b62352",
+        "rowNumber": 354
+      },
+      {
+        "email": "sarah@markhamhouse.co.uk",
+        "clientId": "9c5fd3c2-18ff-435f-a3a7-b716c72fd99c",
+        "name": "Sarah Short",
+        "points": 429,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f8885f61-668a-440d-b1ff-476592c5023e",
+        "rowNumber": 355
+      },
+      {
+        "email": "sarah5kidd@yahoo.co.uk",
+        "clientId": "7d2ab34a-2ec9-4455-96cb-a198068c3673",
+        "name": "Sarah Hill",
+        "points": 254,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c85805a2-64ae-437e-9d18-3abab20de1fc",
+        "rowNumber": 356
+      },
+      {
+        "email": "sarahj_gibson@yahoo.co.uk",
+        "clientId": "096ce303-ce7b-41c4-bb76-329c0cf40f13",
+        "name": "Sarah Beck",
+        "points": 184,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "06698b5e-4c3c-4860-b62d-5ba2f327e392",
+        "rowNumber": 357
+      },
+      {
+        "email": "sarahwalsh72@hotmail.co.uk",
+        "clientId": "db89f1e5-2f57-41ce-9352-5bdf88ca3501",
+        "name": "Sarah Walsh",
+        "points": 275,
+        "oldBalance": 275,
+        "wasEnrolled": true,
+        "transactionId": "c438f413-618a-439b-bba1-74a78c031a1b",
+        "rowNumber": 358
+      },
+      {
+        "email": "scarlets@tcd.ie",
+        "clientId": "ba5ba2fe-a595-4563-9579-37357e22dc24",
+        "name": "Siobhan Scarlett",
+        "points": 139,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "575678c2-088f-4f5a-a449-2a2ef926d777",
+        "rowNumber": 359
+      },
+      {
+        "email": "scmacf@gmail.com",
+        "clientId": "3c6c2c35-9721-403a-9bee-e4d8313c254d",
+        "name": "Scott Macfarlane",
+        "points": 259,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "ac1e093c-e1a9-49d8-8b0b-e20d01038ef2",
+        "rowNumber": 360
+      },
+      {
+        "email": "sdb1059@gmail.com",
+        "clientId": "b4f73248-9996-42e4-9129-cc87211c5768",
+        "name": "Steve Baynton",
+        "points": 194,
+        "oldBalance": 194,
+        "wasEnrolled": true,
+        "transactionId": "a70ebb4e-5a4a-4057-bfec-3d9c46141fa1",
+        "rowNumber": 361
+      },
+      {
+        "email": "sean@powcon.ie",
+        "clientId": "997b5803-490c-49a1-8aa8-e3a6fd78248d",
+        "name": "Sean O'Neill",
+        "points": 125,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "2bf5d79c-1522-476f-9b16-0bbfc4f211f3",
+        "rowNumber": 362
+      },
+      {
+        "email": "sear.karen@gmail.com",
+        "clientId": "e40da9d5-e7ea-4139-8246-7e8875ffd45a",
+        "name": "Karen Sear",
+        "points": 179,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f1552c9b-c88f-4eea-891d-10af57948046",
+        "rowNumber": 363
+      },
+      {
+        "email": "sharon.sheen@btinternet.com",
+        "clientId": "bc2b0159-a191-4fcc-b3b2-d03dabdac0a4",
+        "name": "Sharon Sheen",
+        "points": 259,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "9dcb68d2-a865-495a-8b83-f51fe55502dd",
+        "rowNumber": 364
+      },
+      {
+        "email": "sharoncoade@gmail.com",
+        "clientId": "74ecea2a-8daf-42b0-847c-caf089cf5943",
+        "name": "Sharon Coade",
+        "points": 149,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c10839f9-f6e9-4d68-8fea-fcce3b9d2dd9",
+        "rowNumber": 365
+      },
+      {
+        "email": "shaunbyng23@outlook.com",
+        "clientId": "b5b9de7d-285d-4a19-9a47-ffb580eda805",
+        "name": "SHAUN RICHARD BYNG",
+        "points": 359,
+        "oldBalance": 384,
+        "wasEnrolled": true,
+        "transactionId": "006c459a-fc6c-46be-b3df-8c9ea523b93c",
+        "rowNumber": 366
+      },
+      {
+        "email": "she3@telus.net",
+        "clientId": "b511fc34-60c3-42d2-a6d3-101fbd0cea07",
+        "name": "Sheila McMurtry",
+        "points": 219,
+        "oldBalance": 204,
+        "wasEnrolled": true,
+        "transactionId": "ee0627dc-bb0f-4eb3-aac4-4ce837c3ca07",
+        "rowNumber": 367
+      },
+      {
+        "email": "sicarter@btinternet.com",
+        "clientId": "2fa042b9-5de5-4ae2-ae59-645a4ef13f30",
+        "name": "Sandra Carter",
+        "points": 149,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f081e709-c659-46c4-b1cb-f205890251f2",
+        "rowNumber": 368
+      },
+      {
+        "email": "simon.andrews1609@gmail.com",
+        "clientId": "d9dd3a18-bf1c-4584-bb5f-01a4b666cb32",
+        "name": "Simon Andrews",
+        "points": 184,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "188e47a2-ad0c-47f0-934f-fd14e50f5889",
+        "rowNumber": 369
+      },
+      {
+        "email": "simonhaban@googlemail.com",
+        "clientId": "1c8efc4e-8701-4cef-8c25-074d04639990",
+        "name": "Simon Haban",
+        "points": 159,
+        "oldBalance": 159,
+        "wasEnrolled": true,
+        "transactionId": "aa4ab52a-c6af-4d94-9217-35e51f130237",
+        "rowNumber": 370
+      },
+      {
+        "email": "sjfogden@gmail.com",
+        "clientId": "6748f168-53b7-418d-8d10-eb55a334d136",
+        "name": "Sarah Fogden",
+        "points": 268,
+        "oldBalance": 232,
+        "wasEnrolled": true,
+        "transactionId": "83474fc9-cea9-40a7-b5a9-3200ac5c04b5",
+        "rowNumber": 371
+      },
+      {
+        "email": "sjones68@sky.com",
+        "clientId": "c93ac85b-7a6d-45f2-9cfb-86c6b0fd2265",
+        "name": "Simon Jones",
+        "points": 209,
+        "oldBalance": 209,
+        "wasEnrolled": true,
+        "transactionId": "a84ea18f-725b-4457-9ad1-d1c76895ad48",
+        "rowNumber": 372
+      },
+      {
+        "email": "smarrett1960@gmail.com",
+        "clientId": "872ac316-517a-4979-8d07-1eb6e8015f5d",
+        "name": "Steve Marrett",
+        "points": 239,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d506a843-b0a3-4c85-a193-92c521c0be54",
+        "rowNumber": 373
+      },
+      {
+        "email": "smithandrewc@icloud.com",
+        "clientId": "7c5fa029-b3f1-405f-adef-a7016540a71e",
+        "name": "Andrew Smith",
+        "points": 166,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "1d8ad151-3f49-4a17-901f-778c905b8967",
+        "rowNumber": 374
+      },
+      {
+        "email": "smithdale883@yahoo.co.uk",
+        "clientId": "96d84047-4fa6-47d1-875c-6a96de42e7b5",
+        "name": "Dale Smith",
+        "points": 204,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "5b5827ab-79d5-4377-9ef4-92c0738ac930",
+        "rowNumber": 375
+      },
+      {
+        "email": "southardmd@gmail.com",
+        "clientId": "75cc637a-5ecc-474b-ad86-d965e4efa0f4",
+        "name": "Michael Southard",
+        "points": 164,
+        "oldBalance": 164,
+        "wasEnrolled": true,
+        "transactionId": "19ae12c7-a1bc-483f-9d98-6f18ee3c1ead",
+        "rowNumber": 376
+      },
+      {
+        "email": "spahal82@gmail.com",
+        "clientId": "3ef61ecd-4b79-448f-bcbd-b2546c44d1fd",
+        "name": "Sunny Pahal",
+        "points": 269,
+        "oldBalance": 139,
+        "wasEnrolled": true,
+        "transactionId": "e89777ab-e352-42d6-9cda-466051d8cbdc",
+        "rowNumber": 377
+      },
+      {
+        "email": "stephaniecarruthers@hotmail.com",
+        "clientId": "5e5f6ffa-576b-46ba-935d-c25da2c56b57",
+        "name": "Stephanie Carruthers",
+        "points": 169,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "2e2dea97-56de-4ead-a208-1211c521e7c1",
+        "rowNumber": 378
+      },
+      {
+        "email": "stephen_m_read@yahoo.co.uk",
+        "clientId": "11255d98-1765-486d-aa9c-be9a0b83f8a4",
+        "name": "Stephen Read",
+        "points": 254,
+        "oldBalance": 119,
+        "wasEnrolled": true,
+        "transactionId": "fa93573c-d58f-4088-9e9b-042d2520e013",
+        "rowNumber": 379
+      },
+      {
+        "email": "stephen.duncan2@sky.com",
+        "clientId": "12d4b473-0198-4ac2-a5f2-025580fc955e",
+        "name": "Stephen Duncan",
+        "points": 189,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "9aff7044-6caf-4c57-a5f7-38ceb82f17cc",
+        "rowNumber": 380
+      },
+      {
+        "email": "stephen.marston@sky.com",
+        "clientId": "ac27690d-e94d-484e-a1ee-c4bf155838cd",
+        "name": "Steve MARSTON",
+        "points": 174,
+        "oldBalance": 174,
+        "wasEnrolled": true,
+        "transactionId": "7d8261fd-2024-4dfd-8f48-513ddb851062",
+        "rowNumber": 381
+      },
+      {
+        "email": "stephenandtrish@gmail.com",
+        "clientId": "cc00ee93-49a0-4288-b2ed-b90a48654705",
+        "name": "Trish Lowth",
+        "points": 171,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "716b647a-ca6f-47a0-8f8e-1f66650be8b0",
+        "rowNumber": 382
+      },
+      {
+        "email": "steve.bradford24@gmail.com",
+        "clientId": "d1f762fa-6982-46c1-9662-f53197d35b49",
+        "name": "Steve Bradford",
+        "points": 219,
+        "oldBalance": 219,
+        "wasEnrolled": true,
+        "transactionId": "3bdb68ec-ce18-4ceb-bfc7-91f79737b295",
+        "rowNumber": 383
+      },
+      {
+        "email": "steverobinson.luoyi@gmail.com",
+        "clientId": "5dc9c5aa-0655-4229-9fbd-f027c352e54e",
+        "name": "Steve Robinson",
+        "points": 174,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "867a6c7f-2137-4b41-9ebe-d3a665e2d96b",
+        "rowNumber": 384
+      },
+      {
+        "email": "stewartaspence@btinternet.com",
+        "clientId": "dd2a64c6-d134-4dde-99ef-f15508862d44",
+        "name": "Stewart Spence",
+        "points": 159,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "60cca0b6-f8d5-43fb-937e-c36214f4281c",
+        "rowNumber": 385
+      },
+      {
+        "email": "su.harris@me.com",
+        "clientId": "34811ae7-1d3b-498d-9cc2-622b767b64eb",
+        "name": "Su Harris",
+        "points": 187,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "2a6020a0-6073-4ab5-8763-9237cd0cc243",
+        "rowNumber": 386
+      },
+      {
+        "email": "sue_row366@hotmail.com",
+        "clientId": "5fcb5ebf-4260-47c6-97b8-162e9c964fb5",
+        "name": "Sue Bendelow",
+        "points": 284,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "423e1984-141c-4dc9-8384-fd120aa6a8c6",
+        "rowNumber": 387
+      },
+      {
+        "email": "sue_sf@hotmail.com",
+        "clientId": "43ba1f31-e54e-47ce-a36c-65b97746a65c",
+        "name": "Sue Swain-Fossey",
+        "points": 214,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "893a05a9-1b2c-4324-8a07-54ae8cdd9987",
+        "rowNumber": 388
+      },
+      {
+        "email": "susancroninster@gmail.com",
+        "clientId": "2becc614-429d-4749-8520-20921c28acba",
+        "name": "Susan Cronin",
+        "points": 174,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "cef34d9e-2ec6-406e-a324-de2c535bf4c2",
+        "rowNumber": 389
+      },
+      {
+        "email": "susi.cardew73@gmail.com",
+        "clientId": "de08eeec-8d0a-4db0-a2e1-4cca26fea478",
+        "name": "Susi Cardew",
+        "points": 249,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "dc032a0f-b86b-4317-a2b0-3e3cee1c25ae",
+        "rowNumber": 390
+      },
+      {
+        "email": "taturnermobile@live.com",
+        "clientId": "446ff85f-0f16-40f6-88f0-cc26fa2e8c76",
+        "name": "Travis Turner",
+        "points": 284,
+        "oldBalance": 259,
+        "wasEnrolled": true,
+        "transactionId": "e3cf3a8b-0f1d-42cc-9baa-9950c01a26cd",
+        "rowNumber": 391
+      },
+      {
+        "email": "tedtiller1@gmail.com",
+        "clientId": "2451db4b-70d1-40e8-ac43-3969087552ee",
+        "name": "Edward Tiller",
+        "points": 199,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "787205f5-cf60-4cdb-8493-2fedbe62771f",
+        "rowNumber": 392
+      },
+      {
+        "email": "teresa.southern@icloud.com",
+        "clientId": "f0dc949c-513d-40a1-8286-cdb2446ff687",
+        "name": "Teresa Southern",
+        "points": 684,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "f3958cc0-749a-4b1d-b13b-213484b209a4",
+        "rowNumber": 393
+      },
+      {
+        "email": "testloyalty6@test.com",
+        "clientId": "a00458b1-daa7-437a-a2f4-4b1cfd01dcac",
+        "name": "test tt",
+        "points": 44,
+        "oldBalance": 200,
+        "wasEnrolled": true,
+        "transactionId": "01d3649e-73a9-43f7-9708-70cd2095fe04",
+        "rowNumber": 395
+      },
+      {
+        "email": "thedoctorford@aol.com",
+        "clientId": "43f0d812-c8b8-48ba-a7a5-06e4e3e2b063",
+        "name": "Diane Roberts",
+        "points": 209,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "93334be9-6345-49bc-bd98-58f787e29952",
+        "rowNumber": 396
+      },
+      {
+        "email": "thedoylies0893@gmail.com",
+        "clientId": "1776fee8-24fa-417b-99f8-6c59b656a1a8",
+        "name": "John Doyle",
+        "points": 294,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "57847e9c-498b-4b37-9dab-0ce709e68d67",
+        "rowNumber": 397
+      },
+      {
+        "email": "thefosterfamily4@btinternet.com",
+        "clientId": "fd9eedf4-32ad-4976-90fe-4de07fca327f",
+        "name": "Susan Foster",
+        "points": 269,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "54a0aedd-d63f-4174-8c8a-cdca01cc33c8",
+        "rowNumber": 398
+      },
+      {
+        "email": "theresaclark1234@aol.com",
+        "clientId": "33954d55-772c-4a41-94dd-46c03f1e64ac",
+        "name": "Theresa Clark",
+        "points": 419,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "34527191-0435-4625-9a79-d193b8c3c12d",
+        "rowNumber": 399
+      },
+      {
+        "email": "thomas.ewing@btopenworld.com",
+        "clientId": "81e3064c-e4be-4c9e-826e-adc34d4a6af1",
+        "name": "Thomas Ewing",
+        "points": 266,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "9b184892-72b2-4fcc-aed5-f6f6a6463340",
+        "rowNumber": 400
+      },
+      {
+        "email": "thompsoncm22@gmail.com",
+        "clientId": "2b8a3ee8-f5e9-47ab-abe1-62e461573253",
+        "name": "Christine Thompson",
+        "points": 217,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "041a83f5-54f7-4d17-933e-5c52278ec9a3",
+        "rowNumber": 401
+      },
+      {
+        "email": "tim.thackaberry@btinternet.com",
+        "clientId": "90394c88-c63c-43f1-b590-8a3a597abe27",
+        "name": "Timothy Thackaberry",
+        "points": 319,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "c53f5dec-b881-4e0a-a06d-45bd850c5237",
+        "rowNumber": 402
+      },
+      {
+        "email": "tmathers792@gmail.com",
+        "clientId": "8b5c1ec5-aaae-42a0-880d-9c17006e542c",
+        "name": "Thomas Mather",
+        "points": 184,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "28f70543-2638-4e99-97ca-02421f810ce0",
+        "rowNumber": 403
+      },
+      {
+        "email": "tobysimmonds@aol.com",
+        "clientId": "a4c9b344-d60d-4632-ab42-71d1e69ceedc",
+        "name": "Alison Simmonds",
+        "points": 194,
+        "oldBalance": 194,
+        "wasEnrolled": true,
+        "transactionId": "efa5a9ef-34ca-48a9-9d29-cb4507dab27b",
+        "rowNumber": 404
+      },
+      {
+        "email": "tori.frm@gmail.com",
+        "clientId": "e65068c1-7ccf-4e36-a7e9-764817432e1b",
+        "name": "Tor Mcdouall",
+        "points": 169,
+        "oldBalance": 169,
+        "wasEnrolled": true,
+        "transactionId": "c38d2276-b5aa-4320-aab7-99be887b3726",
+        "rowNumber": 405
+      },
+      {
+        "email": "traceyj28@proton.me",
+        "clientId": "33da9055-b2ff-4a0f-9932-333f1e9d453d",
+        "name": "Tracey Jordan",
+        "points": 119,
+        "oldBalance": 119,
+        "wasEnrolled": true,
+        "transactionId": "fd58d033-9125-4e4b-9dd7-ca553333f8a0",
+        "rowNumber": 406
+      },
+      {
+        "email": "trevor@smithysdrains.com",
+        "clientId": "f93b7ba1-fb7b-488f-ad02-33f3dd62da51",
+        "name": "Trevor smith",
+        "points": 299,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "294cf89e-5644-42f0-87fe-9a40c513c0b1",
+        "rowNumber": 407
+      },
+      {
+        "email": "tricias1@live.ca",
+        "clientId": "5776d5f8-5ccf-44c6-85b0-6b94e6913854",
+        "name": "Patricia sinclair",
+        "points": 242,
+        "oldBalance": 229,
+        "wasEnrolled": true,
+        "transactionId": "7a138f41-76ce-450d-a094-606a7832f9e9",
+        "rowNumber": 408
+      },
+      {
+        "email": "trinhstephen@msn.com",
+        "clientId": "63b2ea3b-4582-4742-a480-6b26d0671433",
+        "name": "Trinh Stephen",
+        "points": 374,
+        "oldBalance": 339,
+        "wasEnrolled": true,
+        "transactionId": "ec63f2ce-00c1-4677-822f-5349ef1c5aa1",
+        "rowNumber": 409
+      },
+      {
+        "email": "trishsomajo@gmail.com",
+        "clientId": "88cbbece-f513-4e1a-95a0-a1e86d64f624",
+        "name": "Trish Greenhalgh",
+        "points": 434,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "cc1ab1cd-bd41-4db4-b362-849878fa1836",
+        "rowNumber": 410
+      },
+      {
+        "email": "tvsphone@gmail.com",
+        "clientId": "038dfbb6-1dab-47c3-8455-67febc39fa09",
+        "name": "Thomas Sedlacek",
+        "points": 169,
+        "oldBalance": 169,
+        "wasEnrolled": true,
+        "transactionId": "3a5f0ce5-5bc2-476b-bff7-679966f3451a",
+        "rowNumber": 411
+      },
+      {
+        "email": "uumatter@mac.com",
+        "clientId": "6a1e5041-a482-478c-ab9b-b849c3dcceef",
+        "name": "Leonard Iacono",
+        "points": 285,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d1d38d78-7850-44fe-a5a9-e5e4412a6c5f",
+        "rowNumber": 412
+      },
+      {
+        "email": "valmackenz65@icloud.com",
+        "clientId": "e3b7ba86-8c26-4d23-abc9-7fdbbf8f9b39",
+        "name": "Valerie Mackenzie",
+        "points": 150,
+        "oldBalance": 139,
+        "wasEnrolled": true,
+        "transactionId": "f0830564-95b1-4960-9c11-46816e38e233",
+        "rowNumber": 413
+      },
+      {
+        "email": "vicki_moran15@hotmail.com",
+        "clientId": "bd2fe8e3-3fd3-4162-912b-6564ec060b98",
+        "name": "Victoria Moran",
+        "points": 180,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "a8a435d8-3edb-40a0-ad7d-cea96fd4213c",
+        "rowNumber": 414
+      },
+      {
+        "email": "victoria.f.ellis@btopenworld.com",
+        "clientId": "c643602c-e1a6-4c9f-acbf-9055e934ed7b",
+        "name": "Victoria Wainwright",
+        "points": 264,
+        "oldBalance": 264,
+        "wasEnrolled": true,
+        "transactionId": "abe2b7d9-f0e9-4e9e-a27d-408fcdf646e6",
+        "rowNumber": 415
+      },
+      {
+        "email": "vikki2305@sky.com",
+        "clientId": "7611eb7d-8a2c-4436-956c-cd98bad69d95",
+        "name": "Chipo Chagaresango",
+        "points": 221,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "2eaa3a8e-3019-41d9-8cb1-31f12cf4a156",
+        "rowNumber": 416
+      },
+      {
+        "email": "walter.pollock102@mod.gov.uk",
+        "clientId": "6b0c348d-4a98-4d3b-af6a-b0bdb51e4e16",
+        "name": "Walter Pollock",
+        "points": 234,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "8cf1805c-c4aa-4488-98d5-66a85dda45fa",
+        "rowNumber": 417
+      },
+      {
+        "email": "webstersarah039@gmail.com",
+        "clientId": "c9289867-ebbf-4778-84c4-b1ede1a4b418",
+        "name": "Sarah Webster",
+        "points": 179,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "2afddf96-475b-4b73-860d-770c361caf26",
+        "rowNumber": 418
+      },
+      {
+        "email": "whitakers36@gmail.com",
+        "clientId": "453a43a0-0075-435d-afd9-8161763c0ec2",
+        "name": "Patricia Whitaker",
+        "points": 117,
+        "oldBalance": 109,
+        "wasEnrolled": true,
+        "transactionId": "9a42cd45-6313-4340-ad73-c40e469f786b",
+        "rowNumber": 419
+      },
+      {
+        "email": "whitefineart1@yahoo.co.uk",
+        "clientId": "4b2883e2-4598-401d-bc8b-0e3f8806f676",
+        "name": "Neil White",
+        "points": 199,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "d7eb2892-e60c-4c0e-88d3-9ad2abb8b8e2",
+        "rowNumber": 420
+      },
+      {
+        "email": "williamsj34@sky.com",
+        "clientId": "f41c1e63-0e6f-48e0-a214-f47c533126ac",
+        "name": "Joanne Williams",
+        "points": 179,
+        "oldBalance": 164,
+        "wasEnrolled": true,
+        "transactionId": "ac6b23da-d7ee-494f-918a-a039bb48ec5f",
+        "rowNumber": 421
+      },
+      {
+        "email": "woodcockanya1@gmail.com",
+        "clientId": "4c8fbe2c-1271-4e99-bf85-cbe81f5e3f44",
+        "name": "Anya Woodcock",
+        "points": 119,
+        "oldBalance": 119,
+        "wasEnrolled": true,
+        "transactionId": "33f5941c-aaeb-4e84-8299-344d9a97f8f9",
+        "rowNumber": 422
+      },
+      {
+        "email": "wyperh@aol.com",
+        "clientId": "96e04537-05b2-4b73-8d31-d0fdf9d1bc89",
+        "name": "Heather Wyper",
+        "points": 214,
+        "oldBalance": 214,
+        "wasEnrolled": true,
+        "transactionId": "d5e1391f-6e8d-4343-bd23-6bac3299c7b0",
+        "rowNumber": 423
+      },
+      {
+        "email": "wyvonne669@gmail.com",
+        "clientId": "4cef334a-fc22-414f-b565-938e8b2640a0",
+        "name": "Yvonne Williams",
+        "points": 137,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "e42da711-f174-40c8-9078-09bed4da9ca1",
+        "rowNumber": 424
+      },
+      {
+        "email": "yvonnecoldbeck@gmail.com",
+        "clientId": "52089006-8c3f-4930-b54d-de9cb3b3f1c4",
+        "name": "Yvonne Coldbeck",
+        "points": 199,
+        "oldBalance": 199,
+        "wasEnrolled": true,
+        "transactionId": "af8e24ab-ee60-4d63-b0c4-2c7f401fdb62",
+        "rowNumber": 425
+      },
+      {
+        "email": "zak.carroll@gmail.com",
+        "clientId": "37c5986f-1fee-4844-a3d9-9412dd8ac8a5",
+        "name": "Zak Carroll",
+        "points": 499,
+        "oldBalance": 0,
+        "wasEnrolled": true,
+        "transactionId": "8a9dde0d-9ea0-4398-ab41-c136e4107db7",
+        "rowNumber": 426
+      }
+    ],
+    "errors": [],
+    "notFound": [
+      {
+        "email": "test@test.com",
+        "points": 89,
+        "rowNumber": 394
+      }
+    ],
+    "wouldEnroll": []
+  }
+}

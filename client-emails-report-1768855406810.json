@@ -1,0 +1,4265 @@
+{
+  "timestamp": "2026-01-19T20:43:26.813Z",
+  "summary": {
+    "total": 425,
+    "found": 425,
+    "notFound": 0,
+    "errors": 0
+  },
+  "results": {
+    "found": [
+      {
+        "clientId": "57685dbd-d763-4186-9adc-e1af5eed49a4",
+        "email": "clareday24@btinternet.com",
+        "firstName": "Clare",
+        "lastName": "Day",
+        "fullName": "Clare Day",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 2
+      },
+      {
+        "clientId": "eeb9b693-a263-47b7-a73f-103dba9a9369",
+        "email": "julia@warrender.ca",
+        "firstName": "Julia",
+        "lastName": "Warrender",
+        "fullName": "Julia Warrender",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 3
+      },
+      {
+        "clientId": "c92ede31-fa9a-4322-8f3f-b234be0c2574",
+        "email": "memoralessar@gmail.com",
+        "firstName": "Maria",
+        "lastName": "Morales",
+        "fullName": "Maria Morales",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 4
+      },
+      {
+        "clientId": "a44afe33-f439-4a88-8827-4356c48420e9",
+        "email": "annedearman@hotmail.co.uk",
+        "firstName": "Anne",
+        "lastName": "Dearman",
+        "fullName": "Anne Dearman",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 5
+      },
+      {
+        "clientId": "bd829870-adf1-401c-a353-3582235ba2b6",
+        "email": "colin@charleswoodlaw.co.uk",
+        "firstName": "Colin",
+        "lastName": "Cant",
+        "fullName": "Colin Cant",
+        "pointsBalance": 124,
+        "loyaltyEnrolled": true,
+        "rowNumber": 6
+      },
+      {
+        "clientId": "6761b3d1-6b0a-4639-a2d3-0052c213b790",
+        "email": "rdoonga@hotmail.com",
+        "firstName": "rita",
+        "lastName": "doonga",
+        "fullName": "rita doonga",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 7
+      },
+      {
+        "clientId": "4d303259-9486-4431-bc42-98d91d712b50",
+        "email": "grahamecarter193@btinternet.com",
+        "firstName": "Grahame",
+        "lastName": "Carter",
+        "fullName": "Grahame Carter",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 8
+      },
+      {
+        "clientId": "4acbc55e-e03d-4fba-93db-94ece4d151fe",
+        "email": "cfanncl10@gmail.com",
+        "firstName": "Charlee",
+        "lastName": "Andrews",
+        "fullName": "Charlee Andrews",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 9
+      },
+      {
+        "clientId": "f40bdea2-80e2-4eeb-869d-c583b751549c",
+        "email": "digger01@hotmail.co.uk",
+        "firstName": "Scott",
+        "lastName": "Pester",
+        "fullName": "Scott Pester",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 10
+      },
+      {
+        "clientId": "1d2e691f-8ac8-49ba-bcc6-3fcc5a1633c0",
+        "email": "kevin@kgolding.co.uk",
+        "firstName": "Kevin",
+        "lastName": "Golding",
+        "fullName": "Kevin Golding",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 11
+      },
+      {
+        "clientId": "dfea4bb6-46af-4180-90ec-9d0b5c1831bc",
+        "email": "rodmason@me.com",
+        "firstName": "Rod",
+        "lastName": "Mason",
+        "fullName": "Rod Mason",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 12
+      },
+      {
+        "clientId": "dfb73e64-1f12-44ed-b35b-bbeb75695bb9",
+        "email": "judy.claridge@gmail.com",
+        "firstName": "Judy",
+        "lastName": "Claridge",
+        "fullName": "Judy Claridge",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 13
+      },
+      {
+        "clientId": "83b980c0-b5fc-4e20-a98a-de48e2b6537c",
+        "email": "mazehome@talktalk.net",
+        "firstName": "Paul",
+        "lastName": "May",
+        "fullName": "Paul May",
+        "pointsBalance": 309,
+        "loyaltyEnrolled": true,
+        "rowNumber": 14
+      },
+      {
+        "clientId": "5f5194ba-1466-4650-bd18-f70b6fd0dd03",
+        "email": "alexandracorrigan22@icloud.com",
+        "firstName": "Alexandra",
+        "lastName": "Graham",
+        "fullName": "Alexandra Graham",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 15
+      },
+      {
+        "clientId": "bae3d95f-20a7-4204-9ddb-b537f849c0e6",
+        "email": "richstocks75@gmail.com",
+        "firstName": "Rich",
+        "lastName": "Stocks",
+        "fullName": "Rich Stocks",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 16
+      },
+      {
+        "clientId": "d275548f-ea01-4903-af4d-8e8c33ed799a",
+        "email": "chick_chelsie@hotmail.com",
+        "firstName": "Chelsie",
+        "lastName": "Watkinson",
+        "fullName": "Chelsie Watkinson",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 17
+      },
+      {
+        "clientId": "6bd261dc-3cf8-4c93-9171-4ba27a2a10ce",
+        "email": "jf@jf.ie",
+        "firstName": "Jonathan ",
+        "lastName": "Fildes",
+        "fullName": "Jonathan  Fildes",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 18
+      },
+      {
+        "clientId": "2aafc401-7daf-415f-a134-859259bd3163",
+        "email": "eek_claire@yahoo.com",
+        "firstName": "Claire",
+        "lastName": "Rawes",
+        "fullName": "Claire Rawes",
+        "pointsBalance": 174,
+        "loyaltyEnrolled": true,
+        "rowNumber": 19
+      },
+      {
+        "clientId": "034e9862-5935-47dd-b19d-67c9522ff649",
+        "email": "beckydinger@aol.com",
+        "firstName": "Becky",
+        "lastName": "Ding",
+        "fullName": "Becky Ding",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 20
+      },
+      {
+        "clientId": "fc3cfba9-f185-41ec-ae26-5cd784938acf",
+        "email": "mwctyrrell@gmail.com",
+        "firstName": "Mark",
+        "lastName": "Tyrrell",
+        "fullName": "Mark Tyrrell",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 21
+      },
+      {
+        "clientId": "cd1efd84-2987-4541-88b1-c1d3a31462b9",
+        "email": "operations@trophyevents.co.uk",
+        "firstName": "Trophy",
+        "lastName": "Events",
+        "fullName": "Trophy Events",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 22
+      },
+      {
+        "clientId": "6a4c6095-2b29-4528-bf14-48c9662410d5",
+        "email": "jessica@amarillotravelnetwork.com",
+        "firstName": "Jessica",
+        "lastName": "Grider",
+        "fullName": "Jessica Grider",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 23
+      },
+      {
+        "clientId": "437c6a49-f4bd-4bd2-a99c-a997a84d66cf",
+        "email": "patrickfaure17@outlook.com",
+        "firstName": "Patrick",
+        "lastName": "Faure",
+        "fullName": "Patrick Faure",
+        "pointsBalance": 434,
+        "loyaltyEnrolled": true,
+        "rowNumber": 24
+      },
+      {
+        "clientId": "71b27e39-2241-4d3c-b71b-fd455316893f",
+        "email": "andrea_taylor20@hotmail.co.uk",
+        "firstName": "Andrea",
+        "lastName": "Taylor",
+        "fullName": "Andrea Taylor",
+        "pointsBalance": 294,
+        "loyaltyEnrolled": true,
+        "rowNumber": 25
+      },
+      {
+        "clientId": "2807709d-ac4a-48b1-b93a-4c02070291f1",
+        "email": "neil.cameron287@gmail.com",
+        "firstName": "Neil",
+        "lastName": "Cameron",
+        "fullName": "Neil Cameron",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 26
+      },
+      {
+        "clientId": "859e69f8-0989-46d4-9e3a-64c3340edda9",
+        "email": "lindy@messengers.net.au",
+        "firstName": "Lindy",
+        "lastName": "Messenger",
+        "fullName": "Lindy Messenger",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 27
+      },
+      {
+        "clientId": "3d1708e7-8595-4c4b-935b-d0577af518c9",
+        "email": "mccarthywilliam1@hotmail.com",
+        "firstName": "Liam",
+        "lastName": "McCarthy",
+        "fullName": "Liam McCarthy",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 28
+      },
+      {
+        "clientId": "11f0b70e-8ec7-4dc3-b954-838a18eb9e69",
+        "email": "carolinejack@ymail.com",
+        "firstName": "Caroline",
+        "lastName": "Jack",
+        "fullName": "Caroline Jack",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 29
+      },
+      {
+        "clientId": "c93ac85b-7a6d-45f2-9cfb-86c6b0fd2265",
+        "email": "sjones68@sky.com",
+        "firstName": "Simon",
+        "lastName": "Jones",
+        "fullName": "Simon Jones",
+        "pointsBalance": 209,
+        "loyaltyEnrolled": true,
+        "rowNumber": 30
+      },
+      {
+        "clientId": "1c2f5683-747b-41d2-9ca8-f9c29c07419a",
+        "email": "emma.jane.corr@gmail.com",
+        "firstName": "Emma",
+        "lastName": "Corr",
+        "fullName": "Emma Corr",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 31
+      },
+      {
+        "clientId": "e640b216-5af0-4258-8920-76528838eef0",
+        "email": "rob@dalesjoinery.co.uk",
+        "firstName": "Rob",
+        "lastName": "Wright",
+        "fullName": "Rob Wright",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 32
+      },
+      {
+        "clientId": "60f16a85-e5fe-4a05-8f66-9d39262aaec6",
+        "email": "mark.wc.ltd@gmail.com",
+        "firstName": "Mark",
+        "lastName": "Clapton",
+        "fullName": "Mark Clapton",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 33
+      },
+      {
+        "clientId": "c92ad2cf-7e6a-4658-9897-7f452b993aba",
+        "email": "amanda.cardall@gmail.com",
+        "firstName": "Amanda",
+        "lastName": "Cardall",
+        "fullName": "Amanda Cardall",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 34
+      },
+      {
+        "clientId": "d1f762fa-6982-46c1-9662-f53197d35b49",
+        "email": "steve.bradford24@gmail.com",
+        "firstName": "Steve",
+        "lastName": "Bradford",
+        "fullName": "Steve Bradford",
+        "pointsBalance": 219,
+        "loyaltyEnrolled": true,
+        "rowNumber": 35
+      },
+      {
+        "clientId": "aa38f92c-0f3a-423d-b188-3c33aacc6d2b",
+        "email": "andybsmith@hotmail.co.uk",
+        "firstName": "Andrew",
+        "lastName": "Smith",
+        "fullName": "Andrew Smith",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 36
+      },
+      {
+        "clientId": "16878675-41a8-430a-b64d-8b97e139f4b4",
+        "email": "andrewbarker@bullbrand.co.uk",
+        "firstName": "andrew",
+        "lastName": "barker",
+        "fullName": "andrew barker",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 37
+      },
+      {
+        "clientId": "070c43a3-9933-4b48-b0cb-88928ed3a0aa",
+        "email": "richard.shadforth@premierbuildingproducts.co.uk",
+        "firstName": "Richard",
+        "lastName": "Shadforth",
+        "fullName": "Richard Shadforth",
+        "pointsBalance": 479,
+        "loyaltyEnrolled": true,
+        "rowNumber": 38
+      },
+      {
+        "clientId": "dc152e01-c703-4730-af25-3481dea92b58",
+        "email": "dannyshields@me.com",
+        "firstName": "Danny",
+        "lastName": "Shields",
+        "fullName": "Danny Shields",
+        "pointsBalance": 200,
+        "loyaltyEnrolled": true,
+        "rowNumber": 39
+      },
+      {
+        "clientId": "304c871c-6c45-4f88-bc9e-75acc1086281",
+        "email": "dkmsam55@gmail.com",
+        "firstName": "David",
+        "lastName": "Milligan",
+        "fullName": "David Milligan",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 40
+      },
+      {
+        "clientId": "931023ff-721d-4793-8852-a84641bd8a15",
+        "email": "looby16@live.co.uk",
+        "firstName": "Lisa",
+        "lastName": "Mahoney",
+        "fullName": "Lisa Mahoney",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 41
+      },
+      {
+        "clientId": "10b8db7d-45b2-47e6-87bf-9ac17efa6825",
+        "email": "davematt74@gmail.com",
+        "firstName": "David",
+        "lastName": "Matthews",
+        "fullName": "David Matthews",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 42
+      },
+      {
+        "clientId": "ace7868b-9c43-41d1-a924-b0c9088a0592",
+        "email": "saradavison@duck.com",
+        "firstName": "Sara",
+        "lastName": "Davison",
+        "fullName": "Sara Davison",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 43
+      },
+      {
+        "clientId": "c6da4dd5-a4ba-418c-8b63-ac0281019f6d",
+        "email": "kclayds@hotmail.co.uk",
+        "firstName": "Katrina",
+        "lastName": "Claydon",
+        "fullName": "Katrina Claydon",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 44
+      },
+      {
+        "clientId": "5a48df7c-cf30-4d5b-82b1-6a865587d84f",
+        "email": "pennydclarke@gmail.com",
+        "firstName": "Penny",
+        "lastName": "Clarke",
+        "fullName": "Penny Clarke",
+        "pointsBalance": 174,
+        "loyaltyEnrolled": true,
+        "rowNumber": 45
+      },
+      {
+        "clientId": "4cef334a-fc22-414f-b565-938e8b2640a0",
+        "email": "wyvonne669@gmail.com",
+        "firstName": "Yvonne",
+        "lastName": "Williams",
+        "fullName": "Yvonne Williams",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 46
+      },
+      {
+        "clientId": "dabd1dce-4bb7-49ee-b944-994c3329197e",
+        "email": "martinlavelle30@googlemail.com",
+        "firstName": "Martin",
+        "lastName": "Lavelle",
+        "fullName": "Martin Lavelle",
+        "pointsBalance": 199,
+        "loyaltyEnrolled": true,
+        "rowNumber": 47
+      },
+      {
+        "clientId": "477eaacd-8ef3-43c3-89ce-d3eb597a1601",
+        "email": "dan@cowton.org.uk",
+        "firstName": "Dan",
+        "lastName": "Cowton",
+        "fullName": "Dan Cowton",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 48
+      },
+      {
+        "clientId": "adfff381-66f4-4672-94a4-e8df9bd929ca",
+        "email": "mswales5@gmail.com",
+        "firstName": "Mark",
+        "lastName": "Swales",
+        "fullName": "Mark Swales",
+        "pointsBalance": 139,
+        "loyaltyEnrolled": true,
+        "rowNumber": 49
+      },
+      {
+        "clientId": "41ad2c9f-22ff-4bcb-b4b5-3ae6978dc3aa",
+        "email": "justhaggis@gmail.com",
+        "firstName": "Paul",
+        "lastName": "Mcdonald",
+        "fullName": "Paul Mcdonald",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 50
+      },
+      {
+        "clientId": "bab25f81-2734-4691-994e-814aba1067ca",
+        "email": "olivermiles975@yahoo.com",
+        "firstName": "Oliver",
+        "lastName": "Duff",
+        "fullName": "Oliver Duff",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 51
+      },
+      {
+        "clientId": "28c81487-c664-4d6b-89b8-9f3cf5509ec1",
+        "email": "pamelalucido@icloud.com",
+        "firstName": "Pamela",
+        "lastName": "Worswick Lucido",
+        "fullName": "Pamela Worswick Lucido",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 52
+      },
+      {
+        "clientId": "db89f1e5-2f57-41ce-9352-5bdf88ca3501",
+        "email": "sarahwalsh72@hotmail.co.uk",
+        "firstName": "Sarah",
+        "lastName": "Walsh",
+        "fullName": "Sarah Walsh",
+        "pointsBalance": 275,
+        "loyaltyEnrolled": true,
+        "rowNumber": 53
+      },
+      {
+        "clientId": "4cd8be8a-20b4-497e-b8de-d986d238ddcf",
+        "email": "crheeston@yahoo.co.uk",
+        "firstName": "Chantelle",
+        "lastName": "Guest",
+        "fullName": "Chantelle Guest",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 54
+      },
+      {
+        "clientId": "bd2fe8e3-3fd3-4162-912b-6564ec060b98",
+        "email": "vicki_moran15@hotmail.com",
+        "firstName": "Victoria",
+        "lastName": "Moran",
+        "fullName": "Victoria Moran",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 55
+      },
+      {
+        "clientId": "a69ee68d-8bce-4b80-a5e8-47c826fd8db0",
+        "email": "INFO@DEWSBURYTRAVEL.COM",
+        "firstName": "Arif",
+        "lastName": "Shaikh",
+        "fullName": "Arif Shaikh",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 56
+      },
+      {
+        "clientId": "cc00ee93-49a0-4288-b2ed-b90a48654705",
+        "email": "stephenandtrish@gmail.com",
+        "firstName": "Trish",
+        "lastName": "Lowth",
+        "fullName": "Trish Lowth",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 57
+      },
+      {
+        "clientId": "4adffc6c-07da-4788-badb-3b8af882ea7c",
+        "email": "alexander0911@sky.com",
+        "firstName": "Alexander",
+        "lastName": "McBeath",
+        "fullName": "Alexander McBeath",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 58
+      },
+      {
+        "clientId": "c05c1ef8-cf9f-4c95-b091-6671d59eccf6",
+        "email": "karono@yahoo.com",
+        "firstName": "Karon",
+        "lastName": "O'Callaghan",
+        "fullName": "Karon O'Callaghan",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 59
+      },
+      {
+        "clientId": "9722b0b5-712f-46f6-b2b5-d3afe36268f1",
+        "email": "jillblakley@live.co.uk",
+        "firstName": "Jill",
+        "lastName": "Harshaw",
+        "fullName": "Jill Harshaw",
+        "pointsBalance": 159,
+        "loyaltyEnrolled": true,
+        "rowNumber": 61
+      },
+      {
+        "clientId": "29bd82f6-38a7-4b33-9b90-13b901e9b088",
+        "email": "davidwilmot27@me.com",
+        "firstName": "David",
+        "lastName": "Wilmot",
+        "fullName": "David Wilmot",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 62
+      },
+      {
+        "clientId": "d3f65c60-7652-4b78-9df3-783c30f1d255",
+        "email": "jlcoombs@protonmail.com",
+        "firstName": "John",
+        "lastName": "Coombs",
+        "fullName": "John Coombs",
+        "pointsBalance": 164,
+        "loyaltyEnrolled": true,
+        "rowNumber": 63
+      },
+      {
+        "clientId": "eabdd900-2859-493f-8ee5-260e025bbf8e",
+        "email": "gerjudge@yahoo.ie",
+        "firstName": "Gerard",
+        "lastName": "judge",
+        "fullName": "Gerard judge",
+        "pointsBalance": 146,
+        "loyaltyEnrolled": true,
+        "rowNumber": 64
+      },
+      {
+        "clientId": "fc0c30ae-2ce8-4301-9ce3-6bb7ae9d3540",
+        "email": "fk.plumbingheating@gmail.com",
+        "firstName": "Frazer",
+        "lastName": "King",
+        "fullName": "Frazer King",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 65
+      },
+      {
+        "clientId": "4088e788-a60a-4fd8-9af3-ccd2d18b7b05",
+        "email": "ross.slater@hotmail.co.uk",
+        "firstName": "Ross",
+        "lastName": "Slater",
+        "fullName": "Ross Slater",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 66
+      },
+      {
+        "clientId": "3e07bdda-a34a-4179-ae48-ae93cf27b77b",
+        "email": "info@greenlanegarage.co.uk",
+        "firstName": "Russ",
+        "lastName": "Brown",
+        "fullName": "Russ Brown",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 67
+      },
+      {
+        "clientId": "a9102376-9f12-4855-b153-22a90bacdaea",
+        "email": "lydia.drain@googlemail.com",
+        "firstName": "Lydia",
+        "lastName": "Hirst",
+        "fullName": "Lydia Hirst",
+        "pointsBalance": 190,
+        "loyaltyEnrolled": true,
+        "rowNumber": 68
+      },
+      {
+        "clientId": "a65f4a9b-bb64-4081-99a9-9c334c0ac74d",
+        "email": "mikewainhouse@gmail.com",
+        "firstName": "Mike",
+        "lastName": "Wainhouse",
+        "fullName": "Mike Wainhouse",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 69
+      },
+      {
+        "clientId": "07e7bbae-ff4f-4c99-ad4a-d8857c8a3230",
+        "email": "jim.mcnulty@restructa.co.uk",
+        "firstName": "James",
+        "lastName": "McNulty",
+        "fullName": "James McNulty",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 70
+      },
+      {
+        "clientId": "f43e5965-749c-485f-8032-e57c2412be75",
+        "email": "elainebeesley@outlook.com",
+        "firstName": "Elaine",
+        "lastName": "Beesley",
+        "fullName": "Elaine Beesley",
+        "pointsBalance": 149,
+        "loyaltyEnrolled": true,
+        "rowNumber": 71
+      },
+      {
+        "clientId": "491a670a-8995-4851-87fe-a540905ba4e6",
+        "email": "manorth56@gmail.com",
+        "firstName": "Mark",
+        "lastName": "North",
+        "fullName": "Mark North",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 72
+      },
+      {
+        "clientId": "ecf56e17-993a-4992-b6b5-da15d4c4db15",
+        "email": "cawsey4@gmail.com",
+        "firstName": "Pip",
+        "lastName": "Cawsey",
+        "fullName": "Pip Cawsey",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 73
+      },
+      {
+        "clientId": "d98c52d9-c3a8-4d3f-b814-cdad4adad71c",
+        "email": "garry9822819400@aol.com",
+        "firstName": "Garry",
+        "lastName": "Smith",
+        "fullName": "Garry Smith",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 74
+      },
+      {
+        "clientId": "efae3b8e-5c5a-44aa-9288-53749b823fa6",
+        "email": "s.bettison@sky.com",
+        "firstName": "shaun",
+        "lastName": "bettison",
+        "fullName": "shaun bettison",
+        "pointsBalance": 254,
+        "loyaltyEnrolled": true,
+        "rowNumber": 75
+      },
+      {
+        "clientId": "b303a4a7-6bb1-42fc-b081-5b56953f7a9d",
+        "email": "dkunselman@productivityteam.com",
+        "firstName": "David",
+        "lastName": "Kunselman",
+        "fullName": "David Kunselman",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 76
+      },
+      {
+        "clientId": "0c6d6d04-3fb4-468f-9bcd-fa1d7e9c2efd",
+        "email": "petertrk33@gmail.com",
+        "firstName": "Peter",
+        "lastName": "Trickey",
+        "fullName": "Peter Trickey",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 77
+      },
+      {
+        "clientId": "88b6d457-2905-4a40-96b3-aca46728b047",
+        "email": "luke@grandprixgrandtours.com",
+        "firstName": "luke",
+        "lastName": "gould",
+        "fullName": "luke gould",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 78
+      },
+      {
+        "clientId": "301906c4-eb21-4afe-91bd-920e3c3ae50a",
+        "email": "billynelson83@btinternet.com",
+        "firstName": "William",
+        "lastName": "Nelson",
+        "fullName": "William Nelson",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 79
+      },
+      {
+        "clientId": "40f960b6-d26e-4ee7-95a6-8c228d95d4e1",
+        "email": "jgranados@me.com",
+        "firstName": "Jose",
+        "lastName": "Granados",
+        "fullName": "Jose Granados",
+        "pointsBalance": 194,
+        "loyaltyEnrolled": true,
+        "rowNumber": 80
+      },
+      {
+        "clientId": "262a72af-a7b6-4c81-8cf5-88918069c0e9",
+        "email": "jayne.rodgers@travelcationgroup.com",
+        "firstName": "MJ",
+        "lastName": "Rodgers",
+        "fullName": "MJ Rodgers",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 81
+      },
+      {
+        "clientId": "79c53a19-b79d-465c-9898-6f9486f029d7",
+        "email": "edwardsjong@icloud.com",
+        "firstName": "Edward",
+        "lastName": "Jong",
+        "fullName": "Edward Jong",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 82
+      },
+      {
+        "clientId": "96b04cfc-2842-41c4-8b99-f704fd900112",
+        "email": "gavmcmorran@sky.com",
+        "firstName": "Gavin",
+        "lastName": "Mcmorran",
+        "fullName": "Gavin Mcmorran",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 83
+      },
+      {
+        "clientId": "1b354279-8c08-4e8b-b007-d8619c20dd73",
+        "email": "carol.culp@eponatravelco.com",
+        "firstName": "Carol",
+        "lastName": "Culp",
+        "fullName": "Carol Culp",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 84
+      },
+      {
+        "clientId": "90486025-c435-4a75-8217-ea24920c332c",
+        "email": "helenbrown13@hotmail.co.uk",
+        "firstName": "Helen",
+        "lastName": "Brown",
+        "fullName": "Helen Brown",
+        "pointsBalance": 219,
+        "loyaltyEnrolled": true,
+        "rowNumber": 85
+      },
+      {
+        "clientId": "f41c1e63-0e6f-48e0-a214-f47c533126ac",
+        "email": "williamsj34@sky.com",
+        "firstName": "Joanne",
+        "lastName": "Williams",
+        "fullName": "Joanne Williams",
+        "pointsBalance": 164,
+        "loyaltyEnrolled": true,
+        "rowNumber": 86
+      },
+      {
+        "clientId": "673db03c-6b40-42cd-a782-21c7b679169a",
+        "email": "elleq79@hotmail.com",
+        "firstName": "Elaine",
+        "lastName": "Quinn",
+        "fullName": "Elaine Quinn",
+        "pointsBalance": 239,
+        "loyaltyEnrolled": true,
+        "rowNumber": 87
+      },
+      {
+        "clientId": "eb0914e0-0103-4780-b21f-0060b9929996",
+        "email": "ianbat@hotmail.com",
+        "firstName": "Ian",
+        "lastName": "Battersby",
+        "fullName": "Ian Battersby",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 88
+      },
+      {
+        "clientId": "1ac3e142-3065-4c8e-a354-a1b605aca947",
+        "email": "antcliffjan@gmail.com",
+        "firstName": "Jan",
+        "lastName": "Antcliff",
+        "fullName": "Jan Antcliff",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 89
+      },
+      {
+        "clientId": "e83eea6d-d749-49de-a5d9-87d2d31c73b8",
+        "email": "darhar2103@sky.com",
+        "firstName": "Darren",
+        "lastName": "Harvey",
+        "fullName": "Darren Harvey",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 90
+      },
+      {
+        "clientId": "25ffbef3-5dd9-4737-be6d-43d4ddb5ee7e",
+        "email": "elliepainter05@gmail.com",
+        "firstName": "Ellie",
+        "lastName": "Painter",
+        "fullName": "Ellie Painter",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 91
+      },
+      {
+        "clientId": "7e5d6544-dfe5-45f2-9cab-98adb88850cd",
+        "email": "carrinac@gmail.com",
+        "firstName": "Carrina",
+        "lastName": "Cappadona",
+        "fullName": "Carrina Cappadona",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 92
+      },
+      {
+        "clientId": "da5a222c-00e2-48de-b0fe-118b1fe761cc",
+        "email": "macymaeball@gmail.com",
+        "firstName": "Macy",
+        "lastName": "Ball",
+        "fullName": "Macy Ball",
+        "pointsBalance": 204,
+        "loyaltyEnrolled": true,
+        "rowNumber": 93
+      },
+      {
+        "clientId": "ac27690d-e94d-484e-a1ee-c4bf155838cd",
+        "email": "stephen.marston@sky.com",
+        "firstName": "Steve",
+        "lastName": "MARSTON",
+        "fullName": "Steve MARSTON",
+        "pointsBalance": 174,
+        "loyaltyEnrolled": true,
+        "rowNumber": 94
+      },
+      {
+        "clientId": "d3cd1bfc-32c2-43c3-9120-f8d8d4225891",
+        "email": "lulu_nye@live.co.uk",
+        "firstName": "Lily",
+        "lastName": "Nye",
+        "fullName": "Lily Nye",
+        "pointsBalance": 149,
+        "loyaltyEnrolled": true,
+        "rowNumber": 95
+      },
+      {
+        "clientId": "868a046a-2539-45ef-ab3a-61a76af7cab5",
+        "email": "sally@birkwoodplant.co.uk",
+        "firstName": "Sally",
+        "lastName": "Ramskill",
+        "fullName": "Sally Ramskill",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 96
+      },
+      {
+        "clientId": "3c9bb01d-81c7-4b34-989f-5f926cff1704",
+        "email": "jenny.dahlstrom@education.vic.gov.au",
+        "firstName": "Jenny",
+        "lastName": "dahlstrom",
+        "fullName": "Jenny dahlstrom",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 97
+      },
+      {
+        "clientId": "63b2ea3b-4582-4742-a480-6b26d0671433",
+        "email": "trinhstephen@msn.com",
+        "firstName": "Trinh",
+        "lastName": "Stephen",
+        "fullName": "Trinh Stephen",
+        "pointsBalance": 339,
+        "loyaltyEnrolled": true,
+        "rowNumber": 98
+      },
+      {
+        "clientId": "f36c0313-fa35-4b11-81b0-8e00f4b3046e",
+        "email": "christinewan@bellsouth.net",
+        "firstName": "Christine",
+        "lastName": "Wan",
+        "fullName": "Christine Wan",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 99
+      },
+      {
+        "clientId": "07f1f005-46ce-4836-a55a-39d22dc0b910",
+        "email": "hlbutler8@gmail.com",
+        "firstName": "Hannah",
+        "lastName": "Butler",
+        "fullName": "Hannah Butler",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 100
+      },
+      {
+        "clientId": "a63fd810-4e7d-4a7c-9b8f-958c357a8e8e",
+        "email": "euan@fraser-advisors.com",
+        "firstName": "Euan",
+        "lastName": "Fraser",
+        "fullName": "Euan Fraser",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 101
+      },
+      {
+        "clientId": "397bd872-48be-487b-94f2-bc592eea0444",
+        "email": "natalie.quinn3@icloud.com",
+        "firstName": "Natalie",
+        "lastName": "Quinn",
+        "fullName": "Natalie Quinn",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 102
+      },
+      {
+        "clientId": "4e799f20-0eb7-4e9f-8160-5f2e953116a9",
+        "email": "katiebrown@travelmation.net",
+        "firstName": "Katie",
+        "lastName": "Brown",
+        "fullName": "Katie Brown",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 103
+      },
+      {
+        "clientId": "301395c9-b8ff-4e92-be88-c1281cb379b3",
+        "email": "grjns6@gmail.com",
+        "firstName": "Gary",
+        "lastName": "Jones",
+        "fullName": "Gary Jones",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 105
+      },
+      {
+        "clientId": "8ec9b835-db21-4c16-8bdc-d29a1bc10650",
+        "email": "lrussell@uk.ey.com",
+        "firstName": "Lindsay",
+        "lastName": "Russell",
+        "fullName": "Lindsay Russell",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 106
+      },
+      {
+        "clientId": "9d7fd7c8-bd1b-40e7-96d5-21e9360bca27",
+        "email": "prigby1989@gmail.com",
+        "firstName": "Philip",
+        "lastName": "Rigby",
+        "fullName": "Philip Rigby",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 107
+      },
+      {
+        "clientId": "e32ddbdc-5587-4a46-9af4-c1dc95c8d440",
+        "email": "cj43mart@gmail.com",
+        "firstName": "Richard",
+        "lastName": "Martin",
+        "fullName": "Richard Martin",
+        "pointsBalance": 224,
+        "loyaltyEnrolled": true,
+        "rowNumber": 108
+      },
+      {
+        "clientId": "77bd8fbe-aa52-401d-9145-3a57e50b0002",
+        "email": "danieljoshuamartin@hotmail.com",
+        "firstName": "Daniel",
+        "lastName": "Martin",
+        "fullName": "Daniel Martin",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 109
+      },
+      {
+        "clientId": "fe6d8ac7-dfc8-45d2-87cc-a75e19b028a8",
+        "email": "georgie.curtis@hotmail.com",
+        "firstName": "Georgie",
+        "lastName": "Curtis",
+        "fullName": "Georgie Curtis",
+        "pointsBalance": 149,
+        "loyaltyEnrolled": true,
+        "rowNumber": 110
+      },
+      {
+        "clientId": "8bf27bbc-0832-4224-a8bc-58cdd602cfb3",
+        "email": "chrisworrall792@hotmail.com",
+        "firstName": "Chris",
+        "lastName": "Worrall",
+        "fullName": "Chris Worrall",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 111
+      },
+      {
+        "clientId": "0b9db5e7-77f7-4104-86c8-126473fa47b3",
+        "email": "michelle1rankin@gmail.com",
+        "firstName": "Michelle",
+        "lastName": "Rankin",
+        "fullName": "Michelle Rankin",
+        "pointsBalance": 219,
+        "loyaltyEnrolled": true,
+        "rowNumber": 112
+      },
+      {
+        "clientId": "1a8b7857-f64b-4c46-9eeb-5c3de81294ad",
+        "email": "jaeger2287@aol.com",
+        "firstName": "Brooke",
+        "lastName": "Jaeger",
+        "fullName": "Brooke Jaeger",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 113
+      },
+      {
+        "clientId": "956909c9-5406-4dca-ab59-16b24de03cdf",
+        "email": "elrock98@yahoo.com",
+        "firstName": "Richard",
+        "lastName": "Ellis",
+        "fullName": "Richard Ellis",
+        "pointsBalance": 149,
+        "loyaltyEnrolled": true,
+        "rowNumber": 114
+      },
+      {
+        "clientId": "d7edd88a-f1b0-4d8c-b417-58c24b1a2785",
+        "email": "k_graham@bitwisegroup.com",
+        "firstName": "KAREN",
+        "lastName": "GRAHAM",
+        "fullName": "KAREN GRAHAM",
+        "pointsBalance": 189,
+        "loyaltyEnrolled": true,
+        "rowNumber": 115
+      },
+      {
+        "clientId": "8a09be4d-d320-4574-880d-48190607e912",
+        "email": "raedavison@hotmail.com",
+        "firstName": "Rae",
+        "lastName": "Davison",
+        "fullName": "Rae Davison",
+        "pointsBalance": 165,
+        "loyaltyEnrolled": true,
+        "rowNumber": 116
+      },
+      {
+        "clientId": "52089006-8c3f-4930-b54d-de9cb3b3f1c4",
+        "email": "yvonnecoldbeck@gmail.com",
+        "firstName": "Yvonne",
+        "lastName": "Coldbeck",
+        "fullName": "Yvonne Coldbeck",
+        "pointsBalance": 199,
+        "loyaltyEnrolled": true,
+        "rowNumber": 117
+      },
+      {
+        "clientId": "74e1d0dc-5ad0-4ab2-92e1-109bdb9a4c52",
+        "email": "joelpaul@shaw.ca",
+        "firstName": "Joel",
+        "lastName": "Paul",
+        "fullName": "Joel Paul",
+        "pointsBalance": 209,
+        "loyaltyEnrolled": true,
+        "rowNumber": 118
+      },
+      {
+        "clientId": "eb510ed2-d8c8-4bf2-ab0d-d13704e725d0",
+        "email": "glynis.mcknight@btinternet.com",
+        "firstName": "Glynis",
+        "lastName": "McKnight",
+        "fullName": "Glynis McKnight",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 119
+      },
+      {
+        "clientId": "0e37f55c-a0c6-4e7a-b725-e4c4aa82344f",
+        "email": "mattchristian78@gmail.com",
+        "firstName": "Matt",
+        "lastName": "Christian",
+        "fullName": "Matt Christian",
+        "pointsBalance": 254,
+        "loyaltyEnrolled": true,
+        "rowNumber": 120
+      },
+      {
+        "clientId": "e5524002-7aee-4cf9-9ff9-7af453b1c783",
+        "email": "lkr2@verizon.net",
+        "firstName": "Richard",
+        "lastName": "Ono",
+        "fullName": "Richard Ono",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 121
+      },
+      {
+        "clientId": "5a2bbcde-daaf-4cac-9d9f-f79e93d9f072",
+        "email": "TEST@TEST.COM",
+        "firstName": "TEST",
+        "lastName": "BOOKING",
+        "fullName": "TEST BOOKING",
+        "pointsBalance": 74,
+        "loyaltyEnrolled": true,
+        "rowNumber": 122
+      },
+      {
+        "clientId": "25e36199-afc8-4d20-a49b-683c4a726ed0",
+        "email": "rachelfarmer292@gmail.com",
+        "firstName": "Rachel",
+        "lastName": "Farmer",
+        "fullName": "Rachel Farmer",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 123
+      },
+      {
+        "clientId": "76478d7c-9933-49cc-9738-544f55936f71",
+        "email": "claudegosselin@gosselinexpress.com",
+        "firstName": "Claude",
+        "lastName": "Gosselin",
+        "fullName": "Claude Gosselin",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 124
+      },
+      {
+        "clientId": "cb3fece5-8ced-4694-b50c-0576b6254811",
+        "email": "kartikchandar@hotmail.com",
+        "firstName": "Kartik",
+        "lastName": "Chandar",
+        "fullName": "Kartik Chandar",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 125
+      },
+      {
+        "clientId": "208f861b-16d0-4942-8beb-465dab638ff4",
+        "email": "alan.harris58@icloud.com",
+        "firstName": "Alan",
+        "lastName": "Harris",
+        "fullName": "Alan Harris",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 126
+      },
+      {
+        "clientId": "af8aae5e-2b6f-4849-abde-d525a0202b89",
+        "email": "11amanda@live.co.uk",
+        "firstName": "Amanda",
+        "lastName": "Hazlett",
+        "fullName": "Amanda Hazlett",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 127
+      },
+      {
+        "clientId": "c643602c-e1a6-4c9f-acbf-9055e934ed7b",
+        "email": "victoria.f.ellis@btopenworld.com",
+        "firstName": "Victoria",
+        "lastName": "Wainwright",
+        "fullName": "Victoria Wainwright",
+        "pointsBalance": 264,
+        "loyaltyEnrolled": true,
+        "rowNumber": 128
+      },
+      {
+        "clientId": "2b5eeb13-6eb6-499a-8120-02d3d04a2025",
+        "email": "lanalouiseeardley@icloud.com",
+        "firstName": "Lana",
+        "lastName": "Eardley",
+        "fullName": "Lana Eardley",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 129
+      },
+      {
+        "clientId": "7767050d-aff2-43ac-832e-748515cb2d5c",
+        "email": "k.robertson18@outlook.com",
+        "firstName": "Kyle",
+        "lastName": "Robertson",
+        "fullName": "Kyle Robertson",
+        "pointsBalance": 639,
+        "loyaltyEnrolled": true,
+        "rowNumber": 130
+      },
+      {
+        "clientId": "4b17e44b-a455-4a7a-8333-526d664011fb",
+        "email": "janwillcox@outlook.com",
+        "firstName": "Jan",
+        "lastName": "Willcox",
+        "fullName": "Jan Willcox",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 131
+      },
+      {
+        "clientId": "cedbf2e9-807d-485a-8624-0801e21121a5",
+        "email": "pdberry352@gmail.com",
+        "firstName": "Paul",
+        "lastName": "Berry",
+        "fullName": "Paul Berry",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 132
+      },
+      {
+        "clientId": "f74553d2-e790-4ef3-ae2b-4f4efce32bb7",
+        "email": "clarelammas@me.com",
+        "firstName": "Clare",
+        "lastName": "Lammas",
+        "fullName": "Clare Lammas",
+        "pointsBalance": 169,
+        "loyaltyEnrolled": true,
+        "rowNumber": 133
+      },
+      {
+        "clientId": "5ba6640d-b3c6-4b79-a5c4-777cc8b9677c",
+        "email": "darrenbennie88@outlook.com",
+        "firstName": "Darren",
+        "lastName": "Bennie",
+        "fullName": "Darren Bennie",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 134
+      },
+      {
+        "clientId": "c9289867-ebbf-4778-84c4-b1ede1a4b418",
+        "email": "webstersarah039@gmail.com",
+        "firstName": "Sarah",
+        "lastName": "Webster",
+        "fullName": "Sarah Webster",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 135
+      },
+      {
+        "clientId": "ae7b70b7-0450-4054-85e9-7946d56bc8f9",
+        "email": "alex@iamtanks.co.uk",
+        "firstName": "Alex",
+        "lastName": "Mackie",
+        "fullName": "Alex Mackie",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 136
+      },
+      {
+        "clientId": "9066f58a-dfcc-42af-8248-0d27b46c4067",
+        "email": "samantha.purves@btinternet.com",
+        "firstName": "Samantha",
+        "lastName": "Purves",
+        "fullName": "Samantha Purves",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 137
+      },
+      {
+        "clientId": "fc8fcbfa-b0cd-4fff-a56c-923aa1abde5b",
+        "email": "moss.annmarie@gmail.com",
+        "firstName": "Ann-Marie",
+        "lastName": "Moss",
+        "fullName": "Ann-Marie Moss",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 138
+      },
+      {
+        "clientId": "3c6c2c35-9721-403a-9bee-e4d8313c254d",
+        "email": "scmacf@gmail.com",
+        "firstName": "Scott",
+        "lastName": "Macfarlane",
+        "fullName": "Scott Macfarlane",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 139
+      },
+      {
+        "clientId": "1b0101b3-3ab1-4af4-b371-419abaf4536d",
+        "email": "bethparker91@gmail.com",
+        "firstName": "Beth",
+        "lastName": "Bleeker",
+        "fullName": "Beth Bleeker",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 140
+      },
+      {
+        "clientId": "81e3064c-e4be-4c9e-826e-adc34d4a6af1",
+        "email": "thomas.ewing@btopenworld.com",
+        "firstName": "Thomas",
+        "lastName": "Ewing",
+        "fullName": "Thomas Ewing",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 141
+      },
+      {
+        "clientId": "7900f143-7923-4914-be31-01161d02d0e3",
+        "email": "ravvi1963@gmail.com",
+        "firstName": "Ricky",
+        "lastName": "Nicholson",
+        "fullName": "Ricky Nicholson",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 142
+      },
+      {
+        "clientId": "08acdb45-0c6d-4b98-894a-488cd29ca5dc",
+        "email": "hazel_lee@btinternet.com",
+        "firstName": "Hazel",
+        "lastName": "Lee",
+        "fullName": "Hazel Lee",
+        "pointsBalance": 699,
+        "loyaltyEnrolled": true,
+        "rowNumber": 143
+      },
+      {
+        "clientId": "0cb7b213-37c5-437f-802b-e1511fe07728",
+        "email": "chrisjgilbert@btinternet.com",
+        "firstName": "Chris",
+        "lastName": "Gilbert",
+        "fullName": "Chris Gilbert",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 144
+      },
+      {
+        "clientId": "b8250c27-30fe-41a7-9c66-2862400f501c",
+        "email": "katybear29@gmail.com",
+        "firstName": "Catherine",
+        "lastName": "Jupina",
+        "fullName": "Catherine Jupina",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 145
+      },
+      {
+        "clientId": "d6d08099-f613-4b7e-b0dd-ffffbd122484",
+        "email": "l.crayston@hotmail.co.uk",
+        "firstName": "Laura",
+        "lastName": "Crayston",
+        "fullName": "Laura Crayston",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 146
+      },
+      {
+        "clientId": "2becc614-429d-4749-8520-20921c28acba",
+        "email": "susancroninster@gmail.com",
+        "firstName": "Susan",
+        "lastName": "Cronin",
+        "fullName": "Susan Cronin",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 147
+      },
+      {
+        "clientId": "8297ac35-37ba-4503-aa88-0b0b4322fe70",
+        "email": "james.ellis12@sky.com",
+        "firstName": "James",
+        "lastName": "Ellis",
+        "fullName": "James Ellis",
+        "pointsBalance": 164,
+        "loyaltyEnrolled": true,
+        "rowNumber": 148
+      },
+      {
+        "clientId": "0b16d323-95db-4db3-862e-56ccc83d02b7",
+        "email": "alanhowt@hotmail.co.uk",
+        "firstName": "Alan",
+        "lastName": "Houghton",
+        "fullName": "Alan Houghton",
+        "pointsBalance": 204,
+        "loyaltyEnrolled": true,
+        "rowNumber": 149
+      },
+      {
+        "clientId": "446ff85f-0f16-40f6-88f0-cc26fa2e8c76",
+        "email": "taturnermobile@live.com",
+        "firstName": "Travis",
+        "lastName": "Turner",
+        "fullName": "Travis Turner",
+        "pointsBalance": 259,
+        "loyaltyEnrolled": true,
+        "rowNumber": 150
+      },
+      {
+        "clientId": "8e84b4ed-388d-4a40-b804-e33fe2e77d56",
+        "email": "dfpullen@gmail.com",
+        "firstName": "David",
+        "lastName": "Pullen",
+        "fullName": "David Pullen",
+        "pointsBalance": 211,
+        "loyaltyEnrolled": true,
+        "rowNumber": 151
+      },
+      {
+        "clientId": "231973e7-c4eb-49c3-b48e-a7d3995c1e44",
+        "email": "cjbrooks321@gmail.com",
+        "firstName": "Carol",
+        "lastName": "Brooks",
+        "fullName": "Carol Brooks",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 152
+      },
+      {
+        "clientId": "88c8478c-6496-4c60-9e2e-7da1b0bf9782",
+        "email": "runfree555@gmail.com",
+        "firstName": "Dwayne",
+        "lastName": "Anningson",
+        "fullName": "Dwayne Anningson",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 153
+      },
+      {
+        "clientId": "d05bb424-b830-4a4d-9e23-bd94fe8714b9",
+        "email": "joanna.tait@hotmail.co.uk",
+        "firstName": "Jo",
+        "lastName": "Rammell",
+        "fullName": "Jo Rammell",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 154
+      },
+      {
+        "clientId": "6ebebadb-36ce-4fb5-a53f-da8a32ae4266",
+        "email": "lauramorgan8@hotmail.com",
+        "firstName": "Laura",
+        "lastName": "Morgan",
+        "fullName": "Laura Morgan",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 155
+      },
+      {
+        "clientId": "8000a710-7559-468b-8485-cf05f3fa3606",
+        "email": "eightonefivetwo@yahoo.co.uk",
+        "firstName": "Samantha",
+        "lastName": "Crossley",
+        "fullName": "Samantha Crossley",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 156
+      },
+      {
+        "clientId": "8e547816-29ed-406b-a7a2-cbe2705348da",
+        "email": "marie81lotr@gmail.com",
+        "firstName": "Monica",
+        "lastName": "Segoviano",
+        "fullName": "Monica Segoviano",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 157
+      },
+      {
+        "clientId": "09c7be61-f9b4-4390-828c-d8f510276e8d",
+        "email": "laurajasmine@msn.com",
+        "firstName": "Laura",
+        "lastName": "Rich",
+        "fullName": "Laura Rich",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 158
+      },
+      {
+        "clientId": "6748f168-53b7-418d-8d10-eb55a334d136",
+        "email": "sjfogden@gmail.com",
+        "firstName": "Sarah",
+        "lastName": "Fogden",
+        "fullName": "Sarah Fogden",
+        "pointsBalance": 232,
+        "loyaltyEnrolled": true,
+        "rowNumber": 159
+      },
+      {
+        "clientId": "a1895770-9faf-4b41-92e7-85798e5d897a",
+        "email": "matt.sib@talk21.com",
+        "firstName": "Matthew",
+        "lastName": "Scarrott",
+        "fullName": "Matthew Scarrott",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 160
+      },
+      {
+        "clientId": "28f91333-e339-41ac-a23c-cbea8f725e08",
+        "email": "geoff@bargewalk.co.uk",
+        "firstName": "Geoff",
+        "lastName": "Cook",
+        "fullName": "Geoff Cook",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 161
+      },
+      {
+        "clientId": "4a3a881b-bd14-491d-bdd5-a9504396d52b",
+        "email": "janetjohn97@verizon.net",
+        "firstName": "John",
+        "lastName": "Underdown",
+        "fullName": "John Underdown",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 162
+      },
+      {
+        "clientId": "1776fee8-24fa-417b-99f8-6c59b656a1a8",
+        "email": "thedoylies0893@gmail.com",
+        "firstName": "John",
+        "lastName": "Doyle",
+        "fullName": "John Doyle",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 163
+      },
+      {
+        "clientId": "3bde893d-cbf0-41b6-ae95-109e4e3b199f",
+        "email": "lorna-young@sky.com",
+        "firstName": "Elizabeth",
+        "lastName": "Young",
+        "fullName": "Elizabeth Young",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 164
+      },
+      {
+        "clientId": "dffda6b3-a9d8-4c38-a38a-213ca1a2820b",
+        "email": "paul.cooper883@btopenworld.com",
+        "firstName": "PAUL",
+        "lastName": "COOPER",
+        "fullName": "PAUL COOPER",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 165
+      },
+      {
+        "clientId": "12fa4f5e-185d-4743-b8b0-0254b0bbc86a",
+        "email": "jenniegood@hotmail.co.uk",
+        "firstName": "Jennie",
+        "lastName": "Good",
+        "fullName": "Jennie Good",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 166
+      },
+      {
+        "clientId": "b3cc12a7-5101-4c9e-84e1-3b1fe0e11f9f",
+        "email": "Colin@trianglefiresystems.co.uk",
+        "firstName": "Colin",
+        "lastName": "Chantler",
+        "fullName": "Colin Chantler",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 167
+      },
+      {
+        "clientId": "941e9233-c33e-47c5-ae6a-4bf54d14b510",
+        "email": "admlwb1106@gmail.com",
+        "firstName": "Martin and Wendy",
+        "lastName": "Jones",
+        "fullName": "Martin and Wendy Jones",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 168
+      },
+      {
+        "clientId": "dba8fe12-d557-4225-84b1-d4d6869e8deb",
+        "email": "lorna_ward@hotmail.co.uk",
+        "firstName": "Lorna",
+        "lastName": "Ward",
+        "fullName": "Lorna Ward",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 169
+      },
+      {
+        "clientId": "6f3f49e7-ec44-4f7f-836b-fc02d8a8485b",
+        "email": "debbie@debbiemerry.com",
+        "firstName": "Debra",
+        "lastName": "Merry",
+        "fullName": "Debra Merry",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 170
+      },
+      {
+        "clientId": "3c42346c-f98e-4a15-8b2e-95d9fb92759c",
+        "email": "samjquiat@gmail.com",
+        "firstName": "Sam",
+        "lastName": "Quiat",
+        "fullName": "Sam Quiat",
+        "pointsBalance": 164,
+        "loyaltyEnrolled": true,
+        "rowNumber": 171
+      },
+      {
+        "clientId": "5fcb5ebf-4260-47c6-97b8-162e9c964fb5",
+        "email": "sue_row366@hotmail.com",
+        "firstName": "Sue",
+        "lastName": "Bendelow",
+        "fullName": "Sue Bendelow",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 172
+      },
+      {
+        "clientId": "5526bc39-1fd5-4c77-8ac2-7d1d82c8806b",
+        "email": "rebeccalou20@hotmail.com",
+        "firstName": "Rebecca",
+        "lastName": "Stone",
+        "fullName": "Rebecca Stone",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 173
+      },
+      {
+        "clientId": "e232e60d-fcc9-434d-8238-c978305b9e83",
+        "email": "o.hoes@ziggo.nl",
+        "firstName": "Onno",
+        "lastName": "Hoes",
+        "fullName": "Onno Hoes",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 174
+      },
+      {
+        "clientId": "e3b7ba86-8c26-4d23-abc9-7fdbbf8f9b39",
+        "email": "valmackenz65@icloud.com",
+        "firstName": "Valerie",
+        "lastName": "Mackenzie",
+        "fullName": "Valerie Mackenzie",
+        "pointsBalance": 139,
+        "loyaltyEnrolled": true,
+        "rowNumber": 175
+      },
+      {
+        "clientId": "286ad048-440d-4c6e-9d50-b1733b532b77",
+        "email": "bbhomesales@comcast.net",
+        "firstName": "Barbara",
+        "lastName": "Brenzel",
+        "fullName": "Barbara Brenzel",
+        "pointsBalance": 359,
+        "loyaltyEnrolled": true,
+        "rowNumber": 176
+      },
+      {
+        "clientId": "88a11579-a07d-40a7-84ec-e930a9e964d2",
+        "email": "gpenk1969@gmail.com",
+        "firstName": "gaynor",
+        "lastName": "penk",
+        "fullName": "gaynor penk",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 177
+      },
+      {
+        "clientId": "a91e960e-67cc-453b-8623-7edcfc6615ed",
+        "email": "e.grigg3@btinternet.com",
+        "firstName": "Emma",
+        "lastName": "Grigg",
+        "fullName": "Emma Grigg",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 178
+      },
+      {
+        "clientId": "560aac63-658b-4fe6-a8c9-6e1b297202fc",
+        "email": "gregjoseph24@outlook.com",
+        "firstName": "Greg",
+        "lastName": "Joseph",
+        "fullName": "Greg Joseph",
+        "pointsBalance": 244,
+        "loyaltyEnrolled": true,
+        "rowNumber": 179
+      },
+      {
+        "clientId": "a00458b1-daa7-437a-a2f4-4b1cfd01dcac",
+        "email": "testloyalty6@test.com",
+        "firstName": "test",
+        "lastName": "tt",
+        "fullName": "test tt",
+        "pointsBalance": 200,
+        "loyaltyEnrolled": true,
+        "rowNumber": 180
+      },
+      {
+        "clientId": "88ef9ebc-7759-4849-80c8-6a4be868607e",
+        "email": "jrpearce78@icloud.com",
+        "firstName": "James",
+        "lastName": "Pearce",
+        "fullName": "James Pearce",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 181
+      },
+      {
+        "clientId": "6065065a-0902-4a4f-8c21-d008fc3d9759",
+        "email": "kathryn.wyatt35@gmail.com",
+        "firstName": "Kathryn",
+        "lastName": "Wyatt",
+        "fullName": "Kathryn Wyatt",
+        "pointsBalance": 249,
+        "loyaltyEnrolled": true,
+        "rowNumber": 182
+      },
+      {
+        "clientId": "f93b7ba1-fb7b-488f-ad02-33f3dd62da51",
+        "email": "trevor@smithysdrains.com",
+        "firstName": "Trevor",
+        "lastName": "smith",
+        "fullName": "Trevor smith",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 183
+      },
+      {
+        "clientId": "ffcdaac3-791e-4ebe-abb8-7378cde2de9b",
+        "email": "anita12011@hotmail.co.uk",
+        "firstName": "Anita",
+        "lastName": "Nicklin",
+        "fullName": "Anita Nicklin",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 184
+      },
+      {
+        "clientId": "9ccaabf3-4a04-4e1f-bacf-eac4782113d5",
+        "email": "james.dodwell@btinternet.com",
+        "firstName": "James",
+        "lastName": "Dodwell",
+        "fullName": "James Dodwell",
+        "pointsBalance": 156,
+        "loyaltyEnrolled": true,
+        "rowNumber": 185
+      },
+      {
+        "clientId": "5d30637a-fa23-493f-930f-5300a286fb18",
+        "email": "info@topknot.ch",
+        "firstName": "Rachael ",
+        "lastName": "Lindo",
+        "fullName": "Rachael  Lindo",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 186
+      },
+      {
+        "clientId": "a544e8c7-baab-4a6d-9b5a-b82d43fdcdcd",
+        "email": "jonjezzard@hotmail.com",
+        "firstName": "Jon",
+        "lastName": "Jezzard",
+        "fullName": "Jon Jezzard",
+        "pointsBalance": 199,
+        "loyaltyEnrolled": true,
+        "rowNumber": 187
+      },
+      {
+        "clientId": "d40821ce-f9ce-4650-9e9e-c2d07818c2b7",
+        "email": "andy666fenwick@hotmail.com",
+        "firstName": "Andrew",
+        "lastName": "Fenwick",
+        "fullName": "Andrew Fenwick",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 188
+      },
+      {
+        "clientId": "901e676a-54c0-4c95-b4b2-2f3f774fd032",
+        "email": "j.sarwa@ntlworld.com",
+        "firstName": "Jack",
+        "lastName": "Sarwa",
+        "fullName": "Jack Sarwa",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 189
+      },
+      {
+        "clientId": "ed924b30-3769-489e-adc0-d2c482c2ee84",
+        "email": "philwestmail@gmail.com",
+        "firstName": "Phil",
+        "lastName": "West",
+        "fullName": "Phil West",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 190
+      },
+      {
+        "clientId": "f434074f-3d33-4003-ab23-790bbe220180",
+        "email": "harriet.willings@me.com",
+        "firstName": "Harriet",
+        "lastName": "Hobbah",
+        "fullName": "Harriet Hobbah",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 191
+      },
+      {
+        "clientId": "0cd0dac3-e86f-48a5-9632-538c222413fa",
+        "email": "alan1aa@yahoo.com",
+        "firstName": "Alan",
+        "lastName": "Cook",
+        "fullName": "Alan Cook",
+        "pointsBalance": 172,
+        "loyaltyEnrolled": true,
+        "rowNumber": 192
+      },
+      {
+        "clientId": "dd34991f-0f86-44e3-ae27-cfc7b51884e8",
+        "email": "jbuss22c@gmail.com",
+        "firstName": "Jane",
+        "lastName": "Buss",
+        "fullName": "Jane Buss",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 193
+      },
+      {
+        "clientId": "453a43a0-0075-435d-afd9-8161763c0ec2",
+        "email": "whitakers36@gmail.com",
+        "firstName": "Patricia",
+        "lastName": "Whitaker",
+        "fullName": "Patricia Whitaker",
+        "pointsBalance": 109,
+        "loyaltyEnrolled": true,
+        "rowNumber": 194
+      },
+      {
+        "clientId": "8af151e8-5b73-4a26-b899-4ad0c2c7f29c",
+        "email": "mail@lizzieorme.co.uk",
+        "firstName": "Lizzie",
+        "lastName": "van Dijk",
+        "fullName": "Lizzie van Dijk",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 195
+      },
+      {
+        "clientId": "45345ec2-13bb-4b7a-bc9c-0f2494b636c5",
+        "email": "mhaldron@yahoo.co.uk",
+        "firstName": "Marc",
+        "lastName": "Haldron",
+        "fullName": "Marc Haldron",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 196
+      },
+      {
+        "clientId": "1572b80d-ec37-4681-8c3c-9aeec4242ef6",
+        "email": "mckinnell2012@hotmail.co.uk",
+        "firstName": "Cameron",
+        "lastName": "Mckinnell",
+        "fullName": "Cameron Mckinnell",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 197
+      },
+      {
+        "clientId": "e63943e8-6954-4a35-bcc5-7ca102319b8c",
+        "email": "sallypeck@ntlworld.com",
+        "firstName": "Sally",
+        "lastName": "Peck",
+        "fullName": "Sally Peck",
+        "pointsBalance": 239,
+        "loyaltyEnrolled": true,
+        "rowNumber": 198
+      },
+      {
+        "clientId": "c9939d75-d5b8-4c34-8940-c50e81fccff8",
+        "email": "raspolzino@gmail.com",
+        "firstName": "Robert",
+        "lastName": "Spolzino",
+        "fullName": "Robert Spolzino",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 199
+      },
+      {
+        "clientId": "220e2c2e-68cb-43ef-903f-21e066ad488f",
+        "email": "philip@trophyevents.co.uk",
+        "firstName": "Philip",
+        "lastName": "Campbell",
+        "fullName": "Philip Campbell",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 200
+      },
+      {
+        "clientId": "a286a58a-d5ac-43f0-a3f8-424ba21af246",
+        "email": "ja@chauhan.me.uk",
+        "firstName": "jay test vid",
+        "lastName": "cool",
+        "fullName": "jay test vid cool",
+        "pointsBalance": 100,
+        "loyaltyEnrolled": true,
+        "rowNumber": 201
+      },
+      {
+        "clientId": "a2ed4208-1ec5-44f3-9e07-d3516b46352f",
+        "email": "gazzaspainting@live.com.au",
+        "firstName": "Gary",
+        "lastName": "Fleet",
+        "fullName": "Gary Fleet",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 202
+      },
+      {
+        "clientId": "d9416875-b446-4e22-a153-0eed1e00ba50",
+        "email": "deedeehj90@gmail.com",
+        "firstName": "Deanna",
+        "lastName": "Harvey-James",
+        "fullName": "Deanna Harvey-James",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 203
+      },
+      {
+        "clientId": "b23af41e-d78f-495c-8ac9-8a2094b19bd3",
+        "email": "conor@mcdermottroe.com",
+        "firstName": "Conor",
+        "lastName": "McDermottroe",
+        "fullName": "Conor McDermottroe",
+        "pointsBalance": 104,
+        "loyaltyEnrolled": true,
+        "rowNumber": 204
+      },
+      {
+        "clientId": "00614454-bc08-409c-8ce7-22fd7e2f44fc",
+        "email": "rhianhknight@gmail.com",
+        "firstName": "Rhian",
+        "lastName": "Knight",
+        "fullName": "Rhian Knight",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 205
+      },
+      {
+        "clientId": "4e794031-5b5d-4a5b-a719-ec5c44a620ee",
+        "email": "norwood@topdecktravel.com.au",
+        "firstName": "clare",
+        "lastName": "horton",
+        "fullName": "clare horton",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 206
+      },
+      {
+        "clientId": "997b5803-490c-49a1-8aa8-e3a6fd78248d",
+        "email": "sean@powcon.ie",
+        "firstName": "Sean",
+        "lastName": "O'Neill",
+        "fullName": "Sean O'Neill",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 207
+      },
+      {
+        "clientId": "88cbbece-f513-4e1a-95a0-a1e86d64f624",
+        "email": "trishsomajo@gmail.com",
+        "firstName": "Trish",
+        "lastName": "Greenhalgh",
+        "fullName": "Trish Greenhalgh",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 208
+      },
+      {
+        "clientId": "08481d2e-d842-46ca-9594-20d70bfc0c58",
+        "email": "eugene.kalenjuk@hardwickes.com.au",
+        "firstName": "Eugene",
+        "lastName": "Kalenjuk",
+        "fullName": "Eugene Kalenjuk",
+        "pointsBalance": 500,
+        "loyaltyEnrolled": true,
+        "rowNumber": 209
+      },
+      {
+        "clientId": "8c8952bd-bcc5-40bc-b0e7-79a4e2024ef2",
+        "email": "callum.donn@outlook.com",
+        "firstName": "Callum",
+        "lastName": "Donn",
+        "fullName": "Callum Donn",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 210
+      },
+      {
+        "clientId": "93dfa2bb-7eef-451a-b2db-a2e1a4989180",
+        "email": "gjbundock@hotmail.co.uk",
+        "firstName": "Graham",
+        "lastName": "Bundock",
+        "fullName": "Graham Bundock",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 211
+      },
+      {
+        "clientId": "b607c9a8-0c2f-475f-a1e1-9bba9df4077d",
+        "email": "rbowers@talktalk.net",
+        "firstName": "Richard",
+        "lastName": "Bowers",
+        "fullName": "Richard Bowers",
+        "pointsBalance": 289,
+        "loyaltyEnrolled": true,
+        "rowNumber": 212
+      },
+      {
+        "clientId": "c973c1eb-0353-41c7-ae81-6dd1540c4055",
+        "email": "marilynayre@yahoo.com",
+        "firstName": "Marilyn",
+        "lastName": "Ayre",
+        "fullName": "Marilyn Ayre",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 213
+      },
+      {
+        "clientId": "bec2cc83-2b81-4088-bdc7-b28b7dccdc7f",
+        "email": "col224@hotmail.com",
+        "firstName": "Colin",
+        "lastName": "Douglas",
+        "fullName": "Colin Douglas",
+        "pointsBalance": 238,
+        "loyaltyEnrolled": true,
+        "rowNumber": 214
+      },
+      {
+        "clientId": "7b63bb67-62ba-4d91-9c8f-437149b6570c",
+        "email": "jcq26@aol.com",
+        "firstName": "Jacqueline",
+        "lastName": "Jones",
+        "fullName": "Jacqueline Jones",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 215
+      },
+      {
+        "clientId": "2d746709-41df-41e6-9a4c-e9aa7dea6461",
+        "email": "chyoung200@gmail.com",
+        "firstName": "Catherine",
+        "lastName": "Young",
+        "fullName": "Catherine Young",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 216
+      },
+      {
+        "clientId": "9bc44ba2-24ae-4831-9e74-288e96ef2bca",
+        "email": "clairehelensmith88@hotmail.co.uk",
+        "firstName": "Claire",
+        "lastName": "McDowall",
+        "fullName": "Claire McDowall",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 217
+      },
+      {
+        "clientId": "8bb8862e-f77f-467c-9ae1-8c3e10dfdfad",
+        "email": "arichardson@drillstoreukltd.com",
+        "firstName": "Adrian",
+        "lastName": " Richardson",
+        "fullName": "Adrian  Richardson",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 218
+      },
+      {
+        "clientId": "6e18378e-cf06-4f37-81ee-4d888261cb8d",
+        "email": "franco.rose@bigpond.com",
+        "firstName": "ROSE",
+        "lastName": "FRANCO",
+        "fullName": "ROSE FRANCO",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 219
+      },
+      {
+        "clientId": "d95544a6-0709-4abb-9b90-68c64fcd0550",
+        "email": "jordanmusk@icloud.com",
+        "firstName": "Jordan",
+        "lastName": "Musk",
+        "fullName": "Jordan Musk",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 220
+      },
+      {
+        "clientId": "37c5986f-1fee-4844-a3d9-9412dd8ac8a5",
+        "email": "zak.carroll@gmail.com",
+        "firstName": "Zak",
+        "lastName": "Carroll",
+        "fullName": "Zak Carroll",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 221
+      },
+      {
+        "clientId": "ceb9b8f6-fd0f-4efb-a937-2604fa56a428",
+        "email": "delukowicz@icloud.com",
+        "firstName": "Katharine",
+        "lastName": "de Lukowicz",
+        "fullName": "Katharine de Lukowicz",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 222
+      },
+      {
+        "clientId": "b07abd63-d5b9-4cbd-90a3-eeb611771dac",
+        "email": "michaeljlucking@hotmail.com",
+        "firstName": "Michael",
+        "lastName": "Lucking",
+        "fullName": "Michael Lucking",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 223
+      },
+      {
+        "clientId": "f96c3def-5513-4ec0-b6de-48f8dd28ff65",
+        "email": "jmwanat@gmail.com",
+        "firstName": "Jennifer",
+        "lastName": "Wanat",
+        "fullName": "Jennifer Wanat",
+        "pointsBalance": 434,
+        "loyaltyEnrolled": true,
+        "rowNumber": 224
+      },
+      {
+        "clientId": "75cc637a-5ecc-474b-ad86-d965e4efa0f4",
+        "email": "southardmd@gmail.com",
+        "firstName": "Michael",
+        "lastName": "Southard",
+        "fullName": "Michael Southard",
+        "pointsBalance": 164,
+        "loyaltyEnrolled": true,
+        "rowNumber": 225
+      },
+      {
+        "clientId": "05d56d81-d439-4bc7-91c0-97840c957cf2",
+        "email": "brasilyou@yahoo.co.uk",
+        "firstName": "Ana",
+        "lastName": "Almeida",
+        "fullName": "Ana Almeida",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 226
+      },
+      {
+        "clientId": "90394c88-c63c-43f1-b590-8a3a597abe27",
+        "email": "tim.thackaberry@btinternet.com",
+        "firstName": "Timothy",
+        "lastName": "Thackaberry",
+        "fullName": "Timothy Thackaberry",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 227
+      },
+      {
+        "clientId": "b0a864d6-5ee1-45af-9a61-2f53b8321bcc",
+        "email": "marklittletree@hotmail.com",
+        "firstName": "Mark",
+        "lastName": "Daniels",
+        "fullName": "Mark Daniels",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 228
+      },
+      {
+        "clientId": "c89e4171-89da-47b2-bc41-193371d1df48",
+        "email": "ianmarr8@gmail.com",
+        "firstName": "Ian",
+        "lastName": "Marr",
+        "fullName": "Ian Marr",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 229
+      },
+      {
+        "clientId": "c02aebd8-7935-4168-900b-7ec545b32339",
+        "email": "andychowne@gmail.com",
+        "firstName": "Andy",
+        "lastName": "Chowne",
+        "fullName": "Andy Chowne",
+        "pointsBalance": 239,
+        "loyaltyEnrolled": true,
+        "rowNumber": 230
+      },
+      {
+        "clientId": "e4bf6cc6-e6c5-429b-9622-d5d52f90179a",
+        "email": "dpmullaney@gmail.com",
+        "firstName": "Daniel",
+        "lastName": "Mullaney",
+        "fullName": "Daniel Mullaney",
+        "pointsBalance": 188,
+        "loyaltyEnrolled": true,
+        "rowNumber": 231
+      },
+      {
+        "clientId": "ebf32f96-706a-450f-ac14-85b4eb31e705",
+        "email": "p.savage3@virginmedia.com",
+        "firstName": "Pete",
+        "lastName": "Savage",
+        "fullName": "Pete Savage",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 232
+      },
+      {
+        "clientId": "80a889bb-f8db-4e92-ac44-ddf942edce57",
+        "email": "corey_harland@hotmail.com",
+        "firstName": "Corey",
+        "lastName": "Harland",
+        "fullName": "Corey Harland",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 233
+      },
+      {
+        "clientId": "b1d24cc8-d2f9-4ed5-aa53-fc6113935701",
+        "email": "jessicayoungx@gmail.com",
+        "firstName": "Jessica",
+        "lastName": "Coupe",
+        "fullName": "Jessica Coupe",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 234
+      },
+      {
+        "clientId": "67d5bceb-9e80-48a1-862c-09c8b0425a35",
+        "email": "pulse.electrics.kingslynn@gmail.com",
+        "firstName": "Juliet",
+        "lastName": "Pulsford-harris",
+        "fullName": "Juliet Pulsford-harris",
+        "pointsBalance": 269,
+        "loyaltyEnrolled": true,
+        "rowNumber": 235
+      },
+      {
+        "clientId": "ede9cf93-453e-43da-b932-08d32535ad44",
+        "email": "gea@marsdencc.org.uk",
+        "firstName": "Gareth",
+        "lastName": "Ackroyd",
+        "fullName": "Gareth Ackroyd",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 236
+      },
+      {
+        "clientId": "e4c6f04b-4374-43a7-9902-4f480aa4e254",
+        "email": "garthwilson59@gmail.com",
+        "firstName": "Garth",
+        "lastName": "Wilson",
+        "fullName": "Garth Wilson",
+        "pointsBalance": 179,
+        "loyaltyEnrolled": true,
+        "rowNumber": 237
+      },
+      {
+        "clientId": "2e5d8d62-bc9b-4556-bb41-00c665dd0453",
+        "email": "bryanwinn03@gmail.com",
+        "firstName": "Bryan",
+        "lastName": "Winn",
+        "fullName": "Bryan Winn",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 238
+      },
+      {
+        "clientId": "55fbf7cf-c591-41e3-84a2-724e470f261e",
+        "email": "johndonnan@aol.com",
+        "firstName": "John",
+        "lastName": "Donnan",
+        "fullName": "John Donnan",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 239
+      },
+      {
+        "clientId": "2b8a3ee8-f5e9-47ab-abe1-62e461573253",
+        "email": "thompsoncm22@gmail.com",
+        "firstName": "Christine",
+        "lastName": "Thompson",
+        "fullName": "Christine Thompson",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 240
+      },
+      {
+        "clientId": "e40da9d5-e7ea-4139-8246-7e8875ffd45a",
+        "email": "sear.karen@gmail.com",
+        "firstName": "Karen",
+        "lastName": "Sear",
+        "fullName": "Karen Sear",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 241
+      },
+      {
+        "clientId": "2451db4b-70d1-40e8-ac43-3969087552ee",
+        "email": "tedtiller1@gmail.com",
+        "firstName": "Edward",
+        "lastName": "Tiller",
+        "fullName": "Edward Tiller",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 242
+      },
+      {
+        "clientId": "b5b9de7d-285d-4a19-9a47-ffb580eda805",
+        "email": "shaunbyng23@outlook.com",
+        "firstName": "SHAUN RICHARD",
+        "lastName": "BYNG",
+        "fullName": "SHAUN RICHARD BYNG",
+        "pointsBalance": 384,
+        "loyaltyEnrolled": true,
+        "rowNumber": 243
+      },
+      {
+        "clientId": "f3ed8e0a-fb39-43c1-909d-13c81cff3acf",
+        "email": "jwardley@btinternet.com",
+        "firstName": "Jane-Anne",
+        "lastName": "Wardley",
+        "fullName": "Jane-Anne Wardley",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 244
+      },
+      {
+        "clientId": "ee94581e-3ebe-4c91-9233-8766aff475fc",
+        "email": "dpffc@hotmail.co.uk",
+        "firstName": "David",
+        "lastName": "Perry",
+        "fullName": "David Perry",
+        "pointsBalance": 165,
+        "loyaltyEnrolled": true,
+        "rowNumber": 245
+      },
+      {
+        "clientId": "33da9055-b2ff-4a0f-9932-333f1e9d453d",
+        "email": "traceyj28@proton.me",
+        "firstName": "Tracey",
+        "lastName": "Jordan",
+        "fullName": "Tracey Jordan",
+        "pointsBalance": 119,
+        "loyaltyEnrolled": true,
+        "rowNumber": 246
+      },
+      {
+        "clientId": "4194dc11-8396-4b38-88d4-f40c36b3404d",
+        "email": "ruth.taihirion@sky.com",
+        "firstName": "Ruth",
+        "lastName": "Smith",
+        "fullName": "Ruth Smith",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 247
+      },
+      {
+        "clientId": "e67c6bf9-0530-4f07-8dfd-6ef127ec5a2d",
+        "email": "johnselliman@gmail.com",
+        "firstName": "John",
+        "lastName": "Elliman",
+        "fullName": "John Elliman",
+        "pointsBalance": 141,
+        "loyaltyEnrolled": true,
+        "rowNumber": 248
+      },
+      {
+        "clientId": "5efddec2-ee1e-4dcb-a669-f13fc2f6ab8f",
+        "email": "petensarahgrand@aol.com",
+        "firstName": "Peter",
+        "lastName": "Grandidge",
+        "fullName": "Peter Grandidge",
+        "pointsBalance": 164,
+        "loyaltyEnrolled": true,
+        "rowNumber": 249
+      },
+      {
+        "clientId": "7611eb7d-8a2c-4436-956c-cd98bad69d95",
+        "email": "vikki2305@sky.com",
+        "firstName": "Chipo",
+        "lastName": "Chagaresango",
+        "fullName": "Chipo Chagaresango",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 250
+      },
+      {
+        "clientId": "f93b3fd2-c38f-46af-8964-cc66fdc25132",
+        "email": "ruthhackett57@gmail.com",
+        "firstName": "Joanne",
+        "lastName": "Hackett",
+        "fullName": "Joanne Hackett",
+        "pointsBalance": 179,
+        "loyaltyEnrolled": true,
+        "rowNumber": 251
+      },
+      {
+        "clientId": "9efbbd25-a733-4da5-a2a0-5b15e65dd50f",
+        "email": "ap.davies@blueyonder.co.uk",
+        "firstName": "Andrew",
+        "lastName": "Davies",
+        "fullName": "Andrew Davies",
+        "pointsBalance": 372,
+        "loyaltyEnrolled": true,
+        "rowNumber": 252
+      },
+      {
+        "clientId": "827f6a70-68ed-48c8-bb52-5e0ff9e7bbfb",
+        "email": "cnelson180@ymail.com",
+        "firstName": "Chris",
+        "lastName": "Nelson",
+        "fullName": "Chris Nelson",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 253
+      },
+      {
+        "clientId": "3218872d-344b-478a-b00f-032ca6a4ccf6",
+        "email": "sarah.rogers200@ntlworld.com",
+        "firstName": "Sarah",
+        "lastName": "Swift",
+        "fullName": "Sarah Swift",
+        "pointsBalance": 229,
+        "loyaltyEnrolled": true,
+        "rowNumber": 254
+      },
+      {
+        "clientId": "ad9eabeb-7368-45bb-84e7-154783fe6487",
+        "email": "dlm@westphalia.co.uk",
+        "firstName": "Dan",
+        "lastName": "Mills",
+        "fullName": "Dan Mills",
+        "pointsBalance": 264,
+        "loyaltyEnrolled": true,
+        "rowNumber": 255
+      },
+      {
+        "clientId": "6a1e5041-a482-478c-ab9b-b849c3dcceef",
+        "email": "uumatter@mac.com",
+        "firstName": "Leonard",
+        "lastName": "Iacono",
+        "fullName": "Leonard Iacono",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 256
+      },
+      {
+        "clientId": "ac98f89c-c2da-481a-8ffc-13c8b688c5e0",
+        "email": "darrenmadoo@hotmail.com",
+        "firstName": "Darren",
+        "lastName": "Madoo",
+        "fullName": "Darren Madoo",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 257
+      },
+      {
+        "clientId": "11255d98-1765-486d-aa9c-be9a0b83f8a4",
+        "email": "stephen_m_read@yahoo.co.uk",
+        "firstName": "Stephen",
+        "lastName": "Read",
+        "fullName": "Stephen Read",
+        "pointsBalance": 119,
+        "loyaltyEnrolled": true,
+        "rowNumber": 258
+      },
+      {
+        "clientId": "523636ad-13b0-4736-9eda-4e4d4106af76",
+        "email": "michaelerteljr@gmail.com",
+        "firstName": "Mike",
+        "lastName": "Ertel",
+        "fullName": "Mike Ertel",
+        "pointsBalance": 239,
+        "loyaltyEnrolled": true,
+        "rowNumber": 259
+      },
+      {
+        "clientId": "2e6256f2-acff-40e3-84e1-fa62e679077d",
+        "email": "layleyj@gmail.com",
+        "firstName": "Jenny",
+        "lastName": "Layley",
+        "fullName": "Jenny Layley",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 260
+      },
+      {
+        "clientId": "8559cf0b-8dad-40f4-92e1-128f0fa28f44",
+        "email": "daveeastaff@gmail.com",
+        "firstName": "Dave",
+        "lastName": "Eastaff",
+        "fullName": "Dave Eastaff",
+        "pointsBalance": 294,
+        "loyaltyEnrolled": true,
+        "rowNumber": 262
+      },
+      {
+        "clientId": "6bf01868-4385-42da-9c9d-5c657d7190d4",
+        "email": "kemp60@btinternet.com",
+        "firstName": "Greg",
+        "lastName": "Kemp",
+        "fullName": "Greg Kemp",
+        "pointsBalance": 159,
+        "loyaltyEnrolled": true,
+        "rowNumber": 263
+      },
+      {
+        "clientId": "89c012b5-ed07-4a33-af8e-94c3f2c5e801",
+        "email": "helenoss@aol.com",
+        "firstName": "Helen",
+        "lastName": "Osborn",
+        "fullName": "Helen Osborn",
+        "pointsBalance": 319,
+        "loyaltyEnrolled": true,
+        "rowNumber": 264
+      },
+      {
+        "clientId": "83c7f911-5559-484a-9615-78fd5340a897",
+        "email": "hid-dy@hotmail.co.uk",
+        "firstName": "John",
+        "lastName": "hiddleston",
+        "fullName": "John hiddleston",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 265
+      },
+      {
+        "clientId": "0a3e56f0-816f-4fcb-8ed3-5a39a74592ab",
+        "email": "jebjones.jj@googlemail.com",
+        "firstName": "Joanne",
+        "lastName": "Hughes",
+        "fullName": "Joanne Hughes",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 266
+      },
+      {
+        "clientId": "80bf6753-d85c-46f3-ae6c-45551f9ec80a",
+        "email": "gary.smitherman@hotmail.co.uk",
+        "firstName": "Gary",
+        "lastName": "Smitherman",
+        "fullName": "Gary Smitherman",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 267
+      },
+      {
+        "clientId": "6654e955-3da1-4063-b2ad-2c1cc5e1a3ca",
+        "email": "nickhernandez6217@yahoo.com",
+        "firstName": "Nicholas",
+        "lastName": "Hernandez",
+        "fullName": "Nicholas Hernandez",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 268
+      },
+      {
+        "clientId": "7ff47b58-b944-45af-9860-6776e9563666",
+        "email": "john.bartlett2018@gmail.com",
+        "firstName": "John",
+        "lastName": "Bartlett",
+        "fullName": "John Bartlett",
+        "pointsBalance": 279,
+        "loyaltyEnrolled": true,
+        "rowNumber": 270
+      },
+      {
+        "clientId": "e5cf6f8e-2a32-4299-a5c5-eb7e70331d3d",
+        "email": "bradley.leonard2012@gmail.com",
+        "firstName": "Bradley",
+        "lastName": "Leonard",
+        "fullName": "Bradley Leonard",
+        "pointsBalance": 169,
+        "loyaltyEnrolled": true,
+        "rowNumber": 271
+      },
+      {
+        "clientId": "be3fee93-00a1-4524-a58c-25b3d227fa4e",
+        "email": "dean.saunders4@gmail.com",
+        "firstName": "Dean",
+        "lastName": "Saunders",
+        "fullName": "Dean Saunders",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 272
+      },
+      {
+        "clientId": "ba5ba2fe-a595-4563-9579-37357e22dc24",
+        "email": "scarlets@tcd.ie",
+        "firstName": "Siobhan",
+        "lastName": "Scarlett",
+        "fullName": "Siobhan Scarlett",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 273
+      },
+      {
+        "clientId": "e9a76486-750b-4dd9-b8ff-50bbb022a3ad",
+        "email": "hollandsarnd@aol.com",
+        "firstName": "Sandra",
+        "lastName": "Lane",
+        "fullName": "Sandra Lane",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 274
+      },
+      {
+        "clientId": "8493b21c-bba8-4255-a063-d4f9787537fd",
+        "email": "sanford212@gmail.com",
+        "firstName": "Sanford",
+        "lastName": "Santacroce",
+        "fullName": "Sanford Santacroce",
+        "pointsBalance": 174,
+        "loyaltyEnrolled": true,
+        "rowNumber": 275
+      },
+      {
+        "clientId": "4c49a20a-0882-425b-a121-841463eb28bc",
+        "email": "benweston35@hotmail.co.uk",
+        "firstName": "Ben",
+        "lastName": "Weston",
+        "fullName": "Ben Weston",
+        "pointsBalance": 198,
+        "loyaltyEnrolled": true,
+        "rowNumber": 276
+      },
+      {
+        "clientId": "096ce303-ce7b-41c4-bb76-329c0cf40f13",
+        "email": "sarahj_gibson@yahoo.co.uk",
+        "firstName": "Sarah",
+        "lastName": "Beck",
+        "fullName": "Sarah Beck",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 277
+      },
+      {
+        "clientId": "d853119a-c8da-4b18-a9ee-da56d4262aeb",
+        "email": "janev.hassan05@gmail.com",
+        "firstName": "Janev",
+        "lastName": "Hassan",
+        "fullName": "Janev Hassan",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 278
+      },
+      {
+        "clientId": "32a4ee96-0930-462f-a7d3-1982cced33de",
+        "email": "chrisnsmith@btinternet.com",
+        "firstName": "Chris",
+        "lastName": "Smith",
+        "fullName": "Chris Smith",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 279
+      },
+      {
+        "clientId": "4b2883e2-4598-401d-bc8b-0e3f8806f676",
+        "email": "whitefineart1@yahoo.co.uk",
+        "firstName": "Neil",
+        "lastName": "White",
+        "fullName": "Neil White",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 280
+      },
+      {
+        "clientId": "9ea01e0e-0361-4e3a-9fc1-7e6ee6711460",
+        "email": "hughes.hussey.ann44@gmail.com",
+        "firstName": "Ann",
+        "lastName": "Hughes",
+        "fullName": "Ann Hughes",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 281
+      },
+      {
+        "clientId": "38ab9f2f-4ced-42a5-ad88-fc9caa92049f",
+        "email": "mark.j.pratt@icloud.com",
+        "firstName": "Mark",
+        "lastName": "Pratt",
+        "fullName": "Mark Pratt",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 282
+      },
+      {
+        "clientId": "5a53b003-5e47-42b6-9065-6ae70eecb75f",
+        "email": "iains@flatfivezero.com",
+        "firstName": "Iain",
+        "lastName": "Stewart",
+        "fullName": "Iain Stewart",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 283
+      },
+      {
+        "clientId": "f64e32c2-3b33-402f-bdd8-f5439542ed12",
+        "email": "jayne.packer@tullon.com",
+        "firstName": "Jayne",
+        "lastName": "Templeton",
+        "fullName": "Jayne Templeton",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 284
+      },
+      {
+        "clientId": "b02057e1-1d22-4b0f-ac4b-835e0eaaba36",
+        "email": "leanneviz@icloud.com",
+        "firstName": "leanne",
+        "lastName": "vizer",
+        "fullName": "leanne vizer",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 285
+      },
+      {
+        "clientId": "e65068c1-7ccf-4e36-a7e9-764817432e1b",
+        "email": "tori.frm@gmail.com",
+        "firstName": "Tor",
+        "lastName": "Mcdouall",
+        "fullName": "Tor Mcdouall",
+        "pointsBalance": 169,
+        "loyaltyEnrolled": true,
+        "rowNumber": 286
+      },
+      {
+        "clientId": "1c8efc4e-8701-4cef-8c25-074d04639990",
+        "email": "simonhaban@googlemail.com",
+        "firstName": "Simon",
+        "lastName": "Haban",
+        "fullName": "Simon Haban",
+        "pointsBalance": 159,
+        "loyaltyEnrolled": true,
+        "rowNumber": 287
+      },
+      {
+        "clientId": "9f4631c4-83a3-4065-b23c-afd03c03176b",
+        "email": "robnsar@bigpond.net.au",
+        "firstName": "Robert",
+        "lastName": "Willmett",
+        "fullName": "Robert Willmett",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 288
+      },
+      {
+        "clientId": "4da54d50-3ce6-4849-b85a-33216eb0979b",
+        "email": "d.green979@btinternet.com",
+        "firstName": "Diane",
+        "lastName": "Green",
+        "fullName": "Diane Green",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 289
+      },
+      {
+        "clientId": "6d007c23-f2db-497b-8716-16838ff75032",
+        "email": "jomo3159@hotmail.com",
+        "firstName": "John",
+        "lastName": "Moore",
+        "fullName": "John Moore",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 290
+      },
+      {
+        "clientId": "e80ff00f-8407-45ad-961f-e3f5e4f19353",
+        "email": "sandralynnatkin@gmail.com",
+        "firstName": "Sandra",
+        "lastName": "Atkin",
+        "fullName": "Sandra Atkin",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 291
+      },
+      {
+        "clientId": "17ce01a2-4f08-4d5e-a179-f4523602afb4",
+        "email": "lizzie76smith@outlook.com",
+        "firstName": "Elizabeth",
+        "lastName": "Smith",
+        "fullName": "Elizabeth Smith",
+        "pointsBalance": 159,
+        "loyaltyEnrolled": true,
+        "rowNumber": 292
+      },
+      {
+        "clientId": "1a6f6195-860f-4a03-ba9c-767aa941d453",
+        "email": "markday100@hotmail.co.uk",
+        "firstName": "Mark",
+        "lastName": "Day",
+        "fullName": "Mark Day",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 293
+      },
+      {
+        "clientId": "43f0d812-c8b8-48ba-a7a5-06e4e3e2b063",
+        "email": "thedoctorford@aol.com",
+        "firstName": "Diane",
+        "lastName": "Roberts",
+        "fullName": "Diane Roberts",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 294
+      },
+      {
+        "clientId": "74ecea2a-8daf-42b0-847c-caf089cf5943",
+        "email": "sharoncoade@gmail.com",
+        "firstName": "Sharon",
+        "lastName": "Coade",
+        "fullName": "Sharon Coade",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 295
+      },
+      {
+        "clientId": "9ffcf523-ed8e-4c2b-8ce7-a3045b245cc3",
+        "email": "christy.seftonpark@helloworld.com.au",
+        "firstName": "Christy",
+        "lastName": "Morony",
+        "fullName": "Christy Morony",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 296
+      },
+      {
+        "clientId": "1b101d04-8ffc-46fa-a558-6cf8f2dfdd9c",
+        "email": "garfield6958@gmail.com",
+        "firstName": "Callum",
+        "lastName": "McIntosh",
+        "fullName": "Callum McIntosh",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 297
+      },
+      {
+        "clientId": "8a2c6272-e191-473f-adff-344565c7af5f",
+        "email": "cheryl.scicluna2@gmail.com",
+        "firstName": "Cheryl",
+        "lastName": "Nolan",
+        "fullName": "Cheryl Nolan",
+        "pointsBalance": 214,
+        "loyaltyEnrolled": true,
+        "rowNumber": 298
+      },
+      {
+        "clientId": "6b0c348d-4a98-4d3b-af6a-b0bdb51e4e16",
+        "email": "walter.pollock102@mod.gov.uk",
+        "firstName": "Walter",
+        "lastName": "Pollock",
+        "fullName": "Walter Pollock",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 299
+      },
+      {
+        "clientId": "711e2edf-9c0b-431b-821e-848c093f1e79",
+        "email": "mathesongregor@gmail.com",
+        "firstName": "Gregor",
+        "lastName": "Matheson",
+        "fullName": "Gregor Matheson",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 300
+      },
+      {
+        "clientId": "84660039-585f-4faa-b517-292df215a650",
+        "email": "laura_shaw86@hotmail.com",
+        "firstName": "Laura",
+        "lastName": "Shaw",
+        "fullName": "Laura Shaw",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 302
+      },
+      {
+        "clientId": "b1e02a97-7360-41b5-8e88-e7ce2390e8e9",
+        "email": "bwilliams@bureaukensington.com",
+        "firstName": "Barbara",
+        "lastName": "Williams",
+        "fullName": "Barbara Williams",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 303
+      },
+      {
+        "clientId": "a945b3be-3f26-43a5-83ea-c6ea1945f33d",
+        "email": "ashleyfroom1912@gmail.com",
+        "firstName": "ashley",
+        "lastName": "Wilson",
+        "fullName": "ashley Wilson",
+        "pointsBalance": 169,
+        "loyaltyEnrolled": true,
+        "rowNumber": 304
+      },
+      {
+        "clientId": "038dfbb6-1dab-47c3-8455-67febc39fa09",
+        "email": "tvsphone@gmail.com",
+        "firstName": "Thomas",
+        "lastName": "Sedlacek",
+        "fullName": "Thomas Sedlacek",
+        "pointsBalance": 169,
+        "loyaltyEnrolled": true,
+        "rowNumber": 305
+      },
+      {
+        "clientId": "b511fc34-60c3-42d2-a6d3-101fbd0cea07",
+        "email": "she3@telus.net",
+        "firstName": "Sheila",
+        "lastName": "McMurtry",
+        "fullName": "Sheila McMurtry",
+        "pointsBalance": 204,
+        "loyaltyEnrolled": true,
+        "rowNumber": 306
+      },
+      {
+        "clientId": "7feb9232-cceb-4671-b384-ac37990faa1b",
+        "email": "hyj2u94@gmail.com",
+        "firstName": "YounJin",
+        "lastName": "Hwang",
+        "fullName": "YounJin Hwang",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 307
+      },
+      {
+        "clientId": "3864602f-f649-4723-90a5-4d2de1cb36e0",
+        "email": "emilyfletcher1@hotmail.co.uk",
+        "firstName": "Emily",
+        "lastName": "Hallett",
+        "fullName": "Emily Hallett",
+        "pointsBalance": 189,
+        "loyaltyEnrolled": true,
+        "rowNumber": 308
+      },
+      {
+        "clientId": "0ede71ef-beff-44e7-a1dd-962234da4066",
+        "email": "jemckay1@gmail.com",
+        "firstName": "Jane",
+        "lastName": "McKay",
+        "fullName": "Jane McKay",
+        "pointsBalance": 139,
+        "loyaltyEnrolled": true,
+        "rowNumber": 309
+      },
+      {
+        "clientId": "6d2759f0-b847-4391-b99d-9f9dcd5d70c3",
+        "email": "jezcooper@hotmail.com",
+        "firstName": "Jez",
+        "lastName": "Cooper",
+        "fullName": "Jez Cooper",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 310
+      },
+      {
+        "clientId": "bc2b0159-a191-4fcc-b3b2-d03dabdac0a4",
+        "email": "sharon.sheen@btinternet.com",
+        "firstName": "Sharon",
+        "lastName": "Sheen",
+        "fullName": "Sharon Sheen",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 311
+      },
+      {
+        "clientId": "c18ad3b3-48b4-4ff5-aeb1-2f804c03e8eb",
+        "email": "dpoukens19@gmail.com",
+        "firstName": "Deborah",
+        "lastName": "Poukens",
+        "fullName": "Deborah Poukens",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 312
+      },
+      {
+        "clientId": "8e4aa652-ecd2-4fa5-8344-9548e34dda66",
+        "email": "paulwheelhouse@aol.com",
+        "firstName": "Paul",
+        "lastName": "Wheelhouse",
+        "fullName": "Paul Wheelhouse",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 313
+      },
+      {
+        "clientId": "16254a10-dbce-48a5-bbee-26c25cb95c24",
+        "email": "laurenfrench5@gmail.com",
+        "firstName": "Lauren",
+        "lastName": "French",
+        "fullName": "Lauren French",
+        "pointsBalance": 204,
+        "loyaltyEnrolled": true,
+        "rowNumber": 314
+      },
+      {
+        "clientId": "2ae71c15-dca3-4943-815d-c4941abe1ae3",
+        "email": "debbie.barnes@marks-and-spencer.com",
+        "firstName": "Debbie",
+        "lastName": "barnes",
+        "fullName": "Debbie barnes",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 315
+      },
+      {
+        "clientId": "2d762833-2efa-4bbb-ab1d-ee1e5de5bf35",
+        "email": "jstewart66@live.co.uk",
+        "firstName": "Jill",
+        "lastName": "Stewart",
+        "fullName": "Jill Stewart",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 316
+      },
+      {
+        "clientId": "7360a851-1d18-4f2d-a5ff-cfe8f72d0d95",
+        "email": "lesley72.lh@gmail.com",
+        "firstName": "Lesley",
+        "lastName": "Harvey",
+        "fullName": "Lesley Harvey",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 317
+      },
+      {
+        "clientId": "3ef61ecd-4b79-448f-bcbd-b2546c44d1fd",
+        "email": "spahal82@gmail.com",
+        "firstName": "Sunny",
+        "lastName": "Pahal",
+        "fullName": "Sunny Pahal",
+        "pointsBalance": 139,
+        "loyaltyEnrolled": true,
+        "rowNumber": 318
+      },
+      {
+        "clientId": "6bf875e5-b179-43ab-af60-7f040dd122b3",
+        "email": "lrmongell@marketingme.com",
+        "firstName": "Linda Rose",
+        "lastName": "Mongell",
+        "fullName": "Linda Rose Mongell",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 319
+      },
+      {
+        "clientId": "4ff3a6f1-e83d-4269-aa67-a9b9879eaa3f",
+        "email": "buerton2000@yahoo.co.uk",
+        "firstName": "Michael",
+        "lastName": "Smith",
+        "fullName": "Michael Smith",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 320
+      },
+      {
+        "clientId": "54c63ce0-0015-4405-9dc3-5bde288f5ffc",
+        "email": "clare.woods2712@gmail.com",
+        "firstName": "Clare",
+        "lastName": "Woods",
+        "fullName": "Clare Woods",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 321
+      },
+      {
+        "clientId": "96551cb5-0b0b-4091-babc-5be756e98182",
+        "email": "nicolajamie@me.com",
+        "firstName": "Nicola",
+        "lastName": "Holmes",
+        "fullName": "Nicola Holmes",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 322
+      },
+      {
+        "clientId": "026210e6-9866-46fc-b345-eae57f85bf0e",
+        "email": "billykingbusiness@gmail.com",
+        "firstName": "Billy",
+        "lastName": "King",
+        "fullName": "Billy King",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 323
+      },
+      {
+        "clientId": "bcaa564f-78f6-4948-bfa4-f20e25c10a84",
+        "email": "robertsharp62@live.co.uk",
+        "firstName": "Robert",
+        "lastName": "Sharp",
+        "fullName": "Robert Sharp",
+        "pointsBalance": 109,
+        "loyaltyEnrolled": true,
+        "rowNumber": 325
+      },
+      {
+        "clientId": "09d193eb-92a7-4034-aa12-13499b422354",
+        "email": "mknowland@live.co.uk",
+        "firstName": "Mike",
+        "lastName": "Knowland",
+        "fullName": "Mike Knowland",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 326
+      },
+      {
+        "clientId": "d80d67b8-fad4-4d19-aa62-ed7bbf7c6485",
+        "email": "richard.brown823@hotmail.co.uk",
+        "firstName": "Richard",
+        "lastName": "Brown",
+        "fullName": "Richard Brown",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 327
+      },
+      {
+        "clientId": "6f8cdae9-0f77-4e06-835e-232438ec10fb",
+        "email": "elinorwinter01@gmail.com",
+        "firstName": "Elinor",
+        "lastName": "Winter",
+        "fullName": "Elinor Winter",
+        "pointsBalance": 177,
+        "loyaltyEnrolled": true,
+        "rowNumber": 328
+      },
+      {
+        "clientId": "8c386096-bee3-464c-95a4-c3c43c4e6ac7",
+        "email": "byrneholdings@icloud.com",
+        "firstName": "Brent",
+        "lastName": "Byrne",
+        "fullName": "Brent Byrne",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 329
+      },
+      {
+        "clientId": "99590109-9c11-4b81-997f-405c6c74760f",
+        "email": "geon100@me.com",
+        "firstName": "George",
+        "lastName": "Maxwell",
+        "fullName": "George Maxwell",
+        "pointsBalance": 229,
+        "loyaltyEnrolled": true,
+        "rowNumber": 330
+      },
+      {
+        "clientId": "2f94d7d7-7d1f-46d7-8aec-b1080eb2fcee",
+        "email": "mperinebeard@gmail.com",
+        "firstName": "Martha",
+        "lastName": "Perine Beard",
+        "fullName": "Martha Perine Beard",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 331
+      },
+      {
+        "clientId": "8b5c1ec5-aaae-42a0-880d-9c17006e542c",
+        "email": "tmathers792@gmail.com",
+        "firstName": "Thomas",
+        "lastName": "Mather",
+        "fullName": "Thomas Mather",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 332
+      },
+      {
+        "clientId": "51f1b9c7-26f5-428a-b9d0-e86b2b015fd7",
+        "email": "jashollin@gmail.com",
+        "firstName": "Jasmine",
+        "lastName": "Hollin",
+        "fullName": "Jasmine Hollin",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 333
+      },
+      {
+        "clientId": "96d84047-4fa6-47d1-875c-6a96de42e7b5",
+        "email": "smithdale883@yahoo.co.uk",
+        "firstName": "Dale",
+        "lastName": "Smith",
+        "fullName": "Dale Smith",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 334
+      },
+      {
+        "clientId": "9c5fd3c2-18ff-435f-a3a7-b716c72fd99c",
+        "email": "sarah@markhamhouse.co.uk",
+        "firstName": "Sarah",
+        "lastName": "Short",
+        "fullName": "Sarah Short",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 335
+      },
+      {
+        "clientId": "ecd285aa-75ec-4fe9-be0a-4e4597554055",
+        "email": "lynnedryden@hotmail.com",
+        "firstName": "Lynne",
+        "lastName": "Dryden",
+        "fullName": "Lynne Dryden",
+        "pointsBalance": 314,
+        "loyaltyEnrolled": true,
+        "rowNumber": 336
+      },
+      {
+        "clientId": "898c279e-3d16-4ef1-a882-5d1605c574f4",
+        "email": "bethrankine@aol.com",
+        "firstName": "Beth",
+        "lastName": "Lewis",
+        "fullName": "Beth Lewis",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 337
+      },
+      {
+        "clientId": "11dcb0f1-d907-4f64-b533-f674c3deaf28",
+        "email": "richardcurran71@gmail.com",
+        "firstName": "Richard",
+        "lastName": "Curran",
+        "fullName": "Richard Curran",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 338
+      },
+      {
+        "clientId": "6d20b5fc-29e8-4d51-a3e3-fdda5f3fa304",
+        "email": "phillrow23@gmail.com",
+        "firstName": "Phillip",
+        "lastName": "rowlands",
+        "fullName": "Phillip rowlands",
+        "pointsBalance": 279,
+        "loyaltyEnrolled": true,
+        "rowNumber": 339
+      },
+      {
+        "clientId": "b4f73248-9996-42e4-9129-cc87211c5768",
+        "email": "sdb1059@gmail.com",
+        "firstName": "Steve",
+        "lastName": "Baynton",
+        "fullName": "Steve Baynton",
+        "pointsBalance": 194,
+        "loyaltyEnrolled": true,
+        "rowNumber": 340
+      },
+      {
+        "clientId": "2f13349e-8c8b-4084-ae36-993ee9568d6f",
+        "email": "klevy210@gmail.com",
+        "firstName": "Kevin",
+        "lastName": "Levy",
+        "fullName": "Kevin Levy",
+        "pointsBalance": 284,
+        "loyaltyEnrolled": true,
+        "rowNumber": 341
+      },
+      {
+        "clientId": "e7cfbe8c-1bd8-46a2-ac3e-497c048dd484",
+        "email": "julieannhirst@gmail.com",
+        "firstName": "Julie",
+        "lastName": "HIRST",
+        "fullName": "Julie HIRST",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 342
+      },
+      {
+        "clientId": "a5350650-03a8-4408-a116-ecf8c387731d",
+        "email": "jeffgaman@hotmail.co.uk",
+        "firstName": "Jeff",
+        "lastName": "Gaman",
+        "fullName": "Jeff Gaman",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 343
+      },
+      {
+        "clientId": "02d6527f-8b58-43fb-9ce9-bef1d303aeb3",
+        "email": "mikegray1234567890@gmail.com",
+        "firstName": "michael",
+        "lastName": "Gray",
+        "fullName": "michael Gray",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 344
+      },
+      {
+        "clientId": "160ebff6-ce64-4558-b2bb-2e8ba4d6993c",
+        "email": "kerrissimpson7@gmail.com",
+        "firstName": "Kerris",
+        "lastName": "Simpson",
+        "fullName": "Kerris Simpson",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 345
+      },
+      {
+        "clientId": "5c09e76c-b834-4186-bd61-2408bcc512cf",
+        "email": "martintaylor77@googlemail.com",
+        "firstName": "Martin",
+        "lastName": "Taylor",
+        "fullName": "Martin Taylor",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 346
+      },
+      {
+        "clientId": "73914505-f433-4dd9-b33e-171335b3428f",
+        "email": "oliviamiller35@icloud.com",
+        "firstName": "Olivia",
+        "lastName": "Miller",
+        "fullName": "Olivia Miller",
+        "pointsBalance": 144,
+        "loyaltyEnrolled": true,
+        "rowNumber": 347
+      },
+      {
+        "clientId": "3c521c06-ed6e-4ba0-aca8-f6e53f769c19",
+        "email": "mark_.taylor@icloud.com",
+        "firstName": "Mark",
+        "lastName": "Taylor",
+        "fullName": "Mark Taylor",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 348
+      },
+      {
+        "clientId": "8483d013-2cf6-414b-b294-19b75000f5ad",
+        "email": "mhl1958@btinternet.com",
+        "firstName": "Malcolm",
+        "lastName": "Lofts",
+        "fullName": "Malcolm Lofts",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 349
+      },
+      {
+        "clientId": "4544bba5-f2d0-4ae8-a884-214cb54235ef",
+        "email": "pmsdavis@gmail.com",
+        "firstName": "Paul",
+        "lastName": "Davis",
+        "fullName": "Paul Davis",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 350
+      },
+      {
+        "clientId": "5e5f6ffa-576b-46ba-935d-c25da2c56b57",
+        "email": "stephaniecarruthers@hotmail.com",
+        "firstName": "Stephanie",
+        "lastName": "Carruthers",
+        "fullName": "Stephanie Carruthers",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 351
+      },
+      {
+        "clientId": "97685535-be1e-4663-be7e-29cd8080c9c0",
+        "email": "m.bauerle@comcast.net",
+        "firstName": "Michael",
+        "lastName": "Bauerle",
+        "fullName": "Michael Bauerle",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 352
+      },
+      {
+        "clientId": "d9dd3a18-bf1c-4584-bb5f-01a4b666cb32",
+        "email": "simon.andrews1609@gmail.com",
+        "firstName": "Simon",
+        "lastName": "Andrews",
+        "fullName": "Simon Andrews",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 353
+      },
+      {
+        "clientId": "aff545f9-fb33-4412-9750-06a6b8338419",
+        "email": "patrick@henchoz.co.uk",
+        "firstName": "Patrick",
+        "lastName": "Henchoz",
+        "fullName": "Patrick Henchoz",
+        "pointsBalance": 569,
+        "loyaltyEnrolled": true,
+        "rowNumber": 354
+      },
+      {
+        "clientId": "872ac316-517a-4979-8d07-1eb6e8015f5d",
+        "email": "smarrett1960@gmail.com",
+        "firstName": "Steve",
+        "lastName": "Marrett",
+        "fullName": "Steve Marrett",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 355
+      },
+      {
+        "clientId": "c5b5b00a-d960-4bc2-92df-988273e7bc72",
+        "email": "kerri.harvey@hotmail.com",
+        "firstName": "Kerri",
+        "lastName": "Harvey",
+        "fullName": "Kerri Harvey",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 356
+      },
+      {
+        "clientId": "245d465b-937c-4801-bcdd-bc98832415f3",
+        "email": "martynalner@martynalner.f9.co.uk",
+        "firstName": "Martyn",
+        "lastName": "Alner",
+        "fullName": "Martyn Alner",
+        "pointsBalance": 174,
+        "loyaltyEnrolled": true,
+        "rowNumber": 357
+      },
+      {
+        "clientId": "599e67de-0b72-4fef-b156-9c52d9635a58",
+        "email": "frankcashman30@gmail.com",
+        "firstName": "Frank",
+        "lastName": "Cashman",
+        "fullName": "Frank Cashman",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 358
+      },
+      {
+        "clientId": "dd2a64c6-d134-4dde-99ef-f15508862d44",
+        "email": "stewartaspence@btinternet.com",
+        "firstName": "Stewart",
+        "lastName": "Spence",
+        "fullName": "Stewart Spence",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 359
+      },
+      {
+        "clientId": "ccf49c52-7a82-407e-b87a-a839d8ed64a9",
+        "email": "dixoncherryl942@gmail.com",
+        "firstName": "Cherryl",
+        "lastName": "Dixon",
+        "fullName": "Cherryl Dixon",
+        "pointsBalance": 207,
+        "loyaltyEnrolled": true,
+        "rowNumber": 360
+      },
+      {
+        "clientId": "12d4b473-0198-4ac2-a5f2-025580fc955e",
+        "email": "stephen.duncan2@sky.com",
+        "firstName": "Stephen",
+        "lastName": "Duncan",
+        "fullName": "Stephen Duncan",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 361
+      },
+      {
+        "clientId": "3174ca9a-4fc2-4169-aa3a-36c7d5a938dd",
+        "email": "garethburris@outlook.com",
+        "firstName": "Gareth",
+        "lastName": "Burris",
+        "fullName": "Gareth Burris",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 362
+      },
+      {
+        "clientId": "8bd62e0a-c38e-42dc-8b98-9618722580a2",
+        "email": "adrianjeffery@hotmail.co.uk",
+        "firstName": "Adrian",
+        "lastName": "Jeffery",
+        "fullName": "Adrian Jeffery",
+        "pointsBalance": 210,
+        "loyaltyEnrolled": true,
+        "rowNumber": 363
+      },
+      {
+        "clientId": "4e8deec2-dcce-4814-b7bf-48228efbfc1c",
+        "email": "emilywynnx@outlook.com",
+        "firstName": "Emily",
+        "lastName": "Wynn",
+        "fullName": "Emily Wynn",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 364
+      },
+      {
+        "clientId": "34811ae7-1d3b-498d-9cc2-622b767b64eb",
+        "email": "su.harris@me.com",
+        "firstName": "Su",
+        "lastName": "Harris",
+        "fullName": "Su Harris",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 365
+      },
+      {
+        "clientId": "7c5fa029-b3f1-405f-adef-a7016540a71e",
+        "email": "smithandrewc@icloud.com",
+        "firstName": "Andrew",
+        "lastName": "Smith",
+        "fullName": "Andrew Smith",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 366
+      },
+      {
+        "clientId": "30e4ec1c-84fb-4f47-a4b9-514b112ecf64",
+        "email": "david.franklin89@gmail.com",
+        "firstName": "David",
+        "lastName": "Franklin",
+        "fullName": "David Franklin",
+        "pointsBalance": 139,
+        "loyaltyEnrolled": true,
+        "rowNumber": 367
+      },
+      {
+        "clientId": "10ed2fad-e011-400d-9d73-fc33b11c3bfa",
+        "email": "doneill25@msn.com",
+        "firstName": "David",
+        "lastName": "ONeill",
+        "fullName": "David ONeill",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 368
+      },
+      {
+        "clientId": "f3c6a0f3-38d7-4418-8b2f-9292f54598bb",
+        "email": "katrina.perks@gmail.com",
+        "firstName": "Katrina",
+        "lastName": "Perks",
+        "fullName": "Katrina Perks",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 369
+      },
+      {
+        "clientId": "544dff7e-49e0-4e26-a1dc-dc328d429af3",
+        "email": "jackiealdous68@gmail.com",
+        "firstName": "Jackie",
+        "lastName": "Aldous",
+        "fullName": "Jackie Aldous",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 370
+      },
+      {
+        "clientId": "f0dc949c-513d-40a1-8286-cdb2446ff687",
+        "email": "teresa.southern@icloud.com",
+        "firstName": "Teresa",
+        "lastName": "Southern",
+        "fullName": "Teresa Southern",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 371
+      },
+      {
+        "clientId": "fd9eedf4-32ad-4976-90fe-4de07fca327f",
+        "email": "thefosterfamily4@btinternet.com",
+        "firstName": "Susan",
+        "lastName": "Foster",
+        "fullName": "Susan Foster",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 372
+      },
+      {
+        "clientId": "fde80c0b-1bda-4671-8a48-2a06c2376df5",
+        "email": "re@ruthendacott.co.uk",
+        "firstName": "Ruth",
+        "lastName": "Endacott",
+        "fullName": "Ruth Endacott",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 373
+      },
+      {
+        "clientId": "05eae2af-ff49-4d5d-89fd-f91f73a16348",
+        "email": "chrispittner@hotmail.com",
+        "firstName": "Chris",
+        "lastName": "Pittner",
+        "fullName": "Chris Pittner",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 374
+      },
+      {
+        "clientId": "de08eeec-8d0a-4db0-a2e1-4cca26fea478",
+        "email": "susi.cardew73@gmail.com",
+        "firstName": "Susi",
+        "lastName": "Cardew",
+        "fullName": "Susi Cardew",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 375
+      },
+      {
+        "clientId": "bdcc801d-168c-42dc-9919-2923eb1b51a0",
+        "email": "rdhpocklington@hotmail.co.uk",
+        "firstName": "Rozalinde",
+        "lastName": "Pocklington",
+        "fullName": "Rozalinde Pocklington",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 376
+      },
+      {
+        "clientId": "96e04537-05b2-4b73-8d31-d0fdf9d1bc89",
+        "email": "wyperh@aol.com",
+        "firstName": "Heather",
+        "lastName": "Wyper",
+        "fullName": "Heather Wyper",
+        "pointsBalance": 214,
+        "loyaltyEnrolled": true,
+        "rowNumber": 377
+      },
+      {
+        "clientId": "05a664c0-b23a-4319-a2bb-cc554d5dcd4a",
+        "email": "danielle.c.davies@gmail.com",
+        "firstName": "Danielle",
+        "lastName": "Oliver",
+        "fullName": "Danielle Oliver",
+        "pointsBalance": 134,
+        "loyaltyEnrolled": true,
+        "rowNumber": 378
+      },
+      {
+        "clientId": "5522665b-7b68-4cd4-aafe-b0cfc6fec8b7",
+        "email": "martineggett82@gmail.com",
+        "firstName": "Martin",
+        "lastName": "Eggett",
+        "fullName": "Martin Eggett",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 379
+      },
+      {
+        "clientId": "3f92941a-a2e9-4605-97b7-a4a12a4a7650",
+        "email": "ericayoung47@hotmail.co.uk",
+        "firstName": "Erica",
+        "lastName": "Young",
+        "fullName": "Erica Young",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 380
+      },
+      {
+        "clientId": "5f23ba38-9191-475a-a675-ce1d2bc2678b",
+        "email": "david.england@pwp-ltd.co.uk",
+        "firstName": "David",
+        "lastName": "England",
+        "fullName": "David England",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 381
+      },
+      {
+        "clientId": "994558b7-785e-4248-9002-8835f791d615",
+        "email": "audley1@icloud.com",
+        "firstName": "Audley",
+        "lastName": "Alexander",
+        "fullName": "Audley Alexander",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 382
+      },
+      {
+        "clientId": "3d0b7f0a-ee89-4547-847e-22f1f1a8fd5c",
+        "email": "leighthawkins612@gmail.com",
+        "firstName": "Leighton",
+        "lastName": "Hawkins",
+        "fullName": "Leighton Hawkins",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 383
+      },
+      {
+        "clientId": "9365ac91-2500-4147-a5de-d74db0fe1e23",
+        "email": "hope404@btinternet.com",
+        "firstName": "Amanda",
+        "lastName": "Hope",
+        "fullName": "Amanda Hope",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 384
+      },
+      {
+        "clientId": "fe3f9245-4fb3-45d9-ba6b-628de10177ca",
+        "email": "amylucy87@gmail.com",
+        "firstName": "Amy",
+        "lastName": "Hulks",
+        "fullName": "Amy Hulks",
+        "pointsBalance": 194,
+        "loyaltyEnrolled": true,
+        "rowNumber": 385
+      },
+      {
+        "clientId": "7d2ab34a-2ec9-4455-96cb-a198068c3673",
+        "email": "sarah5kidd@yahoo.co.uk",
+        "firstName": "Sarah",
+        "lastName": "Hill",
+        "fullName": "Sarah Hill",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 386
+      },
+      {
+        "clientId": "a423de6d-6225-4bfb-8ba0-98a4fee595c7",
+        "email": "lindajordan.2@btopenworld.com",
+        "firstName": "Linda",
+        "lastName": "Jordan",
+        "fullName": "Linda Jordan",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 387
+      },
+      {
+        "clientId": "5455fbbf-07fa-4f7b-9c4e-96bbf717ea7f",
+        "email": "lrford288@gmail.com",
+        "firstName": "Linette",
+        "lastName": "Dancey",
+        "fullName": "Linette Dancey",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 388
+      },
+      {
+        "clientId": "43ba1f31-e54e-47ce-a36c-65b97746a65c",
+        "email": "sue_sf@hotmail.com",
+        "firstName": "Sue",
+        "lastName": "Swain-Fossey",
+        "fullName": "Sue Swain-Fossey",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 389
+      },
+      {
+        "clientId": "691cf806-eca6-4c53-9275-95c1ca6f7178",
+        "email": "jae16586@hotmail.com",
+        "firstName": "Jason",
+        "lastName": "Wheelhouse",
+        "fullName": "Jason Wheelhouse",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 390
+      },
+      {
+        "clientId": "fd49fd60-5ecf-4fd2-8384-ef35ccc5a83c",
+        "email": "ellenbailie95@gmail.com",
+        "firstName": "Ellen",
+        "lastName": "McGeehab",
+        "fullName": "Ellen McGeehab",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 391
+      },
+      {
+        "clientId": "a17dac0a-6bad-4820-a9d2-0b52c0290252",
+        "email": "abinayaganapathipillai@gmail.com",
+        "firstName": "Abinaya",
+        "lastName": "Ganapathipillai",
+        "fullName": "Abinaya Ganapathipillai",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 392
+      },
+      {
+        "clientId": "ee3a389d-9ee1-4d66-b4fb-dffbfb538060",
+        "email": "jackiebt@hotmail.co.uk",
+        "firstName": "Jackie",
+        "lastName": "Hamer",
+        "fullName": "Jackie Hamer",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 394
+      },
+      {
+        "clientId": "b9988b10-9cfe-4f5e-8db5-42024ceff654",
+        "email": "janet.powley@btinternet.com",
+        "firstName": "JANET",
+        "lastName": "POWLEY",
+        "fullName": "JANET POWLEY",
+        "pointsBalance": 179,
+        "loyaltyEnrolled": true,
+        "rowNumber": 395
+      },
+      {
+        "clientId": "96516a3e-81f8-4a5a-85b2-8f2eac7f6701",
+        "email": "amandaprout@btinternet.com",
+        "firstName": "Amanda",
+        "lastName": "Prout",
+        "fullName": "Amanda Prout",
+        "pointsBalance": 150,
+        "loyaltyEnrolled": true,
+        "rowNumber": 396
+      },
+      {
+        "clientId": "ed4dc29b-7ef7-4658-8f49-24921a7b790d",
+        "email": "colinchapman24@talktalk.net",
+        "firstName": "Colin",
+        "lastName": "Chapman",
+        "fullName": "Colin Chapman",
+        "pointsBalance": 144,
+        "loyaltyEnrolled": true,
+        "rowNumber": 397
+      },
+      {
+        "clientId": "5d7bb575-39df-45b8-bbb2-053058f06e7f",
+        "email": "nigel.pinegar@sky.com",
+        "firstName": "Nigel",
+        "lastName": "Pinegar",
+        "fullName": "Nigel Pinegar",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 398
+      },
+      {
+        "clientId": "b02d83c3-2a9b-4509-a3b2-f6aeda67dfd2",
+        "email": "neilross306@btinternet.com",
+        "firstName": "Neil",
+        "lastName": "Ross",
+        "fullName": "Neil Ross",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 399
+      },
+      {
+        "clientId": "84d9d1f8-05bd-42dd-8bbb-42030a226d3a",
+        "email": "kim.hiller1@googlemail.com",
+        "firstName": "Kim",
+        "lastName": "Hiller",
+        "fullName": "Kim Hiller",
+        "pointsBalance": 234,
+        "loyaltyEnrolled": true,
+        "rowNumber": 400
+      },
+      {
+        "clientId": "1e9ce53b-6ac6-406e-a8da-43f99b2d903b",
+        "email": "anna.addamo@bigpond.com",
+        "firstName": "Anna",
+        "lastName": "Addamo",
+        "fullName": "Anna Addamo",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 401
+      },
+      {
+        "clientId": "d2e19834-87c1-4d5d-b34a-e366c4b353d4",
+        "email": "robcsl@icloud.com",
+        "firstName": "Robert",
+        "lastName": "Evans",
+        "fullName": "Robert Evans",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 402
+      },
+      {
+        "clientId": "99a91ab4-d577-4d8e-b9e5-86bb7d540f66",
+        "email": "deborahcawthorn@live.co.uk",
+        "firstName": "Deborah",
+        "lastName": "Kelley",
+        "fullName": "Deborah Kelley",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 403
+      },
+      {
+        "clientId": "ff07d305-473f-4c40-9306-def44578c480",
+        "email": "harryallen0406@gmail.com",
+        "firstName": "Harry",
+        "lastName": "Allen",
+        "fullName": "Harry Allen",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 404
+      },
+      {
+        "clientId": "aa5fdb2e-d5cb-4bb6-9b88-5377292da1c7",
+        "email": "jon.unett88@gmail.com",
+        "firstName": "Jon",
+        "lastName": "Unett",
+        "fullName": "Jon Unett",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 406
+      },
+      {
+        "clientId": "58d6187f-87b1-488e-ab40-fe1b3c390b92",
+        "email": "richatcordwainer@btinternet.com",
+        "firstName": "Richard",
+        "lastName": "Jones",
+        "fullName": "Richard Jones",
+        "pointsBalance": 194,
+        "loyaltyEnrolled": true,
+        "rowNumber": 408
+      },
+      {
+        "clientId": "a4c9b344-d60d-4632-ab42-71d1e69ceedc",
+        "email": "tobysimmonds@aol.com",
+        "firstName": "Alison",
+        "lastName": "Simmonds",
+        "fullName": "Alison Simmonds",
+        "pointsBalance": 194,
+        "loyaltyEnrolled": true,
+        "rowNumber": 409
+      },
+      {
+        "clientId": "80e57dd6-aa0b-41dd-8180-9d8e9186dab0",
+        "email": "liz@briangrieve.co.uk",
+        "firstName": "Liz",
+        "lastName": "Grieve",
+        "fullName": "Liz Grieve",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 410
+      },
+      {
+        "clientId": "439f8549-00c7-4a85-b354-72e2194cbf76",
+        "email": "mcdonnj9@tcd.ie",
+        "firstName": "Joseph",
+        "lastName": "McDonnell",
+        "fullName": "Joseph McDonnell",
+        "pointsBalance": 129,
+        "loyaltyEnrolled": true,
+        "rowNumber": 411
+      },
+      {
+        "clientId": "5dc9c5aa-0655-4229-9fbd-f027c352e54e",
+        "email": "steverobinson.luoyi@gmail.com",
+        "firstName": "Steve",
+        "lastName": "Robinson",
+        "fullName": "Steve Robinson",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 412
+      },
+      {
+        "clientId": "de5c5dd3-7e64-4fd7-b7f7-9cf59a08a17e",
+        "email": "leighandarty@hotmail.co.uk",
+        "firstName": "Leighan",
+        "lastName": "Shaw",
+        "fullName": "Leighan Shaw",
+        "pointsBalance": 229,
+        "loyaltyEnrolled": true,
+        "rowNumber": 413
+      },
+      {
+        "clientId": "ec96480b-2d16-4af8-b138-71c301f10db9",
+        "email": "ortonsarah6@gmail.com",
+        "firstName": "Sarah",
+        "lastName": "Orton",
+        "fullName": "Sarah Orton",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 414
+      },
+      {
+        "clientId": "e0ca7b73-f820-4913-9d14-5fbb420a9ee9",
+        "email": "oconnorjack4161@gmail.com",
+        "firstName": "Jack",
+        "lastName": "O’Connor",
+        "fullName": "Jack O’Connor",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 415
+      },
+      {
+        "clientId": "58c0ff32-9010-42cb-a9fa-73b20819042b",
+        "email": "lynsey287@aol.com",
+        "firstName": "Lynsey",
+        "lastName": "Duncan",
+        "fullName": "Lynsey Duncan",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 416
+      },
+      {
+        "clientId": "2fa042b9-5de5-4ae2-ae59-645a4ef13f30",
+        "email": "sicarter@btinternet.com",
+        "firstName": "Sandra",
+        "lastName": "Carter",
+        "fullName": "Sandra Carter",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 417
+      },
+      {
+        "clientId": "025d8f4f-4446-4918-956e-11645b84e06e",
+        "email": "kathleen.boswell@retronixsemi.com",
+        "firstName": "Kathleen",
+        "lastName": "Boswell",
+        "fullName": "Kathleen Boswell",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 418
+      },
+      {
+        "clientId": "0472eba4-41fe-4b10-9924-fdc97dc587f9",
+        "email": "marcgjones01@gmail.com",
+        "firstName": "Marc",
+        "lastName": "Jones",
+        "fullName": "Marc Jones",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 419
+      },
+      {
+        "clientId": "1515aacc-cf3b-4553-9d56-850dd18d8830",
+        "email": "cdonker@tampabay.rr.com",
+        "firstName": "Christine",
+        "lastName": "donker",
+        "fullName": "Christine donker",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 420
+      },
+      {
+        "clientId": "a87ea71f-8d74-42c5-9286-8341b12cfb16",
+        "email": "jccarter2608@gmail.com",
+        "firstName": "Jonathan",
+        "lastName": "Carter",
+        "fullName": "Jonathan Carter",
+        "pointsBalance": 289,
+        "loyaltyEnrolled": true,
+        "rowNumber": 421
+      },
+      {
+        "clientId": "5776d5f8-5ccf-44c6-85b0-6b94e6913854",
+        "email": "tricias1@live.ca",
+        "firstName": "Patricia",
+        "lastName": "sinclair",
+        "fullName": "Patricia sinclair",
+        "pointsBalance": 229,
+        "loyaltyEnrolled": true,
+        "rowNumber": 422
+      },
+      {
+        "clientId": "cb2416e5-aa4c-4279-b4c2-1735194a9336",
+        "email": "n.watkinson@leeds.ac.uk",
+        "firstName": "Natalie",
+        "lastName": "Watkinson",
+        "fullName": "Natalie Watkinson",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 423
+      },
+      {
+        "clientId": "eb8857de-89b3-44ee-85ff-a538899fe64d",
+        "email": "mpogden@outlook.com",
+        "firstName": "Martin",
+        "lastName": "Ogden",
+        "fullName": "Martin Ogden",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 424
+      },
+      {
+        "clientId": "05d6a30d-3841-401a-a93d-9192a0796bef",
+        "email": "patricia.mcalinden4565@btinternet.com",
+        "firstName": "Patricia",
+        "lastName": "McAlinden",
+        "fullName": "Patricia McAlinden",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 425
+      },
+      {
+        "clientId": "4c8fbe2c-1271-4e99-bf85-cbe81f5e3f44",
+        "email": "woodcockanya1@gmail.com",
+        "firstName": "Anya",
+        "lastName": "Woodcock",
+        "fullName": "Anya Woodcock",
+        "pointsBalance": 119,
+        "loyaltyEnrolled": true,
+        "rowNumber": 426
+      },
+      {
+        "clientId": "33954d55-772c-4a41-94dd-46c03f1e64ac",
+        "email": "theresaclark1234@aol.com",
+        "firstName": "Theresa",
+        "lastName": "Clark",
+        "fullName": "Theresa Clark",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 427
+      },
+      {
+        "clientId": "765d7557-c1ef-4bc5-b8bb-66c563073c3a",
+        "email": "colin.payne51@live.co.uk",
+        "firstName": "Colin",
+        "lastName": "Payne",
+        "fullName": "Colin Payne",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 428
+      },
+      {
+        "clientId": "6e2ef9e0-67cc-4b55-aafb-fbf15eeac48f",
+        "email": "danieljamesglancy@gmail.com",
+        "firstName": "Daniel",
+        "lastName": "Glancy",
+        "fullName": "Daniel Glancy",
+        "pointsBalance": 4131,
+        "loyaltyEnrolled": true,
+        "rowNumber": 429
+      },
+      {
+        "clientId": "ea60092b-d887-4423-89b7-6f65ab249302",
+        "email": "maggie.mcmurtry@live.com",
+        "firstName": "Margaret",
+        "lastName": "McMurtry",
+        "fullName": "Margaret McMurtry",
+        "pointsBalance": 129,
+        "loyaltyEnrolled": true,
+        "rowNumber": 430
+      },
+      {
+        "clientId": "d32fab54-d594-4dd0-afde-e882e7e8e99a",
+        "email": "dcbeale@me.com",
+        "firstName": "David C",
+        "lastName": "Beale",
+        "fullName": "David C Beale",
+        "pointsBalance": 239,
+        "loyaltyEnrolled": true,
+        "rowNumber": 431
+      },
+      {
+        "clientId": "34859fc7-4e21-4e49-82c1-68ace0793353",
+        "email": "mummacleod@hotmail.co.uk",
+        "firstName": "Jane",
+        "lastName": "Macleod",
+        "fullName": "Jane Macleod",
+        "pointsBalance": 174,
+        "loyaltyEnrolled": true,
+        "rowNumber": 432
+      },
+      {
+        "clientId": "ebc9cc5c-d533-45ec-9b44-109c1cf84490",
+        "email": "robert.ranford1@gmail.com",
+        "firstName": "Robert",
+        "lastName": "Ranford",
+        "fullName": "Robert Ranford",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 433
+      },
+      {
+        "clientId": "d3144d3f-dcbc-4b8b-a529-d0ce9090d5f2",
+        "email": "6000dh@gmail.com",
+        "firstName": "David",
+        "lastName": "Harry",
+        "fullName": "David Harry",
+        "pointsBalance": 0,
+        "loyaltyEnrolled": false,
+        "rowNumber": 434
+      },
+      {
+        "clientId": "474c7ee4-3623-43f6-8fb6-df24d7dfa0f2",
+        "email": "kevintucker99@hotmail.co.uk",
+        "firstName": "Kevin",
+        "lastName": "Tucker",
+        "fullName": "Kevin Tucker",
+        "pointsBalance": 389,
+        "loyaltyEnrolled": true,
+        "rowNumber": 435
+      }
+    ],
+    "notFound": [],
+    "errors": []
+  }
+}
