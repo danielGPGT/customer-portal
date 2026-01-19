@@ -11,7 +11,7 @@ interface BookingOverviewCardProps {
   eventStartDate: string | null
   eventEndDate: string | null
   bookingReference: string
-  bookingStatus: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+  bookingStatus: 'provisional' | 'confirmed' | 'completed' | 'cancelled'
   totalAmount: number
   currency: string
   pointsEarned: number
@@ -20,9 +20,9 @@ interface BookingOverviewCardProps {
 }
 
 const statusConfig = {
-  pending: { 
+  provisional: { 
     color: 'bg-yellow-100 text-yellow-800 border-yellow-200', 
-    label: 'Pending', 
+    label: 'Provisional', 
     icon: Clock 
   },
   confirmed: { 

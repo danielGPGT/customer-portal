@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { Calendar, MapPin, FileText, CreditCard, Sparkles, CheckCircle, Clock, XCircle } from 'lucide-react'
 import { format } from 'date-fns'
 
-type BookingStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled'
+type BookingStatus = 'provisional' | 'confirmed' | 'completed' | 'cancelled'
 
 interface TripDetailsHeaderProps {
   eventName: string
@@ -23,8 +23,8 @@ interface TripDetailsHeaderProps {
 }
 
 const statusConfig = {
-  pending: { 
-    label: 'Pending', 
+  provisional: { 
+    label: 'Provisional', 
     icon: Clock,
     className: 'bg-amber-100/90 text-amber-800 border-amber-200 backdrop-blur-sm',
   },

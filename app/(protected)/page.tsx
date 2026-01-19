@@ -252,10 +252,10 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     if (tripsWithDates.length > 0) {
       const trip = tripsWithDates[0]
       // Map status to portal-friendly status
-      const mapStatus = (status: string): 'pending' | 'confirmed' | 'completed' | 'cancelled' => {
+      const mapStatus = (status: string): 'provisional' | 'confirmed' | 'completed' | 'cancelled' => {
         if (status === 'cancelled' || status === 'refunded') return 'cancelled'
         if (status === 'confirmed' || status === 'completed') return status === 'completed' ? 'completed' : 'confirmed'
-        return 'pending'
+        return 'provisional'
       }
 
       nextTrip = {
@@ -295,11 +295,11 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 
   const recentTrips =
     recentBookingsRaw?.map((booking: any) => {
-      const mapStatus = (status: string): 'pending' | 'confirmed' | 'completed' | 'cancelled' => {
+      const mapStatus = (status: string): 'provisional' | 'confirmed' | 'completed' | 'cancelled' => {
         if (status === 'cancelled' || status === 'refunded') return 'cancelled'
         if (status === 'confirmed' || status === 'completed')
           return status === 'completed' ? 'completed' : 'confirmed'
-        return 'pending'
+        return 'provisional'
       }
 
       return {
@@ -395,6 +395,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           firstName={client?.first_name || 'Customer'}
           pointsBalance={client?.points_balance || 0}
           lifetimePointsSpent={client?.lifetime_points_spent || 0}
+          lifetimePointsEarned={client?.lifetime_points_earned || 0}
           redemptionIncrement={settings?.redemption_increment || 100}
           minRedemptionPoints={settings?.min_redemption_points || 100}
         />

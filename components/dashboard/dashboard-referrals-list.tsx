@@ -12,7 +12,7 @@ interface Referral {
   id: string
   referee_email?: string | null
   referee_name?: string | null
-  status: 'pending' | 'signed_up' | 'completed'
+  status: 'provisional' | 'signed_up' | 'completed'
   created_at: string
 }
 
@@ -21,7 +21,7 @@ interface DashboardReferralsListProps {
 }
 
 const statusConfig = {
-  pending: {
+  provisional: {
     label: 'Invited',
     className: 'bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400',
   },

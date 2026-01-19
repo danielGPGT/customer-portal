@@ -22,7 +22,7 @@ type RecentTrip = {
   booking_reference: string
   event_name: string | null
   event_start_date: string | null
-  booking_status: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+  booking_status: 'provisional' | 'confirmed' | 'completed' | 'cancelled'
 }
 
 interface RecentActivityCardProps {

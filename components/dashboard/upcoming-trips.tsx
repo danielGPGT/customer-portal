@@ -28,7 +28,7 @@ interface UpcomingTrip {
   check_out_date: string | null
   event_start_date: string | null // Fallback if no check-in date
   event_end_date: string | null // Fallback if no check-out date
-  booking_status: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+  booking_status: 'provisional' | 'confirmed' | 'completed' | 'cancelled'
   is_first_loyalty_booking?: boolean
   events?: {
     name: string
@@ -49,8 +49,8 @@ interface UpcomingTripsProps {
 }
 
 const statusConfig = {
-  pending: {
-    label: 'Pending',
+  provisional: {
+    label: 'Provisional',
     icon: Clock,
     variant: 'secondary' as const,
     className: 'bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400',

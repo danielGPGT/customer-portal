@@ -25,12 +25,14 @@ interface Booking {
   event_name: string | null
   event_start_date: string | null
   event_end_date: string | null
+  check_in_date?: string | null
+  check_out_date?: string | null
   total_amount: number
   currency: string
   points_earned: number
   points_used: number
   discount_applied: number
-  booking_status: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+  booking_status: 'provisional' | 'confirmed' | 'completed' | 'cancelled'
   is_first_loyalty_booking: boolean
   events?: {
     name: string
@@ -55,8 +57,8 @@ interface TripCardProps {
 }
 
 const statusConfig = {
-  pending: {
-    label: 'Pending',
+  provisional: {
+    label: 'Provisional',
     icon: Clock,
     step: 0,
     gradient: 'from-yellow-400/80 to-amber-500/80',
@@ -131,8 +133,9 @@ export function TripCard({ booking, variant, pointValue }: TripCardProps) {
     ? [venue.city, venue.country].filter(Boolean).join(', ') || venue.name || 'Location TBD'
     : booking.events?.location || 'Location TBD'
 
-  const startDate = booking.event_start_date || booking.events?.start_date
-  const endDate = booking.event_end_date || booking.events?.end_date
+  // Use check-in/check-out dates if available, otherwise fall back to event dates
+  const startDate = booking.check_in_date || booking.event_start_date || booking.events?.start_date
+  const endDate = booking.check_out_date || booking.event_end_date || booking.events?.end_date
 
   const startDateFormatted = startDate ? format(new Date(startDate), 'MMM d, yyyy') : 'TBD'
   const endDateFormatted = endDate ? format(new Date(endDate), 'MMM d, yyyy') : ''

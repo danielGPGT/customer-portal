@@ -137,10 +137,10 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
     const hotelDates = getHotelDates(booking)
     
     // Map bookings.status to portal-friendly status
-    const mapStatus = (status: string): 'pending' | 'confirmed' | 'completed' | 'cancelled' => {
+    const mapStatus = (status: string): 'provisional' | 'confirmed' | 'completed' | 'cancelled' => {
       if (status === 'cancelled' || status === 'refunded') return 'cancelled'
       if (status === 'confirmed' || status === 'completed') return status === 'completed' ? 'completed' : 'confirmed'
-      return 'pending' // draft, provisional, pending_payment
+      return 'provisional' // draft, provisional, pending_payment
     }
 
     const portalStatus = mapStatus(booking.status)
@@ -229,7 +229,7 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
         return (
           startDate && 
           startDate >= today && 
-          (booking.booking_status === 'confirmed' || booking.booking_status === 'pending')
+          (booking.booking_status === 'confirmed' || booking.booking_status === 'provisional')
         )
       case 'past':
         return (

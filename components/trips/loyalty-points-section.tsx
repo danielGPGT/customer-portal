@@ -216,50 +216,56 @@ export function LoyaltyPointsSection({
             {/* Redemption Details */}
             {appliedRedemptions.length > 0 && (
               <div className="mt-2 space-y-1.5 sm:space-y-2 pl-4 sm:pl-6 border-l-2 border-muted">
-                {appliedRedemptions.map((redemption, idx) => (
-                  <div key={redemption.id || idx} className="text-[10px] sm:text-xs text-muted-foreground">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <Info className="h-2.5 w-2.5 sm:h-3 sm:w-3 shrink-0" />
-                      <span>
-                        {redemption.points_redeemed.toLocaleString()} points → {formatCurrencyWithSymbol(
-                          parseFloat(redemption.discount_amount?.toString() || '0'),
-                          displayCurrency
-                        )}
-                        {preferredCurrency && preferredCurrency !== currency && (
-                          <span className="ml-1">({formatCurrencyWithSymbol(
-                            parseFloat(redemption.discount_amount?.toString() || '0'),
-                            currency
-                          )})</span>
-                        )}
-                        {redemption.applied_at && (
-                          <span className="ml-1.5">• {formatDate(redemption.applied_at)}</span>
-                        )}
-                      </span>
+                {appliedRedemptions.map((redemption, idx) => {
+                  // Calculate discount amount in booking currency
+                  // If redemption currency matches booking currency, use redemption.discount_amount directly
+                  // Otherwise, calculate proportionally from booking's discount_applied
+                  const redemptionCurrency = redemption.currency || 'GBP'
+                  const redemptionDiscountAmount = parseFloat(redemption.discount_amount?.toString() || '0')
+                  
+                  // If redemption currency matches booking currency, use it directly
+                  // Otherwise, calculate proportionally from total discount_applied
+                  let discountInBookingCurrency: number
+                  if (redemptionCurrency.toUpperCase() === currency.toUpperCase()) {
+                    discountInBookingCurrency = redemptionDiscountAmount
+                  } else {
+                    // Calculate proportionally: (redemption points / total points used) * total discount
+                    const totalPointsUsed = appliedRedemptions.reduce((sum, r) => sum + (r.points_redeemed || 0), 0)
+                    const redemptionProportion = totalPointsUsed > 0 
+                      ? (redemption.points_redeemed || 0) / totalPointsUsed 
+                      : 1
+                    discountInBookingCurrency = discountApplied * redemptionProportion
+                  }
+                  
+                  return (
+                    <div key={redemption.id || idx} className="text-[10px] sm:text-xs text-muted-foreground">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <Info className="h-2.5 w-2.5 sm:h-3 sm:w-3 shrink-0" />
+                        <span>
+                          {redemption.points_redeemed.toLocaleString()} points → {formatCurrencyWithSymbol(
+                            discountInBookingCurrency,
+                            displayCurrency
+                          )}
+                          {preferredCurrency && preferredCurrency !== currency && (
+                            <span className="ml-1">({formatCurrencyWithSymbol(
+                              discountInBookingCurrency,
+                              currency
+                            )})</span>
+                          )}
+                          {redemption.applied_at && (
+                            <span className="ml-1.5">• {formatDate(redemption.applied_at)}</span>
+                          )}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             )}
           </div>
         )}
 
-        {/* Net Benefit */}
-        {(pointsEarned > 0 || pointsUsed > 0) && (
-          <div className="border-t pt-3 sm:pt-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5 sm:gap-2">
-                <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground shrink-0" />
-                <span className="text-xs sm:text-sm font-medium">Net Benefit</span>
-              </div>
-              <span className={`font-bold text-xs sm:text-sm ${netPoints >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                {netPoints >= 0 ? '+' : ''}{netPoints.toLocaleString()} points
-              </span>
-            </div>
-            <div className="text-[10px] sm:text-xs text-muted-foreground mt-1">
-              {netPoints >= 0 ? 'Net gain' : 'Net used'} from this booking
-            </div>
-          </div>
-        )}
+
 
         {/* No Points Activity */}
         {pointsEarned === 0 && pointsUsed === 0 && (

@@ -15,7 +15,9 @@ interface Trip {
   event_name: string | null
   event_start_date: string | null
   event_end_date: string | null
-  booking_status: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+  check_in_date?: string | null
+  check_out_date?: string | null
+  booking_status: 'provisional' | 'confirmed' | 'completed' | 'cancelled'
   events?: {
     name: string
     location: string | null
@@ -35,8 +37,8 @@ interface UpcomingTripsCarouselProps {
 }
 
 const statusConfig = {
-  pending: {
-    label: 'Pending',
+  provisional: {
+    label: 'Provisional',
     className: 'bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400',
   },
   confirmed: {
@@ -158,8 +160,9 @@ export function UpcomingTripsCarousel({ trips }: UpcomingTripsCarouselProps) {
             ? [venue.city, venue.country].filter(Boolean).join(', ') || venue.name || 'Location TBD'
             : trip.events?.location || 'Location TBD'
 
-          const startDate = trip.event_start_date || trip.events?.start_date
-          const endDate = trip.event_end_date || trip.events?.end_date
+          // Use check-in/check-out dates if available, otherwise fall back to event dates
+          const startDate = trip.check_in_date || trip.event_start_date || trip.events?.start_date
+          const endDate = trip.check_out_date || trip.event_end_date || trip.events?.end_date
           const startDateFormatted = startDate ? format(new Date(startDate), 'MMM d, yyyy') : 'TBD'
           const endDateFormatted = endDate ? format(new Date(endDate), 'MMM d, yyyy') : ''
           const dateRange =

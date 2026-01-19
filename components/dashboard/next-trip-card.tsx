@@ -27,7 +27,7 @@ interface NextTripCardProps {
     event_name: string | null
     event_start_date: string | null
     event_end_date: string | null
-    booking_status: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+    booking_status: 'provisional' | 'confirmed' | 'completed' | 'cancelled'
     is_first_loyalty_booking?: boolean
     events?: {
       name: string
@@ -45,8 +45,8 @@ interface NextTripCardProps {
 }
 
 const statusConfig = {
-  pending: {
-    label: 'Pending',
+  provisional: {
+    label: 'Provisional',
     icon: Clock,
     variant: 'secondary' as const,
     className: 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400',

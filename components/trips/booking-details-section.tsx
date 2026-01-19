@@ -9,7 +9,7 @@ interface BookingDetailsSectionProps {
   bookingReference: string
   bookedAt: string | null
   confirmedAt: string | null
-  bookingStatus: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+  bookingStatus: 'provisional' | 'confirmed' | 'completed' | 'cancelled'
   isFirstLoyaltyBooking: boolean
 }
 

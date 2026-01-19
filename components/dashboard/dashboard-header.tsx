@@ -1,8 +1,9 @@
 'use client'
 
 import * as React from 'react'
-import { Coins, ShoppingCart, Target, ChevronRight } from 'lucide-react'
+import { Coins, ShoppingCart, TrendingUp, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import {
   Carousel,
   CarouselContent,
@@ -13,6 +14,7 @@ interface DashboardHeaderProps {
   firstName: string
   pointsBalance: number
   lifetimePointsSpent: number
+  lifetimePointsEarned: number
   redemptionIncrement?: number
   minRedemptionPoints?: number
 }
@@ -21,6 +23,7 @@ export function DashboardHeader({
   firstName,
   pointsBalance,
   lifetimePointsSpent,
+  lifetimePointsEarned,
   redemptionIncrement = 100,
   minRedemptionPoints = 100,
 }: DashboardHeaderProps) {
@@ -30,27 +33,6 @@ export function DashboardHeader({
       pointsBalance
     })
   }, [firstName, pointsBalance])
-  
-  // Calculate next milestone and progress
-  const currentPoints = pointsBalance
-  let nextMilestone: number
-  let progressPercentage: number
-  let pointsToNext: number
-
-  if (currentPoints < minRedemptionPoints) {
-    // Below minimum, show progress to minimum
-    nextMilestone = minRedemptionPoints
-    progressPercentage = (currentPoints / minRedemptionPoints) * 100
-    pointsToNext = minRedemptionPoints - currentPoints
-  } else {
-    // Show progress to next redemption increment
-    const currentLevel = Math.floor(currentPoints / redemptionIncrement)
-    const nextLevel = currentLevel + 1
-    nextMilestone = nextLevel * redemptionIncrement
-    const progressInCurrentLevel = currentPoints % redemptionIncrement
-    progressPercentage = (progressInCurrentLevel / redemptionIncrement) * 100
-    pointsToNext = nextMilestone - currentPoints
-  }
   return (
     <div className="relative w-full overflow-hidden rounded-3xl">
       {/* Background Image - Full Width */}
@@ -111,81 +93,76 @@ export function DashboardHeader({
               <Carousel opts={{ align: 'start' }} className="w-full">
                 <CarouselContent className="-ml-2 md:-ml-4">
                   <CarouselItem className="pl-2 md:pl-4 basis-[85%]">
-                    <div className="group relative rounded-xl bg-white/95 backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-200 cursor-pointer">
-                      <div className="flex items-start gap-2 sm:gap-3">
-                        <div className="w-1 h-10 sm:h-12 bg-primary rounded-full shrink-0" />
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-1 sm:mb-2">
-                            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                              <Coins className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0" />
-                              <h3 className="text-xs sm:text-sm font-semibold text-foreground truncate">Points Balance</h3>
+                    <Link href="/points" className="block">
+                      <div className="group relative rounded-xl bg-white/95 backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-200 cursor-pointer">
+                        <div className="flex items-start gap-2 sm:gap-3">
+                          <div className="w-1 h-10 sm:h-12 bg-primary rounded-full shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-1 sm:mb-2">
+                              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                                <Coins className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0" />
+                                <h3 className="text-xs sm:text-sm font-semibold text-foreground truncate">Points Balance</h3>
+                              </div>
+                              <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
                             </div>
-                            <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
+                            <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-1 sm:mb-2">
+                              {pointsBalance.toLocaleString()}
+                            </p>
+                            <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed">
+                              Your available points ready to redeem for discounts and rewards.
+                            </p>
                           </div>
-                          <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-1 sm:mb-2">
-                            {pointsBalance.toLocaleString()}
-                          </p>
-                          <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed">
-                            Your available points ready to redeem for discounts and rewards.
-                          </p>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </CarouselItem>
                   <CarouselItem className="pl-2 md:pl-4 basis-[85%]">
-                    <div className="group relative rounded-xl bg-white/95 backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-200 cursor-pointer">
-                      <div className="flex items-start gap-2 sm:gap-3">
-                        <div className="w-1 h-10 sm:h-12 bg-primary rounded-full shrink-0" />
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-1 sm:mb-2">
-                            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                              <ShoppingCart className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0" />
-                              <h3 className="text-xs sm:text-sm font-semibold text-foreground truncate">Points Spent</h3>
+                    <Link href="/points" className="block">
+                      <div className="group relative rounded-xl bg-white/95 backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-200 cursor-pointer">
+                        <div className="flex items-start gap-2 sm:gap-3">
+                          <div className="w-1 h-10 sm:h-12 bg-primary rounded-full shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-1 sm:mb-2">
+                              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                                <ShoppingCart className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0" />
+                                <h3 className="text-xs sm:text-sm font-semibold text-foreground truncate">Points Spent</h3>
+                              </div>
+                              <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
                             </div>
-                            <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
+                            <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-1 sm:mb-2">
+                              {lifetimePointsSpent.toLocaleString()}
+                            </p>
+                            <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed">
+                              Total points you've redeemed throughout your membership.
+                            </p>
                           </div>
-                          <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-1 sm:mb-2">
-                            {lifetimePointsSpent.toLocaleString()}
-                          </p>
-                          <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed">
-                            Total points you've redeemed throughout your membership.
-                          </p>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </CarouselItem>
                   <CarouselItem className="pl-2 md:pl-4 basis-[85%]">
-                    <div className="group relative rounded-xl bg-white/95 backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-200 cursor-pointer">
-                      <div className="flex items-start gap-2 sm:gap-3">
-                        <div className="w-1 h-10 sm:h-12 bg-primary rounded-full shrink-0" />
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-4.5 sm:mb-2">
-                            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                              <Target className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0" />
-                              <h3 className="text-xs sm:text-sm font-semibold text-foreground truncate">Next Milestone</h3>
+                    <Link href="/points" className="block">
+                      <div className="group relative rounded-xl bg-white/95 backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-200 cursor-pointer">
+                        <div className="flex items-start gap-2 sm:gap-3">
+                          <div className="w-1 h-10 sm:h-12 bg-primary rounded-full shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-1 sm:mb-2">
+                              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                                <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0" />
+                                <h3 className="text-xs sm:text-sm font-semibold text-foreground truncate">Points Earned</h3>
+                              </div>
+                              <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
                             </div>
-                            <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
-                          </div>
- 
-                          <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed mb-2">
-                          {pointsToNext} points until {nextMilestone.toLocaleString()} points
-                          </p>
-                          {/* Progress Bar */}
-                          <div className="w-full">
-                            <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
-                              <div
-                                className="h-full bg-primary transition-all duration-500"
-                                style={{ width: `${Math.min(progressPercentage, 100)}%` }}
-                              />
-                            </div>
-                            <div className="flex items-center justify-between mt-1.5 text-[10px] text-muted-foreground">
-                              <span>{currentPoints.toLocaleString()}</span>
-                              <span>{nextMilestone.toLocaleString()}</span>
-                            </div>
+                            <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-1 sm:mb-2">
+                              {lifetimePointsEarned.toLocaleString()}
+                            </p>
+                            <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed">
+                              Total points you've earned throughout your membership.
+                            </p>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </CarouselItem>
                 </CarouselContent>
               </Carousel>
@@ -194,83 +171,76 @@ export function DashboardHeader({
             {/* Desktop Grid */}
             <div className="hidden sm:grid sm:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
               {/* Card 1: Points Balance */}
-              <div className="group relative rounded-xl bg-white/95 backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-200 cursor-pointer">
-                <div className="flex items-start gap-2 sm:gap-3">
-                  <div className="w-1 h-10 sm:h-12 bg-primary rounded-full shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-1 sm:mb-2">
-                      <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                        <Coins className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0" />
-                        <h3 className="text-xs sm:text-sm font-semibold text-foreground truncate">Points Balance</h3>
+              <Link href="/points" className="block">
+                <div className="group relative rounded-xl bg-white/95 backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-200 cursor-pointer">
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <div className="w-1 h-10 sm:h-12 bg-primary rounded-full shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1 sm:mb-2">
+                        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                          <Coins className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0" />
+                          <h3 className="text-xs sm:text-sm font-semibold text-foreground truncate">Points Balance</h3>
+                        </div>
+                        <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
                       </div>
-                      <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
+                      <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-1 sm:mb-2">
+                        {pointsBalance.toLocaleString()}
+                      </p>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed">
+                        Your available points ready to redeem for discounts and rewards.
+                      </p>
                     </div>
-                    <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-1 sm:mb-2">
-                      {pointsBalance.toLocaleString()}
-                    </p>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed">
-                      Your available points ready to redeem for discounts and rewards.
-                    </p>
                   </div>
                 </div>
-              </div>
+              </Link>
 
               {/* Card 2: Points Spent */}
-              <div className="group relative rounded-xl bg-white/95 backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-200 cursor-pointer">
-                <div className="flex items-start gap-2 sm:gap-3">
-                  <div className="w-1 h-10 sm:h-12 bg-primary rounded-full shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-1 sm:mb-2">
-                      <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                        <ShoppingCart className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0" />
-                        <h3 className="text-xs sm:text-sm font-semibold text-foreground truncate">Points Spent</h3>
+              <Link href="/points" className="block">
+                <div className="group relative rounded-xl bg-white/95 backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-200 cursor-pointer">
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <div className="w-1 h-10 sm:h-12 bg-primary rounded-full shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1 sm:mb-2">
+                        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                          <ShoppingCart className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0" />
+                          <h3 className="text-xs sm:text-sm font-semibold text-foreground truncate">Points Spent</h3>
+                        </div>
+                        <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
                       </div>
-                      <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
+                      <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-1 sm:mb-2">
+                        {lifetimePointsSpent.toLocaleString()}
+                      </p>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed">
+                        Total points you've redeemed throughout your membership.
+                      </p>
                     </div>
-                    <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-1 sm:mb-2">
-                      {lifetimePointsSpent.toLocaleString()}
-                    </p>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed">
-                      Total points you've redeemed throughout your membership.
-                    </p>
                   </div>
                 </div>
-              </div>
+              </Link>
 
-              {/* Card 3: Points Till Next Milestone */}
-              <div className="group relative rounded-xl bg-white/95 backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-200 cursor-pointer">
-                <div className="flex items-start gap-2 sm:gap-3 h-full">
-                  <div className="w-1 h-10 sm:h-12 bg-primary rounded-full shrink-0" />
-                  <div className="flex-1 min-w-0 h-full">
-                    
-                    <div className="flex items-center justify-between mb-1 sm:mb-2">
-                      <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                        <Target className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0" />
-                        <h3 className="text-xs sm:text-sm font-semibold text-foreground truncate">Next Milestone</h3>
+              {/* Card 3: Points Earned */}
+              <Link href="/points" className="block">
+                <div className="group relative rounded-xl bg-white/95 backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-200 cursor-pointer">
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <div className="w-1 h-10 sm:h-12 bg-primary rounded-full shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1 sm:mb-2">
+                        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                          <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0" />
+                          <h3 className="text-xs sm:text-sm font-semibold text-foreground truncate">Points Earned</h3>
+                        </div>
+                        <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
                       </div>
-                      <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
-                    </div>
-                    <div className="flex flex-col gap-2 h-full justify-center">
-                    <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed mb-2">
-                      {pointsToNext} points until {nextMilestone.toLocaleString()} points
-                    </p>
-                    {/* Progress Bar */}
-                    <div className="w-full">
-                      <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
-                        <div
-                          className="h-full bg-primary transition-all duration-500"
-                          style={{ width: `${Math.min(progressPercentage, 100)}%` }}
-                        />
-                      </div>
-                      <div className="flex items-center justify-between mt-1.5 text-[10px] text-muted-foreground">
-                        <span>{currentPoints.toLocaleString()}</span>
-                        <span>{nextMilestone.toLocaleString()}</span>
-                      </div>
-                    </div>
+                      <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-1 sm:mb-2">
+                        {lifetimePointsEarned.toLocaleString()}
+                      </p>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed">
+                        Total points you've earned throughout your membership.
+                      </p>
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
         </div>

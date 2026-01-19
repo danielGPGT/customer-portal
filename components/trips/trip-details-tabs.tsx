@@ -20,7 +20,7 @@ interface TripDetailsTabsProps {
   bookingReference: string
   bookedAt: string | null
   confirmedAt: string | null
-  bookingStatus: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+  bookingStatus: 'provisional' | 'confirmed' | 'completed' | 'cancelled'
   isFirstLoyaltyBooking: boolean
   totalAmount: number
   discountApplied: number
@@ -174,6 +174,7 @@ export function TripDetailsTabs({
           currency={currency}
           preferredCurrency={preferredCurrency}
           discountAppliedConverted={discountAppliedConverted}
+          payments={payments}
         />
       </TabsContent>
 
@@ -212,6 +213,7 @@ export function TripDetailsTabs({
           currency={currency}
           preferredCurrency={preferredCurrency}
           discountAppliedConverted={discountAppliedConverted}
+          payments={payments}
         />
         <PaymentScheduleSection 
           payments={payments}

@@ -17,7 +17,7 @@ interface Booking {
   points_earned: number
   points_used: number
   discount_applied: number
-  booking_status: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+  booking_status: 'provisional' | 'confirmed' | 'completed' | 'cancelled'
   is_first_loyalty_booking: boolean
   events?: {
     name: string

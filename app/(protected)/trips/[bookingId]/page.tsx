@@ -179,10 +179,10 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
   const isFirstLoyaltyBooking = booking.is_first_loyalty_booking || false
 
   // Map status
-  const mapStatus = (status: string): 'pending' | 'confirmed' | 'completed' | 'cancelled' => {
+  const mapStatus = (status: string): 'provisional' | 'confirmed' | 'completed' | 'cancelled' => {
     if (status === 'cancelled' || status === 'refunded') return 'cancelled'
     if (status === 'confirmed' || status === 'completed') return status === 'completed' ? 'completed' : 'confirmed'
-    return 'pending'
+    return 'provisional'
   }
 
   // Enrich booking data

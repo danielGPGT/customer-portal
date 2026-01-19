@@ -4,12 +4,21 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { CreditCard } from 'lucide-react'
 import { getCurrencySymbol, formatCurrencyWithSymbol } from '@/lib/utils/currency'
 
+interface Payment {
+  id: string
+  amount: number
+  currency: string
+  paid: boolean
+  deleted_at?: string | null
+}
+
 interface PaymentSummarySectionProps {
   totalAmount: number
   discountApplied: number
   currency: string
   preferredCurrency?: string
   discountAppliedConverted?: number
+  payments?: Payment[]
 }
 
 export function PaymentSummarySection({
@@ -17,12 +26,18 @@ export function PaymentSummarySection({
   discountApplied,
   currency,
   preferredCurrency,
-  discountAppliedConverted
+  discountAppliedConverted,
+  payments = []
 }: PaymentSummarySectionProps) {
   const currencySymbol = getCurrencySymbol(currency)
   const displayCurrency = preferredCurrency || currency
   const subtotal = totalAmount + discountApplied
-  const totalPaid = totalAmount
+  
+  // Calculate total paid from actual payments (only count paid payments that aren't deleted)
+  const totalPaid = payments
+    .filter(p => p.paid && !p.deleted_at)
+    .reduce((sum, p) => sum + (p.amount || 0), 0)
+  
   const discountDisplay = discountAppliedConverted !== undefined ? discountAppliedConverted : discountApplied
 
   return (
