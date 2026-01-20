@@ -176,6 +176,21 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
     const supabase = createClient()
 
     try {
+      // First, verify the traveler exists and is accessible
+      const { data: existingTraveler, error: checkError } = await supabase
+        .from('booking_travelers')
+        .select('id, deleted_at')
+        .eq('id', traveler.id)
+        .single()
+
+      if (checkError || !existingTraveler) {
+        throw new Error('Traveller not found. Please refresh the page and try again.')
+      }
+
+      if (existingTraveler.deleted_at) {
+        throw new Error('This traveller has been deleted and cannot be updated.')
+      }
+
       // Format phone number before saving
       const formattedPhone = data.phone ? formatPhoneNumber(data.phone) : null
 
@@ -202,6 +217,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         .from('booking_travelers')
         .update(updateData)
         .eq('id', traveler.id)
+        .is('deleted_at', null) // Ensure we're not updating deleted records
         .select()
         .single()
 
@@ -209,11 +225,25 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         // Handle Supabase errors
         let errorMessage = 'Failed to update traveller information'
         
+        // Log detailed error for debugging
+        console.error('Traveler update error details:', {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          travelerId: traveler.id,
+        })
+        
         try {
           // Try to parse error message if it's JSON
           if (typeof error.message === 'string') {
-            const parsedError = JSON.parse(error.message)
-            errorMessage = parsedError.message || parsedError.error || error.message
+            try {
+              const parsedError = JSON.parse(error.message)
+              errorMessage = parsedError.message || parsedError.error || error.message
+            } catch {
+              // Not JSON, use as-is
+              errorMessage = error.message
+            }
           } else {
             errorMessage = error.message || errorMessage
           }
@@ -227,11 +257,19 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
           errorMessage = 'A traveller with this information already exists'
         } else if (error.code === '23503') {
           errorMessage = 'Invalid reference. Please refresh the page and try again.'
-        } else if (error.code === 'PGRST116') {
-          errorMessage = 'No rows found. The traveller may have been deleted.'
+        } else if (error.code === 'PGRST116' || error.code === 'PGRST301') {
+          // PGRST116 = No rows found, PGRST301 = Multiple rows found (shouldn't happen with single)
+          errorMessage = 'Unable to update traveller. This may be due to permissions or the traveller may have been deleted. Please refresh the page and try again.'
+        } else if (error.code === '42501' || error.message?.includes('permission denied') || error.message?.includes('row-level security')) {
+          errorMessage = 'You do not have permission to update this traveller. Please contact support if this issue persists.'
         }
 
         throw new Error(errorMessage)
+      }
+
+      // Verify we got updated data back
+      if (!updatedData) {
+        throw new Error('Update completed but no data was returned. Please refresh the page to see your changes.')
       }
 
       // Success notifications
