@@ -42,7 +42,9 @@ const emptyStateConfig = {
 }
 
 export function EmptyTripState({ tab }: EmptyTripStateProps) {
-  const config = emptyStateConfig[tab]
+  // Ensure tab is valid, default to 'all' if not
+  const validTab: TripTab = (tab === 'upcoming' || tab === 'past' || tab === 'all') ? tab : 'all'
+  const config = emptyStateConfig[validTab]
   const Icon = config.icon
 
   return (

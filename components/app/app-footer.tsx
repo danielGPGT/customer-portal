@@ -7,8 +7,6 @@ const footerLinks = [
     title: 'Trips',
     links: [
       { label: 'Upcoming', href: '/trips?tab=upcoming' },
-      { label: 'Past', href: '/trips?tab=past' },
-      { label: 'Cancelled', href: '/trips?tab=cancelled' },
     ],
   },
   {
@@ -97,15 +95,22 @@ export function AppFooter() {
         <div className="mt-12 flex flex-col gap-3 border-t pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Grand Prix Grand Tours. All rights reserved.</p>
           <div className="flex flex-wrap gap-4">
-            <Link href="/privacy" prefetch={true} className="hover:text-primary">
+            <a
+              href="https://www.grandprixgrandtours.com/privacy-policy/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary"
+            >
               Privacy
-            </Link>
-            <Link href="/terms" prefetch={true} className="hover:text-primary">
+            </a>
+            <a
+              href="https://www.grandprixgrandtours.com/ts-cs/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary"
+            >
               Terms
-            </Link>
-            <Link href="/accessibility" prefetch={true} className="hover:text-primary">
-              Accessibility
-            </Link>
+            </a>
           </div>
         </div>
       </div>

@@ -50,6 +50,7 @@ export default function RootLayout({
         </head>
         <body
           className="font-sans antialiased overflow-x-hidden"
+          suppressHydrationWarning
         >
           <ThemeProvider
             attribute="class"

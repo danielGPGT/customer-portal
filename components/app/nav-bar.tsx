@@ -10,6 +10,8 @@ import {
   UserPlus,
   Settings,
   ChevronDown,
+  Copy,
+  Check,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -19,6 +21,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
+import { createClient } from "@/lib/supabase/client"
+import { useToast } from "@/hooks/use-toast"
+import { useClerkAuth } from "@/lib/clerk/client"
 
 interface NavItem {
   title: string
@@ -64,6 +69,46 @@ const navigationItems: NavItem[] = [
 export function NavBar() {
   const pathname = usePathname()
   const [openDropdown, setOpenDropdown] = React.useState<string | null>(null)
+  const [referralLink, setReferralLink] = React.useState<string | null>(null)
+  const [isCopying, setIsCopying] = React.useState(false)
+  const [copied, setCopied] = React.useState(false)
+  const { toast } = useToast()
+  const clerkAuth = useClerkAuth()
+
+  // Fetch referral link
+  React.useEffect(() => {
+    const fetchReferralLink = async () => {
+      if (!clerkAuth?.userId || clerkAuth.isLoading) return
+
+      try {
+        const supabase = createClient()
+        
+        // Get client ID from Clerk user ID
+        const { data: client } = await supabase
+          .from('clients')
+          .select('id')
+          .eq('clerk_user_id', clerkAuth.userId)
+          .single()
+
+        if (!client) return
+
+        // Get or create referral code
+        const { data: referralCode } = await supabase.rpc('get_or_create_referral_code', {
+          p_client_id: client.id,
+        })
+
+        if (referralCode) {
+          const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
+          const link = `${baseUrl}/signup?ref=${referralCode}`
+          setReferralLink(link)
+        }
+      } catch (error) {
+        console.error('Error fetching referral link:', error)
+      }
+    }
+
+    fetchReferralLink()
+  }, [clerkAuth?.userId, clerkAuth?.isLoading])
 
   // Prevent body scroll lock when dropdown is open
   React.useEffect(() => {
@@ -76,6 +121,42 @@ export function NavBar() {
       }
     }
   }, [openDropdown])
+
+  const handleCopyReferralLink = async () => {
+    if (!referralLink) {
+      toast({
+        title: "No referral link available",
+        description: "Please try again in a moment",
+        variant: "destructive",
+      })
+      return
+    }
+
+    setIsCopying(true)
+    
+    try {
+      await navigator.clipboard.writeText(referralLink)
+      setCopied(true)
+      
+      toast({
+        title: "Link copied!",
+        description: "Your referral link has been copied to clipboard",
+      })
+
+      // Reset animation after 2 seconds
+      setTimeout(() => {
+        setCopied(false)
+        setIsCopying(false)
+      }, 2000)
+    } catch (error) {
+      setIsCopying(false)
+      toast({
+        title: "Failed to copy",
+        description: "Please try again",
+        variant: "destructive",
+      })
+    }
+  }
 
   const isActive = (url: string) => {
     if (url === "/") {
@@ -190,12 +271,32 @@ export function NavBar() {
         })}
       </div>
 
-      {/* Apply Now Button */}
+      {/* Refer a Friend Button */}
       <Button
-        className="bg-primary hover:bg-primary-700 text-primary-foreground h-9 px-4 ml-4 hidden md:flex"
-        asChild
+        className={cn(
+          "bg-primary hover:bg-primary-700 text-primary-foreground h-9 px-4 ml-4 hidden md:flex transition-all duration-300",
+          copied && "bg-green-600 hover:bg-green-700 scale-105",
+          isCopying && "scale-95"
+        )}
+        onClick={handleCopyReferralLink}
+        disabled={isCopying || !referralLink}
       >
-        <Link href="/refer" prefetch={true}>Refer a friend</Link>
+        <div className="flex items-center gap-2">
+          {copied ? (
+            <>
+              <Check className="h-4 w-4 animate-in zoom-in duration-200" />
+              <span>Copied!</span>
+            </>
+          ) : (
+            <>
+              <Copy className={cn(
+                "h-4 w-4 transition-transform duration-300",
+                isCopying && "rotate-180 scale-110"
+              )} />
+              <span>Refer a friend</span>
+            </>
+          )}
+        </div>
       </Button>
       </div>
     </nav>

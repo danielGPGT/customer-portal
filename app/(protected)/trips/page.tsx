@@ -26,7 +26,11 @@ export const revalidate = 0
 export default async function TripsPage({ searchParams }: TripsPageProps) {
   const { client, user, error } = await getClient()
   const params = await searchParams
-  const activeTab = (params.tab || 'upcoming') as TripTab
+  // Validate tab value to ensure it's one of the valid options
+  const tabParam = params.tab || 'upcoming'
+  const activeTab: TripTab = (tabParam === 'upcoming' || tabParam === 'past' || tabParam === 'all') 
+    ? tabParam 
+    : 'upcoming'
   
   if (!user) {
     redirect('/login')

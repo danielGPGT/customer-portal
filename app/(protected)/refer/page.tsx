@@ -94,10 +94,7 @@ export default async function ReferralPage() {
 
   return (
     <div className="space-y-8">
-      <PageHeader
-        title="Refer Friends, Earn Rewards"
-        description="Invite your network to book with us and both of you unlock exclusive loyalty bonuses"
-      />
+
 
       {programDisabled && (
         <Alert variant="destructive">
@@ -115,13 +112,7 @@ export default async function ReferralPage() {
         bonusPoints={referrerBonus}
       />
 
-      <ReferralStatsGrid
-        totalInvites={totalInvites}
-        pending={pending}
-        signedUp={signedUp}
-        completed={completed}
-        totalPointsEarned={totalPointsEarned}
-      />
+
 
       <div className="grid gap-6 lg:grid-cols-2">
         <ReferralShareCard
@@ -157,7 +148,13 @@ export default async function ReferralPage() {
         </Card>
       </div>
 
-      <ReferralInviteForm />
+      <ReferralStatsGrid
+        totalInvites={totalInvites}
+        pending={pending}
+        signedUp={signedUp}
+        completed={completed}
+        totalPointsEarned={totalPointsEarned}
+      />
 
       <ReferralHistoryTable referrals={referralHistory} />
     </div>
