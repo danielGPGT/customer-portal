@@ -29,9 +29,11 @@ interface FlightsSectionProps {
   canEdit: boolean
   isEditLocked: boolean
   daysUntilLock: number | null
+  isPermanentlyLocked?: boolean
+  bookingStatus?: 'provisional' | 'confirmed' | 'completed' | 'cancelled'
 }
 
-export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLocked, daysUntilLock, lockDate }: FlightsSectionProps & { lockDate: string | null }) {
+export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLocked, daysUntilLock, lockDate, isPermanentlyLocked, bookingStatus }: FlightsSectionProps & { lockDate: string | null }) {
   const [formOpen, setFormOpen] = useState(false)
   const [editingFlightId, setEditingFlightId] = useState<string | null>(null)
   const [editingSegment, setEditingSegment] = useState<{ type: 'outbound' | 'return', index: number } | null>(null)
@@ -117,12 +119,19 @@ export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLo
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 w-full">
               <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                 <Plane className="h-4 w-4 sm:h-5 sm:w-5" />
                 Flights ({activeFlights.length})
               </CardTitle>
-              {hasBookedFlights ? (
+              <div className='flex items-center gap-2 justify-between w-full flex-wrap'>
+              {isPermanentlyLocked && bookingStatus === 'cancelled' ? (
+                <div className="rounded-md border border-red-300 bg-red-50 px-3 py-2">
+                  <p className="text-[11px] sm:text-xs text-red-900 font-medium">
+                    This trip has been cancelled. Flight details cannot be edited.
+                  </p>
+                </div>
+              ) : hasBookedFlights ? (
                 <div className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2">
                   <p className="text-[11px] sm:text-xs text-blue-900 font-medium">
                     Your flight details are locked because a booked flight is already attached to this trip. Please contact support to make changes.
@@ -153,7 +162,7 @@ export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLo
                   )}
                 </div>
               ) : null}
-            </div>
+            
             {canEditFlights && (
               <Button
                 variant="outline"
@@ -168,6 +177,8 @@ export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLo
                 <span className="text-xs sm:text-sm">Add Your Flight</span>
               </Button>
             )}
+          </div>
+          </div>
           </div>
         </CardHeader>
         <CardContent >

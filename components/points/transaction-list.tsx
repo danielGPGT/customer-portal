@@ -108,6 +108,19 @@ export function TransactionList({
         .order('created_at', { ascending: false })
         .range(page * 20, (page + 1) * 20 - 1)
 
+      // Sort client-side to ensure deterministic ordering when timestamps are identical
+      if (data) {
+        data.sort((a, b) => {
+          const dateA = new Date(a.created_at).getTime()
+          const dateB = new Date(b.created_at).getTime()
+          if (dateA !== dateB) {
+            return dateB - dateA // Descending by date
+          }
+          // If dates are equal, sort by id (descending)
+          return a.id > b.id ? -1 : a.id < b.id ? 1 : 0
+        })
+      }
+
       if (!error && data && data.length > 0) {
         // Batch booking lookups to avoid N+1 queries
         const bookingIds = data

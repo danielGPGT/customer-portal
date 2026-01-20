@@ -242,8 +242,8 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
           (booking.booking_status === 'confirmed' || booking.booking_status === 'completed')
         )
       case 'all':
-        // Show all bookings except cancelled
-        return booking.booking_status !== 'cancelled'
+        // Show all bookings including cancelled
+        return true
       default:
         return false
     }

@@ -26,17 +26,24 @@ interface TransactionItemProps {
 }
 
 export function TransactionItem({ transaction, previousBalance }: TransactionItemProps) {
-  const isEarn = transaction.transaction_type === 'earn' || transaction.transaction_type === 'refund'
   const isReferral = transaction.source_type?.includes('referral')
   const isRefund = transaction.transaction_type === 'refund'
   const isAdjustment = transaction.transaction_type === 'adjustment'
+  const isEarn = transaction.transaction_type === 'earn'
+  
+  // For refunds, check the actual sign of points to determine if it's adding or deducting
+  // Refunds can be negative (deducting earned points) or positive (refunding spent points)
+  const isRefundDeduction = isRefund && transaction.points < 0
+  const isRefundAddition = isRefund && transaction.points > 0
+  const isPositiveTransaction = isEarn || isRefundAddition
+  const isNegativeTransaction = transaction.transaction_type === 'spend' || isRefundDeduction
 
   // Get icon and color based on type
   const getIcon = () => {
     if (isReferral) return <Gift className="h-4 w-4 text-purple-600 dark:text-purple-400" />
     if (isRefund) return <RefreshCw className="h-4 w-4 text-blue-600 dark:text-blue-400" />
     if (isAdjustment) return <Settings className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-    if (isEarn) return <ArrowUp className="h-4 w-4 text-green-600 dark:text-green-400" />
+    if (isPositiveTransaction) return <ArrowUp className="h-4 w-4 text-green-600 dark:text-green-400" />
     return <ArrowDown className="h-4 w-4 text-red-600 dark:text-red-400" />
   }
 
@@ -44,7 +51,7 @@ export function TransactionItem({ transaction, previousBalance }: TransactionIte
     if (isReferral) return 'border-l-purple-500'
     if (isRefund) return 'border-l-blue-500'
     if (isAdjustment) return 'border-l-gray-500'
-    if (isEarn) return 'border-l-green-500'
+    if (isPositiveTransaction) return 'border-l-green-500'
     return 'border-l-red-500'
   }
 
@@ -52,11 +59,14 @@ export function TransactionItem({ transaction, previousBalance }: TransactionIte
     if (isReferral) return 'text-purple-600 dark:text-purple-400'
     if (isRefund) return 'text-blue-600 dark:text-blue-400'
     if (isAdjustment) return 'text-gray-600 dark:text-gray-400'
-    if (isEarn) return 'text-green-600 dark:text-green-400'
+    if (isPositiveTransaction) return 'text-green-600 dark:text-green-400'
     return 'text-red-600 dark:text-red-400'
   }
 
-  const pointsDisplay = isEarn ? `+${Math.abs(transaction.points)}` : `-${Math.abs(transaction.points)}`
+  // Display points with correct sign based on actual value
+  const pointsDisplay = isPositiveTransaction 
+    ? `+${Math.abs(transaction.points)}` 
+    : `-${Math.abs(transaction.points)}`
   const balanceBefore = previousBalance ?? transaction.balance_after - transaction.points
 
   return (

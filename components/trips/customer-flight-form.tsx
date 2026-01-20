@@ -14,17 +14,22 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDes
 import { Loader2, Plane } from 'lucide-react'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Checkbox } from '@/components/ui/checkbox'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Label } from '@/components/ui/label'
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { HelpCircle, Info, AlertTriangle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const flightFormSchema = z.object({
-  isRoundTrip: z.boolean(),
+  tripType: z.enum(['round-trip', 'arrival-only', 'return-only']),
   // Outbound (first departure and final arrival)
-  outboundOrigin: z.string().min(3, 'Departure airport code required').max(3),
-  outboundDestination: z.string().min(3, 'Arrival airport code required').max(3),
-  outboundDepartureDateTime: z.string().min(1, 'Departure date/time required'),
-  outboundArrivalDateTime: z.string().min(1, 'Arrival date/time required'),
-  outboundFlightNumber: z.string().min(1, 'Flight number required'),
+  outboundOrigin: z.string().optional(),
+  outboundDestination: z.string().optional(),
+  outboundDepartureDateTime: z.string().optional(),
+  outboundArrivalDateTime: z.string().optional(),
+  outboundFlightNumber: z.string().optional(),
+  outboundAirlineId: z.string().optional(),
   outboundAirlineCode: z.string().optional(),
   // Return (first departure and final arrival)
   returnOrigin: z.string().optional(),
@@ -32,16 +37,29 @@ const flightFormSchema = z.object({
   returnDepartureDateTime: z.string().optional(),
   returnArrivalDateTime: z.string().optional(),
   returnFlightNumber: z.string().optional(),
+  returnAirlineId: z.string().optional(),
   returnAirlineCode: z.string().optional(),
 }).refine((data) => {
-  if (data.isRoundTrip) {
+  // Arrival-only or round-trip requires outbound fields
+  if (data.tripType === 'arrival-only' || data.tripType === 'round-trip') {
+    return !!data.outboundOrigin && !!data.outboundDestination && 
+           !!data.outboundDepartureDateTime && !!data.outboundArrivalDateTime &&
+           !!data.outboundFlightNumber
+  }
+  return true
+}, {
+  message: 'Arrival flight information required',
+  path: ['outboundOrigin'],
+}).refine((data) => {
+  // Return-only or round-trip requires return fields
+  if (data.tripType === 'return-only' || data.tripType === 'round-trip') {
     return !!data.returnOrigin && !!data.returnDestination && 
            !!data.returnDepartureDateTime && !!data.returnArrivalDateTime &&
            !!data.returnFlightNumber
   }
   return true
 }, {
-  message: 'Return flight information required for round trip',
+  message: 'Return flight information required',
   path: ['returnOrigin'],
 })
 
@@ -53,6 +71,16 @@ interface Airport {
   name: string
   city: string | null
   country: string | null
+}
+
+interface Airline {
+  id: string
+  name: string
+  codes: Array<{
+    iata_code: string | null
+    icao_code: string | null
+    is_primary: boolean
+  }>
 }
 
 interface CustomerFlightFormProps {
@@ -78,27 +106,35 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
   const [airportSearchQuery, setAirportSearchQuery] = useState<Record<string, string>>({})
   // Store selected airports to ensure we can display them even if not in current search results
   const [selectedAirports, setSelectedAirports] = useState<Record<string, Airport>>({})
+  
+  // Airline state management
+  const [airlines, setAirlines] = useState<Record<string, Airline[]>>({})
+  const [airlineSearchOpen, setAirlineSearchOpen] = useState<Record<string, boolean>>({})
+  const [airlineSearchQuery, setAirlineSearchQuery] = useState<Record<string, string>>({})
+  const [selectedAirlines, setSelectedAirlines] = useState<Record<string, Airline>>({})
 
   const form = useForm<FlightFormData>({
     resolver: zodResolver(flightFormSchema),
     defaultValues: {
-      isRoundTrip: true,
+      tripType: 'round-trip',
       outboundOrigin: '',
       outboundDestination: '',
       outboundDepartureDateTime: '',
       outboundArrivalDateTime: '',
       outboundFlightNumber: '',
+      outboundAirlineId: '',
       outboundAirlineCode: '',
       returnOrigin: '',
       returnDestination: '',
       returnDepartureDateTime: '',
       returnArrivalDateTime: '',
       returnFlightNumber: '',
+      returnAirlineId: '',
       returnAirlineCode: '',
     },
   })
 
-  const isRoundTrip = form.watch('isRoundTrip')
+  const tripType = form.watch('tripType')
 
   // Load existing flight data when editing
   useEffect(() => {
@@ -157,36 +193,78 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
         if (segment) {
           if (editingSegment.type === 'outbound') {
             form.reset({
-              isRoundTrip: false,
+              tripType: 'arrival-only',
               outboundOrigin: segment.departureCode || '',
               outboundDestination: segment.arrivalCode || '',
               outboundDepartureDateTime: formatDateTimeForInput(segment.departureDateTime),
               outboundArrivalDateTime: formatDateTimeForInput(segment.arrivalDateTime),
               outboundFlightNumber: segment.flightNumber || '',
+              outboundAirlineId: '',
               outboundAirlineCode: segment.marketingAirlineCode || '',
               returnOrigin: '',
               returnDestination: '',
               returnDepartureDateTime: '',
               returnArrivalDateTime: '',
               returnFlightNumber: '',
+              returnAirlineId: '',
               returnAirlineCode: '',
             })
+            
+            // Try to find airline if we have a code
+            if (segment.marketingAirlineCode) {
+              try {
+                const airlineResp = await fetch(`/api/airlines/search?q=${encodeURIComponent(segment.marketingAirlineCode)}&limit=1`)
+                if (airlineResp.ok) {
+                  const airlineData = await airlineResp.json()
+                  const matchingAirline = airlineData.data?.find((a: Airline) => 
+                    a.codes.some(c => c.iata_code === segment.marketingAirlineCode || c.icao_code === segment.marketingAirlineCode)
+                  )
+                  if (matchingAirline) {
+                    form.setValue('outboundAirlineId', matchingAirline.id)
+                    setSelectedAirlines(prev => ({ ...prev, 'outbound-airline': matchingAirline }))
+                  }
+                }
+              } catch (error) {
+                console.error('Error fetching airline:', error)
+              }
+            }
           } else {
             form.reset({
-              isRoundTrip: false,
+              tripType: 'return-only',
               outboundOrigin: '',
               outboundDestination: '',
               outboundDepartureDateTime: '',
               outboundArrivalDateTime: '',
               outboundFlightNumber: '',
+              outboundAirlineId: '',
               outboundAirlineCode: '',
               returnOrigin: segment.departureCode || '',
               returnDestination: segment.arrivalCode || '',
               returnDepartureDateTime: formatDateTimeForInput(segment.departureDateTime),
               returnArrivalDateTime: formatDateTimeForInput(segment.arrivalDateTime),
               returnFlightNumber: segment.flightNumber || '',
+              returnAirlineId: '',
               returnAirlineCode: segment.marketingAirlineCode || '',
             })
+            
+            // Try to find airline if we have a code
+            if (segment.marketingAirlineCode) {
+              try {
+                const airlineResp = await fetch(`/api/airlines/search?q=${encodeURIComponent(segment.marketingAirlineCode)}&limit=1`)
+                if (airlineResp.ok) {
+                  const airlineData = await airlineResp.json()
+                  const matchingAirline = airlineData.data?.find((a: Airline) => 
+                    a.codes.some(c => c.iata_code === segment.marketingAirlineCode || c.icao_code === segment.marketingAirlineCode)
+                  )
+                  if (matchingAirline) {
+                    form.setValue('returnAirlineId', matchingAirline.id)
+                    setSelectedAirlines(prev => ({ ...prev, 'return-airline': matchingAirline }))
+                  }
+                }
+              } catch (error) {
+                console.error('Error fetching airline:', error)
+              }
+            }
           }
           
           // Fetch and store airport details for display
@@ -218,22 +296,75 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
       const outboundSegment = details.outboundSegments?.[0]
       const returnSegment = details.returnSegments?.[0]
 
+      // Determine trip type based on existing data
+      const hasOutbound = !!(outboundSegment || details.origin || details.departureDate)
+      const hasReturn = !!(returnSegment || details.returnDate)
+      let determinedTripType: 'round-trip' | 'arrival-only' | 'return-only' = 'round-trip'
+      if (hasOutbound && hasReturn) {
+        determinedTripType = 'round-trip'
+      } else if (hasOutbound && !hasReturn) {
+        determinedTripType = 'arrival-only'
+      } else if (!hasOutbound && hasReturn) {
+        determinedTripType = 'return-only'
+      }
+
       // Set form values
       form.reset({
-        isRoundTrip: !!(returnSegment || details.returnDate),
+        tripType: determinedTripType,
         outboundOrigin: details.origin || '',
         outboundDestination: details.destination || '',
         outboundDepartureDateTime: formatDateTimeForInput(outboundSegment?.departureDateTime || details.departureDate),
         outboundArrivalDateTime: formatDateTimeForInput(outboundSegment?.arrivalDateTime),
         outboundFlightNumber: outboundSegment?.flightNumber || '',
+        outboundAirlineId: '', // Will be set if we find matching airline
         outboundAirlineCode: outboundSegment?.marketingAirlineCode || flight.outbound_airline_code || '',
         returnOrigin: returnSegment?.departureCode || '',
         returnDestination: returnSegment?.arrivalCode || '',
         returnDepartureDateTime: formatDateTimeForInput(returnSegment?.departureDateTime || details.returnDate),
         returnArrivalDateTime: formatDateTimeForInput(returnSegment?.arrivalDateTime),
         returnFlightNumber: returnSegment?.flightNumber || '',
+        returnAirlineId: '', // Will be set if we find matching airline
         returnAirlineCode: returnSegment?.marketingAirlineCode || flight.inbound_airline_code || '',
       })
+
+      // Try to find and set airline IDs if we have airline codes
+      if (outboundSegment?.marketingAirlineCode || flight.outbound_airline_code) {
+        const airlineCode = outboundSegment?.marketingAirlineCode || flight.outbound_airline_code
+        try {
+          const airlineResp = await fetch(`/api/airlines/search?q=${encodeURIComponent(airlineCode || '')}&limit=1`)
+          if (airlineResp.ok) {
+            const airlineData = await airlineResp.json()
+            const matchingAirline = airlineData.data?.find((a: Airline) => 
+              a.codes.some(c => c.iata_code === airlineCode || c.icao_code === airlineCode)
+            )
+            if (matchingAirline) {
+              form.setValue('outboundAirlineId', matchingAirline.id)
+              setSelectedAirlines(prev => ({ ...prev, 'outbound-airline': matchingAirline }))
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching airline:', error)
+        }
+      }
+
+      if (returnSegment?.marketingAirlineCode || flight.inbound_airline_code) {
+        const airlineCode = returnSegment?.marketingAirlineCode || flight.inbound_airline_code
+        try {
+          const airlineResp = await fetch(`/api/airlines/search?q=${encodeURIComponent(airlineCode || '')}&limit=1`)
+          if (airlineResp.ok) {
+            const airlineData = await airlineResp.json()
+            const matchingAirline = airlineData.data?.find((a: Airline) => 
+              a.codes.some(c => c.iata_code === airlineCode || c.icao_code === airlineCode)
+            )
+            if (matchingAirline) {
+              form.setValue('returnAirlineId', matchingAirline.id)
+              setSelectedAirlines(prev => ({ ...prev, 'return-airline': matchingAirline }))
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching airline:', error)
+        }
+      }
 
       // Fetch and store airport details for display
       if (details.origin) {
@@ -281,22 +412,46 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
     loadFlightData()
   }, [open, flightId, editingSegment, form, toast])
 
-  // Reset return fields when round trip is toggled
+  // Reset fields when trip type changes
   useEffect(() => {
-    if (!isRoundTrip) {
+    if (tripType === 'arrival-only') {
+      // Clear return fields
       form.setValue('returnOrigin', '')
       form.setValue('returnDestination', '')
       form.setValue('returnDepartureDateTime', '')
       form.setValue('returnArrivalDateTime', '')
       form.setValue('returnFlightNumber', '')
+      form.setValue('returnAirlineId', '')
       form.setValue('returnAirlineCode', '')
-      // Clear stored airports for return fields
+      // Clear stored airports and airlines for return fields
       setSelectedAirports(prev => {
         const { 'return-origin': _, 'return-destination': __, ...rest } = prev
         return rest
       })
+      setSelectedAirlines(prev => {
+        const { 'return-airline': _, ...rest } = prev
+        return rest
+      })
+    } else if (tripType === 'return-only') {
+      // Clear outbound fields
+      form.setValue('outboundOrigin', '')
+      form.setValue('outboundDestination', '')
+      form.setValue('outboundDepartureDateTime', '')
+      form.setValue('outboundArrivalDateTime', '')
+      form.setValue('outboundFlightNumber', '')
+      form.setValue('outboundAirlineId', '')
+      form.setValue('outboundAirlineCode', '')
+      // Clear stored airports and airlines for outbound fields
+      setSelectedAirports(prev => {
+        const { 'outbound-origin': _, 'outbound-destination': __, ...rest } = prev
+        return rest
+      })
+      setSelectedAirlines(prev => {
+        const { 'outbound-airline': _, ...rest } = prev
+        return rest
+      })
     }
-  }, [isRoundTrip, form])
+  }, [tripType, form])
 
   // Fetch airport details when a field value is set and we don't have the details
   useEffect(() => {
@@ -342,8 +497,6 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
     if (returnDestination) fetchAirportDetails(returnDestination, 'return-destination')
   }, [form.watch('outboundOrigin'), form.watch('outboundDestination'), form.watch('returnOrigin'), form.watch('returnDestination'), selectedAirports, airports])
 
-  // Airline selection is handled client-side via search results
-
   // Search airports server-side - stores results per field
   const searchAirports = async (fieldId: string, query: string) => {
     if (!query || query.length < 1) {
@@ -364,42 +517,90 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
     }
   }
 
+  // Search airlines server-side - stores results per field
+  const searchAirlines = async (fieldId: string, query: string) => {
+    if (!query || query.length < 1) {
+      setAirlines(prev => ({ ...prev, [fieldId]: [] }))
+      return
+    }
+
+    try {
+      const response = await fetch(`/api/airlines/search?q=${encodeURIComponent(query)}&limit=50`)
+      if (!response.ok) throw new Error('Failed to search airlines')
+      
+      const result = await response.json()
+      setAirlines(prev => ({ ...prev, [fieldId]: result.data || [] }))
+      setAirlineSearchQuery(prev => ({ ...prev, [fieldId]: query }))
+    } catch (error) {
+      console.error('Error searching airlines:', error)
+      setAirlines(prev => ({ ...prev, [fieldId]: [] }))
+    }
+  }
+
+  // Get airline display name with code
+  const getAirlineDisplay = (airlineId: string | undefined, fieldId: string) => {
+    if (!airlineId) return 'Select airline...'
+    
+    // Check selected airlines first
+    const selected = selectedAirlines[fieldId]
+    if (selected && selected.id === airlineId) {
+      const primaryCode = selected.codes.find(c => c.is_primary && c.iata_code) || selected.codes.find(c => c.iata_code)
+      const code = primaryCode?.iata_code || primaryCode?.icao_code || ''
+      return code ? `${selected.name}` : selected.name
+    }
+
+    // Check current search results
+    const fieldAirlines = airlines[fieldId] || []
+    const airline = fieldAirlines.find(a => a.id === airlineId)
+    if (airline) {
+      const primaryCode = airline.codes.find(c => c.is_primary && c.iata_code) || airline.codes.find(c => c.iata_code)
+      const code = primaryCode?.iata_code || primaryCode?.icao_code || ''
+      return code ? `${airline.name}` : airline.name
+    }
+
+    return 'Select airline...'
+  }
+
   const onSubmit = async (data: FlightFormData) => {
     setIsLoading(true)
     const supabase = createClient()
 
     try {
-      // Fetch airport details from API
-      const outboundOriginResp = await fetch(`/api/airports/search?q=${encodeURIComponent(data.outboundOrigin)}&limit=1`)
-      const outboundOriginData = await outboundOriginResp.json()
-      const outboundOriginAirport = outboundOriginData.data?.find((a: Airport) => a.iata_code === data.outboundOrigin)
+      // Build outbound segment only for arrival-only or round-trip
+      let outboundSegment = null
+      if ((data.tripType === 'arrival-only' || data.tripType === 'round-trip') && data.outboundOrigin && data.outboundDestination) {
+        // Fetch airport details from API
+        const outboundOriginResp = await fetch(`/api/airports/search?q=${encodeURIComponent(data.outboundOrigin || '')}&limit=1`)
+        const outboundOriginData = await outboundOriginResp.json()
+        const outboundOriginAirport = outboundOriginData.data?.find((a: Airport) => a.iata_code === data.outboundOrigin)
 
-      const outboundDestResp = await fetch(`/api/airports/search?q=${encodeURIComponent(data.outboundDestination)}&limit=1`)
-      const outboundDestData = await outboundDestResp.json()
-      const outboundDestAirport = outboundDestData.data?.find((a: Airport) => a.iata_code === data.outboundDestination)
+        const outboundDestResp = await fetch(`/api/airports/search?q=${encodeURIComponent(data.outboundDestination || '')}&limit=1`)
+        const outboundDestData = await outboundDestResp.json()
+        const outboundDestAirport = outboundDestData.data?.find((a: Airport) => a.iata_code === data.outboundDestination)
 
-      // Build outbound segment (single segment - first departure and final arrival)
-      const outboundSegment = {
-        departure: outboundOriginAirport?.city || outboundOriginAirport?.name || data.outboundOrigin,
-        arrival: outboundDestAirport?.city || outboundDestAirport?.name || data.outboundDestination,
-        departureCode: data.outboundOrigin,
-        arrivalCode: data.outboundDestination,
-        departureDateTime: data.outboundDepartureDateTime,
-        arrivalDateTime: data.outboundArrivalDateTime,
-        flightNumber: data.outboundFlightNumber,
-        marketingAirline: '',
-        marketingAirlineCode: data.outboundAirlineCode || '',
+        outboundSegment = {
+          departure: outboundOriginAirport?.city || outboundOriginAirport?.name || data.outboundOrigin,
+          arrival: outboundDestAirport?.city || outboundDestAirport?.name || data.outboundDestination,
+          departureCode: data.outboundOrigin,
+          arrivalCode: data.outboundDestination,
+          departureDateTime: data.outboundDepartureDateTime,
+          arrivalDateTime: data.outboundArrivalDateTime,
+          flightNumber: data.outboundFlightNumber,
+          marketingAirline: '',
+          marketingAirlineCode: data.outboundAirlineCode || '',
+        }
       }
 
-      // Build return segment if round trip
+      // Build return segment only for return-only or round-trip
       let returnSegment = null
-      if (data.isRoundTrip && data.returnOrigin && data.returnDestination) {
+      if ((data.tripType === 'return-only' || data.tripType === 'round-trip') && data.returnOrigin && data.returnDestination) {
         // Fetch return airport details
-        const returnOriginResp = await fetch(`/api/airports/search?q=${encodeURIComponent(data.returnOrigin)}&limit=1`)
+        // Fetch return airport details
+        const returnOriginResp = await fetch(`/api/airports/search?q=${encodeURIComponent(data.returnOrigin || '')}&limit=1`)
         const returnOriginData = await returnOriginResp.json()
         const returnOriginAirport = returnOriginData.data?.find((a: Airport) => a.iata_code === data.returnOrigin)
 
-        const returnDestResp = await fetch(`/api/airports/search?q=${encodeURIComponent(data.returnDestination)}&limit=1`)
+        const returnDestResp = await fetch(`/api/airports/search?q=${encodeURIComponent(data.returnDestination || '')}&limit=1`)
         const returnDestData = await returnDestResp.json()
         const returnDestAirport = returnDestData.data?.find((a: Airport) => a.iata_code === data.returnDestination)
 
@@ -417,17 +618,17 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
       }
 
       const flightDetails = {
-        origin: data.outboundOrigin,
-        destination: data.outboundDestination,
-        departureDate: data.outboundDepartureDateTime,
-        returnDate: data.isRoundTrip ? data.returnDepartureDateTime : null,
-        outboundSegments: [outboundSegment],
+        origin: data.outboundOrigin || data.returnOrigin || '',
+        destination: data.outboundDestination || data.returnDestination || '',
+        departureDate: data.outboundDepartureDateTime || data.returnDepartureDateTime || null,
+        returnDate: (data.tripType === 'round-trip' || data.tripType === 'return-only') ? data.returnDepartureDateTime : null,
+        outboundSegments: outboundSegment ? [outboundSegment] : [],
         returnSegments: returnSegment ? [returnSegment] : [],
-        marketingAirline: outboundSegment.marketingAirline,
-        marketingAirlineCode: outboundSegment.marketingAirlineCode,
+        marketingAirline: outboundSegment?.marketingAirline || returnSegment?.marketingAirline || '',
+        marketingAirlineCode: outboundSegment?.marketingAirlineCode || returnSegment?.marketingAirlineCode || '',
       }
 
-      const outboundAirlineCode = outboundSegment.marketingAirlineCode
+      const outboundAirlineCode = outboundSegment?.marketingAirlineCode || null
       const inboundAirlineCode = returnSegment?.marketingAirlineCode || null
 
       let error
@@ -594,41 +795,233 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Round Trip Toggle - only show when not editing a specific segment */}
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+
+
+            {/* Trip Type Selection - only show when not editing a specific segment */}
             {!editingSegment && (
               <FormField
                 control={form.control}
-                name="isRoundTrip"
+                name="tripType"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel className="cursor-pointer">
-                        Round Trip
-                      </FormLabel>
-                      <FormDescription>
-                        Check this if you're returning from the same destination
-                      </FormDescription>
+                  <FormItem className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <FormLabel>Trip Type</FormLabel>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent side="right" className="max-w-xs">
+                            <p className="font-medium mb-1">Choose based on your airport transfers:</p>
+                            <ul className="text-xs space-y-1 list-disc list-inside">
+                              <li><strong>Round Trip:</strong> You need both arrival and return airport transfers</li>
+                              <li><strong>Arrival Only:</strong> You only need an arrival airport transfer</li>
+                              <li><strong>Return Only:</strong> You only need a return airport transfer</li>
+                            </ul>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     </div>
+                    <FormDescription className="text-sm text-muted-foreground">
+                      Select the option that matches the airport transfers you have booked or need for this trip.
+                    </FormDescription>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        className="flex flex-col "
+                      >
+                        <div className="flex items-center space-x-3">
+                          <RadioGroupItem value="round-trip" id="round-trip"  />
+                          <Label htmlFor="round-trip" className="cursor-pointer flex-1">
+                            <div className="flex items-center gap-2">
+                              <div className="font-medium">Round Trip</div>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Info className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                                  </TooltipTrigger>
+                                  <TooltipContent side="right" className="max-w-xs">
+                                    <p>Choose this if you need both arrival and return airport transfers for your trip.</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                            <div className="text-sm text-muted-foreground ">
+                              Arrival and return flights
+                            </div>
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <RadioGroupItem value="arrival-only" id="arrival-only"  />
+                          <Label htmlFor="arrival-only" className="cursor-pointer flex-1">
+                            <div className="flex items-center gap-2">
+                              <div className="font-medium">Arrival Only</div>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Info className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                                  </TooltipTrigger>
+                                  <TooltipContent side="right" className="max-w-xs">
+                                    <p>Choose this if you only need an arrival airport transfer. You&apos;re making your own return travel arrangements.</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                            <div className="text-sm text-muted-foreground ">
+                              Only your arrival flight
+                            </div>
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <RadioGroupItem value="return-only" id="return-only"  />
+                          <Label htmlFor="return-only" className="cursor-pointer flex-1">
+                            <div className="flex items-center gap-2">
+                              <div className="font-medium">Return Only</div>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Info className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                                  </TooltipTrigger>
+                                  <TooltipContent side="right" className="max-w-xs">
+                                    <p>Choose this if you only need a return airport transfer. You&apos;re making your own arrival travel arrangements.</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              Only your return flight
+                            </div>
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             )}
 
-            {/* Outbound Flight - only show when editing outbound segment or not editing a specific segment */}
-            {(!editingSegment || editingSegment.type === 'outbound') && (
+            {/* Arrival/Outbound Flight - show for arrival-only, round-trip, or when editing outbound segment */}
+            {((!editingSegment && (tripType === 'arrival-only' || tripType === 'round-trip')) || (editingSegment && editingSegment.type === 'outbound')) && (
               <div className="space-y-4 border rounded-lg p-4">
                 <h3 className="text-base font-semibold">
-                  {editingSegment && editingSegment.type === 'outbound' ? 'Edit Outbound Flight' : 'Outbound Flight'}
+                  {editingSegment && editingSegment.type === 'outbound' 
+                    ? 'Edit Arrival Flight' 
+                    : tripType === 'arrival-only' 
+                    ? 'Arrival Flight' 
+                    : 'Arrival Flight'}
                 </h3>
+
+                <div className="grid grid-cols-1 gap-4">
+                <FormField
+                  control={form.control}
+                  name="outboundAirlineId"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col ">
+                      <FormLabel>Airline</FormLabel>
+                      <Popover 
+                        open={airlineSearchOpen['outbound-airline'] || false}
+                        onOpenChange={(open) => setAirlineSearchOpen(prev => ({ ...prev, 'outbound-airline': open }))}
+                      >
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              className={cn(
+                                "w-full justify-between",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? getAirlineDisplay(field.value, 'outbound-airline') : "Select airline..."}
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[300px] p-0" align="start">
+                          <Command shouldFilter={false}>
+                            <CommandInput 
+                              placeholder="Search airline..." 
+                              onValueChange={(value) => searchAirlines('outbound-airline', value)}
+                            />
+                            <CommandList>
+                              <CommandEmpty>
+                                {airlineSearchQuery['outbound-airline'] ? 'No airline found.' : 'Type to search airlines...'}
+                              </CommandEmpty>
+                              <CommandGroup>
+                                {(airlines['outbound-airline'] || []).map((airline) => {
+                                  const primaryCode = airline.codes.find(c => c.is_primary && c.iata_code) || airline.codes.find(c => c.iata_code)
+                                  const code = primaryCode?.iata_code || primaryCode?.icao_code || ''
+                                  return (
+                                    <CommandItem
+                                      key={airline.id}
+                                      value={`${airline.name}`}
+                                      onSelect={() => {
+                                        field.onChange(airline.id)
+                                        setSelectedAirlines(prev => ({ ...prev, 'outbound-airline': airline }))
+                                        setAirlineSearchOpen(prev => ({ ...prev, 'outbound-airline': false }))
+                                      }}
+                                    >
+                                      <div className="flex flex-col">
+                                        <span className="font-medium">{airline.name}</span>
+
+                                      </div>
+                                    </CommandItem>
+                                  )
+                                })}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+                      <FormDescription>
+                        Search and select your airline.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+              <FormField
+                  control={form.control}
+                  name="outboundAirlineCode"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Airline Code</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g., LH" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        Airline code from your ticket (e.g. EZY, BA).
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="outboundFlightNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Flight Number *</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g., 943" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        Enter only the flight number (without airline code)
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                
                 {/* Departure Airport */}
                 <FormField
                   control={form.control}
@@ -790,49 +1183,123 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="outboundAirlineCode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Airline Code</FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g., LH" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        Enter the airline code from your ticket (e.g., LH, BA, AF).
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="outboundFlightNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Flight Number *</FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g., 943" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        Enter only the flight number (without airline code)
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+
               </div>
             )}
 
-            {/* Return Flight - only show when editing return segment or when round trip is enabled */}
-            {(!editingSegment || editingSegment.type === 'return') && (
+            {/* Return Flight - show for return-only, round-trip, or when editing return segment */}
+            {((!editingSegment && (tripType === 'return-only' || tripType === 'round-trip')) || (editingSegment && editingSegment.type === 'return')) && (
               <div className="space-y-4 border rounded-lg p-4">
                 <h3 className="text-base font-semibold">
                   {editingSegment && editingSegment.type === 'return' ? 'Edit Return Flight' : 'Return Flight'}
                 </h3>
+
+                <div className="grid grid-cols-1 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="returnAirlineId"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>Airline</FormLabel>
+                        <Popover 
+                          open={airlineSearchOpen['return-airline'] || false}
+                          onOpenChange={(open) => setAirlineSearchOpen(prev => ({ ...prev, 'return-airline': open }))}
+                        >
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                className={cn(
+                                  "w-full justify-between",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value ? getAirlineDisplay(field.value, 'return-airline') : "Select airline..."}
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-[300px] p-0" align="start">
+                            <Command shouldFilter={false}>
+                              <CommandInput 
+                                placeholder="Search airline..." 
+                                onValueChange={(value) => searchAirlines('return-airline', value)}
+                              />
+                              <CommandList>
+                                <CommandEmpty>
+                                  {airlineSearchQuery['return-airline'] ? 'No airline found.' : 'Type to search airlines...'}
+                                </CommandEmpty>
+                                <CommandGroup>
+                                  {(airlines['return-airline'] || []).map((airline) => {
+                                    const primaryCode = airline.codes.find(c => c.is_primary && c.iata_code) || airline.codes.find(c => c.iata_code)
+                                    const code = primaryCode?.iata_code || primaryCode?.icao_code || ''
+                                    return (
+                                      <CommandItem
+                                        key={airline.id}
+                                        value={`${airline.name} ${code}`}
+                                        onSelect={() => {
+                                          field.onChange(airline.id)
+                                          setSelectedAirlines(prev => ({ ...prev, 'return-airline': airline }))
+                                          setAirlineSearchOpen(prev => ({ ...prev, 'return-airline': false }))
+                                        }}
+                                      >
+                                        <div className="flex flex-col">
+                                          <span className="font-medium">{airline.name}</span>
+                                          {code && (
+                                            <span className="text-xs text-muted-foreground">Code: {code}</span>
+                                          )}
+                                        </div>
+                                      </CommandItem>
+                                    )
+                                  })}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                        <FormDescription>
+                          Search and select your airline.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                <FormField
+                    control={form.control}
+                    name="returnAirlineCode"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col c">
+                        <FormLabel>Airline Code</FormLabel>
+                        <FormControl>
+                          <Input placeholder="e.g., LH" {...field} />
+                        </FormControl>
+                        <FormDescription>
+                        Enter the airline code from your ticket (e.g. LH, BA, AF).
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="returnFlightNumber"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>Flight Number *</FormLabel>
+                        <FormControl>
+                          <Input placeholder="e.g., 943" {...field} />
+                        </FormControl>
+                        <FormDescription>
+                          Enter only the flight number (without airline code)
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
@@ -986,41 +1453,6 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
                         <FormControl>
                           <Input type="datetime-local" {...field} />
                         </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="returnAirlineCode"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Airline Code</FormLabel>
-                        <FormControl>
-                          <Input placeholder="e.g., LH" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          Enter the airline code from your ticket.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="returnFlightNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Flight Number *</FormLabel>
-                        <FormControl>
-                          <Input placeholder="e.g., 943" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          Enter only the flight number (without airline code)
-                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -1227,10 +1659,21 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
                     )}
                   />
                 </div>
+                
               </div>
+              
             )}
 
+                                      {/* Warning message */}
+                                      <Alert variant="destructive">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription>
+                You are responsible for entering the correct flight information. Please double-check all details before submitting. You're able to change the flight information later.
+              </AlertDescription>
+            </Alert>
+
             <DialogFooter>
+
               <Button
                 type="button"
                 variant="outline"

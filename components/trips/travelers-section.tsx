@@ -33,9 +33,11 @@ interface TravelersSectionProps {
   daysUntilLock: number | null
   hasBookedFlights: boolean
   lockDate: string | null
+  isPermanentlyLocked?: boolean
+  bookingStatus?: 'provisional' | 'confirmed' | 'completed' | 'cancelled'
 }
 
-export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLock, hasBookedFlights, lockDate }: TravelersSectionProps) {
+export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLock, hasBookedFlights, lockDate, isPermanentlyLocked, bookingStatus }: TravelersSectionProps) {
   const [selectedTraveler, setSelectedTraveler] = useState<Traveler | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [timeRemaining, setTimeRemaining] = useState<string | null>(null)
@@ -121,7 +123,13 @@ export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLo
               Travellers ({activeTravelers.length})
             </CardTitle>
             {/* Lock / info note */}
-            {isEditLocked ? (
+            {isPermanentlyLocked && bookingStatus === 'cancelled' ? (
+              <div className="rounded-md border border-red-300 bg-red-50 px-3 py-2">
+                <p className="text-[11px] sm:text-xs text-red-900 font-medium">
+                  This trip has been cancelled. Traveller details cannot be edited.
+                </p>
+              </div>
+            ) : isEditLocked ? (
               <div className="rounded-md border border-amber-300 bg-amber-50 px-3 py-2">
                 <p className="text-[11px] sm:text-xs text-amber-900 font-medium">
                   Traveller details are locked as we&apos;re within 4 weeks of departure

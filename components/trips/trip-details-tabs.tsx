@@ -82,15 +82,37 @@ export function TripDetailsTabs({
   preferredCurrency,
   discountAppliedConverted
 }: TripDetailsTabsProps) {
-  // --- Edit lock logic (4 weeks before event start) ---
+  // --- Edit lock logic ---
+  // CRITICAL: Never allow editing for cancelled or past trips
   const TEST_EDIT_LOCK_STATE: 'auto' | 'locked' | 'unlocked' = 'auto' // change for testing
 
   const now = new Date()
+  now.setHours(0, 0, 0, 0) // Normalize to start of day for date comparison
+  
+  // Check if trip is cancelled or completed
+  const isCancelledOrCompleted = bookingStatus === 'cancelled' || bookingStatus === 'completed'
+  
+  // Check if trip has passed (end date is in the past)
+  let isPastTrip = false
+  if (eventEndDate) {
+    try {
+      const end = new Date(eventEndDate)
+      end.setHours(0, 0, 0, 0)
+      isPastTrip = end < now
+    } catch {
+      // ignore parsing errors
+    }
+  }
+
+  // If cancelled, completed, or past trip, ALWAYS lock editing (regardless of test state)
+  const isPermanentlyLocked = isCancelledOrCompleted || isPastTrip
+
   let isEditLocked = false
   let daysUntilLock: number | null = null
   let lockDate: string | null = null
 
-  if (eventStartDate) {
+  // Only apply 4-week lock logic if trip is not permanently locked
+  if (!isPermanentlyLocked && eventStartDate) {
     try {
       const start = new Date(eventStartDate)
       const lockThreshold = new Date(start)
@@ -108,12 +130,21 @@ export function TripDetailsTabs({
     }
   }
 
-  if (TEST_EDIT_LOCK_STATE === 'locked') {
+  // Override with test state only if not permanently locked
+  if (!isPermanentlyLocked) {
+    if (TEST_EDIT_LOCK_STATE === 'locked') {
+      isEditLocked = true
+      daysUntilLock = null
+    } else if (TEST_EDIT_LOCK_STATE === 'unlocked') {
+      isEditLocked = false
+      // keep computed lockDate so we can still show the date in UI while forcing unlocked for testing
+    }
+  }
+
+  // If permanently locked (cancelled/completed/past), force lock regardless of test state
+  if (isPermanentlyLocked) {
     isEditLocked = true
     daysUntilLock = null
-  } else if (TEST_EDIT_LOCK_STATE === 'unlocked') {
-    isEditLocked = false
-    // keep computed lockDate so we can still show the date in UI while forcing unlocked for testing
   }
 
   const hasBookedFlights = flights?.some(
@@ -122,11 +153,13 @@ export function TripDetailsTabs({
 
   // Travellers can be edited until 4 weeks before departure (even if flights are booked),
   // but some fields (name/email/phone) will be locked when flights are booked.
-  const canEditTravellers = !isEditLocked
+  // NEVER allow editing for cancelled/completed/past trips
+  const canEditTravellers = !isEditLocked && !isPermanentlyLocked
 
   // Customer flight details can only be added/edited when there are no booked flights
   // and we are not inside the 4-week lock window.
-  const canEditFlights = !isEditLocked && !hasBookedFlights
+  // NEVER allow editing for cancelled/completed/past trips
+  const canEditFlights = !isEditLocked && !hasBookedFlights && !isPermanentlyLocked
 
   return (
     <Tabs defaultValue="overview" className="w-full">
@@ -186,6 +219,8 @@ export function TripDetailsTabs({
           daysUntilLock={daysUntilLock}
           hasBookedFlights={hasBookedFlights}
           lockDate={lockDate}
+          isPermanentlyLocked={isPermanentlyLocked}
+          bookingStatus={bookingStatus}
         />
       </TabsContent>
 
@@ -203,6 +238,8 @@ export function TripDetailsTabs({
           isEditLocked={isEditLocked}
           daysUntilLock={daysUntilLock}
           lockDate={lockDate}
+          isPermanentlyLocked={isPermanentlyLocked}
+          bookingStatus={bookingStatus}
         />
       </TabsContent>
 

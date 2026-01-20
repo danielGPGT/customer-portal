@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
 import { useToast } from '@/hooks/use-toast'
+import { toast as sonnerToast } from 'sonner'
 import { useRouter, usePathname } from 'next/navigation'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter, SheetDescription } from '@/components/ui/sheet'
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter, DrawerDescription } from '@/components/ui/drawer'
@@ -14,15 +15,63 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from '@/components/ui/form'
-import { Loader2, Save } from 'lucide-react'
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Loader2, Save, Info, AlertCircle, FileText, Mail, Phone as PhoneIcon, MapPin } from 'lucide-react'
 import { useMediaQuery } from '@/hooks/use-media-query'
+
+// Phone number formatting utility
+const formatPhoneNumber = (value: string): string => {
+  if (!value) return ''
+  
+  // Remove all non-digit characters except + at the start
+  const cleaned = value.replace(/[^\d+]/g, '')
+  
+  // If it starts with +, keep it
+  if (cleaned.startsWith('+')) {
+    const digits = cleaned.slice(1).replace(/\D/g, '')
+    return '+' + digits
+  }
+  
+  // Otherwise, just return digits
+  return cleaned.replace(/\D/g, '')
+}
+
+// Phone validation - allows international format (more flexible)
+// Accepts: +44 20 1234 5678, 02012345678, +1-555-123-4567, etc.
+const phoneRegex = /^\+?[\d\s\-()]{7,20}$/
 
 const travelerSchema = z.object({
   first_name: z.string().min(1, 'First name is required').max(100, 'First name is too long'),
   last_name: z.string().min(1, 'Last name is required').max(100, 'Last name is too long'),
   email: z.string().email('Invalid email address').optional().or(z.literal('')),
-  phone: z.string().max(50, 'Phone number is too long').optional().or(z.literal('')),
-  date_of_birth: z.string().optional().or(z.literal('')),
+  phone: z.string()
+    .max(50, 'Phone number is too long')
+    .refine((val) => {
+      if (!val || val.trim() === '') return true
+      const cleaned = formatPhoneNumber(val)
+      // Must have at least 7 digits (minimum for a valid phone number)
+      return cleaned.length >= 7 && cleaned.length <= 20
+    }, {
+      message: 'Please enter a valid phone number with at least 7 digits (e.g., +44 20 1234 5678)'
+    })
+    .optional()
+    .or(z.literal('')),
+  date_of_birth: z.string()
+    .refine((val) => !val || /^\d{4}-\d{2}-\d{2}$/.test(val), {
+      message: 'Please enter a valid date'
+    })
+    .refine((val) => {
+      if (!val) return true
+      const date = new Date(val)
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      return date <= today
+    }, {
+      message: 'Date of birth cannot be in the future'
+    })
+    .optional()
+    .or(z.literal('')),
   address_line1: z.string().max(200, 'Address is too long').optional().or(z.literal('')),
   address_line2: z.string().max(200, 'Address is too long').optional().or(z.literal('')),
   city: z.string().max(100, 'City is too long').optional().or(z.literal('')),
@@ -116,28 +165,36 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
   }, [traveler, open, form])
 
   const onSubmit = async (data: TravelerFormData) => {
-    if (!traveler) return
+    if (!traveler) {
+      sonnerToast.error('No traveller selected', {
+        description: 'Please select a traveller to edit.',
+      })
+      return
+    }
 
     setIsLoading(true)
     const supabase = createClient()
 
     try {
+      // Format phone number before saving
+      const formattedPhone = data.phone ? formatPhoneNumber(data.phone) : null
+
       // Convert empty strings to null for optional fields
       const updateData: any = {
-        first_name: data.first_name,
-        last_name: data.last_name,
-        email: data.email || null,
-        phone: data.phone || null,
+        first_name: data.first_name.trim(),
+        last_name: data.last_name.trim(),
+        email: data.email?.trim() || null,
+        phone: formattedPhone || null,
         date_of_birth: data.date_of_birth || null,
-        address_line1: data.address_line1 || null,
-        address_line2: data.address_line2 || null,
-        city: data.city || null,
-        state: data.state || null,
-        postal_code: data.postal_code || null,
-        country: data.country || null,
-        dietary_restrictions: data.dietary_restrictions || null,
-        accessibility_needs: data.accessibility_needs || null,
-        special_requests: data.special_requests || null,
+        address_line1: data.address_line1?.trim() || null,
+        address_line2: data.address_line2?.trim() || null,
+        city: data.city?.trim() || null,
+        state: data.state?.trim() || null,
+        postal_code: data.postal_code?.trim() || null,
+        country: data.country?.trim() || null,
+        dietary_restrictions: data.dietary_restrictions?.trim() || null,
+        accessibility_needs: data.accessibility_needs?.trim() || null,
+        special_requests: data.special_requests?.trim() || null,
         updated_at: new Date().toISOString(),
       }
 
@@ -148,7 +205,40 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         .select()
         .single()
 
-      if (error) throw error
+      if (error) {
+        // Handle Supabase errors
+        let errorMessage = 'Failed to update traveller information'
+        
+        try {
+          // Try to parse error message if it's JSON
+          if (typeof error.message === 'string') {
+            const parsedError = JSON.parse(error.message)
+            errorMessage = parsedError.message || parsedError.error || error.message
+          } else {
+            errorMessage = error.message || errorMessage
+          }
+        } catch (parseError) {
+          // If parsing fails, use the error message directly
+          errorMessage = error.message || errorMessage
+        }
+
+        // Check for specific error types
+        if (error.code === '23505') {
+          errorMessage = 'A traveller with this information already exists'
+        } else if (error.code === '23503') {
+          errorMessage = 'Invalid reference. Please refresh the page and try again.'
+        } else if (error.code === 'PGRST116') {
+          errorMessage = 'No rows found. The traveller may have been deleted.'
+        }
+
+        throw new Error(errorMessage)
+      }
+
+      // Success notifications
+      sonnerToast.success('Traveller updated successfully', {
+        description: `${data.first_name} ${data.last_name}'s information has been saved.`,
+        duration: 3000,
+      })
 
       toast({
         title: 'Traveller updated! ✅',
@@ -159,16 +249,50 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
       // Pass updated traveler data to onSuccess callback for optimistic update
       onSuccess?.(updatedData as Traveler)
       
-      // Enterprise-level: Force server-side refresh to bypass all caches
+      // Force server-side refresh to bypass all caches
       setTimeout(() => {
         router.refresh()
       }, 100)
     } catch (error: any) {
       console.error('Error updating traveler:', error)
+      
+      // Extract error message safely
+      let errorMessage = 'Failed to update traveller information'
+      
+      if (error instanceof Error) {
+        errorMessage = error.message
+      } else if (typeof error === 'string') {
+        errorMessage = error
+      } else if (error && typeof error === 'object') {
+        try {
+          // Try to extract message from error object
+          if ('message' in error) {
+            errorMessage = String(error.message)
+          } else if ('error' in error) {
+            errorMessage = String(error.error)
+          } else {
+            // Try to stringify if it's a complex object
+            const stringified = JSON.stringify(error)
+            if (stringified !== '{}') {
+              errorMessage = stringified
+            }
+          }
+        } catch (jsonError) {
+          // If JSON stringify fails, use default message
+          errorMessage = 'An unexpected error occurred. Please try again.'
+        }
+      }
+
+      // Show error notifications
+      sonnerToast.error('Failed to update traveller', {
+        description: errorMessage,
+        duration: 5000,
+      })
+
       toast({
         variant: 'destructive',
-        title: 'Error',
-        description: error.message || 'Failed to update traveller information',
+        title: 'Error updating traveller',
+        description: errorMessage,
       })
     } finally {
       setIsLoading(false)
@@ -180,15 +304,45 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
 
   const FormFields = () => (
     <div className="space-y-4">
+          {/* Important Notice for Lead Traveler */}
+          {isLead && (
+            <Alert className="border-blue-200 bg-blue-50">
+              <FileText className="h-4 w-4 text-blue-600" />
+              <AlertDescription className="text-blue-900">
+                <strong>Lead Traveller Information:</strong> This information is used for sending final travel documents, and important trip communications. Please ensure all details are accurate and up to date.
+              </AlertDescription>
+            </Alert>
+          )}
+
           {/* Personal Information */}
           <div className="space-y-4">
             {!canEditContactFields && (
-              <p className="text-[11px] sm:text-xs text-muted-foreground">
-                Because flights have already been booked for this trip, we can no longer change core contact details
-                (name, email, phone, and date of birth). Please contact support if any of these are incorrect.
-              </p>
+              <Alert variant="destructive" className="border-amber-200 bg-amber-50">
+                <AlertCircle className="h-4 w-4 text-amber-600" />
+                <AlertDescription className="text-amber-900">
+                  Because flights have already been booked for this trip, we can no longer change core contact details
+                  (name, email, phone, and date of birth). Please contact support if any of these are incorrect.
+                </AlertDescription>
+              </Alert>
             )}
-            <h3 className="text-sm font-semibold text-foreground">Personal Information</h3>
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-foreground">Personal Information</h3>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p className="font-medium mb-1">Personal Information</p>
+                    <p className="text-xs">
+                      {isLead 
+                        ? 'This information is used for final documents and trip communications. Ensure accuracy.'
+                        : 'Keep this information up to date for trip coordination and emergency contacts.'}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField
@@ -196,7 +350,23 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                 name="first_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>First Name *</FormLabel>
+                    <div className="flex items-center gap-1.5">
+                      <FormLabel>First Name *</FormLabel>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent side="right" className="max-w-xs">
+                            <p className="text-xs">
+                              {isLead 
+                                ? 'Must match passport/ID. Used on all travel documents and confirmations.'
+                                : 'Used for trip coordination and identification.'}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
                     <FormControl>
                       <Input {...field} placeholder="John" disabled={!canEditContactFields} />
                     </FormControl>
@@ -210,7 +380,23 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                 name="last_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Last Name *</FormLabel>
+                    <div className="flex items-center gap-1.5">
+                      <FormLabel>Last Name *</FormLabel>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent side="right" className="max-w-xs">
+                            <p className="text-xs">
+                              {isLead 
+                                ? 'Must match passport/ID. Used on all travel documents and confirmations.'
+                                : 'Used for trip coordination and identification.'}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
                     <FormControl>
                       <Input {...field} placeholder="Doe" disabled={!canEditContactFields} />
                     </FormControl>
@@ -226,10 +412,27 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <div className="flex items-center gap-1.5">
+                      <FormLabel>Email</FormLabel>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Mail className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent side="right" className="max-w-xs">
+                            <p className="text-xs">
+                              {isLead 
+                                ? 'We send final travel documents, confirmations, and important trip updates to this email address.'
+                                : 'Used for trip communications and updates.'}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
                     <FormControl>
                       <Input type="email" {...field} placeholder="john.doe@example.com" disabled={!canEditContactFields} />
                     </FormControl>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -240,10 +443,36 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone</FormLabel>
+                    <div className="flex items-center gap-1.5">
+                      <FormLabel>Phone</FormLabel>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <PhoneIcon className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent side="right" className="max-w-xs">
+                            <p className="text-xs">
+                              {isLead 
+                                ? 'Used for urgent trip communications and emergency contact. Include country code (e.g., +44).'
+                                : 'Used for trip coordination and emergency contact.'}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
                     <FormControl>
-                      <Input type="tel" {...field} placeholder="+44 20 1234 5678" disabled={!canEditContactFields} />
+                      <Input 
+                        type="tel" 
+                        {...field} 
+                        placeholder="+44 20 1234 5678" 
+                        disabled={!canEditContactFields}
+                        onChange={(e) => {
+                          const formatted = formatPhoneNumber(e.target.value)
+                          field.onChange(formatted)
+                        }}
+                      />
                     </FormControl>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -259,6 +488,9 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                   <FormControl>
                     <Input type="date" {...field} disabled={!canEditContactFields} />
                   </FormControl>
+                  <FormDescription className="text-xs">
+                    Required for some airlines and travel documentation
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -267,7 +499,23 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
 
           {/* Address */}
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-foreground">Address</h3>
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-foreground">Address</h3>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <MapPin className="h-4 w-4 text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p className="text-xs">
+                      {isLead 
+                        ? 'Used for mailing final travel documents and important correspondence if needed.'
+                        : 'Used for trip coordination and emergency contact purposes.'}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
             
             <FormField
               control={form.control}
@@ -359,6 +607,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
           {/* Special Requirements */}
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-foreground">Special Requirements</h3>
+
             
             <FormField
               control={form.control}
@@ -373,6 +622,9 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                       rows={3}
                     />
                   </FormControl>
+                  <FormDescription className="text-xs">
+                    We&apos;ll share this with hotels and restaurants to accommodate your dietary needs
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -391,6 +643,9 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                       rows={3}
                     />
                   </FormControl>
+                  <FormDescription className="text-xs">
+                    Important for ensuring appropriate accommodations and transportation arrangements
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -409,6 +664,9 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                       rows={4}
                     />
                   </FormControl>
+                  <FormDescription className="text-xs">
+                    Any additional requests or information that would help us provide the best service
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -419,7 +677,23 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
 
   const FormContent = ({ isMobile = false }: { isMobile?: boolean }) => (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="h-full flex flex-col min-h-0" style={{ minHeight: 0 }}>
+      <form 
+        onSubmit={form.handleSubmit(onSubmit, (errors) => {
+          // Handle form validation errors
+          const errorFields = Object.keys(errors)
+          if (errorFields.length > 0) {
+            const firstError = Object.values(errors)[0]
+            const errorMessage = firstError?.message || 'Please fix the errors in the form'
+            
+            sonnerToast.error('Validation error', {
+              description: errorMessage,
+              duration: 4000,
+            })
+          }
+        })} 
+        className="h-full flex flex-col min-h-0" 
+        style={{ minHeight: 0 }}
+      >
         <div 
           className={`flex-1 overflow-y-scroll overflow-x-hidden overscroll-contain ${isMobile ? 'pb-4' : ''}`} 
           style={{ 
@@ -481,7 +755,9 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                 )}
               </SheetTitle>
               <SheetDescription>
-                Update traveller information. Changes will be saved immediately.
+                {isLead 
+                  ? 'Update traveller information. Lead traveller details are used for final documents and trip communications. Changes will be saved immediately.'
+                  : 'Update traveller information. Changes will be saved immediately.'}
               </SheetDescription>
             </SheetHeader>
             <div className="flex-1 min-h-0 overflow-hidden px-6 pt-6 pb-4">
@@ -507,7 +783,9 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
               )}
             </DrawerTitle>
             <DrawerDescription>
-              Update traveller information. Changes will be saved immediately.
+              {isLead 
+                ? 'Update traveller information. Lead traveller details are used for final documents and trip communications. Changes will be saved immediately.'
+                : 'Update traveller information. Changes will be saved immediately.'}
             </DrawerDescription>
           </DrawerHeader>
           <div className="flex-1 min-h-0 px-4 pt-4 flex flex-col overflow-hidden">

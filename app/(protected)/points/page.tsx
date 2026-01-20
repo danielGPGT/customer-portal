@@ -204,13 +204,26 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
       console.log(`[Points Page] Transactions pagination RPC: ${(performance.now() - start).toFixed(2)}ms`)
       if (transactionsError) {
         console.warn('[Points Page] Transactions RPC failed, using fallback:', transactionsError)
-        // Fallback to regular query
+        // Fallback to regular query - sort client-side to ensure correct order
         const fallbackResult = await supabase
           .from('loyalty_transactions')
           .select('id, transaction_type, points, balance_after, source_type, source_reference_id, description, purchase_amount, purchase_currency, created_at')
           .eq('client_id', client.id)
           .order('created_at', { ascending: false })
           .range((currentPage - 1) * pageSize, currentPage * pageSize - 1)
+        
+        // Sort by created_at DESC, then id DESC to ensure deterministic ordering
+        if (fallbackResult.data) {
+          fallbackResult.data.sort((a, b) => {
+            const dateA = new Date(a.created_at).getTime()
+            const dateB = new Date(b.created_at).getTime()
+            if (dateA !== dateB) {
+              return dateB - dateA // Descending by date
+            }
+            // If dates are equal, sort by id (descending to match RPC function)
+            return a.id > b.id ? -1 : a.id < b.id ? 1 : 0
+          })
+        }
         return fallbackResult
       }
       return { data: transactionsData || [], error: null }
@@ -233,10 +246,23 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
       const start = performance.now()
       const result = await supabase
         .from('loyalty_transactions')
-        .select('points, transaction_type, created_at')
+        .select('points, transaction_type, created_at, id')
         .eq('client_id', client.id)
         .gte('created_at', sixMonthsAgo.toISOString())
         .order('created_at', { ascending: false })
+      
+      // Sort client-side to ensure deterministic ordering when timestamps are identical
+      if (result.data) {
+        result.data.sort((a, b) => {
+          const dateA = new Date(a.created_at).getTime()
+          const dateB = new Date(b.created_at).getTime()
+          if (dateA !== dateB) {
+            return dateB - dateA // Descending by date
+          }
+          // If dates are equal, sort by id (descending)
+          return a.id > b.id ? -1 : a.id < b.id ? 1 : 0
+        })
+      }
       console.log(`[Points Page] Recent transactions (6 months) query: ${(performance.now() - start).toFixed(2)}ms`)
       return result
     })(),

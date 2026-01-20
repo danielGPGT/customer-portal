@@ -167,16 +167,20 @@ export function LoyaltyTransactionsTable({
                   <TableCell className="text-right">
                     <div className={cn(
                       "font-semibold flex items-center justify-end gap-1",
-                      transaction.transaction_type === 'earn' || transaction.transaction_type === 'refund'
+                      // For refunds, check actual sign of points value
+                      (transaction.transaction_type === 'earn' || 
+                       (transaction.transaction_type === 'refund' && transaction.points > 0))
                         ? "text-green-600 dark:text-green-400"
                         : "text-red-600 dark:text-red-400"
                     )}>
-                      {transaction.transaction_type === 'earn' || transaction.transaction_type === 'refund' ? (
+                      {(transaction.transaction_type === 'earn' || 
+                        (transaction.transaction_type === 'refund' && transaction.points > 0)) ? (
                         <ArrowUp className="h-3 w-3" />
                       ) : (
                         <ArrowDown className="h-3 w-3" />
                       )}
-                      {transaction.transaction_type === 'earn' || transaction.transaction_type === 'refund' ? '+' : '-'}
+                      {(transaction.transaction_type === 'earn' || 
+                        (transaction.transaction_type === 'refund' && transaction.points > 0)) ? '+' : '-'}
                       {Math.abs(transaction.points).toLocaleString()}
                     </div>
                   </TableCell>
@@ -241,16 +245,20 @@ export function LoyaltyTransactionsTable({
                       <div className="flex items-center justify-between gap-4 pt-1">
                         <div className={cn(
                           "font-semibold flex items-center gap-1 text-sm",
-                          transaction.transaction_type === 'earn' || transaction.transaction_type === 'refund'
+                          // For refunds, check actual sign of points value
+                          (transaction.transaction_type === 'earn' || 
+                           (transaction.transaction_type === 'refund' && transaction.points > 0))
                             ? "text-green-600 dark:text-green-400"
                             : "text-red-600 dark:text-red-400"
                         )}>
-                          {transaction.transaction_type === 'earn' || transaction.transaction_type === 'refund' ? (
+                          {(transaction.transaction_type === 'earn' || 
+                            (transaction.transaction_type === 'refund' && transaction.points > 0)) ? (
                             <ArrowUp className="h-3 w-3" />
                           ) : (
                             <ArrowDown className="h-3 w-3" />
                           )}
-                          {transaction.transaction_type === 'earn' || transaction.transaction_type === 'refund' ? '+' : '-'}
+                          {(transaction.transaction_type === 'earn' || 
+                            (transaction.transaction_type === 'refund' && transaction.points > 0)) ? '+' : '-'}
                           {Math.abs(transaction.points).toLocaleString()} pts
                         </div>
                         <div className="text-right">

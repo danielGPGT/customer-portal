@@ -39,7 +39,7 @@ BEGIN
         lt.created_at
     FROM loyalty_transactions lt
     WHERE lt.client_id = p_client_id
-    ORDER BY lt.created_at DESC
+    ORDER BY lt.created_at DESC, lt.id DESC
     LIMIT p_page_size
     OFFSET v_offset;
 END;

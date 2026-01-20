@@ -102,6 +102,19 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     .ilike('description', `%${query}%`)
     .order('created_at', { ascending: false })
     .limit(10)
+  
+  // Sort client-side to ensure deterministic ordering when timestamps are identical
+  if (transactions) {
+    transactions.sort((a, b) => {
+      const dateA = new Date(a.created_at).getTime()
+      const dateB = new Date(b.created_at).getTime()
+      if (dateA !== dateB) {
+        return dateB - dateA // Descending by date
+      }
+      // If dates are equal, sort by id (descending)
+      return a.id > b.id ? -1 : a.id < b.id ? 1 : 0
+    })
+  }
 
   const bookingResults = uniqueBookings.map((booking) => {
     const event = booking.events as any

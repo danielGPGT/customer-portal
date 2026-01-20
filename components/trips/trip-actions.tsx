@@ -112,7 +112,7 @@ Thank you`
           <span className="text-xs sm:text-sm">Contact Support</span>
         </Button>
 
-        {/* Future feature - View Invoice */}
+        {/* Future feature - View Invoice 
         <Button
           variant="outline"
           className="w-full justify-start h-9 sm:h-10"
@@ -122,7 +122,7 @@ Thank you`
           <FileText className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
           <span className="text-xs sm:text-sm">View Invoice</span>
           <span className="ml-auto text-[10px] sm:text-xs text-muted-foreground">Coming soon</span>
-        </Button>
+        </Button>*/}
       </CardContent>
     </Card>
   )
