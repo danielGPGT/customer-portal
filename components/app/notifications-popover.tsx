@@ -210,65 +210,63 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
             <div className="p-4 text-center text-sm text-muted-foreground">
               Loading notifications...
             </div>
-          ) : (() => {
-            const unreadNotifications = notifications.filter((n) => !n.read)
-            
-            if (unreadNotifications.length === 0) {
-              return (
-                <div className="p-8 text-center">
-                  <Bell className="h-8 w-8 mx-auto mb-2 text-muted-foreground opacity-50" />
-                  <p className="text-sm text-muted-foreground">
-                    No notifications
-                  </p>
-                </div>
-              )
-            }
-            
-            return (
-              <div className="divide-y">
-                {unreadNotifications.map((notification) => {
-                  const url = getNotificationUrl(notification)
-                  return (
-                    <Link
-                      key={notification.id}
-                      href={url}
-                      prefetch={true}
-                      onClick={() => {
-                        if (!notification.read) {
-                          markAsRead(notification.id)
-                        }
-                      }}
-                      className="block p-4 hover:bg-accent transition-colors"
-                    >
-                      <div className="flex items-start gap-3">
-                        <span className="text-lg shrink-0">
-                          {getNotificationIcon(notification.notification_type)}
-                        </span>
-                        <div className="flex-1 min-w-0 space-y-1">
-                          <div className="flex items-start justify-between gap-2">
-                            <p className="text-sm font-medium text-foreground">
-                              {notification.title}
-                            </p>
-                            <div className="h-2 w-2 rounded-full bg-primary shrink-0 mt-1.5" />
-                          </div>
-                          <p className="text-xs text-muted-foreground line-clamp-2">
-                            {notification.message}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {formatDistanceToNow(new Date(notification.created_at), {
-                              addSuffix: true,
-                            })}
-                          </p>
-                        </div>
+          ) : notifications.length === 0 ? (
+            <div className="p-8 text-center">
+              <Bell className="h-8 w-8 mx-auto mb-2 text-muted-foreground opacity-50" />
+              <p className="text-sm text-muted-foreground">
+                No notifications yet
+              </p>
+            </div>
+          ) : (
+            <div className="divide-y">
+              {notifications.map((notification) => {
+                const url = getNotificationUrl(notification)
+                return (
+                <Link
+                  key={notification.id}
+                    href={url}
+                    prefetch={true}
+                  onClick={() => {
+                    if (!notification.read) {
+                      markAsRead(notification.id)
+                    }
+                  }}
+                  className="block p-4 hover:bg-accent transition-colors"
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="text-lg shrink-0">
+                      {getNotificationIcon(notification.notification_type)}
+                    </span>
+                    <div className="flex-1 min-w-0 space-y-1">
+                      <div className="flex items-start justify-between gap-2">
+                        <p
+                          className={`text-sm font-medium ${
+                            !notification.read ? 'text-foreground' : 'text-muted-foreground'
+                          }`}
+                        >
+                          {notification.title}
+                        </p>
+                        {!notification.read && (
+                          <div className="h-2 w-2 rounded-full bg-primary shrink-0 mt-1.5" />
+                        )}
                       </div>
-                    </Link>
-                  )
-                })}
-              </div>
-            )
-          })()}
+                      <p className="text-xs text-muted-foreground line-clamp-2">
+                        {notification.message}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {formatDistanceToNow(new Date(notification.created_at), {
+                          addSuffix: true,
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+                )
+              })}
+            </div>
+          )}
         </ScrollArea>
-        {unreadCount > 0 && (
+        {notifications.length > 0 && (
           <div className="border-t p-2">
             <Button
               variant="ghost"
