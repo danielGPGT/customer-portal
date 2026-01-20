@@ -138,44 +138,8 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
   }
 
   const getNotificationUrl = (notification: Notification): string => {
-    // If action_url is provided, use it
-    if (notification.action_url) {
-      return notification.action_url
-    }
-
-    // Otherwise, route based on notification type and metadata
-    const metadata = notification.metadata || {}
-    
-    switch (notification.notification_type) {
-      case 'points_earned':
-      case 'points_spent':
-        // If there's a booking_id in metadata, link to that booking's points section
-        if (metadata.booking_id) {
-          return `/trips/${metadata.booking_id}?tab=points`
-        }
-        return '/points'
-      
-      case 'referral_signup':
-      case 'referral_completed':
-        return '/refer'
-      
-      case 'booking_confirmed':
-      case 'booking_cancelled':
-        if (metadata.booking_id) {
-          return `/trips/${metadata.booking_id}`
-        }
-        return '/trips'
-      
-      case 'promotion':
-        if (metadata.url) {
-          return metadata.url
-        }
-        return '/notifications'
-      
-      case 'system':
-      default:
-        return '/notifications'
-    }
+    // Always navigate to notifications page
+    return '/notifications'
   }
 
   // Render simple button during SSR to avoid hydration mismatch

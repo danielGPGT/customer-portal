@@ -6,7 +6,6 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ErrorSuppression } from "@/components/error-suppression";
 import { ErrorBoundary } from "@/app/error-boundary";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -64,7 +63,6 @@ export default function RootLayout({
               <ErrorSuppression />
               {children}
               <Toaster />
-              <SpeedInsights />
             </ErrorBoundary>
           </ThemeProvider>
         </body>
