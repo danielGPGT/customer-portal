@@ -210,8 +210,32 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
               returnAirlineCode: '',
             })
             
-            // Try to find airline if we have a code
-            if (segment.marketingAirlineCode) {
+            // Try to find airline if we have airlineId or code
+            if (segment.airlineId) {
+              // Use airlineId directly
+              form.setValue('outboundAirlineId', segment.airlineId)
+              try {
+                const { data: airlineData } = await supabase
+                  .from('airlines')
+                  .select('id, name, airline_codes (iata_code, icao_code, is_primary)')
+                  .eq('id', segment.airlineId)
+                  .single()
+                
+                if (airlineData) {
+                  setSelectedAirlines(prev => ({ 
+                    ...prev, 
+                    'outbound-airline': {
+                      id: airlineData.id,
+                      name: airlineData.name,
+                      codes: airlineData.airline_codes || []
+                    }
+                  }))
+                }
+              } catch (error) {
+                console.error('Error fetching airline:', error)
+              }
+            } else if (segment.marketingAirlineCode) {
+              // Fallback: search by code
               try {
                 const airlineResp = await fetch(`/api/airlines/search?q=${encodeURIComponent(segment.marketingAirlineCode)}&limit=1`)
                 if (airlineResp.ok) {
@@ -247,8 +271,32 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
               returnAirlineCode: segment.marketingAirlineCode || '',
             })
             
-            // Try to find airline if we have a code
-            if (segment.marketingAirlineCode) {
+            // Try to find airline if we have airlineId or code
+            if (segment.airlineId) {
+              // Use airlineId directly
+              form.setValue('returnAirlineId', segment.airlineId)
+              try {
+                const { data: airlineData } = await supabase
+                  .from('airlines')
+                  .select('id, name, airline_codes (iata_code, icao_code, is_primary)')
+                  .eq('id', segment.airlineId)
+                  .single()
+                
+                if (airlineData) {
+                  setSelectedAirlines(prev => ({ 
+                    ...prev, 
+                    'return-airline': {
+                      id: airlineData.id,
+                      name: airlineData.name,
+                      codes: airlineData.airline_codes || []
+                    }
+                  }))
+                }
+              } catch (error) {
+                console.error('Error fetching airline:', error)
+              }
+            } else if (segment.marketingAirlineCode) {
+              // Fallback: search by code
               try {
                 const airlineResp = await fetch(`/api/airlines/search?q=${encodeURIComponent(segment.marketingAirlineCode)}&limit=1`)
                 if (airlineResp.ok) {
@@ -316,19 +364,42 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
         outboundDepartureDateTime: formatDateTimeForInput(outboundSegment?.departureDateTime || details.departureDate),
         outboundArrivalDateTime: formatDateTimeForInput(outboundSegment?.arrivalDateTime),
         outboundFlightNumber: outboundSegment?.flightNumber || '',
-        outboundAirlineId: '', // Will be set if we find matching airline
+        outboundAirlineId: outboundSegment?.airlineId || '', // Use airlineId from segment if available
         outboundAirlineCode: outboundSegment?.marketingAirlineCode || flight.outbound_airline_code || '',
         returnOrigin: returnSegment?.departureCode || '',
         returnDestination: returnSegment?.arrivalCode || '',
         returnDepartureDateTime: formatDateTimeForInput(returnSegment?.departureDateTime || details.returnDate),
         returnArrivalDateTime: formatDateTimeForInput(returnSegment?.arrivalDateTime),
         returnFlightNumber: returnSegment?.flightNumber || '',
-        returnAirlineId: '', // Will be set if we find matching airline
+        returnAirlineId: returnSegment?.airlineId || '', // Use airlineId from segment if available
         returnAirlineCode: returnSegment?.marketingAirlineCode || flight.inbound_airline_code || '',
       })
 
-      // Try to find and set airline IDs if we have airline codes
-      if (outboundSegment?.marketingAirlineCode || flight.outbound_airline_code) {
+      // Try to find and set airline IDs if we have airlineId or codes
+      if (outboundSegment?.airlineId) {
+        // Use airlineId directly
+        try {
+          const { data: airlineData } = await supabase
+            .from('airlines')
+            .select('id, name, logo_url, airline_codes (iata_code, icao_code, is_primary)')
+            .eq('id', outboundSegment.airlineId)
+            .single()
+          
+          if (airlineData) {
+            setSelectedAirlines(prev => ({ 
+              ...prev, 
+              'outbound-airline': {
+                id: airlineData.id,
+                name: airlineData.name,
+                codes: airlineData.airline_codes || []
+              }
+            }))
+          }
+        } catch (error) {
+          console.error('Error fetching airline:', error)
+        }
+      } else if (outboundSegment?.marketingAirlineCode || flight.outbound_airline_code) {
+        // Fallback: search by code
         const airlineCode = outboundSegment?.marketingAirlineCode || flight.outbound_airline_code
         try {
           const airlineResp = await fetch(`/api/airlines/search?q=${encodeURIComponent(airlineCode || '')}&limit=1`)
@@ -347,7 +418,30 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
         }
       }
 
-      if (returnSegment?.marketingAirlineCode || flight.inbound_airline_code) {
+      if (returnSegment?.airlineId) {
+        // Use airlineId directly
+        try {
+          const { data: airlineData } = await supabase
+            .from('airlines')
+            .select('id, name, logo_url, airline_codes (iata_code, icao_code, is_primary)')
+            .eq('id', returnSegment.airlineId)
+            .single()
+          
+          if (airlineData) {
+            setSelectedAirlines(prev => ({ 
+              ...prev, 
+              'return-airline': {
+                id: airlineData.id,
+                name: airlineData.name,
+                codes: airlineData.airline_codes || []
+              }
+            }))
+          }
+        } catch (error) {
+          console.error('Error fetching airline:', error)
+        }
+      } else if (returnSegment?.marketingAirlineCode || flight.inbound_airline_code) {
+        // Fallback: search by code
         const airlineCode = returnSegment?.marketingAirlineCode || flight.inbound_airline_code
         try {
           const airlineResp = await fetch(`/api/airlines/search?q=${encodeURIComponent(airlineCode || '')}&limit=1`)
@@ -578,6 +672,34 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
         const outboundDestData = await outboundDestResp.json()
         const outboundDestAirport = outboundDestData.data?.find((a: Airport) => a.iata_code === data.outboundDestination)
 
+        // Fetch airline details if airline_id is provided
+        let outboundAirlineName = ''
+        let outboundAirlineLogo = null
+        if (data.outboundAirlineId) {
+          // First check if we have it in selected airlines
+          const selectedAirline = selectedAirlines['outbound-airline']
+          if (selectedAirline && selectedAirline.id === data.outboundAirlineId) {
+            outboundAirlineName = selectedAirline.name
+          } else {
+            // Fetch from database
+            try {
+              const supabase = createClient()
+              const { data: airlineData } = await supabase
+                .from('airlines')
+                .select('id, name, logo_url')
+                .eq('id', data.outboundAirlineId)
+                .single()
+              
+              if (airlineData) {
+                outboundAirlineName = airlineData.name
+                outboundAirlineLogo = airlineData.logo_url
+              }
+            } catch (error) {
+              console.error('Error fetching airline:', error)
+            }
+          }
+        }
+
         outboundSegment = {
           departure: outboundOriginAirport?.city || outboundOriginAirport?.name || data.outboundOrigin,
           arrival: outboundDestAirport?.city || outboundDestAirport?.name || data.outboundDestination,
@@ -586,15 +708,16 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
           departureDateTime: data.outboundDepartureDateTime,
           arrivalDateTime: data.outboundArrivalDateTime,
           flightNumber: data.outboundFlightNumber,
-          marketingAirline: '',
+          marketingAirline: outboundAirlineName,
           marketingAirlineCode: data.outboundAirlineCode || '',
+          airlineId: data.outboundAirlineId || null,
+          airlineLogo: outboundAirlineLogo || null,
         }
       }
 
       // Build return segment only for return-only or round-trip
       let returnSegment = null
       if ((data.tripType === 'return-only' || data.tripType === 'round-trip') && data.returnOrigin && data.returnDestination) {
-        // Fetch return airport details
         // Fetch return airport details
         const returnOriginResp = await fetch(`/api/airports/search?q=${encodeURIComponent(data.returnOrigin || '')}&limit=1`)
         const returnOriginData = await returnOriginResp.json()
@@ -604,6 +727,34 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
         const returnDestData = await returnDestResp.json()
         const returnDestAirport = returnDestData.data?.find((a: Airport) => a.iata_code === data.returnDestination)
 
+        // Fetch airline details if airline_id is provided
+        let returnAirlineName = ''
+        let returnAirlineLogo = null
+        if (data.returnAirlineId) {
+          // First check if we have it in selected airlines
+          const selectedAirline = selectedAirlines['return-airline']
+          if (selectedAirline && selectedAirline.id === data.returnAirlineId) {
+            returnAirlineName = selectedAirline.name
+          } else {
+            // Fetch from database
+            try {
+              const supabase = createClient()
+              const { data: airlineData } = await supabase
+                .from('airlines')
+                .select('id, name, logo_url')
+                .eq('id', data.returnAirlineId)
+                .single()
+              
+              if (airlineData) {
+                returnAirlineName = airlineData.name
+                returnAirlineLogo = airlineData.logo_url
+              }
+            } catch (error) {
+              console.error('Error fetching airline:', error)
+            }
+          }
+        }
+
         returnSegment = {
           departure: returnOriginAirport?.city || returnOriginAirport?.name || data.returnOrigin,
           arrival: returnDestAirport?.city || returnDestAirport?.name || data.returnDestination,
@@ -612,8 +763,10 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
           departureDateTime: data.returnDepartureDateTime,
           arrivalDateTime: data.returnArrivalDateTime,
           flightNumber: data.returnFlightNumber,
-          marketingAirline: '',
+          marketingAirline: returnAirlineName,
           marketingAirlineCode: data.returnAirlineCode || '',
+          airlineId: data.returnAirlineId || null,
+          airlineLogo: returnAirlineLogo || null,
         }
       }
 
@@ -648,16 +801,27 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
 
             if (editingSegment.type === 'outbound') {
               updatedDetails.outboundSegments = [...(existingDetails.outboundSegments || [])]
+              // Preserve airline info if not provided
+              if (outboundSegment && !outboundSegment.marketingAirline && existingDetails.outboundSegments[editingSegment.index]) {
+                outboundSegment.marketingAirline = existingDetails.outboundSegments[editingSegment.index].marketingAirline || ''
+                outboundSegment.airlineId = existingDetails.outboundSegments[editingSegment.index].airlineId || null
+                outboundSegment.airlineLogo = existingDetails.outboundSegments[editingSegment.index].airlineLogo || null
+              }
               updatedDetails.outboundSegments[editingSegment.index] = outboundSegment
               updatedDetails.origin = data.outboundOrigin
               updatedDetails.destination = data.outboundDestination
               updatedDetails.departureDate = data.outboundDepartureDateTime
             } else {
               updatedDetails.returnSegments = [...(existingDetails.returnSegments || [])]
-              if (returnSegment) {
-                updatedDetails.returnSegments[editingSegment.index] = returnSegment
-              } else {
-                updatedDetails.returnSegments[editingSegment.index] = outboundSegment
+              const segmentToUse = returnSegment || outboundSegment
+              if (segmentToUse) {
+                // Preserve airline info if not provided
+                if (!segmentToUse.marketingAirline && existingDetails.returnSegments[editingSegment.index]) {
+                  segmentToUse.marketingAirline = existingDetails.returnSegments[editingSegment.index].marketingAirline || ''
+                  segmentToUse.airlineId = existingDetails.returnSegments[editingSegment.index].airlineId || null
+                  segmentToUse.airlineLogo = existingDetails.returnSegments[editingSegment.index].airlineLogo || null
+                }
+                updatedDetails.returnSegments[editingSegment.index] = segmentToUse
               }
               updatedDetails.returnDate = data.returnDepartureDateTime || null
             }

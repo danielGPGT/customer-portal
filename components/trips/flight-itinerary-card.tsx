@@ -2,7 +2,8 @@
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Pencil, Plane } from 'lucide-react'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import { Pencil, Plane, Trash2 } from 'lucide-react'
 import { format } from 'date-fns'
 import { createClient } from '@/lib/supabase/client'
 import { useEffect, useState } from 'react'
@@ -23,6 +24,8 @@ interface FlightSegment {
   flightNumber: string
   marketingAirline: string
   marketingAirlineCode: string
+  airlineId?: string | null
+  airlineLogo?: string | null
 }
 
 interface FlightItineraryCardProps {
@@ -41,16 +44,26 @@ interface FlightItineraryCardProps {
    */
   label?: string
   onEditSegment?: (segmentType: 'outbound' | 'return', segmentIndex: number) => void
+  onDelete?: (flightId: string) => void | Promise<void>
+  canDelete?: boolean
 }
 
-export function FlightItineraryCard({ flightId, details, label = 'Your Flight', onEditSegment }: FlightItineraryCardProps) {
-  const [airports, setAirports] = useState<Record<string, Airport>>({})
+interface Airline {
+  id: string
+  name: string
+  logo_url?: string | null
+}
 
-  // Fetch airport details
+export function FlightItineraryCard({ flightId, details, label = 'Your Flight', onEditSegment, onDelete, canDelete = false }: FlightItineraryCardProps) {
+  const [airports, setAirports] = useState<Record<string, Airport>>({})
+  const [airlines, setAirlines] = useState<Record<string, Airline>>({})
+
+  // Fetch airport and airline details
   useEffect(() => {
-    const fetchAirports = async () => {
+    const fetchData = async () => {
       const supabase = createClient()
       const airportCodes = new Set<string>()
+      const airlineIds = new Set<string>()
       
       if (details.origin) airportCodes.add(details.origin)
       if (details.destination) airportCodes.add(details.destination)
@@ -58,30 +71,49 @@ export function FlightItineraryCard({ flightId, details, label = 'Your Flight', 
       details.outboundSegments?.forEach(seg => {
         if (seg.departureCode) airportCodes.add(seg.departureCode)
         if (seg.arrivalCode) airportCodes.add(seg.arrivalCode)
+        if (seg.airlineId) airlineIds.add(seg.airlineId)
       })
       
       details.returnSegments?.forEach(seg => {
         if (seg.departureCode) airportCodes.add(seg.departureCode)
         if (seg.arrivalCode) airportCodes.add(seg.arrivalCode)
+        if (seg.airlineId) airlineIds.add(seg.airlineId)
       })
 
-      if (airportCodes.size === 0) return
+      // Fetch airports
+      if (airportCodes.size > 0) {
+        const { data } = await supabase
+          .from('airports')
+          .select('*')
+          .in('iata_code', Array.from(airportCodes))
 
-      const { data } = await supabase
-        .from('airports')
-        .select('*')
-        .in('iata_code', Array.from(airportCodes))
+        if (data) {
+          const airportMap: Record<string, Airport> = {}
+          data.forEach(airport => {
+            airportMap[airport.iata_code] = airport
+          })
+          setAirports(airportMap)
+        }
+      }
 
-      if (data) {
-        const airportMap: Record<string, Airport> = {}
-        data.forEach(airport => {
-          airportMap[airport.iata_code] = airport
-        })
-        setAirports(airportMap)
+      // Fetch airlines
+      if (airlineIds.size > 0) {
+        const { data: airlineData } = await supabase
+          .from('airlines')
+          .select('id, name, logo_url')
+          .in('id', Array.from(airlineIds))
+
+        if (airlineData) {
+          const airlineMap: Record<string, Airline> = {}
+          airlineData.forEach(airline => {
+            airlineMap[airline.id] = airline
+          })
+          setAirlines(airlineMap)
+        }
       }
     }
 
-    fetchAirports()
+    fetchData()
   }, [details])
 
   const formatTime = (dateTime: string | null | undefined) => {
@@ -176,14 +208,47 @@ export function FlightItineraryCard({ flightId, details, label = 'Your Flight', 
           )}
         </div>
 
-        {/* Flight Number Row */}
-        {flightNumber && (
-          <div className="pb-0 sm:pb-3">
+        {/* Airline and Flight Number Row */}
+        <div className="pb-0 sm:pb-3 flex items-center gap-2 sm:gap-3 flex-wrap">
+          {/* Airline Logo and Name */}
+          {(segment.airlineId && airlines[segment.airlineId]) || segment.airlineLogo || segment.marketingAirline ? (
+            <div className="flex items-center gap-2">
+              {/* Show logo from database if available */}
+              {segment.airlineId && airlines[segment.airlineId]?.logo_url && (
+                <img 
+                  src={airlines[segment.airlineId].logo_url || ''} 
+                  alt={airlines[segment.airlineId].name}
+                  className="h-6 w-16 object-contain"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none'
+                  }}
+                />
+              )}
+              {/* Show logo from segment if available (fallback) */}
+              {!segment.airlineId && segment.airlineLogo && (
+                <img 
+                  src={segment.airlineLogo} 
+                  alt={segment.marketingAirline || 'Airline'}
+                  className="h-6 w-6 sm:h-8 sm:w-8 object-contain"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none'
+                  }}
+                />
+              )}
+              <span className="text-xs sm:text-sm font-medium text-foreground">
+                {segment.airlineId && airlines[segment.airlineId] 
+                  ? airlines[segment.airlineId].name 
+                  : segment.marketingAirline || 'Airline'}
+              </span>
+            </div>
+          ) : null}
+          {/* Flight Number */}
+          {flightNumber && (
             <Badge variant="secondary" className="bg-base-800 text-white text-[10px] sm:text-xs font-mono px-1.5 sm:px-2 py-0.5 sm:py-1">
               {flightNumber}
             </Badge>
-          </div>
-        )}
+          )}
+        </div>
 
         <div className="flex gap-2 sm:gap-4 md:gap-6">
 
@@ -260,6 +325,41 @@ export function FlightItineraryCard({ flightId, details, label = 'Your Flight', 
         <Badge variant="outline" className="bg-secondary-50 dark:bg-secondary-950 border-secondary-200 dark:border-secondary-800">
           {label}
         </Badge>
+        {canDelete && onDelete && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-2 text-destructive hover:text-destructive hover:bg-destructive/10"
+              >
+                <Trash2 className="h-3.5 w-3.5 mr-1" />
+                <span className="text-xs">Remove</span>
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Remove Flight Information</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to remove this flight information? This action cannot be undone. You can always add it again later if needed.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={async () => {
+                    if (onDelete) {
+                      await onDelete(flightId)
+                    }
+                  }}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Remove Flight
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
       </div>
 
       <div className="space-y-4">

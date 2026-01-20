@@ -8,6 +8,10 @@ import { Plane, Calendar, FileText, CheckCircle2, Clock, Plus } from 'lucide-rea
 import { format } from 'date-fns'
 import { CustomerFlightForm } from '@/components/trips/customer-flight-form'
 import { FlightItineraryCard } from '@/components/trips/flight-itinerary-card'
+import { createClient } from '@/lib/supabase/client'
+import { useToast } from '@/hooks/use-toast'
+import { toast as sonnerToast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 interface Flight {
   id: string
@@ -34,10 +38,13 @@ interface FlightsSectionProps {
 }
 
 export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLocked, daysUntilLock, lockDate, isPermanentlyLocked, bookingStatus }: FlightsSectionProps & { lockDate: string | null }) {
+  const router = useRouter()
+  const { toast } = useToast()
   const [formOpen, setFormOpen] = useState(false)
   const [editingFlightId, setEditingFlightId] = useState<string | null>(null)
   const [editingSegment, setEditingSegment] = useState<{ type: 'outbound' | 'return', index: number } | null>(null)
   const [timeRemaining, setTimeRemaining] = useState<string | null>(null)
+  const [deletingFlightId, setDeletingFlightId] = useState<string | null>(null)
 
   // Live countdown timer until lockDate
   useEffect(() => {
@@ -81,6 +88,63 @@ export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLo
   const bookedFlights = activeFlights.filter(f => f.flight_type === 'booked' || !f.flight_type)
   const hasBookedFlights = bookedFlights.length > 0
   const canEditFlights = canEdit && !hasBookedFlights
+
+  const handleDeleteFlight = async (flightId: string) => {
+    if (deletingFlightId) return // Prevent multiple simultaneous deletions
+    
+    setDeletingFlightId(flightId)
+    const supabase = createClient()
+
+    try {
+      // Soft delete by setting deleted_at timestamp
+      const { error } = await supabase
+        .from('bookings_flights')
+        .update({ deleted_at: new Date().toISOString() })
+        .eq('id', flightId)
+        .eq('flight_type', 'customer')
+
+      if (error) {
+        throw error
+      }
+
+      sonnerToast.success('Flight removed', {
+        description: 'Your flight information has been removed successfully.',
+        duration: 3000,
+      })
+
+      toast({
+        title: 'Flight removed',
+        description: 'Your flight information has been removed successfully.',
+      })
+
+      // Refresh the page to update the flight list
+      router.refresh()
+    } catch (error: any) {
+      console.error('Error deleting flight:', error)
+      
+      let errorMessage = 'Failed to remove flight information'
+      if (error instanceof Error) {
+        errorMessage = error.message
+      } else if (typeof error === 'string') {
+        errorMessage = error
+      } else if (error && typeof error === 'object' && 'message' in error) {
+        errorMessage = String(error.message)
+      }
+
+      sonnerToast.error('Failed to remove flight', {
+        description: errorMessage,
+        duration: 5000,
+      })
+
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: errorMessage,
+      })
+    } finally {
+      setDeletingFlightId(null)
+    }
+  }
 
   const currencySymbol = currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'
 
@@ -232,6 +296,8 @@ export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLo
                       setEditingSegment({ type, index })
                       setFormOpen(true)
                     } : undefined}
+                    onDelete={canEditFlights ? handleDeleteFlight : undefined}
+                    canDelete={canEditFlights}
                   />
                 )
               })}
