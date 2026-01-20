@@ -89,7 +89,7 @@ export function TopHeader({
   const avatarUrl = user?.imageUrl || null
 
   return (
-    <header className="bg-secondary-1000 text-foreground border-b border-border h-16 flex items-center px-4 lg:px-6 z-50 fixed top-0 left-0 right-0">
+    <header className="bg-secondary-1000 text-foreground border-border h-16 flex items-center px-4 lg:px-6 z-50 fixed top-0 left-0 right-0">
       <div className="container mx-auto flex items-center">
       {/* Left: Menu + Logo */}
       <div className="flex items-center gap-3">
