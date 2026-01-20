@@ -146,17 +146,16 @@ export function NotificationsList({ notifications: initialNotifications, clientI
     }
   }
 
-  const unreadNotifications = notifications.filter((n) => !n.read)
-  const unreadCount = unreadNotifications.length
+  const unreadCount = notifications.filter((n) => !n.read).length
 
-  if (unreadCount === 0) {
+  if (notifications.length === 0) {
     return (
       <Card>
         <CardContent className="p-12 text-center">
           <Bell className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-          <h3 className="text-lg font-semibold mb-2">No notifications</h3>
+          <h3 className="text-lg font-semibold mb-2">No notifications yet</h3>
           <p className="text-sm text-muted-foreground">
-            You're all caught up! When you receive new notifications, they'll appear here.
+            When you receive notifications about your bookings, points, or referrals, they'll appear here.
           </p>
         </CardContent>
       </Card>
@@ -193,7 +192,7 @@ export function NotificationsList({ notifications: initialNotifications, clientI
       <Card>
         <CardContent className="p-0">
           <div className="divide-y">
-            {unreadNotifications.map((notification) => {
+            {notifications.map((notification) => {
               const url = getNotificationUrl(notification)
               const isClickable = url !== '#'
               
