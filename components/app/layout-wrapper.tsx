@@ -71,7 +71,7 @@ export function LayoutWrapper({
       clientId={client.id}
       baseCurrency={baseCurrency}
     >
-      <div className="flex min-h-screen mx-auto flex-col px-4 lg:px-4">
+      <div className="flex min-h-screen mx-auto flex-col">
         {/* Top Header - Fixed */}
         <TopHeader
           onMenuClick={() => setSidebarOpen(!sidebarOpen)}
@@ -94,7 +94,7 @@ export function LayoutWrapper({
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 pt-20 lg:pt-36 pb-10 overflow-x-hidden">
+      <main className="flex-1 pt-20 lg:pt-36 pb-10 overflow-x-hidden px-4">
         <div className="mx-auto w-full container">
           {children}
         </div>
