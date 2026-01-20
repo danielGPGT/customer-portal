@@ -10,12 +10,17 @@ import {
   UserPlus,
   Settings,
   ChevronRight,
+  Copy,
+  Check,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"
 import Image from "next/image"
 import { useTheme } from "next-themes"
+import { createClient } from "@/lib/supabase/client"
+import { useToast } from "@/hooks/use-toast"
+import { useClerkAuth } from "@/lib/clerk/client"
 
 interface NavItem {
   title: string
@@ -66,11 +71,88 @@ export function MobileSidebar({ open, onOpenChange }: MobileSidebarProps) {
   const [expandedItems, setExpandedItems] = React.useState<string[]>([])
   const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
+  const [referralLink, setReferralLink] = React.useState<string | null>(null)
+  const [isCopying, setIsCopying] = React.useState(false)
+  const [copied, setCopied] = React.useState(false)
+  const { toast } = useToast()
+  const clerkAuth = useClerkAuth()
 
   // Avoid hydration mismatch
   React.useEffect(() => {
     setMounted(true)
   }, [])
+
+  // Fetch referral link
+  React.useEffect(() => {
+    const fetchReferralLink = async () => {
+      if (!clerkAuth?.userId || clerkAuth.isLoading) return
+
+      try {
+        const supabase = createClient()
+        
+        // Get client ID from Clerk user ID
+        const { data: client } = await supabase
+          .from('clients')
+          .select('id')
+          .eq('clerk_user_id', clerkAuth.userId)
+          .single()
+
+        if (!client) return
+
+        // Get or create referral code
+        const { data: referralCode } = await supabase.rpc('get_or_create_referral_code', {
+          p_client_id: client.id,
+        })
+
+        if (referralCode) {
+          const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
+          const link = `${baseUrl}/signup?ref=${referralCode}`
+          setReferralLink(link)
+        }
+      } catch (error) {
+        console.error('Error fetching referral link:', error)
+      }
+    }
+
+    fetchReferralLink()
+  }, [clerkAuth?.userId, clerkAuth?.isLoading])
+
+  const handleCopyReferralLink = async () => {
+    if (!referralLink) {
+      toast({
+        title: "No referral link available",
+        description: "Please try again in a moment",
+        variant: "destructive",
+      })
+      return
+    }
+
+    setIsCopying(true)
+    
+    try {
+      await navigator.clipboard.writeText(referralLink)
+      setCopied(true)
+      
+      toast({
+        title: "Link copied!",
+        description: "Your referral link has been copied to clipboard",
+      })
+
+      // Reset animation after 2 seconds
+      setTimeout(() => {
+        setCopied(false)
+        setIsCopying(false)
+      }, 2000)
+    } catch (error) {
+      console.error('Failed to copy referral link:', error)
+      toast({
+        title: "Failed to copy",
+        description: "Please try again",
+        variant: "destructive",
+      })
+      setIsCopying(false)
+    }
+  }
 
   // Determine which logo to use based on theme
   const logoSrc = mounted && resolvedTheme === 'dark' 
@@ -193,11 +275,22 @@ export function MobileSidebar({ open, onOpenChange }: MobileSidebarProps) {
         <div className="px-4 pb-4 mt-auto">
           <Button
             className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-            asChild
+            onClick={handleCopyReferralLink}
+            disabled={isCopying || !referralLink}
           >
-            <Link href="/refer" onClick={() => onOpenChange(false)}>
-              Refer a Friend
-            </Link>
+            <div className="flex items-center gap-2">
+              {copied ? (
+                <>
+                  <Check className="h-4 w-4" />
+                  <span>Link copied!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="h-4 w-4" />
+                  <span>Refer a friend</span>
+                </>
+              )}
+            </div>
           </Button>
         </div>
       </SheetContent>
