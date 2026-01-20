@@ -946,7 +946,7 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
           <DialogTitle className="flex items-center gap-2">
             <Plane className="h-5 w-5" />
             {flightId
-              ? (editingSegment ? `Edit ${editingSegment.type === 'outbound' ? 'Outbound' : 'Return'} Flight` : 'Edit Your Flight Information')
+              ? (editingSegment ? `Edit ${editingSegment.type === 'outbound' ? 'Arrival' : 'Return'} Flight` : 'Edit Your Flight Information')
               : 'Add Your Flight Information'}
           </DialogTitle>
           <DialogDescription>

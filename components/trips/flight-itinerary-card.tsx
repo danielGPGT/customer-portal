@@ -370,7 +370,7 @@ export function FlightItineraryCard({ flightId, details, label = 'Your Flight', 
               <FlightSegmentDisplay
                 key={idx}
                 segment={segment}
-                dateLabel={`Outbound • ${formatDateShort(segment.departureDateTime) || formatDateShort(details.departureDate) || ''}`}
+                dateLabel={`Arrival • ${formatDateShort(segment.departureDateTime) || formatDateShort(details.departureDate) || ''}`}
                 onEditSegment={onEditSegment ? () => onEditSegment('outbound', idx) : undefined}
               />
             ))}
