@@ -795,51 +795,100 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
             })
           }
         })} 
-        className="h-full flex flex-col min-h-0" 
+        className={isMobile ? "h-full flex flex-col min-h-0" : "h-full flex flex-col min-h-0"} 
         style={{ minHeight: 0 }}
       >
-        <div 
-          className={`flex-1 overflow-y-scroll overflow-x-hidden overscroll-contain ${isMobile ? 'pb-4' : ''}`} 
-          style={{ 
-            WebkitOverflowScrolling: 'touch',
-            minHeight: 0,
-            maxHeight: '100%'
-          }}
-        >
-          <div className="space-y-6 pr-1">
-            <FormFields />
+        {isMobile ? (
+          // Mobile: Footer inside scrollable area at bottom of form
+          <div 
+            className="flex-1 overflow-y-scroll overflow-x-hidden overscroll-contain" 
+            style={{ 
+              WebkitOverflowScrolling: 'touch',
+              minHeight: 0,
+              maxHeight: '100%'
+            }}
+          >
+            <div className="space-y-6 pr-1 pb-4">
+              <FormFields />
+              
+              {/* Footer at bottom of form content */}
+              <div className="flex flex-col gap-3 pt-4 pb-6 border-t">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => onOpenChange(false)}
+                  disabled={isLoading}
+                  className="w-full"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full"
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="mr-2 h-4 w-4" />
+                      Save Changes
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
           </div>
-        </div>
+        ) : (
+          // Desktop: Footer fixed at bottom of viewport
+          <>
+            <div 
+              className="flex-1 overflow-y-scroll overflow-x-hidden overscroll-contain" 
+              style={{ 
+                WebkitOverflowScrolling: 'touch',
+                minHeight: 0,
+                maxHeight: '100%'
+              }}
+            >
+              <div className="space-y-6 pr-1">
+                <FormFields />
+              </div>
+            </div>
 
-        {/* Footer */}
-        <div className="flex flex-col sm:flex-row gap-3 pt-4 pb-2 border-t shrink-0 bg-background">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-            disabled={isLoading}
-            className="w-full sm:w-auto"
-          >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            disabled={isLoading}
-            className="w-full sm:w-auto sm:ml-auto"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Saving...
-              </>
-            ) : (
-              <>
-                <Save className="mr-2 h-4 w-4" />
-                Save Changes
-              </>
-            )}
-          </Button>
-        </div>
+            {/* Footer */}
+            <div className="flex flex-col sm:flex-row gap-3 pt-4 pb-2 border-t shrink-0 bg-background">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={isLoading}
+                className="w-full sm:w-auto"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full sm:w-auto sm:ml-auto"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="mr-2 h-4 w-4" />
+                    Save Changes
+                  </>
+                )}
+              </Button>
+            </div>
+          </>
+        )}
       </form>
     </Form>
   )
