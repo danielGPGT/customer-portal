@@ -122,8 +122,11 @@ export function TripDetailsTabs({
       if (now >= lockThreshold) {
         isEditLocked = true
       } else {
-        const diffMs = lockThreshold.getTime() - now.getTime()
-        daysUntilLock = Math.ceil(diffMs / (1000 * 60 * 60 * 24))
+        // Use actual current time (not normalized) to match countdown timer calculation
+        const actualNow = Date.now()
+        const diffMs = lockThreshold.getTime() - actualNow
+        // Use Math.floor to match the countdown timer calculation
+        daysUntilLock = Math.floor(diffMs / (1000 * 60 * 60 * 24))
       }
     } catch {
       // ignore parsing errors, fall back to unlocked

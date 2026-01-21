@@ -60,25 +60,70 @@ export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLo
       const diff = target - now
       if (diff <= 0) {
         setTimeRemaining(null)
+        // Refresh page when time expires to update lock state
+        if (typeof window !== 'undefined') {
+          window.location.reload()
+        }
         return
       }
-      const totalMinutes = Math.floor(diff / (1000 * 60))
+      const totalSeconds = Math.floor(diff / 1000)
+      const totalMinutes = Math.floor(totalSeconds / 60)
       const days = Math.floor(totalMinutes / (60 * 24))
       const hours = Math.floor((totalMinutes % (60 * 24)) / 60)
       const minutes = totalMinutes % 60
+      const seconds = totalSeconds % 60
 
       if (days > 0) {
         setTimeRemaining(`${days}d ${hours}h ${minutes}m`)
       } else if (hours > 0) {
         setTimeRemaining(`${hours}h ${minutes}m`)
+      } else if (minutes > 0) {
+        setTimeRemaining(`${minutes}m ${seconds}s`)
       } else {
-        setTimeRemaining(`${minutes}m`)
+        setTimeRemaining(`${seconds}s`)
       }
     }
 
     update()
-    const id = setInterval(update, 60_000)
-    return () => clearInterval(id)
+    
+    // Update every second when less than 1 hour remains, otherwise every minute
+    let intervalId: NodeJS.Timeout | null = null
+    let lastInterval: number | null = null
+    
+    const startInterval = () => {
+      if (intervalId) {
+        clearInterval(intervalId)
+      }
+      
+      const now = Date.now()
+      const diff = target - now
+      const totalMinutes = Math.floor(diff / (1000 * 60))
+      const interval = totalMinutes < 60 ? 1000 : 60_000
+      lastInterval = interval
+      
+      intervalId = setInterval(() => {
+        update()
+        // Check if we need to switch to a different interval
+        const currentDiff = target - Date.now()
+        if (currentDiff <= 0) {
+          if (intervalId) clearInterval(intervalId)
+          return
+        }
+        const currentMinutes = Math.floor(currentDiff / (1000 * 60))
+        const shouldUseSecondInterval = currentMinutes < 60
+        const currentInterval = shouldUseSecondInterval ? 1000 : 60_000
+        
+        if (currentInterval !== lastInterval) {
+          startInterval() // Restart with new interval
+        }
+      }, interval)
+    }
+
+    startInterval()
+    
+    return () => {
+      if (intervalId) clearInterval(intervalId)
+    }
   }, [lockDate, isEditLocked])
 
   // Filter out deleted flights
