@@ -186,7 +186,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
     }
 
     // Listen to viewport resize events (fires when keyboard opens/closes)
-    if (typeof window !== 'undefined' && window.visualViewport) {
+    if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', handleViewportChange)
       window.visualViewport.addEventListener('scroll', handleViewportChange)
       // Initial check
@@ -194,7 +194,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
     }
 
     return () => {
-      if (typeof window !== 'undefined' && window.visualViewport) {
+      if (window.visualViewport) {
         window.visualViewport.removeEventListener('resize', handleViewportChange)
         window.visualViewport.removeEventListener('scroll', handleViewportChange)
       }
