@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -122,6 +122,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
   const [isLoading, setIsLoading] = useState(false)
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const [drawerHeight, setDrawerHeight] = useState<string>('95vh')
+  const focusedInputRef = useRef<HTMLElement | null>(null)
 
   const form = useForm<TravelerFormData>({
     resolver: zodResolver(travelerSchema),
@@ -169,34 +170,75 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
   useEffect(() => {
     if (isDesktop || !open) return
 
+    let rafId: number | null = null
+    let timeoutId: NodeJS.Timeout | null = null
+    let lastHeight = drawerHeight
+
     const handleViewportChange = () => {
-      if (typeof window !== 'undefined' && window.visualViewport) {
-        const viewport = window.visualViewport
-        // When keyboard is open, visualViewport.height is smaller than window.innerHeight
-        const keyboardHeight = window.innerHeight - viewport.height
-        if (keyboardHeight > 150) {
-          // Keyboard is open, adjust drawer height to visual viewport
-          // Use a slightly smaller value to ensure drawer doesn't overlap with keyboard
-          setDrawerHeight(`${Math.min(viewport.height, window.innerHeight * 0.95)}px`)
-        } else {
-          // Keyboard is closed, use default height
-          setDrawerHeight('95vh')
-        }
+      // Check if an input is currently focused
+      const activeElement = focusedInputRef.current || (document.activeElement as HTMLElement)
+      const isInputFocused = activeElement && (
+        activeElement.tagName === 'INPUT' || 
+        activeElement.tagName === 'TEXTAREA' ||
+        activeElement.isContentEditable
+      )
+
+      // If an input is focused, don't update the drawer height to prevent keyboard from closing
+      if (isInputFocused) {
+        return
       }
+
+      // Cancel any pending updates
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId)
+      }
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId)
+      }
+
+      // Use requestAnimationFrame to batch the update
+      rafId = requestAnimationFrame(() => {
+        if (typeof window !== 'undefined' && window.visualViewport) {
+          const viewport = window.visualViewport
+          // When keyboard is open, visualViewport.height is smaller than window.innerHeight
+          const keyboardHeight = window.innerHeight - viewport.height
+          let newHeight: string
+          
+          if (keyboardHeight > 150) {
+            // Keyboard is open, adjust drawer height to visual viewport
+            // Use a slightly smaller value to ensure drawer doesn't overlap with keyboard
+            newHeight = `${Math.min(viewport.height, window.innerHeight * 0.95)}px`
+          } else {
+            // Keyboard is closed, use default height
+            newHeight = '95vh'
+          }
+
+          // Only update if height actually changed to minimize re-renders
+          if (newHeight !== lastHeight) {
+            lastHeight = newHeight
+            setDrawerHeight(newHeight)
+          }
+        }
+      })
     }
 
     // Listen to viewport resize events (fires when keyboard opens/closes)
+    // Use a debounced approach to avoid too many updates
     if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', handleViewportChange)
-      window.visualViewport.addEventListener('scroll', handleViewportChange)
       // Initial check
       handleViewportChange()
     }
 
     return () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId)
+      }
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId)
+      }
       if (window.visualViewport) {
         window.visualViewport.removeEventListener('resize', handleViewportChange)
-        window.visualViewport.removeEventListener('scroll', handleViewportChange)
       }
       // Reset height when drawer closes
       setDrawerHeight('95vh')
@@ -378,6 +420,39 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
 
   const travelerName = traveler ? `${traveler.first_name} ${traveler.last_name}` : 'Traveller'
   const isLead = traveler?.traveler_type === 'lead'
+
+  // Track focus on inputs to prevent keyboard from closing
+  useEffect(() => {
+    if (isDesktop || !open) return
+
+    const handleFocus = (e: FocusEvent) => {
+      const target = e.target as HTMLElement
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+        focusedInputRef.current = target
+      }
+    }
+
+    const handleBlur = () => {
+      // Don't clear immediately - wait a bit in case focus moves to another input
+      setTimeout(() => {
+        const activeElement = document.activeElement as HTMLElement
+        if (activeElement?.tagName !== 'INPUT' && activeElement?.tagName !== 'TEXTAREA' && !activeElement?.isContentEditable) {
+          focusedInputRef.current = null
+        } else {
+          focusedInputRef.current = activeElement
+        }
+      }, 100)
+    }
+
+    document.addEventListener('focusin', handleFocus)
+    document.addEventListener('focusout', handleBlur)
+
+    return () => {
+      document.removeEventListener('focusin', handleFocus)
+      document.removeEventListener('focusout', handleBlur)
+      focusedInputRef.current = null
+    }
+  }, [open, isDesktop])
 
   const FormFields = () => (
     <div className="space-y-4">
@@ -887,6 +962,20 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         style={{ 
           height: drawerHeight,
           maxHeight: drawerHeight,
+        }}
+        onPointerDownOutside={(e) => {
+          // Prevent closing when clicking on inputs
+          const target = e.target as HTMLElement
+          if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.closest('input, textarea')) {
+            e.preventDefault()
+          }
+        }}
+        onInteractOutside={(e) => {
+          // Prevent closing when interacting with inputs
+          const target = e.target as HTMLElement
+          if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.closest('input, textarea')) {
+            e.preventDefault()
+          }
         }}
       >
         <div className="flex flex-col h-full overflow-hidden">
