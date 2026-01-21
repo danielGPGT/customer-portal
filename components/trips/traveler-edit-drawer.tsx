@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -121,7 +121,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const isDesktop = useMediaQuery('(min-width: 768px)')
-  const drawerContentRef = useRef<HTMLDivElement>(null)
+  const [drawerHeight, setDrawerHeight] = useState<string>('95vh')
 
   const form = useForm<TravelerFormData>({
     resolver: zodResolver(travelerSchema),
@@ -166,11 +166,42 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
   }, [traveler, open, form])
 
   // Handle mobile keyboard appearance to prevent drawer jumping
-  // Temporarily disabled to test if it's causing keyboard dismissal
-  // useEffect(() => {
-  //   if (isDesktop || !open || !drawerContentRef.current) return
-  //   // ... viewport handling code
-  // }, [open, isDesktop])
+  useEffect(() => {
+    if (isDesktop || !open) return
+
+    const handleViewportChange = () => {
+      if (typeof window !== 'undefined' && window.visualViewport) {
+        const viewport = window.visualViewport
+        // When keyboard is open, visualViewport.height is smaller than window.innerHeight
+        const keyboardHeight = window.innerHeight - viewport.height
+        if (keyboardHeight > 150) {
+          // Keyboard is open, adjust drawer height to visual viewport
+          // Use a slightly smaller value to ensure drawer doesn't overlap with keyboard
+          setDrawerHeight(`${Math.min(viewport.height, window.innerHeight * 0.95)}px`)
+        } else {
+          // Keyboard is closed, use default height
+          setDrawerHeight('95vh')
+        }
+      }
+    }
+
+    // Listen to viewport resize events (fires when keyboard opens/closes)
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleViewportChange)
+      window.visualViewport.addEventListener('scroll', handleViewportChange)
+      // Initial check
+      handleViewportChange()
+    }
+
+    return () => {
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleViewportChange)
+        window.visualViewport.removeEventListener('scroll', handleViewportChange)
+      }
+      // Reset height when drawer closes
+      setDrawerHeight('95vh')
+    }
+  }, [open, isDesktop])
 
   const onSubmit = async (data: TravelerFormData) => {
     if (!traveler) {
@@ -736,101 +767,52 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
               duration: 4000,
             })
           }
-        })}
-        className={isMobile ? "h-full flex flex-col min-h-0" : "h-full flex flex-col min-h-0"} 
+        })} 
+        className="h-full flex flex-col min-h-0" 
         style={{ minHeight: 0 }}
       >
-        {isMobile ? (
-          // Mobile: Footer inside scrollable area at bottom of form
-          <div 
-            className="flex-1 overflow-y-scroll overflow-x-hidden overscroll-contain" 
-            style={{ 
-              WebkitOverflowScrolling: 'touch',
-              minHeight: 0,
-              maxHeight: '100%'
-            }}
-          >
-            <div className="space-y-6 pr-1 pb-4">
-              <FormFields />
-              
-              {/* Footer at bottom of form content */}
-              <div className="flex flex-col gap-3 pt-4 pb-6 border-t">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => onOpenChange(false)}
-                  disabled={isLoading}
-                  className="w-full"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full"
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Saving...
-                    </>
-                  ) : (
-                    <>
-                      <Save className="mr-2 h-4 w-4" />
-                      Save Changes
-                    </>
-                  )}
-                </Button>
-              </div>
-            </div>
+        <div 
+          className={`flex-1 overflow-y-scroll overflow-x-hidden overscroll-contain ${isMobile ? 'pb-4' : ''}`} 
+          style={{ 
+            WebkitOverflowScrolling: 'touch',
+            minHeight: 0,
+            maxHeight: '100%'
+          }}
+        >
+          <div className="space-y-6 pr-1">
+            <FormFields />
           </div>
-        ) : (
-          // Desktop: Footer fixed at bottom of viewport
-          <>
-            <div 
-              className="flex-1 overflow-y-scroll overflow-x-hidden overscroll-contain" 
-              style={{ 
-                WebkitOverflowScrolling: 'touch',
-                minHeight: 0,
-                maxHeight: '100%'
-              }}
-            >
-              <div className="space-y-6 pr-1">
-                <FormFields />
-              </div>
-            </div>
+        </div>
 
-            {/* Footer */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-4 pb-2 border-t shrink-0 bg-background">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-                disabled={isLoading}
-                className="w-full sm:w-auto"
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                disabled={isLoading}
-                className="w-full sm:w-auto sm:ml-auto"
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    <Save className="mr-2 h-4 w-4" />
-                    Save Changes
-                  </>
-                )}
-              </Button>
-            </div>
-          </>
-        )}
+        {/* Footer */}
+        <div className="flex flex-col sm:flex-row gap-3 pt-4 pb-2 border-t shrink-0 bg-background">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={isLoading}
+            className="w-full sm:w-auto"
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="w-full sm:w-auto sm:ml-auto"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save className="mr-2 h-4 w-4" />
+                Save Changes
+              </>
+            )}
+          </Button>
+        </div>
       </form>
     </Form>
   )
@@ -866,15 +848,14 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="flex flex-col p-0">
-        <div 
-          ref={drawerContentRef}
-          className="flex flex-col h-full overflow-hidden"
-          style={{ 
-            height: '95vh',
-            maxHeight: '95vh',
-          }}
-        >
+      <DrawerContent 
+        className="flex flex-col p-0"
+        style={{ 
+          height: drawerHeight,
+          maxHeight: drawerHeight,
+        }}
+      >
+        <div className="flex flex-col h-full overflow-hidden">
           <DrawerHeader className="px-4 pt-4 pb-3 border-b shrink-0">
             <DrawerTitle>
               Edit Traveller: {travelerName}
