@@ -326,6 +326,7 @@ export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLo
           }}
         />
       )}
+
     </>
   )
 }
