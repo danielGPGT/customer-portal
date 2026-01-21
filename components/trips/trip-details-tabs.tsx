@@ -115,16 +115,61 @@ export function TripDetailsTabs({
   if (!isPermanentlyLocked && eventStartDate) {
     try {
       const start = new Date(eventStartDate)
-      const lockThreshold = new Date(start)
-      lockThreshold.setDate(lockThreshold.getDate() - 28) // 4 weeks before event
-      lockDate = lockThreshold.toISOString()
+      const standardLockThreshold = new Date(start)
+      standardLockThreshold.setDate(standardLockThreshold.getDate() - 28) // 4 weeks before event
+      
+      // Enterprise edge case handling: For last-minute bookings, provide a minimum grace period
+      // This ensures customers always have time to add their details, even for bookings made within the lock window
+      let effectiveLockThreshold = standardLockThreshold
+      
+      if (bookedAt) {
+        try {
+          const bookingDate = new Date(bookedAt)
+          bookingDate.setHours(0, 0, 0, 0)
+          
+          // If booking was made after the standard lock threshold, apply grace period logic
+          if (bookingDate > standardLockThreshold) {
+            // Calculate days between booking and event
+            const daysFromBookingToEvent = Math.floor((start.getTime() - bookingDate.getTime()) / (1000 * 60 * 60 * 24))
+            
+            // Grace period rules:
+            // - If booking is < 7 days before event: 48 hours grace period
+            // - If booking is 7-14 days before event: 3 days grace period
+            // - If booking is 14-21 days before event: 5 days grace period
+            // - Otherwise: use standard 28-day threshold
+            let gracePeriodDays = 0
+            if (daysFromBookingToEvent < 7) {
+              gracePeriodDays = 2 // 48 hours minimum
+            } else if (daysFromBookingToEvent < 14) {
+              gracePeriodDays = 3
+            } else if (daysFromBookingToEvent < 21) {
+              gracePeriodDays = 5
+            }
+            
+            if (gracePeriodDays > 0) {
+              const gracePeriodThreshold = new Date(bookingDate)
+              gracePeriodThreshold.setDate(gracePeriodThreshold.getDate() + gracePeriodDays)
+              
+              // Use the later of: standard lock date OR grace period end date
+              // This ensures we never lock before the standard threshold, but provide grace for late bookings
+              effectiveLockThreshold = gracePeriodThreshold > standardLockThreshold 
+                ? gracePeriodThreshold 
+                : standardLockThreshold
+            }
+          }
+        } catch {
+          // If bookedAt parsing fails, fall back to standard threshold
+        }
+      }
+      
+      lockDate = effectiveLockThreshold.toISOString()
 
-      if (now >= lockThreshold) {
+      if (now >= effectiveLockThreshold) {
         isEditLocked = true
       } else {
         // Use actual current time (not normalized) to match countdown timer calculation
         const actualNow = Date.now()
-        const diffMs = lockThreshold.getTime() - actualNow
+        const diffMs = effectiveLockThreshold.getTime() - actualNow
         // Use Math.floor to match the countdown timer calculation
         daysUntilLock = Math.floor(diffMs / (1000 * 60 * 60 * 24))
       }

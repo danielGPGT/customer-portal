@@ -294,19 +294,26 @@ export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLo
           {activeFlights.length === 0 ? (
             <div className="text-center py-6 sm:py-8 text-muted-foreground">
               <Plane className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-3 sm:mb-4 opacity-50" />
-              <p className="mb-2 text-xs sm:text-sm">No flights added yet</p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setEditingFlightId(null)
-                  setFormOpen(true)
-                }}
-                className="h-8 sm:h-9 px-2 sm:px-3"
-              >
-                <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1" />
-                <span className="text-xs sm:text-sm">Add Your Flight Information</span>
-              </Button>
+              <p className="mb-2 text-xs sm:text-sm font-medium">
+                No flights added yet
+              </p>
+              <p className="mb-4 text-xs sm:text-sm max-w-md mx-auto px-4">
+                If you have booked your own flights, please add your flight details here. We need this information, including departure and arrival times, to coordinate your airport transfers.
+              </p>
+              {canEditFlights && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setEditingFlightId(null)
+                    setFormOpen(true)
+                  }}
+                  className="h-8 sm:h-9 px-2 sm:px-3"
+                >
+                  <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1" />
+                  <span className="text-xs sm:text-sm">Add Your Flight Information</span>
+                </Button>
+              )}
             </div>
           ) : (
             <div className="space-y-3 sm:space-y-4">
