@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -185,6 +185,29 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
       }
     }
 
+    // Handle input focus to scroll within drawer, not page
+    const handleInputFocus = (e: FocusEvent) => {
+      const target = e.target as HTMLElement
+      if ((target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') && target.closest('[data-slot="drawer-content"]')) {
+        // Find the scrollable container within the drawer
+        const scrollContainer = target.closest('form')?.querySelector('.overflow-y-scroll') as HTMLElement
+        if (scrollContainer) {
+          // Small delay to let keyboard appear, then scroll input into view within drawer
+          setTimeout(() => {
+            const inputRect = target.getBoundingClientRect()
+            const containerRect = scrollContainer.getBoundingClientRect()
+            const scrollTop = scrollContainer.scrollTop
+            
+            // Check if input is outside visible area
+            if (inputRect.top < containerRect.top || inputRect.bottom > containerRect.bottom) {
+              const offset = inputRect.top - containerRect.top + scrollTop - 20 // 20px padding
+              scrollContainer.scrollTo({ top: Math.max(0, offset), behavior: 'smooth' })
+            }
+          }, 300) // Wait for keyboard animation
+        }
+      }
+    }
+
     // Listen to viewport resize events (fires when keyboard opens/closes)
     if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', handleViewportChange)
@@ -193,11 +216,15 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
       handleViewportChange()
     }
 
+    // Add focus listener to handle input scrolling within drawer
+    document.addEventListener('focusin', handleInputFocus, true)
+
     return () => {
       if (window.visualViewport) {
         window.visualViewport.removeEventListener('resize', handleViewportChange)
         window.visualViewport.removeEventListener('scroll', handleViewportChange)
       }
+      document.removeEventListener('focusin', handleInputFocus, true)
       // Reset height when drawer closes
       setDrawerHeight('95vh')
     }
@@ -752,70 +779,33 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         </div>
   )
 
-  const FormContent = ({ isMobile = false }: { isMobile?: boolean }) => {
-    const scrollContainerRef = useRef<HTMLDivElement>(null)
-
-    // Handle input focus to scroll into view within drawer on mobile
-    useEffect(() => {
-      if (!isMobile || !scrollContainerRef.current) return
-
-      const scrollContainer = scrollContainerRef.current
-      
-      const handleFocus = (e: FocusEvent) => {
-        const target = e.target as HTMLElement
-        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
-          // Small delay to let keyboard appear, then scroll input into view within drawer
-          setTimeout(() => {
-            if (scrollContainer && target.isConnected) {
-              const containerRect = scrollContainer.getBoundingClientRect()
-              const inputRect = target.getBoundingClientRect()
-              
-              // Check if input is outside visible area
-              if (inputRect.bottom > containerRect.bottom || inputRect.top < containerRect.top) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
-              }
-            }
-          }, 300)
-        }
-      }
-
-      scrollContainer.addEventListener('focusin', handleFocus, true)
-      
-      return () => {
-        scrollContainer.removeEventListener('focusin', handleFocus, true)
-      }
-    }, [isMobile])
-
-    return (
-      <Form {...form}>
-        <form 
-          onSubmit={form.handleSubmit(onSubmit, (errors) => {
-            // Handle form validation errors
-            const errorFields = Object.keys(errors)
-            if (errorFields.length > 0) {
-              const firstError = Object.values(errors)[0]
-              const errorMessage = firstError?.message || 'Please fix the errors in the form'
-              
-              sonnerToast.error('Validation error', {
-                description: errorMessage,
-                duration: 4000,
-              })
-            }
-          })} 
-          className="h-full flex flex-col min-h-0" 
-          style={{ minHeight: 0 }}
+  const FormContent = ({ isMobile = false }: { isMobile?: boolean }) => (
+    <Form {...form}>
+      <form 
+        onSubmit={form.handleSubmit(onSubmit, (errors) => {
+          // Handle form validation errors
+          const errorFields = Object.keys(errors)
+          if (errorFields.length > 0) {
+            const firstError = Object.values(errors)[0]
+            const errorMessage = firstError?.message || 'Please fix the errors in the form'
+            
+            sonnerToast.error('Validation error', {
+              description: errorMessage,
+              duration: 4000,
+            })
+          }
+        })} 
+        className="h-full flex flex-col min-h-0" 
+        style={{ minHeight: 0 }}
+      >
+        <div 
+          className={`flex-1 overflow-y-scroll overflow-x-hidden overscroll-contain ${isMobile ? 'pb-4' : ''}`} 
+          style={{ 
+            WebkitOverflowScrolling: 'touch',
+            minHeight: 0,
+            maxHeight: '100%'
+          }}
         >
-          <div 
-            ref={scrollContainerRef}
-            className={`flex-1 overflow-y-scroll overflow-x-hidden overscroll-contain ${isMobile ? 'pb-4' : ''}`} 
-            style={{ 
-              WebkitOverflowScrolling: 'touch',
-              minHeight: 0,
-              maxHeight: '100%',
-              // Prevent the page from scrolling when keyboard opens
-              position: 'relative'
-            }}
-          >
           <div className="space-y-6 pr-1">
             <FormFields />
           </div>
@@ -852,8 +842,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         </div>
       </form>
     </Form>
-    )
-  }
+  )
 
   if (isDesktop) {
     return (
