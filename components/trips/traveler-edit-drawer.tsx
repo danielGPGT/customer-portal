@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -121,7 +121,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const isDesktop = useMediaQuery('(min-width: 768px)')
-  const [drawerHeight, setDrawerHeight] = useState<string>('95vh')
+  const drawerContentRef = useRef<HTMLDivElement>(null)
 
   const form = useForm<TravelerFormData>({
     resolver: zodResolver(travelerSchema),
@@ -166,69 +166,11 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
   }, [traveler, open, form])
 
   // Handle mobile keyboard appearance to prevent drawer jumping
-  useEffect(() => {
-    if (isDesktop || !open) return
-
-    const handleViewportChange = () => {
-      if (typeof window !== 'undefined' && window.visualViewport) {
-        const viewport = window.visualViewport
-        // When keyboard is open, visualViewport.height is smaller than window.innerHeight
-        const keyboardHeight = window.innerHeight - viewport.height
-        if (keyboardHeight > 150) {
-          // Keyboard is open, adjust drawer height to visual viewport
-          // Use a slightly smaller value to ensure drawer doesn't overlap with keyboard
-          setDrawerHeight(`${Math.min(viewport.height, window.innerHeight * 0.95)}px`)
-        } else {
-          // Keyboard is closed, use default height
-          setDrawerHeight('95vh')
-        }
-      }
-    }
-
-    // Handle input focus to scroll within drawer, not page
-    const handleInputFocus = (e: FocusEvent) => {
-      const target = e.target as HTMLElement
-      if ((target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') && target.closest('[data-slot="drawer-content"]')) {
-        // Find the scrollable container within the drawer
-        const scrollContainer = target.closest('form')?.querySelector('.overflow-y-scroll') as HTMLElement
-        if (scrollContainer) {
-          // Small delay to let keyboard appear, then scroll input into view within drawer
-          setTimeout(() => {
-            const inputRect = target.getBoundingClientRect()
-            const containerRect = scrollContainer.getBoundingClientRect()
-            const scrollTop = scrollContainer.scrollTop
-            
-            // Check if input is outside visible area
-            if (inputRect.top < containerRect.top || inputRect.bottom > containerRect.bottom) {
-              const offset = inputRect.top - containerRect.top + scrollTop - 20 // 20px padding
-              scrollContainer.scrollTo({ top: Math.max(0, offset), behavior: 'smooth' })
-            }
-          }, 300) // Wait for keyboard animation
-        }
-      }
-    }
-
-    // Listen to viewport resize events (fires when keyboard opens/closes)
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', handleViewportChange)
-      window.visualViewport.addEventListener('scroll', handleViewportChange)
-      // Initial check
-      handleViewportChange()
-    }
-
-    // Add focus listener to handle input scrolling within drawer
-    document.addEventListener('focusin', handleInputFocus, true)
-
-    return () => {
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener('resize', handleViewportChange)
-        window.visualViewport.removeEventListener('scroll', handleViewportChange)
-      }
-      document.removeEventListener('focusin', handleInputFocus, true)
-      // Reset height when drawer closes
-      setDrawerHeight('95vh')
-    }
-  }, [open, isDesktop])
+  // Temporarily disabled to test if it's causing keyboard dismissal
+  // useEffect(() => {
+  //   if (isDesktop || !open || !drawerContentRef.current) return
+  //   // ... viewport handling code
+  // }, [open, isDesktop])
 
   const onSubmit = async (data: TravelerFormData) => {
     if (!traveler) {
@@ -794,7 +736,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
               duration: 4000,
             })
           }
-        })} 
+        })}
         className={isMobile ? "h-full flex flex-col min-h-0" : "h-full flex flex-col min-h-0"} 
         style={{ minHeight: 0 }}
       >
@@ -924,14 +866,15 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent 
-        className="flex flex-col p-0"
-        style={{ 
-          height: drawerHeight,
-          maxHeight: drawerHeight,
-        }}
-      >
-        <div className="flex flex-col h-full overflow-hidden">
+      <DrawerContent className="flex flex-col p-0">
+        <div 
+          ref={drawerContentRef}
+          className="flex flex-col h-full overflow-hidden"
+          style={{ 
+            height: '95vh',
+            maxHeight: '95vh',
+          }}
+        >
           <DrawerHeader className="px-4 pt-4 pb-3 border-b shrink-0">
             <DrawerTitle>
               Edit Traveller: {travelerName}
