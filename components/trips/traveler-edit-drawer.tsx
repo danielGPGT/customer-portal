@@ -157,25 +157,38 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         special_requests: traveler.special_requests || '',
       })
     }
-  }, [traveler, open, form])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [traveler?.id, open])
 
   // Handle mobile keyboard appearance to prevent drawer jumping
   useEffect(() => {
     if (isDesktop || !open) return
 
+    let timeoutId: NodeJS.Timeout | null = null
+
     const handleViewportChange = () => {
       if (typeof window !== 'undefined' && window.visualViewport) {
-        const viewport = window.visualViewport
-        // When keyboard is open, visualViewport.height is smaller than window.innerHeight
-        const keyboardHeight = window.innerHeight - viewport.height
-        if (keyboardHeight > 150) {
-          // Keyboard is open, adjust drawer height to visual viewport
-          // Use a slightly smaller value to ensure drawer doesn't overlap with keyboard
-          setDrawerHeight(`${Math.min(viewport.height, window.innerHeight * 0.95)}px`)
-        } else {
-          // Keyboard is closed, use default height
-          setDrawerHeight('95vh')
+        // Debounce the height change to prevent rapid updates
+        if (timeoutId) {
+          clearTimeout(timeoutId)
         }
+        
+        timeoutId = setTimeout(() => {
+          const viewport = window.visualViewport
+          if (!viewport) return
+          
+          // When keyboard is open, visualViewport.height is smaller than window.innerHeight
+          const keyboardHeight = window.innerHeight - viewport.height
+          if (keyboardHeight > 150) {
+            // Keyboard is open, adjust drawer height to visual viewport
+            // Use a slightly smaller value to ensure drawer doesn't overlap with keyboard
+            const newHeight = `${Math.min(viewport.height, window.innerHeight * 0.95)}px`
+            setDrawerHeight(newHeight)
+          } else {
+            // Keyboard is closed, use default height
+            setDrawerHeight('95vh')
+          }
+        }, 50) // Small debounce to prevent rapid firing
       }
     }
 
@@ -188,6 +201,9 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
     }
 
     return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
       if (window.visualViewport) {
         window.visualViewport.removeEventListener('resize', handleViewportChange)
         window.visualViewport.removeEventListener('scroll', handleViewportChange)
@@ -796,7 +812,12 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
   }
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange} dismissible={false} modal={true}>
+    <Drawer 
+      open={open} 
+      onOpenChange={onOpenChange} 
+      dismissible={false}
+      shouldScaleBackground={false}
+    >
       <DrawerContent 
         className="flex flex-col p-0"
         style={{ 
