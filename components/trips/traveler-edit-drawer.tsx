@@ -78,8 +78,6 @@ const travelerSchema = z.object({
   state: z.string().max(100, 'State is too long').optional().or(z.literal('')),
   postal_code: z.string().max(20, 'Postal code is too long').optional().or(z.literal('')),
   country: z.string().max(100, 'Country is too long').optional().or(z.literal('')),
-  dietary_restrictions: z.string().max(500, 'Dietary restrictions is too long').optional().or(z.literal('')),
-  accessibility_needs: z.string().max(500, 'Accessibility needs is too long').optional().or(z.literal('')),
   special_requests: z.string().max(1000, 'Special requests is too long').optional().or(z.literal('')),
 })
 
@@ -137,8 +135,6 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
       state: '',
       postal_code: '',
       country: '',
-      dietary_restrictions: '',
-      accessibility_needs: '',
       special_requests: '',
     },
   })
@@ -158,8 +154,6 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         state: traveler.state || '',
         postal_code: traveler.postal_code || '',
         country: traveler.country || '',
-        dietary_restrictions: traveler.dietary_restrictions || '',
-        accessibility_needs: traveler.accessibility_needs || '',
         special_requests: traveler.special_requests || '',
       })
     }
@@ -246,8 +240,6 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         state: data.state?.trim() || null,
         postal_code: data.postal_code?.trim() || null,
         country: data.country?.trim() || null,
-        dietary_restrictions: data.dietary_restrictions?.trim() || null,
-        accessibility_needs: data.accessibility_needs?.trim() || null,
         special_requests: data.special_requests?.trim() || null,
         updated_at: new Date().toISOString(),
       }
@@ -681,68 +673,25 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
             />
           </div>
 
-          {/* Special Requirements */}
+          {/* Special Requests */}
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-foreground">Special Requirements</h3>
-
-            
-            <FormField
-              control={form.control}
-              name="dietary_restrictions"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Dietary Restrictions</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      {...field} 
-                      placeholder="e.g., Vegetarian, Gluten-free, Allergies"
-                      rows={3}
-                    />
-                  </FormControl>
-                  <FormDescription className="text-xs">
-                    We&apos;ll share this with hotels and restaurants to accommodate your dietary needs
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="accessibility_needs"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Accessibility Needs</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      {...field} 
-                      placeholder="e.g., Wheelchair access, Mobility assistance"
-                      rows={3}
-                    />
-                  </FormControl>
-                  <FormDescription className="text-xs">
-                    Important for ensuring appropriate accommodations and transportation arrangements
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <h3 className="text-sm font-semibold text-foreground">Special Requests</h3>
 
             <FormField
               control={form.control}
               name="special_requests"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Special Requests</FormLabel>
+                
                   <FormControl>
                     <Textarea 
                       {...field} 
-                      placeholder="Any other special requests or notes"
+                      placeholder="Any special requests or notes"
                       rows={4}
                     />
                   </FormControl>
                   <FormDescription className="text-xs">
-                    Any additional requests or information that would help us provide the best service
+                    Please note: While we will do our best to accommodate your requests, we cannot guarantee that all requests can be fulfilled.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

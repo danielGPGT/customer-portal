@@ -275,18 +275,6 @@ export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLo
                   </div>
                 )}
 
-                {traveler.dietary_restrictions && (
-                  <div className="text-muted-foreground md:col-span-2">
-                    <span className="font-medium">Dietary Restrictions:</span> {traveler.dietary_restrictions}
-                  </div>
-                )}
-
-                {traveler.accessibility_needs && (
-                  <div className="text-muted-foreground md:col-span-2">
-                    <span className="font-medium">Accessibility Needs:</span> {traveler.accessibility_needs}
-                  </div>
-                )}
-
                 {traveler.special_requests && (
                   <div className="text-muted-foreground md:col-span-2">
                     <span className="font-medium">Special Requests:</span> {traveler.special_requests}
