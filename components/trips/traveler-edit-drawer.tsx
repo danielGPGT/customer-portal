@@ -9,7 +9,7 @@ import { useToast } from '@/hooks/use-toast'
 import { toast as sonnerToast } from 'sonner'
 import { useRouter, usePathname } from 'next/navigation'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter, SheetDescription } from '@/components/ui/sheet'
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter, DrawerDescription } from '@/components/ui/drawer'
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter, DrawerDescription, DrawerClose } from '@/components/ui/drawer'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -17,7 +17,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from '@/components/ui/form'
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, Save, Info, AlertCircle, FileText, Mail, Phone as PhoneIcon, MapPin } from 'lucide-react'
+import { Loader2, Save, Info, AlertCircle, FileText, Mail, Phone as PhoneIcon, MapPin, X } from 'lucide-react'
 import { useMediaQuery } from '@/hooks/use-media-query'
 
 // Phone number formatting utility
@@ -795,19 +795,25 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
     <Drawer 
       open={open} 
       onOpenChange={onOpenChange} 
-      dismissible={false}
       shouldScaleBackground={false}
     >
       <DrawerContent 
-        className="flex flex-col p-0"
-        style={{
-          height: '95dvh',
-          maxHeight: '95dvh',
-        }}
+        className="flex flex-col p-0 h-[90vh] max-h-[90vh]"
       >
         <div className="flex flex-col h-full overflow-hidden">
-          <DrawerHeader className="px-4 pt-4 pb-3 border-b shrink-0">
-            <DrawerTitle>
+          <DrawerHeader className="px-4 pt-4 pb-3 border-b shrink-0 relative">
+            <DrawerClose asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute right-2 top-2 h-8 w-8"
+                onClick={() => onOpenChange(false)}
+              >
+                <X className="h-4 w-4" />
+                <span className="sr-only">Close</span>
+              </Button>
+            </DrawerClose>
+            <DrawerTitle className="pr-8">
               Edit Traveller: {travelerName}
               {isLead && (
                 <span className="ml-2 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded">
@@ -815,7 +821,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
                 </span>
               )}
             </DrawerTitle>
-            <DrawerDescription>
+            <DrawerDescription className="pr-8">
               {isLead 
                 ? 'Update traveller information. Lead traveller details are used for final documents and trip communications. Changes will be saved immediately.'
                 : 'Update traveller information. Changes will be saved immediately.'}
