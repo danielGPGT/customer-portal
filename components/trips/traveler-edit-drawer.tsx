@@ -796,7 +796,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
   }
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
+    <Drawer open={open} onOpenChange={onOpenChange} dismissible={false} modal={true}>
       <DrawerContent 
         className="flex flex-col p-0"
         style={{ 
