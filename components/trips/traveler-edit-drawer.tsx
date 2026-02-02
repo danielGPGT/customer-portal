@@ -119,7 +119,6 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const isDesktop = useMediaQuery('(min-width: 768px)')
-  const [drawerHeight, setDrawerHeight] = useState<string>('95vh')
 
   const form = useForm<TravelerFormData>({
     resolver: zodResolver(travelerSchema),
@@ -159,59 +158,6 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [traveler?.id, open])
-
-  // Handle mobile keyboard appearance to prevent drawer jumping
-  useEffect(() => {
-    if (isDesktop || !open) return
-
-    let timeoutId: NodeJS.Timeout | null = null
-
-    const handleViewportChange = () => {
-      if (typeof window !== 'undefined' && window.visualViewport) {
-        // Debounce the height change to prevent rapid updates
-        if (timeoutId) {
-          clearTimeout(timeoutId)
-        }
-        
-        timeoutId = setTimeout(() => {
-          const viewport = window.visualViewport
-          if (!viewport) return
-          
-          // When keyboard is open, visualViewport.height is smaller than window.innerHeight
-          const keyboardHeight = window.innerHeight - viewport.height
-          if (keyboardHeight > 150) {
-            // Keyboard is open, adjust drawer height to visual viewport
-            // Use a slightly smaller value to ensure drawer doesn't overlap with keyboard
-            const newHeight = `${Math.min(viewport.height, window.innerHeight * 0.95)}px`
-            setDrawerHeight(newHeight)
-          } else {
-            // Keyboard is closed, use default height
-            setDrawerHeight('95vh')
-          }
-        }, 50) // Small debounce to prevent rapid firing
-      }
-    }
-
-    // Listen to viewport resize events (fires when keyboard opens/closes)
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', handleViewportChange)
-      window.visualViewport.addEventListener('scroll', handleViewportChange)
-      // Initial check
-      handleViewportChange()
-    }
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-      }
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener('resize', handleViewportChange)
-        window.visualViewport.removeEventListener('scroll', handleViewportChange)
-      }
-      // Reset height when drawer closes
-      setDrawerHeight('95vh')
-    }
-  }, [open, isDesktop])
 
   const onSubmit = async (data: TravelerFormData) => {
     if (!traveler) {
@@ -819,11 +765,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
       shouldScaleBackground={false}
     >
       <DrawerContent 
-        className="flex flex-col p-0"
-        style={{ 
-          height: drawerHeight,
-          maxHeight: drawerHeight,
-        }}
+        className="flex flex-col p-0 min-h-[85vh] max-h-[95vh]"
       >
         <div className="flex flex-col h-full overflow-hidden">
           <DrawerHeader className="px-4 pt-4 pb-3 border-b shrink-0">
