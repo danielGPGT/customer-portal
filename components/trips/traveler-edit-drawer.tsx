@@ -694,9 +694,9 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
             <FormFields />
           </div>
 
-          {/* Footer - On mobile, include in scrollable area */}
+          {/* Footer - On mobile, include in scrollable area (not sticky) */}
           {isMobile && (
-            <div className="flex flex-col gap-3 pt-6 pb-4 mt-6 border-t bg-background sticky bottom-0">
+            <div className="flex flex-col gap-3 pt-6 pb-6 mt-6 border-t bg-background">
               <Button
                 type="button"
                 variant="outline"
