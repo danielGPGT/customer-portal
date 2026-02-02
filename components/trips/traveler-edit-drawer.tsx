@@ -765,7 +765,11 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
       shouldScaleBackground={false}
     >
       <DrawerContent 
-        className="flex flex-col p-0 min-h-[85vh] max-h-[95vh]"
+        className="flex flex-col p-0"
+        style={{
+          height: '95dvh',
+          maxHeight: '95dvh',
+        }}
       >
         <div className="flex flex-col h-full overflow-hidden">
           <DrawerHeader className="px-4 pt-4 pb-3 border-b shrink-0">
