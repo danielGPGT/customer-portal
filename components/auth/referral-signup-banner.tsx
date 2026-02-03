@@ -17,11 +17,11 @@ export function ReferralSignupBanner({
 }: ReferralSignupBannerProps) {
   if (!isValid) {
     return (
-      <Alert variant="destructive">
+      <Alert variant="soft">
         <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Invalid Referral Code</AlertTitle>
+        <AlertTitle>This referral code isn’t valid</AlertTitle>
         <AlertDescription>
-          This referral code is invalid or has expired. You can still sign up, but won't receive bonus points.
+          That code may be invalid or expired. You can still sign up; you just won’t get the referral bonus this time.
         </AlertDescription>
       </Alert>
     )

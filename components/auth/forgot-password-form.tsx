@@ -68,9 +68,9 @@ export function ForgotPasswordForm() {
       })
     } catch (error: any) {
       toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: error.errors?.[0]?.longMessage || 'Failed to send reset code. Please try again.',
+        variant: 'soft',
+        title: 'We couldn’t send the code',
+        description: error.errors?.[0]?.longMessage || 'Please check the email address and try again.',
       })
     } finally {
       setIsLoading(false)
@@ -84,8 +84,8 @@ export function ForgotPasswordForm() {
 
     if (!resetCode) {
       toast({
-        variant: 'destructive',
-        title: 'Code required',
+        variant: 'soft',
+        title: 'Code needed',
         description: 'Please enter the reset code from your email.',
       })
       return
@@ -115,9 +115,9 @@ export function ForgotPasswordForm() {
       }
     } catch (error: any) {
       toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: error.errors?.[0]?.longMessage || 'Failed to reset password. Please try again.',
+        variant: 'soft',
+        title: 'We couldn’t reset your password',
+        description: error.errors?.[0]?.longMessage || 'Please try again or request a new code.',
       })
     } finally {
       setIsLoading(false)

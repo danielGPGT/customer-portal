@@ -57,7 +57,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         if (!rateLimitCheck.allowed) {
           setIsLoading(false)
           toast({
-            variant: 'destructive',
+            variant: 'soft',
             title: 'Too many signup attempts',
             description: rateLimitCheck.error || 'Please wait a few minutes and try again.',
           })
@@ -85,7 +85,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
       if (existingClient && existingClient.clerk_user_id) {
         setIsLoading(false)
         toast({
-          variant: 'destructive',
+          variant: 'soft',
           title: 'Account already exists',
           description: 'This email is already registered. Please log in instead.',
         })
@@ -121,7 +121,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
           console.error('Error preparing email verification:', verifyError)
           const errDisplay = getSignupErrorMessage(verifyError, 'signup')
           toast({
-            variant: 'destructive',
+            variant: 'soft',
             title: errDisplay.title,
             description: errDisplay.description,
           })
@@ -134,7 +134,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         const clerkUserId = result.createdUserId
         if (!clerkUserId) {
           toast({
-            variant: 'destructive',
+            variant: 'soft',
             title: 'Something went wrong',
             description: 'We couldn’t get your account details. Please try again or contact support.',
           })
@@ -262,7 +262,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
             if (updateError) {
               const errDisplay = getSignupErrorMessage(updateError)
               toast({
-                variant: 'destructive',
+                variant: 'soft',
                 title: errDisplay.title,
                 description: errDisplay.description,
               })
@@ -356,7 +356,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         } catch (stepError: any) {
           const errDisplay = getSignupErrorMessage(stepError)
           toast({
-            variant: 'destructive',
+            variant: 'soft',
             title: errDisplay.title,
             description: setActiveFailed
               ? errDisplay.description
@@ -366,7 +366,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         }
       } else {
         toast({
-          variant: 'destructive',
+          variant: 'soft',
           title: 'Additional verification required',
           description: 'Please check your email for verification instructions.',
         })
@@ -375,7 +375,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
       console.error('Signup error:', error)
       const errDisplay = getSignupErrorMessage(error)
       toast({
-        variant: 'destructive',
+        variant: 'soft',
         title: errDisplay.title,
         description: errDisplay.description,
       })
@@ -410,7 +410,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         const clerkUserId = result.createdUserId
         if (!clerkUserId) {
           toast({
-            variant: 'destructive',
+            variant: 'soft',
             title: 'Verification failed',
             description: 'We couldn’t get your account details. Please try again or contact support.',
           })
@@ -418,7 +418,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         }
         if (!result.createdSessionId) {
           toast({
-            variant: 'destructive',
+            variant: 'soft',
             title: 'Verification failed',
             description: 'We couldn’t start your session. Please try again or contact support.',
           })
@@ -430,7 +430,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         } catch (setActiveError: any) {
           console.error('[SignupForm] Error setting active session:', setActiveError)
           toast({
-            variant: 'destructive',
+            variant: 'soft',
             title: 'Verification failed',
             description: 'Your email is verified but we couldn’t log you in. Please go to the login page and sign in with your email and password.',
           })
@@ -649,7 +649,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
               
               if (!retryClient) {
                 toast({
-                  variant: 'destructive',
+                  variant: 'soft',
                   title: 'Profile not saved',
                   description: 'Your account was created but we couldn’t save your profile. Please log in and contact support to complete setup.',
                 })
@@ -666,7 +666,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
             window.location.href = '/'
           } else {
             toast({
-              variant: 'destructive',
+              variant: 'soft',
               title: 'Something went wrong',
               description: 'We couldn’t create your profile. Please try again or contact support.',
             })
@@ -676,7 +676,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
           console.error('[SignupForm] Error in client creation/linking:', stepError)
           const errDisplay = getSignupErrorMessage(stepError, 'verification')
           toast({
-            variant: 'destructive',
+            variant: 'soft',
             title: errDisplay.title,
             description: errDisplay.description,
           })
@@ -685,7 +685,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
       } else {
         console.log('[SignupForm] Verification status not complete:', result.status)
         toast({
-          variant: 'destructive',
+          variant: 'soft',
           title: 'Verification failed',
           description: result.status === 'missing_requirements' 
             ? 'Please check your email and enter the verification code.'
@@ -696,7 +696,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
       console.error('[SignupForm] Verification error:', error)
       const errDisplay = getSignupErrorMessage(error, 'verification')
       toast({
-        variant: 'destructive',
+        variant: 'soft',
         title: errDisplay.title,
         description: errDisplay.description,
       })
@@ -756,7 +756,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
                 } catch (error: any) {
                   const errDisplay = getSignupErrorMessage(error, 'resend')
                   toast({
-                    variant: 'destructive',
+                    variant: 'soft',
                     title: errDisplay.title,
                     description: errDisplay.description,
                   })

@@ -23,15 +23,15 @@ export function getSignupErrorMessage(error: unknown, context: 'signup' | 'verif
     /already exists|already registered|identifier exists/i.test(clerkMessage)
   ) {
     return {
-      title: 'Account already exists',
-      description: 'This email is already registered. Please log in instead.',
+      title: 'Already have an account',
+      description: 'This email is already registered. You can log in instead.',
     }
   }
 
   // —— Clerk: password ——
   if (/password|too weak|too short|minimum length/i.test(clerkMessage) || clerkCode?.toLowerCase().includes('password')) {
     return {
-      title: 'Password not accepted',
+      title: 'Password needs a small update',
       description: 'Use at least 8 characters, one number, and one special character (e.g. !@#$%).',
     }
   }
@@ -39,7 +39,7 @@ export function getSignupErrorMessage(error: unknown, context: 'signup' | 'verif
   // —— Clerk: email format ——
   if (/invalid email|valid email|email format/i.test(clerkMessage) || clerkCode?.toLowerCase().includes('email')) {
     return {
-      title: 'Invalid email address',
+      title: 'Check your email address',
       description: 'Please enter a valid email address and try again.',
     }
   }
@@ -47,7 +47,7 @@ export function getSignupErrorMessage(error: unknown, context: 'signup' | 'verif
   // —— Clerk: phone ——
   if (/phone|invalid number|e\.164|country code/i.test(clerkMessage) || clerkCode?.toLowerCase().includes('phone')) {
     return {
-      title: 'Invalid phone number',
+      title: 'Phone number format',
       description: 'Use a number with country code (e.g. +44 7123 456789). You can leave phone blank and add it later.',
     }
   }
@@ -55,7 +55,7 @@ export function getSignupErrorMessage(error: unknown, context: 'signup' | 'verif
   // —— Clerk: rate limit ——
   if (/rate limit|too many|try again later|throttl/i.test(clerkMessage) || clerkCode?.toLowerCase().includes('rate')) {
     return {
-      title: 'Too many attempts',
+      title: 'Taking a short break',
       description: 'Please wait a few minutes and try again.',
     }
   }
@@ -64,13 +64,13 @@ export function getSignupErrorMessage(error: unknown, context: 'signup' | 'verif
   if (context === 'verification' || context === 'resend') {
     if (/expired|invalid code|incorrect code|wrong code/i.test(clerkMessage)) {
       return {
-        title: 'Verification failed',
-        description: 'The code is invalid or has expired. Check your email for the latest code, or click "Resend code".',
+        title: 'Code didn’t work',
+        description: 'That code may have expired. Check your email for the latest code, or click “Resend code”.',
       }
     }
     if (/rate limit|too many|try again later/i.test(clerkMessage)) {
       return {
-        title: 'Too many attempts',
+        title: 'Taking a short break',
         description: 'Please wait a few minutes before requesting another code.',
       }
     }
@@ -80,31 +80,31 @@ export function getSignupErrorMessage(error: unknown, context: 'signup' | 'verif
   const msg = typeof err?.message === 'string' ? err.message : String(clerkMessage)
   if (/policy|permission|row-level security|RLS|access denied|new row violates/i.test(msg)) {
     return {
-      title: 'We couldn\'t save your account',
-      description: 'A permissions issue prevented signup. Please try again or contact support if it continues.',
+      title: 'We couldn’t save your account',
+      description: 'Something on our side prevented signup. Please try again in a moment or contact us if it keeps happening.',
     }
   }
 
   // —— Supabase: foreign key ——
   if (/foreign key|violates foreign key|referenced/i.test(msg)) {
     return {
-      title: 'We couldn\'t complete signup',
-      description: 'A system configuration issue prevented linking your account. Please contact support.',
+      title: 'Almost there',
+      description: 'We couldn’t link your account just yet. Please contact us and we’ll sort it out.',
     }
   }
 
   // —— Supabase: unique / duplicate ——
   if (/unique constraint|duplicate key|already exists/i.test(msg)) {
     return {
-      title: 'Account already exists',
-      description: 'This email is already registered. Please log in instead.',
+      title: 'Already have an account',
+      description: 'This email is already registered. You can log in instead.',
     }
   }
 
   // —— Network / connection ——
   if (/network|fetch|connection|failed to fetch|timeout|unable to reach/i.test(msg)) {
     return {
-      title: 'Connection problem',
+      title: 'Connection issue',
       description: 'Please check your internet connection and try again.',
     }
   }
@@ -113,7 +113,7 @@ export function getSignupErrorMessage(error: unknown, context: 'signup' | 'verif
   const raw = err?.errors?.[0]?.longMessage || err?.errors?.[0]?.message || err?.message
   if (raw && typeof raw === 'string' && raw.length < 200) {
     return {
-      title: context === 'verification' ? 'Verification failed' : context === 'resend' ? 'Couldn\'t resend code' : 'Signup failed',
+      title: context === 'verification' ? 'Code didn’t work' : context === 'resend' ? 'Resend didn’t go through' : 'Something went wrong',
       description: raw,
     }
   }
@@ -121,18 +121,18 @@ export function getSignupErrorMessage(error: unknown, context: 'signup' | 'verif
   // —— Fallback ——
   if (context === 'verification') {
     return {
-      title: 'Verification failed',
-      description: 'The code may be wrong or expired. Check your email and try again, or request a new code.',
+      title: 'Code didn’t work',
+      description: 'That code may be wrong or expired. Check your email and try again, or request a new code.',
     }
   }
   if (context === 'resend') {
     return {
-      title: 'Couldn\'t resend code',
+      title: 'Resend didn’t go through',
       description: 'Please wait a minute and try again, or check your email for an existing code.',
     }
   }
   return {
     title: 'Something went wrong',
-    description: 'We couldn\'t create your account. Please try again or contact support if it continues.',
+    description: 'We couldn’t create your account just now. Please try again in a moment or contact us if it keeps happening.',
   }
 }

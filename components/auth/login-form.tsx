@@ -106,16 +106,16 @@ export function LoginForm() {
           } catch (verifyError: any) {
             console.error('[LoginForm] Error preparing second factor:', verifyError)
             toast({
-              variant: 'destructive',
-              title: 'Error sending verification code',
-              description: verifyError.errors?.[0]?.message || 'Failed to send verification code.',
+              variant: 'soft',
+              title: 'We couldn’t send the code',
+              description: verifyError.errors?.[0]?.message || 'Please try again in a moment.',
             })
           }
         } else {
           toast({
-            variant: 'destructive',
-            title: 'Two-factor authentication required',
-            description: 'Please set up 2FA or use an alternative authentication method.',
+            variant: 'soft',
+            title: 'Extra verification needed',
+            description: 'Please set up 2FA or use another way to sign in.',
           })
         }
       } else if (result.status === 'needs_first_factor') {
@@ -142,35 +142,47 @@ export function LoginForm() {
           } catch (verifyError: any) {
             console.error('[LoginForm] Error preparing email verification:', verifyError)
             toast({
-              variant: 'destructive',
-              title: 'Error sending verification code',
-              description: verifyError.errors?.[0]?.message || 'Failed to send verification code.',
+              variant: 'soft',
+              title: 'We couldn’t send the code',
+              description: verifyError.errors?.[0]?.message || 'Please try again in a moment.',
             })
           }
         } else {
           // Other verification types (2FA, etc.)
           toast({
-            variant: 'destructive',
-            title: 'Additional verification required',
-            description: 'Please complete the additional verification step.',
+            variant: 'soft',
+title: 'One more step',
+          description: 'Please complete the verification step to sign in.',
           })
         }
       } else {
         // Handle other statuses
         console.log('[LoginForm] Sign-in status:', result.status)
         toast({
-          variant: 'destructive',
-          title: 'Additional verification required',
-          description: `Sign-in status: ${result.status}. Please check your email or complete verification.`,
+          variant: 'soft',
+          title: 'One more step',
+          description: 'Please check your email or complete the verification step to sign in.',
         })
       }
     } catch (error: any) {
-      console.error('Login error:', error)
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: error.errors?.[0]?.message || 'Invalid email or password',
-      })
+      const clerkMessage = error?.errors?.[0]?.message ?? error?.message ?? ''
+      const clerkCode = error?.errors?.[0]?.code ?? ''
+      const isWrongCredentials =
+        /couldn't find your account|could not find|invalid.*password|invalid.*identifier|incorrect.*password|invalid verification strategy/i.test(clerkMessage) ||
+        /form_identifier_(invalid|incorrect)|strategy_invalid/i.test(clerkCode)
+      if (isWrongCredentials) {
+        toast({
+          variant: 'soft',
+          title: "We couldn't find your account",
+          description: 'Check your email and password, or sign up if you don’t have an account.',
+        })
+      } else {
+        toast({
+          variant: 'soft',
+          title: 'Something went wrong',
+          description: error?.errors?.[0]?.message || error?.message || 'Please try again in a moment.',
+        })
+      }
     } finally {
       setIsLoading(false)
     }
@@ -235,15 +247,15 @@ export function LoginForm() {
         return // Exit early to prevent any further rendering
       } else {
         toast({
-          variant: 'destructive',
-          title: 'Verification failed',
-          description: 'The verification code is invalid. Please try again.',
+          variant: 'soft',
+          title: 'Code didn’t work',
+          description: 'That code may be wrong or expired. Please try again or request a new code.',
         })
       }
     } catch (error: any) {
       console.error('[LoginForm] Verification error:', error)
       
-      let errorMessage = 'Failed to verify email'
+      let errorMessage = 'We couldn’t verify your email'
       if (error?.errors && Array.isArray(error.errors) && error.errors.length > 0) {
         errorMessage = error.errors[0].message || error.errors[0].longMessage || errorMessage
       } else if (error?.message) {
@@ -251,8 +263,8 @@ export function LoginForm() {
       }
       
       toast({
-        variant: 'destructive',
-        title: 'Verification Error',
+        variant: 'soft',
+        title: 'Verification didn’t work',
         description: errorMessage,
       })
     } finally {
@@ -326,9 +338,9 @@ export function LoginForm() {
                   })
                 } catch (error: any) {
                   toast({
-                    variant: 'destructive',
-                    title: 'Error',
-                    description: 'Failed to resend code. Please try again.',
+                    variant: 'soft',
+                    title: 'Resend didn’t go through',
+                    description: 'Please wait a moment and try again.',
                   })
                 }
               }
@@ -363,18 +375,18 @@ export function LoginForm() {
   return (
     <div className="space-y-4">
       {errorParam === 'account_exists' && (
-        <Alert variant="destructive">
-          <AlertTitle>Account already exists</AlertTitle>
+        <Alert variant="soft">
+          <AlertTitle>Already have an account</AlertTitle>
           <AlertDescription>
-            This email is already registered. Sign in with your password below.
+            This email is already registered. You can sign in with your password below.
           </AlertDescription>
         </Alert>
       )}
       {errorParam === 'profile_save_failed' && (
-        <Alert variant="destructive">
-          <AlertTitle>Account created — profile not fully saved</AlertTitle>
+        <Alert variant="soft">
+          <AlertTitle>Account created — one more step</AlertTitle>
           <AlertDescription>
-            Your account was created but we couldn’t save your profile. Sign in below; if you don’t see your account, contact support.
+            Your account was created. Please sign in below; if anything doesn't look right, our team can help.
           </AlertDescription>
         </Alert>
       )}
