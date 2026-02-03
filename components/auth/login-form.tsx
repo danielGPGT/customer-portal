@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSignIn } from '@clerk/nextjs'
@@ -9,6 +9,7 @@ import { loginSchema, type LoginInput } from '@/lib/utils/validation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { useToast } from '@/hooks/use-toast'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
@@ -16,7 +17,9 @@ import { SocialLoginButtons } from './social-login-buttons'
 
 export function LoginForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { toast } = useToast()
+  const errorParam = searchParams.get('error')
   const { signIn, setActive, isLoaded } = useSignIn()
   const [isLoading, setIsLoading] = useState(false)
   const [isRedirecting, setIsRedirecting] = useState(false)
@@ -358,7 +361,24 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <div className="space-y-4">
+      {errorParam === 'account_exists' && (
+        <Alert variant="destructive">
+          <AlertTitle>Account already exists</AlertTitle>
+          <AlertDescription>
+            This email is already registered. Sign in with your password below.
+          </AlertDescription>
+        </Alert>
+      )}
+      {errorParam === 'profile_save_failed' && (
+        <Alert variant="destructive">
+          <AlertTitle>Account created — profile not fully saved</AlertTitle>
+          <AlertDescription>
+            Your account was created but we couldn’t save your profile. Sign in below; if you don’t see your account, contact support.
+          </AlertDescription>
+        </Alert>
+      )}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input
@@ -411,6 +431,7 @@ export function LoginForm() {
         </Link>
       </p>
     </form>
+    </div>
   )
 }
 

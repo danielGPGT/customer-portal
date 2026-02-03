@@ -14,6 +14,7 @@ import { useToast } from '@/hooks/use-toast'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { checkSignupRateLimit } from '@/app/(auth)/signup/actions'
+import { getSignupErrorMessage } from '@/lib/utils/signup-errors'
 import { SocialLoginButtons } from './social-login-buttons'
 
 interface SignupFormProps {
@@ -54,19 +55,17 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
       try {
         const rateLimitCheck = await checkSignupRateLimit()
         if (!rateLimitCheck.allowed) {
+          setIsLoading(false)
           toast({
             variant: 'destructive',
             title: 'Too many signup attempts',
-            description: rateLimitCheck.error || 'Please try again later.',
+            description: rateLimitCheck.error || 'Please wait a few minutes and try again.',
           })
-          setIsLoading(false)
           return
         }
       } catch (rateLimitError: any) {
         // If rate limit check fails, log but continue (fail open)
-        // Clerk has built-in rate limiting, so this is not critical
         console.warn('[SignupForm] Rate limit check failed:', rateLimitError)
-        // Continue with signup - Clerk will handle rate limiting
       }
 
       // STEP 1: Check if client already exists with this email
@@ -84,6 +83,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
 
       // Check if client already has Clerk account linked
       if (existingClient && existingClient.clerk_user_id) {
+        setIsLoading(false)
         toast({
           variant: 'destructive',
           title: 'Account already exists',
@@ -99,7 +99,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         password: data.password,
         firstName: data.firstName,
         lastName: data.lastName,
-        ...(data.phone && { phoneNumber: data.phone }),
       })
 
       // Handle Clerk signup status
@@ -120,10 +119,11 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
           })
         } catch (verifyError: any) {
           console.error('Error preparing email verification:', verifyError)
+          const errDisplay = getSignupErrorMessage(verifyError, 'signup')
           toast({
             variant: 'destructive',
-            title: 'Error sending verification code',
-            description: verifyError.errors?.[0]?.message || 'Failed to send verification code. Please try again.',
+            title: errDisplay.title,
+            description: errDisplay.description,
           })
         }
         setIsLoading(false)
@@ -131,17 +131,25 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
       }
 
       if (result.status === 'complete') {
-        // Signup complete - get Clerk user ID
         const clerkUserId = result.createdUserId
-        
         if (!clerkUserId) {
-          throw new Error('Failed to get Clerk user ID')
+          toast({
+            variant: 'destructive',
+            title: 'Something went wrong',
+            description: 'We couldn’t get your account details. Please try again or contact support.',
+          })
+          return
         }
 
-        // Set active session
-        await setActive({ session: result.createdSessionId })
+        let setActiveFailed = false
+        try {
+          await setActive({ session: result.createdSessionId })
+        } catch (setActiveErr: any) {
+          console.error('[SignupForm] setActive failed:', setActiveErr)
+          setActiveFailed = true
+          // Continue to create/link client so account exists; we’ll ask user to log in
+        }
 
-        // Track if we need to clean up on error
         let clientCreatedOrLinked = false
 
         try {
@@ -162,7 +170,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
             p_email: data.email,
             p_first_name: data.firstName,
             p_last_name: data.lastName,
-            p_phone: data.phone || null,
+            p_phone: null,
             p_team_id: null, // Customer portal doesn't use teams
           })
 
@@ -199,7 +207,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
                   email: data.email,
                   first_name: data.firstName,
                   last_name: data.lastName,
-                  phone: data.phone || null,
+                  phone: null,
                   status: 'active',
                   loyalty_enrolled: true,
                   loyalty_enrolled_at: new Date().toISOString(),
@@ -245,7 +253,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
             // Optionally update personal info if provided (but preserve existing data if not provided)
             if (data.firstName) updateData.first_name = data.firstName
             if (data.lastName) updateData.last_name = data.lastName
-            if (data.phone) updateData.phone = data.phone
 
             const { error: updateError } = await supabase
               .from('clients')
@@ -253,17 +260,14 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
               .eq('id', existingClient.id)
 
             if (updateError) {
-              // Handle constraint errors
-              if (updateError.message.includes('foreign key') || updateError.message.includes('violates foreign key')) {
-                console.error('Foreign key constraint violation:', updateError)
-                toast({
-                  variant: 'destructive',
-                  title: 'Error linking account',
-                  description: 'Unable to link account. Please contact support.',
-                })
-                return
-              }
-              throw updateError
+              const errDisplay = getSignupErrorMessage(updateError)
+              toast({
+                variant: 'destructive',
+                title: errDisplay.title,
+                description: errDisplay.description,
+              })
+              if (setActiveFailed) router.push('/login')
+              return
             }
 
             clientCreatedOrLinked = true
@@ -286,7 +290,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
               email: data.email,
               first_name: data.firstName,
               last_name: data.lastName,
-              phone: data.phone || null,
+              phone: null,
               status: 'active',
               loyalty_enrolled: true,
               loyalty_enrolled_at: new Date().toISOString(),
@@ -337,19 +341,30 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
           }
         }
 
-          // If we get here, everything succeeded
           if (clientCreatedOrLinked) {
-            // Use window.location for a full page reload to ensure session is properly set
-            // This prevents timing issues with middleware and protected routes
-            // Redirect to / instead of /dashboard to avoid redirect chain
-            window.location.href = '/'
+            if (setActiveFailed) {
+              setIsLoading(false)
+              toast({
+                title: 'Account created',
+                description: 'Please log in with your email and password.',
+              })
+              router.push('/login')
+            } else {
+              window.location.href = '/'
+            }
           }
         } catch (stepError: any) {
-          // Re-throw to be caught by outer catch block
-          throw stepError
+          const errDisplay = getSignupErrorMessage(stepError)
+          toast({
+            variant: 'destructive',
+            title: errDisplay.title,
+            description: setActiveFailed
+              ? errDisplay.description
+              : `${errDisplay.description} Your account was created — please log in and contact support if you need help.`,
+          })
+          router.push(setActiveFailed ? '/login' : '/login?error=profile_save_failed')
         }
       } else {
-        // Signup not complete - may need email verification
         toast({
           variant: 'destructive',
           title: 'Additional verification required',
@@ -358,10 +373,11 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
       }
     } catch (error: any) {
       console.error('Signup error:', error)
+      const errDisplay = getSignupErrorMessage(error)
       toast({
         variant: 'destructive',
-        title: 'Error',
-        description: error.errors?.[0]?.message || error.message || 'Failed to create account',
+        title: errDisplay.title,
+        description: errDisplay.description,
       })
     } finally {
       setIsLoading(false)
@@ -391,24 +407,35 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
       })
 
       if (result.status === 'complete') {
-        // Verification complete - get Clerk user ID
         const clerkUserId = result.createdUserId
-        
         if (!clerkUserId) {
-          throw new Error('Failed to get Clerk user ID after verification')
+          toast({
+            variant: 'destructive',
+            title: 'Verification failed',
+            description: 'We couldn’t get your account details. Please try again or contact support.',
+          })
+          return
         }
-
         if (!result.createdSessionId) {
-          throw new Error('Failed to get session ID after verification')
+          toast({
+            variant: 'destructive',
+            title: 'Verification failed',
+            description: 'We couldn’t start your session. Please try again or contact support.',
+          })
+          return
         }
 
-        // Set active session - wait for it to complete
         try {
           await setActive({ session: result.createdSessionId })
-          console.log('[SignupForm] Session set active successfully')
         } catch (setActiveError: any) {
           console.error('[SignupForm] Error setting active session:', setActiveError)
-          throw new Error(`Failed to set active session: ${setActiveError.message || 'Unknown error'}`)
+          toast({
+            variant: 'destructive',
+            title: 'Verification failed',
+            description: 'Your email is verified but we couldn’t log you in. Please go to the login page and sign in with your email and password.',
+          })
+          router.push('/login')
+          return
         }
 
         // Track if we need to clean up on error
@@ -435,7 +462,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
               p_email: formData.email,
               p_first_name: formData.firstName,
               p_last_name: formData.lastName,
-              p_phone: formData.phone || null,
+              p_phone: null,
               p_team_id: null,
             })
 
@@ -490,7 +517,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
                   email: formData.email,
                   first_name: formData.firstName,
                   last_name: formData.lastName,
-                  phone: formData.phone || null,
+                  phone: null,
                   status: 'active',
                   loyalty_enrolled: true,
                   loyalty_enrolled_at: new Date().toISOString(),
@@ -531,7 +558,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
               
               if (formData.firstName) updateData.first_name = formData.firstName
               if (formData.lastName) updateData.last_name = formData.lastName
-              if (formData.phone) updateData.phone = formData.phone
 
               const { error: updateError } = await supabase
                 .from('clients')
@@ -557,7 +583,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
                 email: formData.email,
                 first_name: formData.firstName,
                 last_name: formData.lastName,
-                phone: formData.phone || null,
+                phone: null,
                 status: 'active',
                 loyalty_enrolled: true,
                 loyalty_enrolled_at: new Date().toISOString(),
@@ -622,7 +648,13 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
                 .single()
               
               if (!retryClient) {
-                throw new Error('Client was not created successfully. Please try again or contact support.')
+                toast({
+                  variant: 'destructive',
+                  title: 'Profile not saved',
+                  description: 'Your account was created but we couldn’t save your profile. Please log in and contact support to complete setup.',
+                })
+                router.push('/login')
+                return
               }
             }
             
@@ -633,11 +665,22 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
             // Redirect to / instead of /dashboard to avoid redirect chain
             window.location.href = '/'
           } else {
-            throw new Error('Failed to create or link client record')
+            toast({
+              variant: 'destructive',
+              title: 'Something went wrong',
+              description: 'We couldn’t create your profile. Please try again or contact support.',
+            })
+            return
           }
         } catch (stepError: any) {
           console.error('[SignupForm] Error in client creation/linking:', stepError)
-          throw stepError
+          const errDisplay = getSignupErrorMessage(stepError, 'verification')
+          toast({
+            variant: 'destructive',
+            title: errDisplay.title,
+            description: errDisplay.description,
+          })
+          return
         }
       } else {
         console.log('[SignupForm] Verification status not complete:', result.status)
@@ -650,43 +693,12 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         })
       }
     } catch (error: any) {
-      console.error('[SignupForm] Verification error:', {
-        error,
-        errorType: typeof error,
-        errorKeys: error ? Object.keys(error) : [],
-        errorMessage: error?.message,
-        errorErrors: error?.errors,
-        errorString: String(error),
-        errorJSON: JSON.stringify(error, null, 2),
-      })
-      
-      // Handle different error structures from Clerk
-      let errorMessage = 'Failed to verify email'
-      
-      if (error?.errors && Array.isArray(error.errors) && error.errors.length > 0) {
-        errorMessage = error.errors[0].message || error.errors[0].longMessage || errorMessage
-      } else if (error?.message) {
-        errorMessage = error.message
-      } else if (typeof error === 'string') {
-        errorMessage = error
-      } else if (error && typeof error === 'object') {
-        // Try to extract any message from the error object
-        const possibleMessages = [
-          error.message,
-          error.error,
-          error.reason,
-          error.description,
-        ].filter(Boolean)
-        
-        if (possibleMessages.length > 0) {
-          errorMessage = possibleMessages[0]
-        }
-      }
-      
+      console.error('[SignupForm] Verification error:', error)
+      const errDisplay = getSignupErrorMessage(error, 'verification')
       toast({
         variant: 'destructive',
-        title: 'Verification Error',
-        description: errorMessage,
+        title: errDisplay.title,
+        description: errDisplay.description,
       })
     } finally {
       setIsLoading(false)
@@ -742,10 +754,11 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
                     description: 'A new verification code has been sent to your email.',
                   })
                 } catch (error: any) {
+                  const errDisplay = getSignupErrorMessage(error, 'resend')
                   toast({
                     variant: 'destructive',
-                    title: 'Error',
-                    description: 'Failed to resend code. Please try again.',
+                    title: errDisplay.title,
+                    description: errDisplay.description,
                   })
                 }
               }
@@ -802,20 +815,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
             <p className="text-sm text-red-500">{errors.lastName.message}</p>
           )}
         </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="phone">Phone (optional)</Label>
-        <Input
-          id="phone"
-          type="tel"
-          placeholder="+44 7XXX XXXXXX"
-          {...register('phone')}
-          disabled={isLoading}
-        />
-        {errors.phone && (
-          <p className="text-sm text-red-500">{errors.phone.message}</p>
-        )}
       </div>
 
       <div className="space-y-2">
