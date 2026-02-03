@@ -20,6 +20,14 @@ export function LoginForm() {
   const searchParams = useSearchParams()
   const { toast } = useToast()
   const errorParam = searchParams.get('error')
+  const redirectUrlParam = searchParams.get('redirect_url')
+  const safeRedirectUrl =
+    redirectUrlParam &&
+    redirectUrlParam.startsWith('/') &&
+    !redirectUrlParam.startsWith('//') &&
+    !redirectUrlParam.includes('\\')
+      ? redirectUrlParam
+      : null
   const { signIn, setActive, isLoaded } = useSignIn()
   const [isLoading, setIsLoading] = useState(false)
   const [isRedirecting, setIsRedirecting] = useState(false)
@@ -78,9 +86,8 @@ export function LoginForm() {
         await new Promise(resolve => setTimeout(resolve, 500))
         
         // Use window.location for a full page reload to ensure session is properly set
-        // This triggers a fresh server-side render with the session cookie available
-        // Redirect to / instead of /dashboard to avoid redirect chain
-        window.location.href = '/'
+        const destination = safeRedirectUrl || '/'
+        window.location.href = destination
         return // Exit early to prevent any further rendering
       } else if (result.status === 'needs_second_factor') {
         // Two-factor authentication required (Client Trust or MFA)
@@ -242,8 +249,8 @@ title: 'One more step',
         // 500ms gives the cookie time to be sent with the next request
         await new Promise(resolve => setTimeout(resolve, 500))
         
-        // Redirect to / instead of /dashboard to avoid redirect chain
-        window.location.href = '/'
+        const destination = safeRedirectUrl || '/'
+        window.location.href = destination
         return // Exit early to prevent any further rendering
       } else {
         toast({
@@ -387,6 +394,30 @@ title: 'One more step',
           <AlertTitle>Account created — one more step</AlertTitle>
           <AlertDescription>
             Your account was created. Please sign in below; if anything doesn't look right, our team can help.
+          </AlertDescription>
+        </Alert>
+      )}
+      {errorParam === 'no_email' && (
+        <Alert variant="soft">
+          <AlertTitle>Email needed to continue</AlertTitle>
+          <AlertDescription>
+            We couldn't find an email on your account. Please sign in with a different method or contact support.
+          </AlertDescription>
+        </Alert>
+      )}
+      {errorParam === 'setup_failed' && (
+        <Alert variant="soft">
+          <AlertTitle>Something went wrong</AlertTitle>
+          <AlertDescription>
+            We couldn't finish setting up your session. Please try signing in again, or contact support if it keeps happening.
+          </AlertDescription>
+        </Alert>
+      )}
+      {errorParam === 'oauth_failed' && (
+        <Alert variant="soft">
+          <AlertTitle>Sign-in didn't complete</AlertTitle>
+          <AlertDescription>
+            Sign-in with Google or your provider didn't finish. Please try again or use email and password below.
           </AlertDescription>
         </Alert>
       )}

@@ -379,13 +379,13 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   // Error messages mapping
   const errorMessages: Record<string, { title: string; description: string }> = {
     client_access_required: {
-      title: 'Access Restricted',
-      description: 'You don\'t have access to the client portal. This account may only have team portal access. Please contact support if you believe this is an error.',
+      title: 'Access restricted',
+      description: 'This account may only have team portal access. If you should have client access, please contact support.',
     },
   }
 
   const errorInfo = error ? errorMessages[error] : null
-  
+
   return (
     <>
       {/* Full-Width Dashboard Header - Breaks out of container */}
@@ -404,7 +404,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         {/* Main Content Container */}
         <div className="space-y-8 pb-8 w-full max-w-full overflow-x-hidden mt-8">
           {errorInfo && (
-            <Alert variant="destructive">
+            <Alert variant="soft">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>{errorInfo.title}</AlertTitle>
               <AlertDescription>{errorInfo.description}</AlertDescription>

@@ -1,8 +1,9 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-// Define protected routes
+// Define protected routes (must match (protected) layout routes)
 const isProtectedRoute = createRouteMatcher([
+  "/", // root dashboard
   "/dashboard(.*)",
   "/trips(.*)",
   "/points(.*)",
@@ -10,6 +11,7 @@ const isProtectedRoute = createRouteMatcher([
   "/refer(.*)",
   "/notifications(.*)",
   "/search(.*)",
+  "/support(.*)",
 ]);
 
 // Define public auth routes (login, signup, sign-in, sign-up, etc.)
