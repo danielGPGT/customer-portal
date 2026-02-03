@@ -19,6 +19,7 @@ import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/comp
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, Save, Info, AlertCircle, FileText, Mail, Phone as PhoneIcon, MapPin } from 'lucide-react'
 import { useMediaQuery } from '@/hooks/use-media-query'
+import { toDateOnlyInputValue } from '@/lib/utils/date'
 
 // Phone number formatting utility
 const formatPhoneNumber = (value: string): string => {
@@ -150,7 +151,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         last_name: traveler.last_name || '',
         email: traveler.email || '',
         phone: traveler.phone || '',
-        date_of_birth: traveler.date_of_birth ? traveler.date_of_birth.split('T')[0] : '',
+        date_of_birth: toDateOnlyInputValue(traveler.date_of_birth) || '',
         address_line1: traveler.address_line1 || '',
         address_line2: traveler.address_line2 || '',
         city: traveler.city || '',

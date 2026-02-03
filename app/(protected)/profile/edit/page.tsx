@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/app/page-header'
 import { ArrowLeft, UserCog } from 'lucide-react'
 import { getClient } from '@/lib/utils/get-client'
 import { getClerkUser } from '@/lib/clerk/server'
+import { toDateOnlyInputValue } from '@/lib/utils/date'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { EditProfileForm } from '@/components/profile/edit-profile-form'
@@ -12,13 +13,6 @@ import { EditProfileForm } from '@/components/profile/edit-profile-form'
 export const metadata: Metadata = {
   title: 'Edit Profile | Grand Prix Grand Tours Portal',
   description: 'Update your personal information and profile details',
-}
-
-const formatDateForInput = (dateString?: string | null) => {
-  if (!dateString) return ''
-  const date = new Date(dateString)
-  if (Number.isNaN(date.getTime())) return ''
-  return date.toISOString().split('T')[0]
 }
 
 export default async function EditProfilePage() {
@@ -55,7 +49,7 @@ export default async function EditProfilePage() {
     lastName: client.last_name || user?.lastName || '',
     email: client.email || user?.email || '',
     phone: client.phone || user?.phoneNumber || '',
-    dateOfBirth: formatDateForInput(client.date_of_birth),
+    dateOfBirth: toDateOnlyInputValue(client.date_of_birth),
     address,
   }
 
