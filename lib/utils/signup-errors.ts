@@ -109,9 +109,15 @@ export function getSignupErrorMessage(error: unknown, context: 'signup' | 'verif
     }
   }
 
-  // —— Use Clerk or provider message if it's readable ——
+  // —— Use Clerk or provider message only if it's a real, readable message ——
   const raw = err?.errors?.[0]?.longMessage || err?.errors?.[0]?.message || err?.message
-  if (raw && typeof raw === 'string' && raw.length < 200) {
+  const isHelpfulRaw =
+    raw &&
+    typeof raw === 'string' &&
+    raw.length > 15 &&
+    raw.length < 200 &&
+    !/^unknown$|^error$|^failed$/i.test(raw.trim())
+  if (isHelpfulRaw) {
     return {
       title: context === 'verification' ? 'Code didn’t work' : context === 'resend' ? 'Resend didn’t go through' : 'Something went wrong',
       description: raw,
