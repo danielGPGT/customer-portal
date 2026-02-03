@@ -4,6 +4,7 @@ import { TripTabs } from '@/components/trips/trip-tabs'
 import { TripList } from '@/components/trips/trip-list'
 import { EmptyTripState } from '@/components/trips/empty-trip-state'
 import { getClient } from '@/lib/utils/get-client'
+import { parseCalendarDate } from '@/lib/utils/date'
 import { UpcomingTrips } from '@/components/dashboard/upcoming-trips'
 import { PageHeader } from '@/components/app/page-header'
 
@@ -225,20 +226,22 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
 
   const filterByTab = (tab: TripTab) => {
     return enrichedBookings.filter((booking) => {
-    const startDate = booking.event_start_date ? new Date(booking.event_start_date) : null
-    const endDate = booking.event_end_date ? new Date(booking.event_end_date) : null
+    const startDate = booking.event_start_date ? parseCalendarDate(booking.event_start_date) : null
+    const endDate = booking.event_end_date ? parseCalendarDate(booking.event_end_date) : null
+    if (startDate) startDate.setHours(0, 0, 0, 0)
+    if (endDate) endDate.setHours(0, 0, 0, 0)
 
       switch (tab) {
       case 'upcoming':
         return (
-          startDate && 
-          startDate >= today && 
+          startDate &&
+          startDate >= today &&
           (booking.booking_status === 'confirmed' || booking.booking_status === 'provisional')
         )
       case 'past':
         return (
-          endDate && 
-          endDate < today && 
+          endDate &&
+          endDate < today &&
           (booking.booking_status === 'confirmed' || booking.booking_status === 'completed')
         )
       case 'all':
@@ -260,8 +263,8 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
 
   // Sort bookings based on tab
   const sortedBookings = [...filteredBookings].sort((a, b) => {
-    const aDate = a.event_start_date ? new Date(a.event_start_date) : new Date(0)
-    const bDate = b.event_start_date ? new Date(b.event_start_date) : new Date(0)
+    const aDate = a.event_start_date ? (parseCalendarDate(a.event_start_date) ?? new Date(0)) : new Date(0)
+    const bDate = b.event_start_date ? (parseCalendarDate(b.event_start_date) ?? new Date(0)) : new Date(0)
 
     switch (activeTab) {
       case 'upcoming':

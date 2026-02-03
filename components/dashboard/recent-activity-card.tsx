@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
+import { formatCalendarDate } from '@/lib/utils/date'
 import { Clock, ArrowRight, Sparkles, Plane, History } from 'lucide-react'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -217,11 +218,7 @@ export function RecentActivityCard({ transactions, trips }: RecentActivityCardPr
                     </p>
                     {trip.event_start_date && (
                       <p className="text-[11px] text-muted-foreground">
-                        {new Date(trip.event_start_date).toLocaleDateString('en-GB', {
-                          day: 'numeric',
-                          month: 'short',
-                          year: 'numeric',
-                        })}
+                        {formatCalendarDate(trip.event_start_date, 'd MMM yyyy')}
                       </p>
                     )}
                     <Link

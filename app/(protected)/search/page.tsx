@@ -15,7 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Plane, Coins, FileText, Calendar, MapPin } from 'lucide-react'
 import Link from 'next/link'
-import { format } from 'date-fns'
+import { formatCalendarDate } from '@/lib/utils/date'
 
 interface SearchPageProps {
   searchParams: Promise<{ q?: string }>
@@ -206,7 +206,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                               {result.date && (
                                 <p className="flex items-center gap-1.5">
                                   <Calendar className="h-3.5 w-3.5" />
-                                  {format(new Date(result.date), 'MMM d, yyyy')}
+                                  {formatCalendarDate(result.date, 'MMM d, yyyy')}
                                 </p>
                               )}
                             </div>
@@ -252,7 +252,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                               {result.date && (
                                 <p className="flex items-center gap-1.5">
                                   <Calendar className="h-3.5 w-3.5" />
-                                  {format(new Date(result.date), 'MMM d, yyyy')}
+                                  {formatCalendarDate(result.date, 'MMM d, yyyy')}
                                 </p>
                               )}
                             </div>

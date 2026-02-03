@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Plane, Calendar, FileText, CheckCircle2, Clock, Plus } from 'lucide-react'
 import { format } from 'date-fns'
+import { formatCalendarDate } from '@/lib/utils/date'
 import { CustomerFlightForm } from '@/components/trips/customer-flight-form'
 import { FlightItineraryCard } from '@/components/trips/flight-itinerary-card'
 import { createClient } from '@/lib/supabase/client'
@@ -30,6 +31,8 @@ interface FlightsSectionProps {
   flights: Flight[]
   currency: string
   bookingId: string
+  teamId: string | null
+  bookingReference: string
   canEdit: boolean
   isEditLocked: boolean
   daysUntilLock: number | null
@@ -37,7 +40,7 @@ interface FlightsSectionProps {
   bookingStatus?: 'provisional' | 'confirmed' | 'completed' | 'cancelled'
 }
 
-export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLocked, daysUntilLock, lockDate, isPermanentlyLocked, bookingStatus }: FlightsSectionProps & { lockDate: string | null }) {
+export function FlightsSection({ flights, currency, bookingId, teamId, bookingReference, canEdit, isEditLocked, daysUntilLock, lockDate, isPermanentlyLocked, bookingStatus }: FlightsSectionProps & { lockDate: string | null }) {
   const router = useRouter()
   const { toast } = useToast()
   const [formOpen, setFormOpen] = useState(false)
@@ -195,11 +198,7 @@ export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLo
 
   const formatDate = (date: string | null | undefined) => {
     if (!date) return null
-    try {
-      return format(new Date(date), 'MMM d, yyyy')
-    } catch {
-      return date
-    }
+    return formatCalendarDate(date, 'MMM d, yyyy', date)
   }
 
   const getStatusBadge = (status: string | null | undefined) => {
@@ -251,7 +250,7 @@ export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLo
                   <p className="text-[11px] sm:text-xs text-amber-900 font-medium">
                     Flight details are locked as we&apos;re within 4 weeks of departure
                     {lockDate && (
-                      <> (changes locked from {new Date(lockDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}).</>
+                      <> (changes locked from {formatCalendarDate(lockDate.slice(0, 10), 'd MMM yyyy')}).</>
                     )}
                     {' '}Please contact support to update information.
                   </p>
@@ -261,7 +260,7 @@ export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLo
                   <p className="text-[11px] sm:text-xs text-emerald-900 font-medium">
                     You can add or edit your flight details for another {daysUntilLock} {daysUntilLock === 1 ? 'day' : 'days'}
                     {lockDate && (
-                      <> (changes lock on {new Date(lockDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}).</>
+                      <> (changes lock on {formatCalendarDate(lockDate.slice(0, 10), 'd MMM yyyy')}).</>
                     )}
                   </p>
                   {timeRemaining && (
@@ -361,6 +360,8 @@ export function FlightsSection({ flights, currency, bookingId, canEdit, isEditLo
       {canEditFlights && (
         <CustomerFlightForm
           bookingId={bookingId}
+          teamId={teamId}
+          bookingReference={bookingReference}
           open={formOpen}
           onOpenChange={(open) => {
             setFormOpen(open)

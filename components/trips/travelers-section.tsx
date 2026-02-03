@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Users, User, Mail, Phone, MapPin, Edit2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { TravelerEditDrawer } from '@/components/trips/traveler-edit-drawer'
+import { formatCalendarDate } from '@/lib/utils/date'
 
 interface Traveler {
   id: string
@@ -35,9 +36,12 @@ interface TravelersSectionProps {
   lockDate: string | null
   isPermanentlyLocked?: boolean
   bookingStatus?: 'provisional' | 'confirmed' | 'completed' | 'cancelled'
+  bookingId?: string
+  teamId?: string | null
+  bookingReference?: string
 }
 
-export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLock, hasBookedFlights, lockDate, isPermanentlyLocked, bookingStatus }: TravelersSectionProps) {
+export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLock, hasBookedFlights, lockDate, isPermanentlyLocked, bookingStatus, bookingId, teamId, bookingReference }: TravelersSectionProps) {
   const [selectedTraveler, setSelectedTraveler] = useState<Traveler | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [timeRemaining, setTimeRemaining] = useState<string | null>(null)
@@ -151,11 +155,7 @@ export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLo
 
   const formatDate = (date: string | null | undefined) => {
     if (!date) return null
-    try {
-      return new Date(date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
-    } catch {
-      return date
-    }
+    return formatCalendarDate(date, 'd MMMM yyyy', date)
   }
 
   return (
@@ -179,7 +179,7 @@ export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLo
                 <p className="text-[11px] sm:text-xs text-amber-900 font-medium">
                   Traveller details are locked as we&apos;re within 4 weeks of departure
                   {lockDate && (
-                    <> (changes locked from {new Date(lockDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}).</>
+                    <> (changes locked from {formatCalendarDate(lockDate.slice(0, 10), 'd MMM yyyy')}).</>
                   )}
                   {' '}Please contact support to update information.
                 </p>
@@ -195,7 +195,7 @@ export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLo
                 <p className="text-[11px] sm:text-xs text-emerald-900 font-medium">
                   You can update traveller details for another {daysUntilLock} {daysUntilLock === 1 ? 'day' : 'days'}
                   {lockDate && (
-                    <> (changes lock on {new Date(lockDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}).</>
+                    <> (changes lock on {formatCalendarDate(lockDate.slice(0, 10), 'd MMM yyyy')}).</>
                   )}
                 </p>
                 {timeRemaining && (
@@ -292,6 +292,9 @@ export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLo
         traveler={selectedTraveler}
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
+        bookingId={bookingId}
+        teamId={teamId}
+        bookingReference={bookingReference}
         onSuccess={async (updatedTraveler) => {
           // Optimistically update local state with the updated traveler
           if (updatedTraveler) {

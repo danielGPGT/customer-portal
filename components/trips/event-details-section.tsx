@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Calendar, MapPin, Ticket } from 'lucide-react'
-import { format } from 'date-fns'
+import { formatCalendarDate, parseCalendarDate } from '@/lib/utils/date'
 
 interface EventDetailsSectionProps {
   eventName: string
@@ -21,11 +21,7 @@ export function EventDetailsSection({
 }: EventDetailsSectionProps) {
   const formatDate = (date: string | null) => {
     if (!date) return 'TBD'
-    try {
-      return format(new Date(date), 'MMM d, yyyy')
-    } catch {
-      return 'Invalid date'
-    }
+    return formatCalendarDate(date, 'MMM d, yyyy', 'Invalid date')
   }
 
   const formatDateRange = () => {
@@ -40,16 +36,11 @@ export function EventDetailsSection({
 
   const calculateDuration = () => {
     if (!startDate || !endDate) return null
-    
-    try {
-      const start = new Date(startDate)
-      const end = new Date(endDate)
-      const diffTime = Math.abs(end.getTime() - start.getTime())
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1
-      return diffDays
-    } catch {
-      return null
-    }
+    const start = parseCalendarDate(startDate)
+    const end = parseCalendarDate(endDate)
+    if (!start || !end) return null
+    const diffTime = Math.abs(end.getTime() - start.getTime())
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1
   }
 
   const duration = calculateDuration()

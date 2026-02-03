@@ -272,6 +272,7 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
         discountApplied={enrichedBooking.discount_applied}
         currency={currency}
         bookingId={bookingId}
+        teamId={booking.team_id}
         travelers={booking.booking_travelers || []}
         components={booking.booking_components || []}
         ticketDaysMap={ticketDaysMap}

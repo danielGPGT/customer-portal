@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { format, differenceInDays } from 'date-fns'
+import { differenceInDays } from 'date-fns'
+import { parseCalendarDate, formatCalendarDate } from '@/lib/utils/date'
 import {
   Calendar,
   MapPin,
@@ -134,15 +135,16 @@ export function UpcomingTrips({ trip }: UpcomingTripsProps) {
   const startDate = trip.check_in_date || trip.event_start_date || trip.events?.start_date
   const endDate = trip.check_out_date || trip.event_end_date || trip.events?.end_date
 
-  const startDateFormatted = startDate ? format(new Date(startDate), 'EEEE, MMMM d, yyyy') : 'TBD'
-  const endDateFormatted = endDate ? format(new Date(endDate), 'EEEE, MMMM d, yyyy') : ''
+  const startDateFormatted = startDate ? formatCalendarDate(startDate, 'EEEE, MMMM d, yyyy') : 'TBD'
+  const endDateFormatted = endDate ? formatCalendarDate(endDate, 'EEEE, MMMM d, yyyy') : ''
   const dateRange =
     endDate && startDate && endDate !== startDate
       ? `${startDateFormatted} - ${endDateFormatted}`
       : startDateFormatted
 
-  const daysUntilDeparture = startDate
-    ? differenceInDays(new Date(startDate), new Date())
+  const startDateParsed = startDate ? parseCalendarDate(startDate) : null
+  const daysUntilDeparture = startDateParsed
+    ? differenceInDays(startDateParsed, new Date())
     : null
 
   const status = statusConfig[trip.booking_status]
@@ -167,7 +169,7 @@ export function UpcomingTrips({ trip }: UpcomingTripsProps) {
 
     const updateCountdown = () => {
       const now = new Date()
-      const departure = new Date(startDate)
+      const departure = startDateParsed!
       const diff = departure.getTime() - now.getTime()
 
       if (diff <= 0) {

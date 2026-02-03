@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { getClient } from '@/lib/utils/get-client'
+import { parseCalendarDate } from '@/lib/utils/date'
 import { DashboardHeader } from '@/components/dashboard/dashboard-header'
 import { UpcomingTrips } from '@/components/dashboard/upcoming-trips'
 import { EarnRedeemCards } from '@/components/dashboard/earn-redeem-cards'
@@ -236,16 +237,17 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         if (!tripStartDate) {
           return false
         }
-        const startDate = new Date(tripStartDate)
-        const isFuture = startDate >= today
-        return isFuture
+        const startDate = parseCalendarDate(tripStartDate)
+        if (!startDate) return false
+        startDate.setHours(0, 0, 0, 0)
+        return startDate >= today
       })
       .sort((a, b) => {
         // Sort by check-in date if available, otherwise event start date
         const dateA = a.check_in_date || a.event_start_date
         const dateB = b.check_in_date || b.event_start_date
-        const timeA = dateA ? new Date(dateA).getTime() : Infinity
-        const timeB = dateB ? new Date(dateB).getTime() : Infinity
+        const timeA = dateA ? (parseCalendarDate(dateA)?.getTime() ?? Infinity) : Infinity
+        const timeB = dateB ? (parseCalendarDate(dateB)?.getTime() ?? Infinity) : Infinity
         return timeA - timeB
       })
     
@@ -316,7 +318,10 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     ? upcomingBookings.filter((booking) => {
         const startDate = booking.events?.start_date
         if (!startDate) return false
-        return new Date(startDate) >= today
+        const d = parseCalendarDate(startDate)
+        if (!d) return false
+        d.setHours(0, 0, 0, 0)
+        return d >= today
       }).length
     : 0
 

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { format } from 'date-fns'
+import { formatCalendarDate } from '@/lib/utils/date'
 import { ArrowRight, Sparkles, Plane, UserPlus, Calendar } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -188,7 +189,7 @@ export function DashboardActivityList({ transactions, trips }: DashboardActivity
                   <div className="flex flex-col items-end gap-0.5 shrink-0">
                     {trip.event_start_date && (
                       <p className="text-xs text-muted-foreground">
-                        {format(new Date(trip.event_start_date), 'MMM d, yyyy')}
+                        {formatCalendarDate(trip.event_start_date, 'MMM d, yyyy')}
                       </p>
                     )}
                     <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" />

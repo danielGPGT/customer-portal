@@ -85,6 +85,8 @@ interface Airline {
 
 interface CustomerFlightFormProps {
   bookingId: string
+  teamId: string | null
+  bookingReference: string
   open: boolean
   onOpenChange: (open: boolean) => void
   onSuccess?: () => void
@@ -95,7 +97,7 @@ interface CustomerFlightFormProps {
   } | null // Optional segment being edited
 }
 
-export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, flightId, editingSegment }: CustomerFlightFormProps) {
+export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, onOpenChange, onSuccess, flightId, editingSegment }: CustomerFlightFormProps) {
   const router = useRouter()
   const pathname = usePathname()
   const { toast } = useToast()
@@ -891,6 +893,23 @@ export function CustomerFlightForm({ bookingId, open, onOpenChange, onSuccess, f
       })
 
       onOpenChange(false)
+
+      // Notify internal staff (direct insert per CLIENT_PORTAL_NOTIFICATION_SETUP.md)
+      if (teamId && bookingReference) {
+        void supabase
+          .from('internal_notifications')
+          .insert({
+            team_id: teamId,
+            type: 'booking_updated_by_client',
+            title: `Booking ${bookingReference} updated by client`,
+            message: 'Traveler details or client flights were changed. Review in booking.',
+            link_path: `/booking/${bookingId}`,
+            link_id: null,
+            metadata: { booking_id: bookingId },
+          })
+          .then(() => {}, () => {})
+      }
+
       // Enterprise-level: Force server-side refresh to bypass all caches
       setTimeout(() => {
         router.refresh()

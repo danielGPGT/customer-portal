@@ -1,5 +1,6 @@
 'use client'
 
+import { parseCalendarDate } from '@/lib/utils/date'
 import { TripCard } from './trip-card'
 import { UpcomingTrips } from '@/components/dashboard/upcoming-trips'
 
@@ -44,8 +45,8 @@ interface TripListProps {
 export function TripList({ bookings, tab, pointValue }: TripListProps) {
   // Sort bookings based on tab
   const sortedBookings = [...bookings].sort((a, b) => {
-    const aDate = a.event_start_date ? new Date(a.event_start_date) : new Date(0)
-    const bDate = b.event_start_date ? new Date(b.event_start_date) : new Date(0)
+    const aDate = a.event_start_date ? (parseCalendarDate(a.event_start_date) ?? new Date(0)) : new Date(0)
+    const bDate = b.event_start_date ? (parseCalendarDate(b.event_start_date) ?? new Date(0)) : new Date(0)
 
     switch (tab) {
       case 'upcoming':

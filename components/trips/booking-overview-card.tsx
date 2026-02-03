@@ -3,7 +3,7 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Calendar, MapPin, FileText, CreditCard, Sparkles, CheckCircle, Clock, XCircle } from 'lucide-react'
-import { format } from 'date-fns'
+import { formatCalendarDate } from '@/lib/utils/date'
 
 interface BookingOverviewCardProps {
   eventName: string
@@ -61,11 +61,7 @@ export function BookingOverviewCard({
 
   const formatDate = (date: string | null) => {
     if (!date) return 'TBD'
-    try {
-      return format(new Date(date), 'MMM d, yyyy')
-    } catch {
-      return date
-    }
+    return formatCalendarDate(date, 'MMM d, yyyy', date)
   }
 
   const formatDateRange = () => {

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { format } from 'date-fns'
+import { formatCalendarDate } from '@/lib/utils/date'
 import { ChevronLeft, ChevronRight, ArrowRight, MapPin, Calendar } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -163,8 +163,8 @@ export function UpcomingTripsCarousel({ trips }: UpcomingTripsCarouselProps) {
           // Use check-in/check-out dates if available, otherwise fall back to event dates
           const startDate = trip.check_in_date || trip.event_start_date || trip.events?.start_date
           const endDate = trip.check_out_date || trip.event_end_date || trip.events?.end_date
-          const startDateFormatted = startDate ? format(new Date(startDate), 'MMM d, yyyy') : 'TBD'
-          const endDateFormatted = endDate ? format(new Date(endDate), 'MMM d, yyyy') : ''
+          const startDateFormatted = startDate ? formatCalendarDate(startDate, 'MMM d, yyyy') : 'TBD'
+          const endDateFormatted = endDate ? formatCalendarDate(endDate, 'MMM d, yyyy') : ''
           const dateRange =
             endDate && startDate && endDate !== startDate
               ? `${startDateFormatted} - ${endDateFormatted}`

@@ -111,9 +111,13 @@ interface TravelerEditDrawerProps {
   onSuccess?: (updatedTraveler?: Traveler) => void
   // When false, core contact fields (name/email/phone) are read-only
   canEditContactFields: boolean
+  /** For internal notification after save (per CLIENT_PORTAL_NOTIFICATION_SETUP.md) */
+  bookingId?: string
+  teamId?: string | null
+  bookingReference?: string
 }
 
-export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, canEditContactFields }: TravelerEditDrawerProps) {
+export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, canEditContactFields, bookingId, teamId, bookingReference }: TravelerEditDrawerProps) {
   const router = useRouter()
   const pathname = usePathname()
   const { toast } = useToast()
@@ -279,6 +283,22 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
       onOpenChange(false)
       // Pass updated traveler data to onSuccess callback for optimistic update
       onSuccess?.(updatedData as Traveler)
+
+      // Notify internal staff (direct insert per CLIENT_PORTAL_NOTIFICATION_SETUP.md)
+      if (bookingId && teamId && bookingReference) {
+        void supabase
+          .from('internal_notifications')
+          .insert({
+            team_id: teamId,
+            type: 'booking_updated_by_client',
+            title: `Booking ${bookingReference} updated by client`,
+            message: 'Traveler details or client flights were changed. Review in booking.',
+            link_path: `/booking/${bookingId}`,
+            link_id: null,
+            metadata: { booking_id: bookingId },
+          })
+          .then(() => {}, () => {})
+      }
       
       // Force server-side refresh to bypass all caches
       setTimeout(() => {

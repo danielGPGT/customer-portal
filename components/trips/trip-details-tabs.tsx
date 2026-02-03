@@ -1,5 +1,6 @@
 'use client'
 
+import { parseCalendarDate } from '@/lib/utils/date'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { EventDetailsSection } from '@/components/trips/event-details-section'
 import { BookingDetailsSection } from '@/components/trips/booking-details-section'
@@ -26,7 +27,8 @@ interface TripDetailsTabsProps {
   discountApplied: number
   currency: string
   bookingId: string
-  
+  teamId: string | null
+
   // Travelers
   travelers: any[]
   
@@ -67,6 +69,7 @@ export function TripDetailsTabs({
   discountApplied,
   currency,
   bookingId,
+  teamId,
   travelers,
   components,
   flights,
@@ -95,12 +98,10 @@ export function TripDetailsTabs({
   // Check if trip has passed (end date is in the past)
   let isPastTrip = false
   if (eventEndDate) {
-    try {
-      const end = new Date(eventEndDate)
+    const end = parseCalendarDate(eventEndDate)
+    if (end) {
       end.setHours(0, 0, 0, 0)
       isPastTrip = end < now
-    } catch {
-      // ignore parsing errors
     }
   }
 
@@ -113,8 +114,8 @@ export function TripDetailsTabs({
 
   // Only apply 4-week lock logic if trip is not permanently locked
   if (!isPermanentlyLocked && eventStartDate) {
-    try {
-      const start = new Date(eventStartDate)
+    const start = parseCalendarDate(eventStartDate)
+    if (start) {
       const standardLockThreshold = new Date(start)
       standardLockThreshold.setDate(standardLockThreshold.getDate() - 28) // 4 weeks before event
       
@@ -173,8 +174,6 @@ export function TripDetailsTabs({
         // Use Math.floor to match the countdown timer calculation
         daysUntilLock = Math.floor(diffMs / (1000 * 60 * 60 * 24))
       }
-    } catch {
-      // ignore parsing errors, fall back to unlocked
     }
   }
 
@@ -269,6 +268,9 @@ export function TripDetailsTabs({
           lockDate={lockDate}
           isPermanentlyLocked={isPermanentlyLocked}
           bookingStatus={bookingStatus}
+          bookingId={bookingId}
+          teamId={teamId}
+          bookingReference={bookingReference}
         />
       </TabsContent>
 
@@ -282,6 +284,8 @@ export function TripDetailsTabs({
           flights={flights} 
           currency={currency}
           bookingId={bookingId}
+          teamId={teamId}
+          bookingReference={bookingReference}
           canEdit={canEditFlights}
           isEditLocked={isEditLocked}
           daysUntilLock={daysUntilLock}

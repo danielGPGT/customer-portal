@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Calendar, MessageCircle, FileText, Download } from 'lucide-react'
-import { format } from 'date-fns'
+import { formatCalendarDate } from '@/lib/utils/date'
 
 interface Booking {
   booking_id: string
@@ -74,7 +74,7 @@ I need help with my booking:
 
 Booking Reference: ${booking.booking_reference}
 Event: ${eventName}
-${startDate ? `Date: ${format(new Date(startDate), 'MMMM d, yyyy')}` : ''}
+${startDate ? `Date: ${formatCalendarDate(startDate, 'MMMM d, yyyy')}` : ''}
 
 Please assist me with:
 [Your question or issue here]

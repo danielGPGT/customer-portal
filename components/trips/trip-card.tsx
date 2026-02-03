@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { format } from 'date-fns'
+import { formatCalendarDate } from '@/lib/utils/date'
 import {
   Calendar,
   MapPin,
@@ -137,8 +137,8 @@ export function TripCard({ booking, variant, pointValue }: TripCardProps) {
   const startDate = booking.check_in_date || booking.event_start_date || booking.events?.start_date
   const endDate = booking.check_out_date || booking.event_end_date || booking.events?.end_date
 
-  const startDateFormatted = startDate ? format(new Date(startDate), 'MMM d, yyyy') : 'TBD'
-  const endDateFormatted = endDate ? format(new Date(endDate), 'MMM d, yyyy') : ''
+  const startDateFormatted = startDate ? formatCalendarDate(startDate, 'MMM d, yyyy') : 'TBD'
+  const endDateFormatted = endDate ? formatCalendarDate(endDate, 'MMM d, yyyy') : ''
 
   const dateRange =
     endDate && startDate && endDate !== startDate

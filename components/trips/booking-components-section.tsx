@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Package, Ticket, Home, Car, Plane, Calendar, MapPin, Info } from 'lucide-react'
 import { format } from 'date-fns'
+import { formatCalendarDate } from '@/lib/utils/date'
 
 interface Component {
   id: string
@@ -61,11 +62,7 @@ export function BookingComponentsSection({ components, currency, ticketDaysMap }
 
   const formatDate = (date: string | null | undefined) => {
     if (!date) return null
-    try {
-      return format(new Date(date), 'MMM d, yyyy')
-    } catch {
-      return date
-    }
+    return formatCalendarDate(date, 'MMM d, yyyy', date)
   }
 
   const formatDateTime = (date: string | null | undefined) => {

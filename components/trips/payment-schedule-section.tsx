@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { CreditCard, Calendar, CheckCircle2, Clock } from 'lucide-react'
 import { format } from 'date-fns'
+import { formatCalendarDate } from '@/lib/utils/date'
 
 interface Payment {
   id: string
@@ -54,11 +55,7 @@ export function PaymentScheduleSection({ payments }: PaymentScheduleSectionProps
 
   const formatDate = (date: string | null | undefined) => {
     if (!date) return 'TBD'
-    try {
-      return format(new Date(date), 'MMM d, yyyy')
-    } catch {
-      return date
-    }
+    return formatCalendarDate(date, 'MMM d, yyyy', date)
   }
 
   const formatDateTime = (date: string | null | undefined) => {

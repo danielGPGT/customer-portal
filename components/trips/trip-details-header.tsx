@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
 import { Calendar, MapPin, FileText, CreditCard, Sparkles, CheckCircle, Clock, XCircle } from 'lucide-react'
-import { format } from 'date-fns'
+import { formatCalendarDate } from '@/lib/utils/date'
 
 type BookingStatus = 'provisional' | 'confirmed' | 'completed' | 'cancelled'
 
@@ -85,11 +85,7 @@ export function TripDetailsHeader({
 
   const formatDate = (date: string | null) => {
     if (!date) return 'TBD'
-    try {
-      return format(new Date(date), 'MMM d, yyyy')
-    } catch {
-      return date
-    }
+    return formatCalendarDate(date, 'MMM d, yyyy', date)
   }
 
   const formatDateRange = () => {
