@@ -70,11 +70,10 @@ function SSOCallbackContent() {
                 const { createClient } = await import('@/lib/supabase/client')
                 const supabase = createClient()
                 
-                const email = user.emailAddresses[0]?.emailAddress
-                
+                const rawEmail = user.emailAddresses[0]?.emailAddress
+                const email = rawEmail ? rawEmail.trim().toLowerCase() : null
                 if (email) {
                   const normalizedReferralCode = referralCode.toUpperCase().trim()
-                  
                   await supabase.rpc('process_referral_signup', {
                     p_referral_code: normalizedReferralCode,
                     p_clerk_user_id: clerkUserId,
@@ -94,11 +93,10 @@ function SSOCallbackContent() {
               try {
                 const { createClient } = await import('@/lib/supabase/client')
                 const supabase = createClient()
-                
-                const email = user.emailAddresses[0]?.emailAddress
-                
+                const rawEmail = user.emailAddresses[0]?.emailAddress
+                const email = rawEmail ? rawEmail.trim().toLowerCase() : null
                 if (email) {
-                  // Check if client exists
+                  // Check if client exists (always use lowercase for consistency)
                   const { data: existingClient } = await supabase
                     .from('clients')
                     .select('id')

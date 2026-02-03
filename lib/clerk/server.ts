@@ -31,9 +31,11 @@ export async function getClerkUser() {
   
   // If currentUser() succeeds, return full user data
   if (user) {
+    const rawEmail = user.emailAddresses[0]?.emailAddress
+    const email = rawEmail ? rawEmail.trim().toLowerCase() : null
     const result = {
       id: userId,
-      email: user.emailAddresses[0]?.emailAddress || null,
+      email,
       firstName: user.firstName || null,
       lastName: user.lastName || null,
       phoneNumber: user.phoneNumbers[0]?.phoneNumber || null,

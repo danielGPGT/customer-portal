@@ -87,15 +87,18 @@ export const getClient = cache(async () => {
     .eq('clerk_user_id', clerkUser.id)
     .single()
 
+  // Normalize email to lowercase so we never create duplicates (e.g. John@x.com vs john@x.com)
+  const normalizedEmail = clerkUser.email?.trim().toLowerCase() || null
+
   // If client doesn't exist by clerk_user_id, try to link by email using RPC function
   // This bypasses RLS to find and link existing client records
   if (clientError || !client) {
-    if (clerkUser.email) {
+    if (normalizedEmail) {
       // Use RPC function to find and link client by email (bypasses RLS)
       const { data: linkedClient, error: linkError } = await supabase
         .rpc('link_client_to_clerk_user', { 
           p_clerk_user_id: clerkUser.id,
-          p_email: clerkUser.email
+          p_email: normalizedEmail
         })
 
       if (linkedClient && linkedClient.length > 0) {
@@ -116,17 +119,16 @@ export const getClient = cache(async () => {
         const { currentUser } = await import('@clerk/nextjs/server')
         const user = await currentUser()
         if (user?.emailAddresses[0]?.emailAddress) {
-          clerkUser.email = user.emailAddresses[0].emailAddress
+          clerkUser.email = user.emailAddresses[0].emailAddress.trim().toLowerCase()
         }
       } catch (error) {
         // Unable to get email from currentUser()
       }
     }
 
-    if (!clerkUser.email) {
+    const emailForCreate = normalizedEmail ?? clerkUser.email?.trim().toLowerCase() ?? null
+    if (!emailForCreate) {
       // If we still don't have email, we can't create/link client
-      // But if client exists by clerk_user_id, we should still find it
-      // So don't return error yet - let the query below handle it
       return { client: null, user: clerkUser, portalAccess, error: 'no_email' as const }
     }
 
@@ -135,7 +137,7 @@ export const getClient = cache(async () => {
     const { data: linkedClient, error: linkError } = await supabase
       .rpc('link_client_to_clerk_user', { 
         p_clerk_user_id: clerkUser.id,
-        p_email: clerkUser.email
+        p_email: emailForCreate
       })
 
     if (linkedClient && linkedClient.length > 0) {
@@ -144,7 +146,7 @@ export const getClient = cache(async () => {
       clientError = null
     } else if (!linkError) {
       // No existing client - safe to insert
-      const firstName = clerkUser.firstName || clerkUser.email.split('@')[0] || 'Customer'
+      const firstName = clerkUser.firstName || emailForCreate.split('@')[0] || 'Customer'
       const lastName = clerkUser.lastName || ''
       const phone = clerkUser.phoneNumber || null
 
@@ -154,7 +156,7 @@ export const getClient = cache(async () => {
           clerk_user_id: clerkUser.id,  // Use Clerk user ID
           user_id: null, // Clerk users don't have a Supabase Auth user_id
           team_id: '0cef0867-1b40-4de1-9936-16b867a753d7',
-          email: clerkUser.email,
+          email: emailForCreate,
           first_name: firstName,
           last_name: lastName || 'User',
           phone: phone,
@@ -173,7 +175,7 @@ export const getClient = cache(async () => {
         const { data: linkedClient } = await supabase
           .rpc('link_client_to_clerk_user', { 
             p_clerk_user_id: clerkUser.id,
-            p_email: clerkUser.email
+            p_email: emailForCreate
           })
 
         if (linkedClient && linkedClient.length > 0) {
