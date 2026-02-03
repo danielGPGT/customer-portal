@@ -828,8 +828,8 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         {errors.password && (
           <p className="text-sm text-red-500">{errors.password.message}</p>
         )}
-        <p className="text-xs text-gray-500">
-          Min 8 characters, 1 number, 1 special character
+        <p className="text-xs text-muted-foreground">
+          At least 8 characters, with a number and a symbol (e.g. ! @ # $ %). Don’t use a password that’s been in a data breach.
         </p>
       </div>
 

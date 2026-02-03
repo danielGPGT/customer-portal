@@ -28,11 +28,19 @@ export function getSignupErrorMessage(error: unknown, context: 'signup' | 'verif
     }
   }
 
-  // —— Clerk: password ——
-  if (/password|too weak|too short|minimum length/i.test(clerkMessage) || clerkCode?.toLowerCase().includes('password')) {
+  // —— Clerk: password (compromised / in data breach) ——
+  if (/compromised|data breach|pwned|previously appeared|haveibeenpwned|breach/i.test(clerkMessage)) {
+    return {
+      title: "That password can't be used",
+      description: "It's appeared in a known data breach. Please choose a different password (e.g. add more random letters or a unique phrase).",
+    }
+  }
+
+  // —— Clerk: password (format / strength) ——
+  if (/password|too weak|too short|minimum length|special character|at least one number/i.test(clerkMessage) || clerkCode?.toLowerCase().includes('password')) {
     return {
       title: 'Password needs a small update',
-      description: 'Use at least 8 characters, one number, and one special character (e.g. !@#$%).',
+      description: 'Use at least 8 characters, one number, and one symbol (e.g. ! @ # $ %). Avoid very common passwords.',
     }
   }
 

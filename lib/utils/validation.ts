@@ -6,7 +6,7 @@ export const signupSchema = z.object({
     .string()
     .min(8, 'Password must be at least 8 characters')
     .regex(/[0-9]/, 'Password must contain at least one number')
-    .regex(/[^a-zA-Z0-9]/, 'Password must contain at least one special character'),
+    .regex(/[^a-zA-Z0-9]/, 'Password must include a symbol (e.g. ! @ # $ %)'),
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
   referralCode: z
