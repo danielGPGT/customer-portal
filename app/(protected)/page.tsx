@@ -7,6 +7,7 @@ import { AlertCircle } from 'lucide-react'
 import { getClient } from '@/lib/utils/get-client'
 import { parseCalendarDate } from '@/lib/utils/date'
 import { DashboardHeader } from '@/components/dashboard/dashboard-header'
+import { DashboardPopup } from '@/components/dashboard/dashboard-popup'
 import { UpcomingTrips } from '@/components/dashboard/upcoming-trips'
 import { EarnRedeemCards } from '@/components/dashboard/earn-redeem-cards'
 import { getClientPreferredCurrency } from '@/lib/utils/currency'
@@ -27,7 +28,7 @@ export const revalidate = 0
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
   const params = await searchParams
   const error = params.error
-  
+
   const { client, user, error: clientError } = await getClient()
 
   // Layout should already have enforced auth, but keep a defensive check
@@ -152,6 +153,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       booking_reference,
       status,
       is_first_loyalty_booking,
+      created_at,
       events (
         id,
         name,
@@ -170,7 +172,13 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         id,
         component_type,
         component_data,
-        component_snapshot
+        component_snapshot,
+        deleted_at
+      ),
+      bookings_flights!bookings_flights_booking_id_fkey (
+        id,
+        flight_type,
+        deleted_at
       )
     `)
     .eq('client_id', client.id)
@@ -260,6 +268,51 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         return 'provisional'
       }
 
+      // Pre-departure context: airport transfers, flights
+      const components = (trip.booking_components || []).filter((c: any) => !c.deleted_at)
+      const hasAirportTransfers = components.some((c: any) => c.component_type === 'airport_transfer')
+      const flights = (trip.bookings_flights || []).filter((f: any) => !f.deleted_at)
+      const hasFlights = flights.length > 0
+      const hasBookedFlights = flights.some((f: any) => f.flight_type === 'booked' || !f.flight_type)
+
+      // Time-remaining logic (matches trip-details-tabs: 4 weeks before departure, grace period for late bookings)
+      let daysUntilLock: number | null = null
+      let lockDate: string | null = null
+      const eventStartDate = trip.check_in_date || trip.event_start_date
+      if (eventStartDate) {
+        const start = parseCalendarDate(eventStartDate)
+        if (start) {
+          const standardLockThreshold = new Date(start)
+          standardLockThreshold.setDate(standardLockThreshold.getDate() - 28)
+          let effectiveLockThreshold = standardLockThreshold
+          const bookedAt = trip.created_at
+          if (bookedAt) {
+            try {
+              const bookingDate = new Date(bookedAt)
+              bookingDate.setHours(0, 0, 0, 0)
+              if (bookingDate > standardLockThreshold) {
+                const daysFromBookingToEvent = Math.floor((start.getTime() - bookingDate.getTime()) / (1000 * 60 * 60 * 24))
+                let gracePeriodDays = 0
+                if (daysFromBookingToEvent < 7) gracePeriodDays = 2
+                else if (daysFromBookingToEvent < 14) gracePeriodDays = 3
+                else if (daysFromBookingToEvent < 21) gracePeriodDays = 5
+                if (gracePeriodDays > 0) {
+                  const gracePeriodThreshold = new Date(bookingDate)
+                  gracePeriodThreshold.setDate(gracePeriodThreshold.getDate() + gracePeriodDays)
+                  effectiveLockThreshold = gracePeriodThreshold > standardLockThreshold ? gracePeriodThreshold : standardLockThreshold
+                }
+              }
+            } catch { /* fallback to standard */ }
+          }
+          lockDate = effectiveLockThreshold.toISOString()
+          const actualNow = Date.now()
+          const diffMs = effectiveLockThreshold.getTime() - actualNow
+          if (diffMs > 0) {
+            daysUntilLock = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+          }
+        }
+      }
+
       nextTrip = {
         id: trip.id,
         booking_id: trip.id,
@@ -272,6 +325,11 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         booking_status: mapStatus(trip.status),
         is_first_loyalty_booking: trip.is_first_loyalty_booking || false,
         events: trip.events,
+        hasAirportTransfers,
+        hasFlights,
+        hasBookedFlights,
+        daysUntilLock,
+        lockDate,
       }
     }
   }
@@ -342,9 +400,9 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     ) || 0
 
   // Calculate progress percentage (points progress toward next milestone)
-  // For now, use a simple calculation: % of way to next 1000 points
-  const nextMilestone = Math.ceil((client?.points_balance || 0) / 1000) * 1000
-  const currentMilestone = Math.floor((client?.points_balance || 0) / 1000) * 1000
+  // Milestones are every 100 points
+  const nextMilestone = Math.ceil((client?.points_balance || 0) / 100) * 100
+  const currentMilestone = Math.floor((client?.points_balance || 0) / 100) * 100
   const progressPercentage = nextMilestone > 0 && nextMilestone !== currentMilestone
     ? Math.round(((client?.points_balance || 0) - currentMilestone) / (nextMilestone - currentMilestone) * 100)
     : 0
@@ -391,8 +449,43 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 
   const errorInfo = error ? errorMessages[error] : null
 
+  // Popup context: days until next trip, points to next milestone
+  const nextTripStartDate = nextTrip?.check_in_date || nextTrip?.event_start_date || null
+  const startDateParsed = nextTripStartDate ? parseCalendarDate(nextTripStartDate) : null
+  const daysUntilDeparture = startDateParsed
+    ? Math.floor((startDateParsed.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+    : null
+  const nextMilestoneBoundary = Math.ceil((client?.points_balance || 0) / 100) * 100
+  const pointsToNextMilestone = nextMilestoneBoundary > 0
+    ? Math.max(0, nextMilestoneBoundary - (client?.points_balance || 0))
+    : 0
+  const minRedemptionPoints = settings?.min_redemption_points || 100
+
   return (
     <>
+      {/* Smart contextual popup on first visit */}
+      <DashboardPopup
+        firstName={client?.first_name || 'Customer'}
+        nextTrip={
+          nextTrip
+            ? {
+                id: nextTrip.id,
+                event_name: nextTrip.event_name,
+                daysUntilDeparture,
+                hasAirportTransfers: nextTrip.hasAirportTransfers ?? false,
+                hasFlights: nextTrip.hasFlights ?? false,
+                hasBookedFlights: nextTrip.hasBookedFlights ?? false,
+                daysUntilLock: nextTrip.daysUntilLock ?? null,
+                lockDate: nextTrip.lockDate ?? null,
+              }
+            : null
+        }
+        totalReferrals={totalInvites}
+        pointsBalance={client?.points_balance || 0}
+        pointsToNextMilestone={pointsToNextMilestone}
+        minRedemptionPoints={minRedemptionPoints}
+      />
+
       {/* Full-Width Dashboard Header - Breaks out of container */}
 
       <div className="relative">

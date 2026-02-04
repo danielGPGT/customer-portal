@@ -27,7 +27,6 @@ const formatPhoneNumber = (value: string): string => {
   
   // Remove all non-digit characters except + at the start
   const cleaned = value.replace(/[^\d+]/g, '')
-  
   // If it starts with +, keep it
   if (cleaned.startsWith('+')) {
     const digits = cleaned.slice(1).replace(/\D/g, '')
