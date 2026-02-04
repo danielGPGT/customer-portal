@@ -79,6 +79,7 @@ const travelerSchema = z.object({
   state: z.string().max(100, 'State is too long').optional().or(z.literal('')),
   postal_code: z.string().max(20, 'Postal code is too long').optional().or(z.literal('')),
   country: z.string().max(100, 'Country is too long').optional().or(z.literal('')),
+  dietary_restrictions: z.string().max(500, 'Dietary requirements is too long').optional().or(z.literal('')),
   special_requests: z.string().max(1000, 'Special requests is too long').optional().or(z.literal('')),
 })
 
@@ -139,6 +140,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
       state: '',
       postal_code: '',
       country: '',
+      dietary_restrictions: '',
       special_requests: '',
     },
   })
@@ -158,6 +160,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         state: traveler.state || '',
         postal_code: traveler.postal_code || '',
         country: traveler.country || '',
+        dietary_restrictions: traveler.dietary_restrictions || '',
         special_requests: traveler.special_requests || '',
       })
     }
@@ -207,6 +210,7 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         state: data.state?.trim() || null,
         postal_code: data.postal_code?.trim() || null,
         country: data.country?.trim() || null,
+        dietary_restrictions: data.dietary_restrictions?.trim() || null,
         special_requests: data.special_requests?.trim() || null,
         updated_at: new Date().toISOString(),
       }
@@ -658,14 +662,35 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
 
           {/* Special Requests */}
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-foreground">Special Requests</h3>
+            <h3 className="text-sm font-semibold text-foreground">Extra Information</h3>
+
+            <FormField
+              control={form.control}
+              name="dietary_restrictions"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Dietary Requirements</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      placeholder="e.g. Vegetarian, gluten-free, allergies, etc."
+                      rows={2}
+                    />
+                  </FormControl>
+                  <FormDescription className="text-xs">
+                    We&apos;ll do our best to accommodate dietary requirements but cannot guarantee they can be fulfilled in all circumstances.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}
               name="special_requests"
               render={({ field }) => (
                 <FormItem>
-                
+                  <FormLabel>Special Requests</FormLabel>
                   <FormControl>
                     <Textarea 
                       {...field} 
