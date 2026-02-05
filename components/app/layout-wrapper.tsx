@@ -3,13 +3,13 @@
 import * as React from "react"
 import { usePathname, useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
+import { ClerkLoaded } from "@clerk/nextjs"
 import { TopHeader } from '@/components/app/top-header'
 import { NavBar } from '@/components/app/nav-bar'
 import { MobileSidebar } from '@/components/app/mobile-sidebar'
+import { MobileBottomNav } from '@/components/app/mobile-bottom-nav'
 import { CurrencyProvider } from '@/components/providers/currency-provider'
 import { getClientPreferredCurrency } from '@/lib/utils/currency'
-import { CookieBannerWrapper } from '@/components/cookies/cookie-banner-wrapper'
-
 // Dynamically import non-critical components to reduce initial bundle
 const AppFooter = dynamic(() => import('@/components/app/app-footer').then(mod => ({ default: mod.AppFooter })), {
   ssr: true, // Can be SSR'd
@@ -82,28 +82,33 @@ export function LayoutWrapper({
           baseCurrency={baseCurrency}
         />
 
-      {/* Navigation Bar - Fixed (Desktop only) */}
-      <div className="hidden lg:block">
-        <NavBar />
-      </div>
+      {/* Nav and sidebar only mount after Clerk is loaded (they use useUser) */}
+      <ClerkLoaded>
+        {/* Navigation Bar - Fixed (Desktop only) */}
+        <div className="hidden lg:block">
+          <NavBar />
+        </div>
 
-      {/* Mobile Sidebar */}
-      <MobileSidebar
-        open={sidebarOpen}
-        onOpenChange={setSidebarOpen}
-      />
+        {/* Mobile Sidebar */}
+        <MobileSidebar
+          open={sidebarOpen}
+          onOpenChange={setSidebarOpen}
+        />
+      </ClerkLoaded>
 
-      {/* Main Content Area */}
-      <main className="flex-1 pt-20 lg:pt-36 pb-10 overflow-x-hidden px-4">
+      {/* Main Content Area - extra bottom padding on mobile for fixed bottom nav */}
+      <main className="flex-1 pt-20 lg:pt-36 pb-20 lg:pb-10 overflow-x-hidden px-4">
         <div className="mx-auto w-full container">
           {children}
         </div>
       </main>
 
         <AppFooter />
-        
-        {/* Cookie Banner - Client component wrapper handles dynamic import with ssr: false */}
-        <CookieBannerWrapper />
+
+      {/* Mobile bottom navigation - app-style, visible only on mobile/tablet */}
+      <div className="lg:hidden">
+        <MobileBottomNav />
+      </div>
       </div>
     </CurrencyProvider>
   )

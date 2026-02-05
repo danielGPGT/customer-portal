@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import { CookieBannerWrapper } from '@/components/cookies/cookie-banner-wrapper'
 
 // Dynamically import components to reduce initial bundle size
 const AuthNavbar = dynamic(() => import('@/components/auth/auth-navbar').then(mod => ({ default: mod.AuthNavbar })), {
@@ -95,9 +94,6 @@ export default function AuthLayout({
         </div>
 
       </div>
-      
-      {/* Cookie Banner - Client component wrapper handles dynamic import with ssr: false */}
-      <CookieBannerWrapper />
     </div>
   )
 }
