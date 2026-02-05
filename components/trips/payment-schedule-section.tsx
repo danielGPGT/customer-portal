@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { CreditCard, Calendar, CheckCircle2, Clock } from 'lucide-react'
 import { format } from 'date-fns'
 import { formatCalendarDate } from '@/lib/utils/date'
+import { getCurrencySymbol } from '@/lib/utils/currency'
 
 interface Payment {
   id: string
@@ -23,14 +24,11 @@ interface Payment {
 
 interface PaymentScheduleSectionProps {
   payments: Payment[]
+  /** Booking currency – payments are displayed in this currency for consistency with the trip */
+  currency?: string
 }
 
-const getCurrencySymbol = (code: string | null | undefined) => {
-  const currency = code || 'GBP'
-  return currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'
-}
-
-export function PaymentScheduleSection({ payments }: PaymentScheduleSectionProps) {
+export function PaymentScheduleSection({ payments, currency: bookingCurrency }: PaymentScheduleSectionProps) {
   if (!payments || payments.length === 0) {
     return null
   }
@@ -45,10 +43,9 @@ export function PaymentScheduleSection({ payments }: PaymentScheduleSectionProps
   // Sort by payment number
   const sortedPayments = [...activePayments].sort((a, b) => a.payment_number - b.payment_number)
 
-  // Use the currency attached to the payments themselves for summaries.
-  // If mixed currencies ever appear, totals will still be calculated numerically
-  // but labelled using the first payment's currency.
-  const summaryCurrencySymbol = getCurrencySymbol(sortedPayments[0]?.currency)
+  // Display all amounts in the booking currency for consistency with the trip
+  const displayCurrency = bookingCurrency || sortedPayments[0]?.currency || 'GBP'
+  const summaryCurrencySymbol = getCurrencySymbol(displayCurrency)
   const totalAmount = sortedPayments.reduce((sum, p) => sum + (p.amount || 0), 0)
   const totalPaid = sortedPayments.filter(p => p.paid).reduce((sum, p) => sum + (p.amount || 0), 0)
   const totalOutstanding = totalAmount - totalPaid
@@ -111,7 +108,7 @@ export function PaymentScheduleSection({ payments }: PaymentScheduleSectionProps
                   </div>
 
                   <div className="text-lg sm:text-xl lg:text-2xl font-bold">
-                    {getCurrencySymbol(payment.currency)}
+                    {getCurrencySymbol(displayCurrency)}
                     {payment.amount.toLocaleString(undefined, { 
                       minimumFractionDigits: 2, 
                       maximumFractionDigits: 2 
