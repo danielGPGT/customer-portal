@@ -97,7 +97,7 @@ export function LayoutWrapper({
       </ClerkLoaded>
 
       {/* Main Content Area - extra bottom padding on mobile for fixed bottom nav */}
-      <main className="flex-1 pt-20 lg:pt-36 pb-20 lg:pb-10 overflow-x-hidden px-4">
+      <main className="flex-1 pt-20 lg:pt-36 pb-10 lg:pb-10 overflow-x-hidden px-4">
         <div className="mx-auto w-full container">
           {children}
         </div>
