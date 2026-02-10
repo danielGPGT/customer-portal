@@ -112,9 +112,6 @@ export function TripDetailsTabs({
   let daysUntilLock: number | null = null
   let lockDate: string | null = null
 
-  // TEMPORARILY DISABLED: 4-week flight/traveller lock so guests can upload flights when app was
-  // launched within 1 month of their booking. Re-enable the block below when ready.
-  /*
   // Only apply 4-week lock logic if trip is not permanently locked
   if (!isPermanentlyLocked && eventStartDate) {
     const start = parseCalendarDate(eventStartDate)
@@ -190,7 +187,6 @@ export function TripDetailsTabs({
       // keep computed lockDate so we can still show the date in UI while forcing unlocked for testing
     }
   }
-  */
 
   // If permanently locked (cancelled/completed/past), force lock regardless of test state
   if (isPermanentlyLocked) {
