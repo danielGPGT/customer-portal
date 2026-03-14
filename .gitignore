@@ -42,3 +42,9 @@ next-env.d.ts
 
 # clerk configuration (can include secrets)
 /.clerk/
+
+# customer data / PII
+*.csv
+!package*.csv
+bulk-upload-report-*.json
+client-emails-report-*.json
