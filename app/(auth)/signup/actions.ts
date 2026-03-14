@@ -8,8 +8,8 @@ import { createClient } from '@supabase/supabase-js'
  * Returns error message if rate limited, null if allowed
  */
 const DISABLE_SIGNUP_RATE_LIMIT =
-  process.env.DISABLE_SIGNUP_RATE_LIMIT === "true" ||
-  process.env.NEXT_PUBLIC_DISABLE_SIGNUP_RATE_LIMIT === "true"
+  process.env.NODE_ENV !== 'production' &&
+  process.env.DISABLE_SIGNUP_RATE_LIMIT === "true"
 
 export async function checkSignupRateLimit(): Promise<{ 
   allowed: boolean

@@ -1,0 +1,2891 @@
+[
+    {
+      "tablename": "acquisition_sources",
+      "policyname": "Anyone can read acquisition sources",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "acquisition_sources",
+      "policyname": "Authenticated users can manage acquisition sources",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "USING condition": "(auth.role() = 'authenticated'::text)",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "airline_codes",
+      "policyname": "Allow authenticated users to delete airline_codes",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "DELETE",
+      "USING condition": "(auth.role() = 'authenticated'::text)",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "airline_codes",
+      "policyname": "Allow authenticated users to insert airline_codes",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(auth.role() = 'authenticated'::text)"
+    },
+    {
+      "tablename": "airline_codes",
+      "policyname": "Allow authenticated users to update airline_codes",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(auth.role() = 'authenticated'::text)",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "airline_codes",
+      "policyname": "Allow public read access to airline_codes",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "airline_codes",
+      "policyname": "Allow reading airline_codes (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "airline_codes",
+      "policyname": "Authenticated users can view airline_codes",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "airline_codes",
+      "policyname": "Team members can delete airline_codes",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "airline_codes",
+      "policyname": "Team members can insert airline_codes",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "airline_codes",
+      "policyname": "Team members can update airline_codes",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "airlines",
+      "policyname": "Allow reading airlines (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "airlines",
+      "policyname": "Authenticated users can view airlines",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "airlines",
+      "policyname": "Team members can delete airlines",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "airlines",
+      "policyname": "Team members can insert airlines",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "airlines",
+      "policyname": "Team members can update airlines",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "airport_transfers",
+      "policyname": "Authenticated users can view airport_transfers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "airport_transfers",
+      "policyname": "Team members can delete team airport_transfers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = airport_transfers.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "airport_transfers",
+      "policyname": "Team members can insert team airport_transfers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = airport_transfers.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "airport_transfers",
+      "policyname": "Team members can update team airport_transfers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = airport_transfers.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = airport_transfers.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "airports",
+      "policyname": "Allow reading airports (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "airports",
+      "policyname": "Authenticated users can view airports",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "airports",
+      "policyname": "Team members can delete airports",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "airports",
+      "policyname": "Team members can insert airports",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "airports",
+      "policyname": "Team members can update airports",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "booking_activity_log",
+      "policyname": "Clients can view own booking_activity_log",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (clients\n     JOIN bookings ON ((bookings.client_id = clients.id)))\n  WHERE ((clients.user_id = auth.uid()) AND (bookings.id = booking_activity_log.booking_id))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_activity_log",
+      "policyname": "Team members can delete team booking_activity_log",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_activity_log.booking_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_activity_log",
+      "policyname": "Team members can insert team booking_activity_log",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_activity_log.booking_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "booking_activity_log",
+      "policyname": "Team members can update team booking_activity_log",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_activity_log.booking_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_activity_log.booking_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "booking_activity_log",
+      "policyname": "Team members can view team booking_activity_log",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_activity_log.booking_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_amendments",
+      "policyname": "Users can create amendments for their team's bookings",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.team_id IN ( SELECT team_members.team_id\n           FROM team_members\n          WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))"
+    },
+    {
+      "tablename": "booking_amendments",
+      "policyname": "Users can view their team's amendments",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.team_id IN ( SELECT team_members.team_id\n           FROM team_members\n          WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_audit_log",
+      "policyname": "Only system can insert audit logs",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "booking_audit_log",
+      "policyname": "Users can view audit logs for their team's bookings",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.team_id IN ( SELECT team_members.team_id\n           FROM team_members\n          WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_components",
+      "policyname": "Clients can view own booking_components",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (clients\n     JOIN bookings ON ((bookings.client_id = clients.id)))\n  WHERE ((clients.user_id = auth.uid()) AND (bookings.id = booking_components.booking_id))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_components",
+      "policyname": "Team members can delete team booking_components",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_components.booking_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_components",
+      "policyname": "Team members can insert team booking_components",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_components.booking_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "booking_components",
+      "policyname": "Team members can update team booking_components",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_components.booking_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_components.booking_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "booking_components",
+      "policyname": "Team members can view team booking_components",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_components.booking_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_components",
+      "policyname": "Users can delete their team's booking components",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "DELETE",
+      "USING condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.team_id IN ( SELECT team_members.team_id\n           FROM team_members\n          WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_components",
+      "policyname": "Users can view booking components for their bookings (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.client_id IN ( SELECT clients.id\n           FROM clients\n          WHERE (clients.clerk_user_id IS NOT NULL)))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_documents",
+      "policyname": "Users can delete their team's booking documents",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "DELETE",
+      "USING condition": "can_access_booking_document(booking_id)",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_documents",
+      "policyname": "Users can insert booking documents for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "can_access_booking_document(booking_id)"
+    },
+    {
+      "tablename": "booking_documents",
+      "policyname": "Users can view their team's booking documents",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "can_access_booking_document(booking_id)",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_payments",
+      "policyname": "Clients can view own booking_payments",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (clients\n     JOIN bookings ON ((bookings.client_id = clients.id)))\n  WHERE ((clients.user_id = auth.uid()) AND (bookings.id = booking_payments.booking_id))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_payments",
+      "policyname": "Team members can delete team booking_payments",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_payments.booking_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_payments",
+      "policyname": "Team members can insert team booking_payments",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_payments.booking_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "booking_payments",
+      "policyname": "Team members can update team booking_payments",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_payments.booking_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_payments.booking_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "booking_payments",
+      "policyname": "Team members can view team booking_payments",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_payments.booking_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_payments",
+      "policyname": "Users can delete their team's booking payments",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "DELETE",
+      "USING condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.team_id IN ( SELECT team_members.team_id\n           FROM team_members\n          WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_payments",
+      "policyname": "Users can view payments for their bookings (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.client_id IN ( SELECT clients.id\n           FROM clients\n          WHERE (clients.clerk_user_id IS NOT NULL)))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_sequences",
+      "policyname": "Team members can delete booking_sequences",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_sequences",
+      "policyname": "Team members can insert booking_sequences",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "booking_sequences",
+      "policyname": "Team members can update booking_sequences",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "booking_sequences",
+      "policyname": "Team members can view booking_sequences",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_travelers",
+      "policyname": "Clients can update own booking_travelers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (clients\n     JOIN bookings ON ((bookings.client_id = clients.id)))\n  WHERE ((clients.user_id = auth.uid()) AND (bookings.id = booking_travelers.booking_id))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (clients\n     JOIN bookings ON ((bookings.client_id = clients.id)))\n  WHERE ((clients.user_id = auth.uid()) AND (bookings.id = booking_travelers.booking_id))))"
+    },
+    {
+      "tablename": "booking_travelers",
+      "policyname": "Clients can view own booking_travelers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (clients\n     JOIN bookings ON ((bookings.client_id = clients.id)))\n  WHERE ((clients.user_id = auth.uid()) AND (bookings.id = booking_travelers.booking_id))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_travelers",
+      "policyname": "Team members can delete team booking_travelers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_travelers.booking_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_travelers",
+      "policyname": "Team members can insert team booking_travelers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_travelers.booking_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "booking_travelers",
+      "policyname": "Team members can update team booking_travelers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_travelers.booking_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_travelers.booking_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "booking_travelers",
+      "policyname": "Team members can view team booking_travelers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = booking_travelers.booking_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_travelers",
+      "policyname": "Users can delete their team's booking travelers",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "DELETE",
+      "USING condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.team_id IN ( SELECT team_members.team_id\n           FROM team_members\n          WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_travelers",
+      "policyname": "Users can update travelers for their bookings (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "((booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.client_id IN ( SELECT clients.id\n           FROM clients\n          WHERE (clients.clerk_user_id IS NOT NULL))))) AND (deleted_at IS NULL))",
+      "WITH CHECK condition": "((booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.client_id IN ( SELECT clients.id\n           FROM clients\n          WHERE (clients.clerk_user_id IS NOT NULL))))) AND (deleted_at IS NULL))"
+    },
+    {
+      "tablename": "booking_travelers",
+      "policyname": "Users can view travelers for their bookings (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.client_id IN ( SELECT clients.id\n           FROM clients\n          WHERE (clients.clerk_user_id IS NOT NULL)))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "booking_versions",
+      "policyname": "Users can create versions for their team's bookings",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.team_id IN ( SELECT team_members.team_id\n           FROM team_members\n          WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))"
+    },
+    {
+      "tablename": "booking_versions",
+      "policyname": "Users can view their team's booking versions",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.team_id IN ( SELECT team_members.team_id\n           FROM team_members\n          WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "bookings",
+      "policyname": "Team members can delete team bookings",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = bookings.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "bookings",
+      "policyname": "Team members can insert team bookings",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = bookings.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "bookings",
+      "policyname": "Team members can update team bookings",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = bookings.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = bookings.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "bookings",
+      "policyname": "Team members can view team bookings",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = bookings.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "bookings",
+      "policyname": "Users can view their own bookings",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM clients\n  WHERE ((clients.id = bookings.client_id) AND (clients.clerk_user_id IS NOT NULL))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "bookings",
+      "policyname": "Users can view their own bookings (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.clerk_user_id IS NOT NULL)))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "bookings_flights",
+      "policyname": "Clients can insert own customer bookings_flights",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "((flight_type = 'customer'::text) AND (EXISTS ( SELECT 1\n   FROM (clients\n     JOIN bookings ON ((bookings.client_id = clients.id)))\n  WHERE ((clients.user_id = auth.uid()) AND (bookings.id = bookings_flights.booking_id)))))"
+    },
+    {
+      "tablename": "bookings_flights",
+      "policyname": "Clients can update own bookings_flights",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (clients\n     JOIN bookings ON ((bookings.client_id = clients.id)))\n  WHERE ((clients.user_id = auth.uid()) AND (bookings.id = bookings_flights.booking_id))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (clients\n     JOIN bookings ON ((bookings.client_id = clients.id)))\n  WHERE ((clients.user_id = auth.uid()) AND (bookings.id = bookings_flights.booking_id))))"
+    },
+    {
+      "tablename": "bookings_flights",
+      "policyname": "Clients can view own bookings_flights",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (clients\n     JOIN bookings ON ((bookings.client_id = clients.id)))\n  WHERE ((clients.user_id = auth.uid()) AND (bookings.id = bookings_flights.booking_id))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "bookings_flights",
+      "policyname": "Team members can delete team bookings_flights",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = bookings_flights.booking_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "bookings_flights",
+      "policyname": "Team members can insert team bookings_flights",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = bookings_flights.booking_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "bookings_flights",
+      "policyname": "Team members can update team bookings_flights",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = bookings_flights.booking_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = bookings_flights.booking_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "bookings_flights",
+      "policyname": "Team members can view team bookings_flights",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN bookings ON ((bookings.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (bookings.id = bookings_flights.booking_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "bookings_flights",
+      "policyname": "Users can delete their team's booking flights",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "DELETE",
+      "USING condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.team_id IN ( SELECT team_members.team_id\n           FROM team_members\n          WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "bookings_flights",
+      "policyname": "Users can insert flights for their bookings (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.client_id IN ( SELECT clients.id\n           FROM clients\n          WHERE (clients.clerk_user_id IS NOT NULL)))))"
+    },
+    {
+      "tablename": "bookings_flights",
+      "policyname": "Users can update flights for their bookings (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.client_id IN ( SELECT clients.id\n           FROM clients\n          WHERE (clients.clerk_user_id IS NOT NULL)))))",
+      "WITH CHECK condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.client_id IN ( SELECT clients.id\n           FROM clients\n          WHERE (clients.clerk_user_id IS NOT NULL)))))"
+    },
+    {
+      "tablename": "bookings_flights",
+      "policyname": "Users can view flights for their bookings (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(booking_id IN ( SELECT bookings.id\n   FROM bookings\n  WHERE (bookings.client_id IN ( SELECT clients.id\n           FROM clients\n          WHERE (clients.clerk_user_id IS NOT NULL)))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "circuit_transfers",
+      "policyname": "Authenticated users can view circuit_transfers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "circuit_transfers",
+      "policyname": "Team members can delete team circuit_transfers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = circuit_transfers.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "circuit_transfers",
+      "policyname": "Team members can insert team circuit_transfers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = circuit_transfers.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "circuit_transfers",
+      "policyname": "Team members can update team circuit_transfers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = circuit_transfers.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = circuit_transfers.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "client_interactions",
+      "policyname": "Clients can view own client_interactions",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM clients\n  WHERE ((clients.user_id = auth.uid()) AND (clients.id = client_interactions.client_id))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "client_interactions",
+      "policyname": "Team members can delete team client_interactions",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN clients ON ((clients.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (clients.id = client_interactions.client_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "client_interactions",
+      "policyname": "Team members can insert team client_interactions",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN clients ON ((clients.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (clients.id = client_interactions.client_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "client_interactions",
+      "policyname": "Team members can update team client_interactions",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN clients ON ((clients.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (clients.id = client_interactions.client_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN clients ON ((clients.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (clients.id = client_interactions.client_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "client_interactions",
+      "policyname": "Team members can view team client_interactions",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN clients ON ((clients.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (clients.id = client_interactions.client_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "client_travel_history",
+      "policyname": "Clients can view own client_travel_history",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM clients\n  WHERE ((clients.user_id = auth.uid()) AND (clients.id = client_travel_history.client_id))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "client_travel_history",
+      "policyname": "Team members can delete team client_travel_history",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN clients ON ((clients.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (clients.id = client_travel_history.client_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "client_travel_history",
+      "policyname": "Team members can insert team client_travel_history",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN clients ON ((clients.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (clients.id = client_travel_history.client_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "client_travel_history",
+      "policyname": "Team members can update team client_travel_history",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN clients ON ((clients.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (clients.id = client_travel_history.client_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN clients ON ((clients.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (clients.id = client_travel_history.client_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "client_travel_history",
+      "policyname": "Team members can view team client_travel_history",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN clients ON ((clients.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (clients.id = client_travel_history.client_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "clients",
+      "policyname": "Allow client creation during signup",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(auth.uid() = auth_user_id)"
+    },
+    {
+      "tablename": "clients",
+      "policyname": "Allow client creation during signup (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(clerk_user_id IS NOT NULL)"
+    },
+    {
+      "tablename": "clients",
+      "policyname": "Team members can delete team clients",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = clients.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "clients",
+      "policyname": "Team members can insert team clients",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = clients.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "clients",
+      "policyname": "Team members can update team clients",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = clients.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = clients.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "clients",
+      "policyname": "Team members can view team clients",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = clients.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "clients",
+      "policyname": "Users can update their own client record",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(auth.uid() = auth_user_id)",
+      "WITH CHECK condition": "(auth.uid() = auth_user_id)"
+    },
+    {
+      "tablename": "clients",
+      "policyname": "Users can update their own client record (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(clerk_user_id IS NOT NULL)",
+      "WITH CHECK condition": "(clerk_user_id IS NOT NULL)"
+    },
+    {
+      "tablename": "clients",
+      "policyname": "Users can view their own client record",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(auth.uid() = auth_user_id)",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "clients",
+      "policyname": "Users can view their own client record (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(clerk_user_id IS NOT NULL)",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "customer_sessions",
+      "policyname": "Team members can view customer sessions",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (clients c\n     JOIN team_members tm ON ((tm.team_id = c.team_id)))\n  WHERE ((c.id = customer_sessions.client_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "event_consultants",
+      "policyname": "Consultants can view their own assignments",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members tm\n  WHERE ((tm.id = event_consultants.consultant_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "event_consultants",
+      "policyname": "Team admins and owners can manage event consultants",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members tm\n  WHERE ((tm.user_id = auth.uid()) AND (tm.role = ANY (ARRAY['owner'::text, 'admin'::text])) AND (tm.status = 'active'::text) AND (tm.team_id = ( SELECT team_members.team_id\n           FROM team_members\n          WHERE (team_members.id = event_consultants.consultant_id))))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "event_consultants",
+      "policyname": "Team members can view event consultants for their team's events",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members tm\n     JOIN events e ON ((e.id = event_consultants.event_id)))\n  WHERE ((tm.user_id = auth.uid()) AND (tm.team_id = ( SELECT team_members.team_id\n           FROM team_members\n          WHERE (team_members.user_id = e.primary_consultant_id)\n         LIMIT 1)) AND (tm.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "events",
+      "policyname": "Allow reading events (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "events",
+      "policyname": "Authenticated users can view events",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "events",
+      "policyname": "Team members can delete team events",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = events.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "events",
+      "policyname": "Team members can insert team events",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = events.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "events",
+      "policyname": "Team members can update team events",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = events.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = events.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "extras",
+      "policyname": "Authenticated users can view extras",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "extras",
+      "policyname": "Team admins can manage extras",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members tm\n  WHERE ((tm.team_id = extras.team_id) AND (tm.user_id = auth.uid()) AND (tm.role = ANY (ARRAY['admin'::text, 'owner'::text, 'operations'::text])))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "extras",
+      "policyname": "Team members can delete team extras",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = extras.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "extras",
+      "policyname": "Team members can insert team extras",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = extras.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "extras",
+      "policyname": "Team members can update team extras",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = extras.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = extras.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "extras",
+      "policyname": "Users can view extras for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members tm\n  WHERE ((tm.team_id = extras.team_id) AND (tm.user_id = auth.uid()))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "flight_journeys",
+      "policyname": "Team members can delete team flight_journeys",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN events ON ((events.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (events.id = flight_journeys.event_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "flight_journeys",
+      "policyname": "Team members can insert team flight_journeys",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN events ON ((events.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (events.id = flight_journeys.event_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "flight_journeys",
+      "policyname": "Team members can update team flight_journeys",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN events ON ((events.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (events.id = flight_journeys.event_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN events ON ((events.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (events.id = flight_journeys.event_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "flight_journeys",
+      "policyname": "Team members can view team flight_journeys",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN events ON ((events.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (events.id = flight_journeys.event_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "flight_segments",
+      "policyname": "Team members can delete team flight_segments",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM ((team_members\n     JOIN events ON ((events.team_id = team_members.team_id)))\n     JOIN flight_journeys ON ((flight_journeys.event_id = events.id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (flight_journeys.id = flight_segments.journey_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "flight_segments",
+      "policyname": "Team members can insert team flight_segments",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM ((team_members\n     JOIN events ON ((events.team_id = team_members.team_id)))\n     JOIN flight_journeys ON ((flight_journeys.event_id = events.id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (flight_journeys.id = flight_segments.journey_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "flight_segments",
+      "policyname": "Team members can update team flight_segments",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM ((team_members\n     JOIN events ON ((events.team_id = team_members.team_id)))\n     JOIN flight_journeys ON ((flight_journeys.event_id = events.id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (flight_journeys.id = flight_segments.journey_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM ((team_members\n     JOIN events ON ((events.team_id = team_members.team_id)))\n     JOIN flight_journeys ON ((flight_journeys.event_id = events.id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (flight_journeys.id = flight_segments.journey_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "flight_segments",
+      "policyname": "Team members can view team flight_segments",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM ((team_members\n     JOIN events ON ((events.team_id = team_members.team_id)))\n     JOIN flight_journeys ON ((flight_journeys.event_id = events.id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (flight_journeys.id = flight_segments.journey_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "flights",
+      "policyname": "Team members can delete team flights",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN events ON ((events.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (events.id = flights.event_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "flights",
+      "policyname": "Team members can insert team flights",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN events ON ((events.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (events.id = flights.event_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "flights",
+      "policyname": "Team members can update team flights",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN events ON ((events.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (events.id = flights.event_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN events ON ((events.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (events.id = flights.event_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "flights",
+      "policyname": "Team members can view team flights",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN events ON ((events.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (events.id = flights.event_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "gpgt_hotels",
+      "policyname": "Allow read for all",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "gpgt_hotels",
+      "policyname": "Authenticated users can view gpgt_hotels",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "gpgt_hotels",
+      "policyname": "Team members can delete team gpgt_hotels",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = gpgt_hotels.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "gpgt_hotels",
+      "policyname": "Team members can insert team gpgt_hotels",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = gpgt_hotels.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "gpgt_hotels",
+      "policyname": "Team members can update team gpgt_hotels",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = gpgt_hotels.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = gpgt_hotels.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "hotel_contract_deadlines",
+      "policyname": "Users can delete contract deadlines",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hotel_contract_deadlines",
+      "policyname": "Users can insert contract deadlines",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "hotel_contract_deadlines",
+      "policyname": "Users can update contract deadlines",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hotel_contract_deadlines",
+      "policyname": "Users can view all contract deadlines",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hotel_contracts",
+      "policyname": "Users can delete hotel contracts",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hotel_contracts",
+      "policyname": "Users can insert hotel contracts",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "hotel_contracts",
+      "policyname": "Users can update hotel contracts",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hotel_contracts",
+      "policyname": "Users can view all hotel contracts",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hotel_rooms",
+      "policyname": "Authenticated users can view hotel_rooms",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hotel_rooms",
+      "policyname": "Team members can delete team hotel_rooms",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hotel_rooms.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hotel_rooms",
+      "policyname": "Team members can insert team hotel_rooms",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hotel_rooms.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "hotel_rooms",
+      "policyname": "Team members can update team hotel_rooms",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hotel_rooms.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hotel_rooms.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "hubspot_connections",
+      "policyname": "Team admins can view HubSpot connections",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.team_id = hubspot_connections.team_id) AND (team_members.user_id = auth.uid()) AND (team_members.role = ANY (ARRAY['owner'::text, 'admin'::text])))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hubspot_connections",
+      "policyname": "Team owners can manage their HubSpot connections",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.team_id = hubspot_connections.team_id) AND (team_members.user_id = auth.uid()) AND (team_members.role = ANY (ARRAY['owner'::text, 'admin'::text])))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hubspot_contact_mappings",
+      "policyname": "Team members can view contact mappings",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.team_id = hubspot_contact_mappings.team_id) AND (team_members.user_id = auth.uid()))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hubspot_contact_mappings",
+      "policyname": "Team owners can manage contact mappings",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.team_id = hubspot_contact_mappings.team_id) AND (team_members.user_id = auth.uid()) AND (team_members.role = ANY (ARRAY['owner'::text, 'admin'::text])))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hubspot_contacts",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "hubspot_deal_mappings",
+      "policyname": "Team members can view deal mappings",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.team_id = hubspot_deal_mappings.team_id) AND (team_members.user_id = auth.uid()))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hubspot_deal_mappings",
+      "policyname": "Team owners can manage deal mappings",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.team_id = hubspot_deal_mappings.team_id) AND (team_members.user_id = auth.uid()) AND (team_members.role = ANY (ARRAY['owner'::text, 'admin'::text])))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hubspot_sync_jobs",
+      "policyname": "Team members can delete team hubspot_sync_jobs",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hubspot_sync_jobs.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hubspot_sync_jobs",
+      "policyname": "Team members can insert team hubspot_sync_jobs",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hubspot_sync_jobs.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "hubspot_sync_jobs",
+      "policyname": "Team members can update team hubspot_sync_jobs",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hubspot_sync_jobs.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hubspot_sync_jobs.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "hubspot_sync_jobs",
+      "policyname": "Team members can view team hubspot_sync_jobs",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hubspot_sync_jobs.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hubspot_sync_logs",
+      "policyname": "Team members can view sync logs",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.team_id = hubspot_sync_logs.team_id) AND (team_members.user_id = auth.uid()))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hubspot_sync_queue",
+      "policyname": "Team admins can view sync queue",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members tm\n  WHERE ((tm.team_id = hubspot_sync_queue.team_id) AND (tm.user_id = auth.uid()) AND (tm.role = ANY (ARRAY['owner'::text, 'admin'::text])) AND (tm.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hubspot_sync_queue",
+      "policyname": "Team owners can view sync queue",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM teams t\n  WHERE ((t.id = hubspot_sync_queue.team_id) AND (t.owner_id = auth.uid()))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hubspot_sync_settings",
+      "policyname": "Team members can delete team hubspot_sync_settings",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hubspot_sync_settings.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hubspot_sync_settings",
+      "policyname": "Team members can insert team hubspot_sync_settings",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hubspot_sync_settings.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "hubspot_sync_settings",
+      "policyname": "Team members can update team hubspot_sync_settings",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hubspot_sync_settings.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hubspot_sync_settings.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "hubspot_sync_settings",
+      "policyname": "Team members can view team hubspot_sync_settings",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hubspot_sync_settings.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hubspot_sync_state",
+      "policyname": "Team members can delete team hubspot_sync_state",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hubspot_sync_state.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "hubspot_sync_state",
+      "policyname": "Team members can insert team hubspot_sync_state",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hubspot_sync_state.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "hubspot_sync_state",
+      "policyname": "Team members can update team hubspot_sync_state",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hubspot_sync_state.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hubspot_sync_state.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "hubspot_sync_state",
+      "policyname": "Team members can view team hubspot_sync_state",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = hubspot_sync_state.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "internal_notifications",
+      "policyname": "Clients can insert booking updated notification for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM clients c\n  WHERE ((c.team_id = internal_notifications.team_id) AND ((c.clerk_user_id = (auth.jwt() ->> 'sub'::text)) OR (c.clerk_user_id = get_clerk_user_id())))))"
+    },
+    {
+      "tablename": "internal_notifications",
+      "policyname": "Team members can insert internal notifications for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members tm\n  WHERE ((tm.team_id = internal_notifications.team_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text))))"
+    },
+    {
+      "tablename": "internal_notifications",
+      "policyname": "Team members can update team internal notifications",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members tm\n  WHERE ((tm.team_id = internal_notifications.team_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "internal_notifications",
+      "policyname": "Team members can view team internal notifications",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members tm\n  WHERE ((tm.team_id = internal_notifications.team_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "inventory_movements",
+      "policyname": "Authenticated users can insert inventory movements",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "inventory_movements",
+      "policyname": "Authenticated users can read inventory movements",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "inventory_movements",
+      "policyname": "Authenticated users can update inventory movements",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "inventory_movements",
+      "policyname": "Service role full access to inventory movements",
+      "permissive": "PERMISSIVE",
+      "roles": "{service_role}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "itineraries",
+      "policyname": "Users can create itineraries for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE (team_members.user_id = auth.uid())))"
+    },
+    {
+      "tablename": "itineraries",
+      "policyname": "Users can delete their team's itineraries",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "DELETE",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE (team_members.user_id = auth.uid())))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "itineraries",
+      "policyname": "Users can update their team's itineraries",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE (team_members.user_id = auth.uid())))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "itineraries",
+      "policyname": "Users can view their team's itineraries",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE (team_members.user_id = auth.uid())))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "klaviyo_bulk_run_jobs",
+      "policyname": "Team members can delete team klaviyo_bulk_run_jobs",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_bulk_run_jobs.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "klaviyo_bulk_run_jobs",
+      "policyname": "Team members can insert team klaviyo_bulk_run_jobs",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_bulk_run_jobs.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "klaviyo_bulk_run_jobs",
+      "policyname": "Team members can update team klaviyo_bulk_run_jobs",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_bulk_run_jobs.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_bulk_run_jobs.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "klaviyo_bulk_run_jobs",
+      "policyname": "Team members can view team klaviyo_bulk_run_jobs",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_bulk_run_jobs.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "klaviyo_bulk_runs",
+      "policyname": "Team members can delete team klaviyo_bulk_runs",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_bulk_runs.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "klaviyo_bulk_runs",
+      "policyname": "Team members can insert team klaviyo_bulk_runs",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_bulk_runs.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "klaviyo_bulk_runs",
+      "policyname": "Team members can update team klaviyo_bulk_runs",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_bulk_runs.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_bulk_runs.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "klaviyo_bulk_runs",
+      "policyname": "Team members can view team klaviyo_bulk_runs",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_bulk_runs.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "klaviyo_connections",
+      "policyname": "Team members can delete team klaviyo_connections",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_connections.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "klaviyo_connections",
+      "policyname": "Team members can insert team klaviyo_connections",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_connections.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "klaviyo_connections",
+      "policyname": "Team members can update team klaviyo_connections",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_connections.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_connections.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "klaviyo_connections",
+      "policyname": "Team members can view team klaviyo_connections",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_connections.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "klaviyo_profile_deadletter",
+      "policyname": "Team members can delete team klaviyo_profile_deadletter",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_profile_deadletter.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "klaviyo_profile_deadletter",
+      "policyname": "Team members can insert team klaviyo_profile_deadletter",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_profile_deadletter.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "klaviyo_profile_deadletter",
+      "policyname": "Team members can update team klaviyo_profile_deadletter",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_profile_deadletter.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_profile_deadletter.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "klaviyo_profile_deadletter",
+      "policyname": "Team members can view team klaviyo_profile_deadletter",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_profile_deadletter.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "klaviyo_profile_queue",
+      "policyname": "Team members can delete team klaviyo_profile_queue",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_profile_queue.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "klaviyo_profile_queue",
+      "policyname": "Team members can insert team klaviyo_profile_queue",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_profile_queue.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "klaviyo_profile_queue",
+      "policyname": "Team members can update team klaviyo_profile_queue",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_profile_queue.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_profile_queue.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "klaviyo_profile_queue",
+      "policyname": "Team members can view team klaviyo_profile_queue",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = klaviyo_profile_queue.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "lounge_passes",
+      "policyname": "Authenticated users can view lounge_passes",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "lounge_passes",
+      "policyname": "Team members can delete team lounge_passes",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = lounge_passes.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "lounge_passes",
+      "policyname": "Team members can insert team lounge_passes",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = lounge_passes.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "lounge_passes",
+      "policyname": "Team members can update team lounge_passes",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = lounge_passes.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = lounge_passes.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "loyalty_settings",
+      "policyname": "Allow reading loyalty settings (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "loyalty_settings",
+      "policyname": "Authenticated users can view loyalty settings",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(auth.role() = 'authenticated'::text)",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "loyalty_settings",
+      "policyname": "Team admins can update loyalty settings",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "((auth.role() = 'authenticated'::text) AND (EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = loyalty_settings.team_id) AND (team_members.status = 'active'::text)))))",
+      "WITH CHECK condition": "((auth.role() = 'authenticated'::text) AND (EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = loyalty_settings.team_id) AND (team_members.status = 'active'::text)))))"
+    },
+    {
+      "tablename": "loyalty_transactions",
+      "policyname": "Team members can view loyalty transactions",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (clients c\n     JOIN team_members tm ON ((tm.team_id = c.team_id)))\n  WHERE ((c.id = loyalty_transactions.client_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "loyalty_transactions",
+      "policyname": "Users can view their own transactions",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.auth_user_id = auth.uid())))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "loyalty_transactions",
+      "policyname": "Users can view their own transactions (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.clerk_user_id IS NOT NULL)))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "media_folders",
+      "policyname": "Users can create team folders",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE (team_members.user_id = auth.uid())))"
+    },
+    {
+      "tablename": "media_folders",
+      "policyname": "Users can delete team folders",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "DELETE",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE (team_members.user_id = auth.uid())))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "media_folders",
+      "policyname": "Users can update team folders",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE (team_members.user_id = auth.uid())))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "media_folders",
+      "policyname": "Users can view team folders",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE (team_members.user_id = auth.uid())))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "media_library",
+      "policyname": "Authenticated users can view media_library",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "media_library",
+      "policyname": "Team members can delete team media",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members tm\n  WHERE ((tm.team_id = media_library.team_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "media_library",
+      "policyname": "Team members can delete team media_library",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = media_library.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "media_library",
+      "policyname": "Team members can insert team media",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members tm\n  WHERE ((tm.team_id = media_library.team_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text))))"
+    },
+    {
+      "tablename": "media_library",
+      "policyname": "Team members can insert team media_library",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = media_library.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "media_library",
+      "policyname": "Team members can update team media",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members tm\n  WHERE ((tm.team_id = media_library.team_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "media_library",
+      "policyname": "Team members can update team media_library",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = media_library.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = media_library.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "media_library",
+      "policyname": "Team members can view team media",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members tm\n  WHERE ((tm.team_id = media_library.team_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "notifications",
+      "policyname": "Team members can update notifications",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (clients c\n     JOIN team_members tm ON ((tm.team_id = c.team_id)))\n  WHERE ((c.id = notifications.client_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (clients c\n     JOIN team_members tm ON ((tm.team_id = c.team_id)))\n  WHERE ((c.id = notifications.client_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text))))"
+    },
+    {
+      "tablename": "notifications",
+      "policyname": "Team members can view notifications",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (clients c\n     JOIN team_members tm ON ((tm.team_id = c.team_id)))\n  WHERE ((c.id = notifications.client_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "notifications",
+      "policyname": "Users can update their own notifications",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.auth_user_id = auth.uid())))",
+      "WITH CHECK condition": "(client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.auth_user_id = auth.uid())))"
+    },
+    {
+      "tablename": "notifications",
+      "policyname": "Users can update their own notifications (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.clerk_user_id IS NOT NULL)))",
+      "WITH CHECK condition": "(client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.clerk_user_id IS NOT NULL)))"
+    },
+    {
+      "tablename": "notifications",
+      "policyname": "Users can view their own notifications",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.auth_user_id = auth.uid())))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "notifications",
+      "policyname": "Users can view their own notifications (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.clerk_user_id IS NOT NULL)))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "operations_audit_log",
+      "policyname": "Users can insert audit logs for their team's events",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "((auth.uid() IS NOT NULL) AND (EXISTS ( SELECT 1\n   FROM (events e\n     JOIN team_members tm ON ((e.team_id = tm.team_id)))\n  WHERE ((e.id = operations_audit_log.event_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text)))))"
+    },
+    {
+      "tablename": "operations_audit_log",
+      "policyname": "Users can view audit logs for their team's events",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (events e\n     JOIN team_members tm ON ((e.team_id = tm.team_id)))\n  WHERE ((e.id = operations_audit_log.event_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "package_components",
+      "policyname": "Allow all updates",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "package_components",
+      "policyname": "Authenticated users can view package_components",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "package_components",
+      "policyname": "Team members can delete team package_components",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM ((team_members\n     JOIN packages ON ((packages.team_id = team_members.team_id)))\n     JOIN package_tiers ON ((package_tiers.package_id = packages.id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (package_tiers.id = package_components.tier_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "package_components",
+      "policyname": "Team members can insert team package_components",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM ((team_members\n     JOIN packages ON ((packages.team_id = team_members.team_id)))\n     JOIN package_tiers ON ((package_tiers.package_id = packages.id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (package_tiers.id = package_components.tier_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "package_components",
+      "policyname": "Team members can update team package_components",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM ((team_members\n     JOIN packages ON ((packages.team_id = team_members.team_id)))\n     JOIN package_tiers ON ((package_tiers.package_id = packages.id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (package_tiers.id = package_components.tier_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM ((team_members\n     JOIN packages ON ((packages.team_id = team_members.team_id)))\n     JOIN package_tiers ON ((package_tiers.package_id = packages.id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (package_tiers.id = package_components.tier_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "package_tiers",
+      "policyname": "Allow reading package_tiers (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "package_tiers",
+      "policyname": "Authenticated users can view package_tiers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "package_tiers",
+      "policyname": "Team members can delete team package_tiers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN packages ON ((packages.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (packages.id = package_tiers.package_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "package_tiers",
+      "policyname": "Team members can insert team package_tiers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN packages ON ((packages.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (packages.id = package_tiers.package_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "package_tiers",
+      "policyname": "Team members can update team package_tiers",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN packages ON ((packages.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (packages.id = package_tiers.package_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM (team_members\n     JOIN packages ON ((packages.team_id = team_members.team_id)))\n  WHERE ((team_members.user_id = auth.uid()) AND (packages.id = package_tiers.package_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "packages",
+      "policyname": "Allow reading packages (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "packages",
+      "policyname": "Authenticated users can view packages",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "packages",
+      "policyname": "Team members can delete team packages",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = packages.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "packages",
+      "policyname": "Team members can insert team packages",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = packages.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "packages",
+      "policyname": "Team members can update team packages",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = packages.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = packages.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "quote_deposit_invoices",
+      "policyname": "Team members can delete team quote deposit invoices",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "DELETE",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "quote_deposit_invoices",
+      "policyname": "Team members can insert team quote deposit invoices",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "quote_deposit_invoices",
+      "policyname": "Team members can update team quote deposit invoices",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "quote_deposit_invoices",
+      "policyname": "Team members can view team quote deposit invoices",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "quotes",
+      "policyname": "Team members can delete team quotes",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "DELETE",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "quotes",
+      "policyname": "Team members can insert team quotes",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "quotes",
+      "policyname": "Team members can update team quotes",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "quotes",
+      "policyname": "Team members can view team quotes",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "redemptions",
+      "policyname": "Team members can view redemptions",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (clients c\n     JOIN team_members tm ON ((tm.team_id = c.team_id)))\n  WHERE ((c.id = redemptions.client_id) AND (tm.user_id = auth.uid()) AND (tm.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "redemptions",
+      "policyname": "Users can view their own redemptions",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.auth_user_id = auth.uid())))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "redemptions",
+      "policyname": "Users can view their own redemptions (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.clerk_user_id IS NOT NULL)))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "referrals",
+      "policyname": "Team members can view referrals",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM (clients c\n     JOIN team_members tm ON ((tm.team_id = c.team_id)))\n  WHERE ((tm.user_id = auth.uid()) AND (tm.status = 'active'::text) AND ((c.id = referrals.referrer_client_id) OR (c.id = referrals.referee_client_id)))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "referrals",
+      "policyname": "Users can create referrals as referrer",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(referrer_client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.auth_user_id = auth.uid())))"
+    },
+    {
+      "tablename": "referrals",
+      "policyname": "Users can create referrals as referrer (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(referrer_client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.clerk_user_id IS NOT NULL)))"
+    },
+    {
+      "tablename": "referrals",
+      "policyname": "Users can view referrals they created",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(referrer_client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.auth_user_id = auth.uid())))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "referrals",
+      "policyname": "Users can view referrals they created (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(referrer_client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.clerk_user_id IS NOT NULL)))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "referrals",
+      "policyname": "Users can view referrals where they are the referee",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(referee_client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.auth_user_id = auth.uid())))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "referrals",
+      "policyname": "Users can view referrals where they are the referee (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(referee_client_id IN ( SELECT clients.id\n   FROM clients\n  WHERE (clients.clerk_user_id IS NOT NULL)))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "report_audit_log",
+      "policyname": "System can insert audit logs",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "report_audit_log",
+      "policyname": "Users can view audit logs for accessible reports",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(report_id IN ( SELECT saved_reports.id\n   FROM saved_reports\n  WHERE ((saved_reports.created_by = auth.uid()) OR ((saved_reports.is_shared = true) AND (saved_reports.team_id IN ( SELECT team_members.team_id\n           FROM team_members\n          WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "report_versions",
+      "policyname": "Users can create versions for editable reports",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(report_id IN ( SELECT saved_reports.id\n   FROM saved_reports\n  WHERE (saved_reports.created_by = auth.uid())))"
+    },
+    {
+      "tablename": "report_versions",
+      "policyname": "Users can view versions for accessible reports",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(report_id IN ( SELECT saved_reports.id\n   FROM saved_reports\n  WHERE ((saved_reports.created_by = auth.uid()) OR ((saved_reports.is_shared = true) AND (saved_reports.team_id IN ( SELECT team_members.team_id\n           FROM team_members\n          WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "rh_hotels",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "saved_reports",
+      "policyname": "Users can create reports for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "((created_by = auth.uid()) AND (team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text)))))"
+    },
+    {
+      "tablename": "saved_reports",
+      "policyname": "Users can delete their own reports",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(created_by = auth.uid())",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "saved_reports",
+      "policyname": "Users can update their own reports",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(created_by = auth.uid())",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "saved_reports",
+      "policyname": "Users can view system reports",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "((is_system_report = true) AND (team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text)))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "saved_reports",
+      "policyname": "Users can view their own and shared team reports",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "((created_by = auth.uid()) OR ((is_shared = true) AND (team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "saved_reports",
+      "policyname": "Users cannot delete system reports",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "((is_system_report = false) AND (created_by = auth.uid()))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "saved_reports",
+      "policyname": "Users cannot update system reports",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(((is_system_report = false) AND (is_read_only = false) AND (created_by = auth.uid())) OR ((is_system_report = false) AND (is_read_only = false) AND (is_shared = true) AND (team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "sports",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "team_features",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "team_invitations",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "team_members",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "teams",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "test_client_properties",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "test_client_property_definitions",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "test_clients",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "test_hotels",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "ticket_categories",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "tickets",
+      "policyname": "Allow all",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "tickets",
+      "policyname": "Allow authenticated delete",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "tickets",
+      "policyname": "Allow authenticated insert",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "tickets",
+      "policyname": "Allow authenticated update",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "tickets",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "tickets",
+      "policyname": "Allow realtime",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "tickets",
+      "policyname": "Authenticated users can view tickets",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "tickets",
+      "policyname": "Team members can delete team tickets",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = tickets.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "tickets",
+      "policyname": "Team members can insert team tickets",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = tickets.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "tickets",
+      "policyname": "Team members can update team tickets",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "USING condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = tickets.team_id) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": "(EXISTS ( SELECT 1\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.team_id = tickets.team_id) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "transfer_assignment_bookings",
+      "policyname": "Users can create assignment bookings for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(transfer_assignment_id IN ( SELECT transfer_assignments.id\n   FROM transfer_assignments\n  WHERE (transfer_assignments.team_id IN ( SELECT team_members.team_id\n           FROM team_members\n          WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))"
+    },
+    {
+      "tablename": "transfer_assignment_bookings",
+      "policyname": "Users can delete assignment bookings for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "DELETE",
+      "USING condition": "(transfer_assignment_id IN ( SELECT transfer_assignments.id\n   FROM transfer_assignments\n  WHERE (transfer_assignments.team_id IN ( SELECT team_members.team_id\n           FROM team_members\n          WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "transfer_assignment_bookings",
+      "policyname": "Users can update assignment bookings for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(transfer_assignment_id IN ( SELECT transfer_assignments.id\n   FROM transfer_assignments\n  WHERE (transfer_assignments.team_id IN ( SELECT team_members.team_id\n           FROM team_members\n          WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "transfer_assignment_bookings",
+      "policyname": "Users can view assignment bookings for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(transfer_assignment_id IN ( SELECT transfer_assignments.id\n   FROM transfer_assignments\n  WHERE (transfer_assignments.team_id IN ( SELECT team_members.team_id\n           FROM team_members\n          WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "transfer_assignments",
+      "policyname": "Users can create assignments for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "transfer_assignments",
+      "policyname": "Users can delete assignments for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "DELETE",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "transfer_assignments",
+      "policyname": "Users can update assignments for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "transfer_assignments",
+      "policyname": "Users can view assignments for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "transfer_executions",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "transfer_export_history",
+      "policyname": "Users can create export history for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "USING condition": null,
+      "WITH CHECK condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))"
+    },
+    {
+      "tablename": "transfer_export_history",
+      "policyname": "Users can view export history for their team",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(team_id IN ( SELECT team_members.team_id\n   FROM team_members\n  WHERE ((team_members.user_id = auth.uid()) AND (team_members.status = 'active'::text))))",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "transfer_types",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "transfers",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "user_portal_access",
+      "policyname": "Users can view own portal access",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(auth.uid() = user_id)",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "user_portal_access",
+      "policyname": "Users can view their own portal access (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "(clerk_user_id = get_clerk_user_id())",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "venues",
+      "policyname": "Allow authenticated users full access",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "venues",
+      "policyname": "Allow reading venues (Clerk)",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "USING condition": "true",
+      "WITH CHECK condition": null
+    },
+    {
+      "tablename": "xero_integrations",
+      "policyname": "xero_integrations_all_access",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "xero_integrations",
+      "policyname": "xero_integrations_allow_all",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "xero_sync_logs",
+      "policyname": "xero_sync_logs_all_access",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    },
+    {
+      "tablename": "xero_sync_logs",
+      "policyname": "xero_sync_logs_allow_all",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "USING condition": "true",
+      "WITH CHECK condition": "true"
+    }
+  ]

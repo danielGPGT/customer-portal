@@ -40,9 +40,11 @@ export async function checkServerRateLimit(
     
     return { success: true }
   } catch (error) {
-    // If rate limiting fails, allow the request (fail open)
-    // In production, you might want to fail closed
     console.error('Rate limit check failed:', error)
+    // Fail closed in production — deny the request if rate limiting is broken
+    if (process.env.NODE_ENV === 'production') {
+      return { success: false, error: 'Service temporarily unavailable. Please try again later.' }
+    }
     return { success: true }
   }
 }

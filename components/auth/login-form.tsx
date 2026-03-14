@@ -22,13 +22,22 @@ export function LoginForm() {
   const { toast } = useToast()
   const errorParam = searchParams.get('error')
   const redirectUrlParam = searchParams.get('redirect_url')
-  const safeRedirectUrl =
-    redirectUrlParam &&
-    redirectUrlParam.startsWith('/') &&
-    !redirectUrlParam.startsWith('//') &&
-    !redirectUrlParam.includes('\\')
-      ? redirectUrlParam
-      : null
+  const safeRedirectUrl = (() => {
+    if (!redirectUrlParam) return null
+    // Only allow simple relative paths — no protocol, no host, no special characters
+    if (!redirectUrlParam.startsWith('/')) return null
+    if (redirectUrlParam.startsWith('//')) return null
+    if (redirectUrlParam.includes('\\')) return null
+    if (redirectUrlParam.includes(':')) return null
+    if (redirectUrlParam.includes('@')) return null
+    try {
+      const url = new URL(redirectUrlParam, 'http://localhost')
+      if (url.origin !== 'http://localhost') return null
+    } catch {
+      return null
+    }
+    return redirectUrlParam
+  })()
   const { signIn, setActive, isLoaded } = useSignIn()
   const [isLoading, setIsLoading] = useState(false)
   const [isRedirecting, setIsRedirecting] = useState(false)

@@ -1,13 +1,19 @@
 import { createClient } from '@/lib/supabase/server'
+import { auth } from '@clerk/nextjs/server'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
   try {
+    const { userId } = await auth()
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
     const supabase = await createClient()
     const searchParams = request.nextUrl.searchParams
     const query = searchParams.get('q') || ''
-    const limit = parseInt(searchParams.get('limit') || '50')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const limit = Math.min(Math.max(1, parseInt(searchParams.get('limit') || '50') || 50), 100)
+    const offset = Math.max(0, parseInt(searchParams.get('offset') || '0') || 0)
 
     let queryBuilder = supabase
       .from('airlines')

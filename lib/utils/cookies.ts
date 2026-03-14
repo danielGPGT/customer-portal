@@ -9,7 +9,7 @@ export const cookieConfig: CookieOptions = {
   path: '/',
   sameSite: 'lax' as const,
   secure: process.env.NODE_ENV === 'production',
-  httpOnly: false, // Must be false for client-side access (Supabase auth tokens)
+  httpOnly: false, // Required by Supabase SSR - browser client reads these cookies. Mitigate XSS risk with CSP headers.
   maxAge: 60 * 60 * 24 * 7, // 7 days
 }
 
@@ -22,7 +22,7 @@ export const authCookieConfig: CookieOptions = {
   path: '/',
   sameSite: 'lax' as const,
   secure: process.env.NODE_ENV === 'production',
-  httpOnly: false, // Supabase needs client-side access
+  httpOnly: false, // Required by Supabase SSR - browser client reads these cookies. Mitigate XSS risk with CSP headers.
   maxAge: 60 * 60 * 24 * 365, // 1 year for refresh tokens
 }
 
