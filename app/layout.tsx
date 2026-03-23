@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ErrorSuppression } from "@/components/error-suppression";
+import { ConsoleSilencer } from "@/components/console-silencer";
 import { ErrorBoundary } from "@/app/error-boundary";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -61,6 +62,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <ErrorBoundary>
+              <ConsoleSilencer />
               <ErrorSuppression />
               {children}
               <Toaster />
