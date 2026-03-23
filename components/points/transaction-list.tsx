@@ -176,7 +176,7 @@ export function TransactionList({
       } else {
         setHasMore(false)
       }
-    } catch (error) {
+    } catch {
     } finally {
       setIsLoading(false)
     }

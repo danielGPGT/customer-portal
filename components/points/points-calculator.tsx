@@ -66,7 +66,7 @@ export function PointsCalculator({
             baseCurrency
           )
           setAmountInBaseCurrency(conversion.convertedAmount)
-        } catch (error) {
+        } catch {
           setAmountInBaseCurrency(amountNum) // Fallback to entered amount
         } finally {
           setIsConverting(false)
@@ -103,7 +103,7 @@ export function PointsCalculator({
             preferredCurrency!
           )
           setConvertedDiscount(conversion.convertedAmount)
-        } catch (error) {
+        } catch {
           setConvertedDiscount(null)
         } finally {
           setIsConverting(false)

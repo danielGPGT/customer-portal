@@ -336,7 +336,7 @@ title: 'One more step',
                     title: 'Code resent',
                     description: 'A new verification code has been sent to your email.',
                   })
-                } catch (error: any) {
+                } catch {
                   toast({
                     variant: 'soft',
                     title: 'Resend didn’t go through',

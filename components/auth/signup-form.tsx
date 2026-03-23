@@ -142,7 +142,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         let setActiveFailed = false
         try {
           await setActive({ session: result.createdSessionId })
-        } catch (setActiveErr: any) {
+        } catch {
           setActiveFailed = true
           // Continue to create/link client so account exists; we’ll ask user to log in
         }
@@ -437,7 +437,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
             const normalizedReferralCode = formData.referralCode.toUpperCase().trim()
             
             // Call referral function with Clerk user ID
-            const { data: referralData, error: referralError } = await supabase.rpc('process_referral_signup', {
+            const { error: referralError } = await supabase.rpc('process_referral_signup', {
               p_referral_code: normalizedReferralCode,
               p_clerk_user_id: clerkUserId,
               p_email: formData.email,
@@ -449,7 +449,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
 
             if (referralError) {
               // Check if client exists by email
-              const { data: existingClientByEmail, error: checkError } = await supabase
+              const { data: existingClientByEmail } = await supabase
                 .from('clients')
                 .select('id, team_id')
                 .eq('email', formData.email)
@@ -473,7 +473,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
                 }
                 clientCreatedOrLinked = true
               } else {
-                const { data: newClient, error: createError } = await supabase.from('clients').insert({
+                const { error: createError } = await supabase.from('clients').insert({
                   clerk_user_id: clerkUserId,
                   user_id: null, // Clerk users don't have a Supabase Auth user_id
                   team_id: '0cef0867-1b40-4de1-9936-16b867a753d7',

@@ -70,7 +70,7 @@ export function EnhancedStatsGrid({
           preferredCurrency
         )
         setDiscountValue(conversion.convertedAmount)
-      } catch (error) {
+      } catch {
         setDiscountValue(discountValueBase)
       }
     }

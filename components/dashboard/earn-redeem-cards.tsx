@@ -64,7 +64,7 @@ export function EarnRedeemCards({ baseCurrency = 'GBP', preferredCurrency: propP
           pointValue: pointValueConv.convertedAmount,
           redeem100: redeem100Conv.convertedAmount
         })
-      } catch (error) {
+      } catch {
         // Fallback to base values on error
         setConvertedAmounts({
           spend20: 20,

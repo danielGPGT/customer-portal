@@ -60,7 +60,7 @@ export function PointsBalanceCard({
           preferredCurrency
         )
         setConvertedValue(conversion.convertedAmount)
-      } catch (error) {
+      } catch {
         setConvertedValue(pointsValueBase)
       }
     }

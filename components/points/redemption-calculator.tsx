@@ -76,7 +76,7 @@ export function RedemptionCalculator({
             baseCurrency
           )
           setBookingAmountInBase(conversion.convertedAmount)
-        } catch (error) {
+        } catch {
           setBookingAmountInBase(bookingAmountNum)
         } finally {
           setIsConverting(false)
@@ -112,7 +112,7 @@ export function RedemptionCalculator({
           ])
           setConvertedDiscount(discountConv.convertedAmount)
           setConvertedFinalPrice(finalPriceConv.convertedAmount)
-        } catch (error) {
+        } catch {
           setConvertedDiscount(null)
           setConvertedFinalPrice(null)
         } finally {

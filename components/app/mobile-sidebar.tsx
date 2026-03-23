@@ -109,7 +109,7 @@ export function MobileSidebar({ open, onOpenChange }: MobileSidebarProps) {
           const link = `${baseUrl}/signup?ref=${referralCode}`
           setReferralLink(link)
         }
-      } catch (error) {
+      } catch {
       }
     }
 
@@ -142,7 +142,7 @@ export function MobileSidebar({ open, onOpenChange }: MobileSidebarProps) {
         setCopied(false)
         setIsCopying(false)
       }, 2000)
-    } catch (error) {
+    } catch {
       toast({
         title: "Failed to copy",
         description: "Please try again",

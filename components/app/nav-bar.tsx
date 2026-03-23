@@ -102,7 +102,7 @@ export function NavBar() {
           const link = `${baseUrl}/signup?ref=${referralCode}`
           setReferralLink(link)
         }
-      } catch (error) {
+      } catch {
       }
     }
 
@@ -147,7 +147,7 @@ export function NavBar() {
         setCopied(false)
         setIsCopying(false)
       }, 2000)
-    } catch (error) {
+    } catch {
       setIsCopying(false)
       toast({
         title: "Failed to copy",

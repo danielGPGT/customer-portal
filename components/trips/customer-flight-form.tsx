@@ -233,7 +233,7 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
                     }
                   }))
                 }
-              } catch (error) {
+              } catch {
               }
             } else if (segment.marketingAirlineCode) {
               // Fallback: search by code
@@ -249,7 +249,7 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
                     setSelectedAirlines(prev => ({ ...prev, 'outbound-airline': matchingAirline }))
                   }
                 }
-              } catch (error) {
+              } catch {
               }
             }
           } else {
@@ -292,7 +292,7 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
                     }
                   }))
                 }
-              } catch (error) {
+              } catch {
               }
             } else if (segment.marketingAirlineCode) {
               // Fallback: search by code
@@ -308,7 +308,7 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
                     setSelectedAirlines(prev => ({ ...prev, 'return-airline': matchingAirline }))
                   }
                 }
-              } catch (error) {
+              } catch {
               }
             }
           }
@@ -393,7 +393,7 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
               }
             }))
           }
-        } catch (error) {
+        } catch {
         }
       } else if (outboundSegment?.marketingAirlineCode || flight.outbound_airline_code) {
         // Fallback: search by code
@@ -410,7 +410,7 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
               setSelectedAirlines(prev => ({ ...prev, 'outbound-airline': matchingAirline }))
             }
           }
-        } catch (error) {
+        } catch {
         }
       }
 
@@ -433,7 +433,7 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
               }
             }))
           }
-        } catch (error) {
+        } catch {
         }
       } else if (returnSegment?.marketingAirlineCode || flight.inbound_airline_code) {
         // Fallback: search by code
@@ -450,7 +450,7 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
               setSelectedAirlines(prev => ({ ...prev, 'return-airline': matchingAirline }))
             }
           }
-        } catch (error) {
+        } catch {
         }
       }
 
@@ -569,7 +569,7 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
             setSelectedAirports(prev => ({ ...prev, [fieldId]: fetchedAirport }))
           }
         }
-      } catch (error) {
+      } catch {
       }
     }
 
@@ -598,7 +598,7 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
       const result = await response.json()
       setAirports(prev => ({ ...prev, [fieldId]: result.data || [] }))
       setAirportSearchQuery(prev => ({ ...prev, [fieldId]: query }))
-    } catch (error) {
+    } catch {
       setAirports(prev => ({ ...prev, [fieldId]: [] }))
     }
   }
@@ -617,7 +617,7 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
       const result = await response.json()
       setAirlines(prev => ({ ...prev, [fieldId]: result.data || [] }))
       setAirlineSearchQuery(prev => ({ ...prev, [fieldId]: query }))
-    } catch (error) {
+    } catch {
       setAirlines(prev => ({ ...prev, [fieldId]: [] }))
     }
   }
@@ -685,7 +685,7 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
                 outboundAirlineName = airlineData.name
                 outboundAirlineLogo = airlineData.logo_url
               }
-            } catch (error) {
+            } catch {
             }
           }
         }
@@ -739,7 +739,7 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
                 returnAirlineName = airlineData.name
                 returnAirlineLogo = airlineData.logo_url
               }
-            } catch (error) {
+            } catch {
             }
           }
         }
@@ -905,11 +905,13 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
       
       // Reset form
       form.reset()
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : 'Failed to add flight information'
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: error.message || 'Failed to add flight information',
+        description: message,
       })
     } finally {
       setIsLoading(false)

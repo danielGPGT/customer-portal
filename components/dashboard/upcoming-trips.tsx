@@ -350,6 +350,3 @@ export function UpcomingTrips({ trip }: UpcomingTripsProps) {
     </div>
   )
 }
-
-// Ensure the export is available
-export { UpcomingTrips }
