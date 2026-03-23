@@ -47,25 +47,28 @@ export async function createClient() {
     }
   )
 
-  // Set session variable for RLS policies to read
-  // This allows get_clerk_user_id() to work even without JWT
-  // IMPORTANT: This must complete before any queries are made
+  // Set session variable for RLS policies to read.
+  // NOTE: This RPC is a best-effort fallback. The primary mechanism is the
+  // x-clerk-user-id HTTP header (set above), which PostgREST exposes as
+  // current_setting('request.header.x-clerk-user-id') per-request.
+  // The header approach is immune to connection-pooling issues where
+  // set_config() on one connection isn't visible to another.
   if (clerkUserId) {
     try {
-      // Call set_clerk_user_id function to set session variable
-      // This will persist for all queries in this request
-      const { error } = await supabase.rpc('set_clerk_user_id', { 
-        p_user_id: clerkUserId 
+      const { error } = await supabase.rpc('set_clerk_user_id', {
+        p_user_id: clerkUserId
       })
-      
+
       if (error) {
-        console.error('Error setting Clerk user ID for RLS:', error)
-        // Don't throw - queries will still work but RLS might block
+        // Not fatal — the x-clerk-user-id header is the primary RLS mechanism
+        console.warn('set_clerk_user_id RPC failed (header fallback active):', error.message)
       }
     } catch (error) {
-      // Function might not exist yet - that's okay, will be created by migration
-      console.warn('set_clerk_user_id function not available yet:', error)
+      // Function might not exist yet — header fallback still works
+      console.warn('set_clerk_user_id function not available:', error)
     }
+  } else {
+    console.warn('No Clerk user ID available — RLS queries will return empty results')
   }
 
   return supabase
