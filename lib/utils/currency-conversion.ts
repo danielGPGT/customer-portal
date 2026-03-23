@@ -62,8 +62,7 @@ export async function convertDiscountToPreferredCurrency(
       formattedOriginal: formatCurrencyWithSymbol(amount, baseCurrency),
       formattedConverted: formatCurrencyWithSymbol(conversion.convertedAmount, preferredCurrency),
     }
-  } catch (error) {
-    console.error('Error converting currency:', error)
+  } catch {
     // Fallback: return original amount if conversion fails
     const formatted = formatCurrencyWithSymbol(amount, baseCurrency)
     return {

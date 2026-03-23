@@ -61,14 +61,10 @@ export async function createClient() {
 
       if (error) {
         // Not fatal — the x-clerk-user-id header is the primary RLS mechanism
-        console.warn('set_clerk_user_id RPC failed (header fallback active):', error.message)
       }
-    } catch (error) {
+    } catch {
       // Function might not exist yet — header fallback still works
-      console.warn('set_clerk_user_id function not available:', error)
     }
-  } else {
-    console.warn('No Clerk user ID available — RLS queries will return empty results')
   }
 
   return supabase

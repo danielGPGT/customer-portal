@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { getClient } from '@/lib/utils/get-client'
 import { PageHeader } from '@/components/app/page-header'
 
@@ -31,7 +31,7 @@ export default async function ReferralPage() {
     redirect('/dashboard?error=client_not_found')
   }
 
-  const supabase = await createClient()
+  const supabase = createServiceClient()
 
   const { data: settings } = await supabase
     .from('loyalty_settings')

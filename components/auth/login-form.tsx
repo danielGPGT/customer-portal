@@ -71,12 +71,6 @@ export function LoginForm() {
         password: data.password,
       })
 
-      console.log('[LoginForm] Sign-in result:', {
-        status: result.status,
-        supportedFirstFactors: result.supportedFirstFactors,
-        supportedSecondFactors: result.supportedSecondFactors,
-      })
-
       if (result.status === 'complete') {
         // Set the active session
         await setActive({ session: result.createdSessionId })
@@ -121,7 +115,6 @@ export function LoginForm() {
               description: 'Please check your email for the verification code to complete sign-in.',
             })
           } catch (verifyError: any) {
-            console.error('[LoginForm] Error preparing second factor:', verifyError)
             toast({
               variant: 'soft',
               title: 'We couldn’t send the code',
@@ -157,7 +150,6 @@ export function LoginForm() {
               description: 'Please check your email for the verification code.',
             })
           } catch (verifyError: any) {
-            console.error('[LoginForm] Error preparing email verification:', verifyError)
             toast({
               variant: 'soft',
               title: 'We couldn’t send the code',
@@ -174,7 +166,6 @@ title: 'One more step',
         }
       } else {
         // Handle other statuses
-        console.log('[LoginForm] Sign-in status:', result.status)
         toast({
           variant: 'soft',
           title: 'One more step',
@@ -231,12 +222,6 @@ title: 'One more step',
         })
       }
 
-      console.log('[LoginForm] Verification result:', {
-        type: verificationType,
-        status: result.status,
-        hasCreatedSessionId: !!result.createdSessionId,
-      })
-
       if (result.status === 'complete') {
         // Verification complete - set active session
         if (!result.createdSessionId) {
@@ -270,8 +255,6 @@ title: 'One more step',
         })
       }
     } catch (error: any) {
-      console.error('[LoginForm] Verification error:', error)
-      
       let errorMessage = 'We couldn’t verify your email'
       if (error?.errors && Array.isArray(error.errors) && error.errors.length > 0) {
         errorMessage = error.errors[0].message || error.errors[0].longMessage || errorMessage

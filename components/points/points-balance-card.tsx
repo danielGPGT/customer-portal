@@ -80,7 +80,6 @@ export function PointsBalanceCard({
         )
         setDiscountAmount(conversion.convertedAmount)
       } catch (error) {
-        console.error('Error converting currency:', error)
         setDiscountAmount(discountAmountBase)
       }
     }

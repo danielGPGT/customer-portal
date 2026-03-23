@@ -1,6 +1,5 @@
 'use client'
 
-import * as React from 'react'
 import { Coins, ShoppingCart, TrendingUp, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -27,12 +26,6 @@ export function DashboardHeader({
   redemptionIncrement = 100,
   minRedemptionPoints = 100,
 }: DashboardHeaderProps) {
-  React.useEffect(() => {
-    console.log('[DashboardHeader] Client-side: DashboardHeader mounted', {
-      firstName,
-      pointsBalance
-    })
-  }, [firstName, pointsBalance])
   return (
     <div className="relative w-full overflow-hidden rounded-3xl">
       {/* Background Image - Full Width */}

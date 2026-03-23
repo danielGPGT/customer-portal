@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { PageHeader } from '@/components/app/page-header'
 import { getClient } from '@/lib/utils/get-client'
 import { NotificationsList } from '@/components/notifications/notifications-list'
@@ -20,18 +20,14 @@ export default async function NotificationsPage() {
     redirect('/login')
   }
 
-  const supabase = await createClient()
+  const supabase = createServiceClient()
 
   // Fetch all notifications for the client
-  const { data: notifications, error } = await supabase
+  const { data: notifications } = await supabase
     .from('notifications')
     .select('*')
     .eq('client_id', client.id)
     .order('created_at', { ascending: false })
-
-  if (error) {
-    console.error('Error fetching notifications:', error)
-  }
 
   const unreadCount = notifications?.filter((n) => !n.read).length || 0
 

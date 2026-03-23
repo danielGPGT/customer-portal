@@ -3,7 +3,7 @@ import { auth } from '@clerk/nextjs/server'
 import { LayoutWrapper } from '@/components/app/layout-wrapper'
 import { getClient } from '@/lib/utils/get-client'
 import { canAccessClientPortal } from '@/lib/utils/portal-access'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 
 export default async function ProtectedLayout({
   children,
@@ -62,10 +62,8 @@ export default async function ProtectedLayout({
   }
 
   // Get base currency from loyalty settings
-  // Note: We can't use unstable_cache here because createClient() uses cookies()
-  // which is a dynamic data source. This is a simple single-row query that's already fast.
-  // React will automatically deduplicate this query within the same request if called multiple times.
-  const supabase = await createClient()
+  // This is a simple single-row query that's already fast.
+  const supabase = createServiceClient()
   const { data: settings } = await supabase
     .from('loyalty_settings')
     .select('currency')

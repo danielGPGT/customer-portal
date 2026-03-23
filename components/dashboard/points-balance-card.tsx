@@ -61,7 +61,6 @@ export function PointsBalanceCard({
         )
         setConvertedValue(conversion.convertedAmount)
       } catch (error) {
-        console.error('Error converting currency:', error)
         setConvertedValue(pointsValueBase)
       }
     }

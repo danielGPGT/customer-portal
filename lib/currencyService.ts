@@ -34,12 +34,10 @@ export class CurrencyService {
     
     // Check if we have valid cached data
     if (cached && Date.now() - cached.timestamp < this.CACHE_DURATION) {
-      console.log(`💰 Using cached exchange rates for ${baseCurrency}`);
       return cached.data;
     }
 
     try {
-      console.log(`💰 Fetching exchange rates for ${baseCurrency}...`);
       const response = await fetch(`${EXCHANGE_RATE_API_BASE}/${EXCHANGE_RATE_API_KEY}/latest/${baseCurrency}`);
       
       if (!response.ok) {
@@ -54,10 +52,8 @@ export class CurrencyService {
         timestamp: Date.now()
       });
 
-      console.log(`✅ Exchange rates fetched for ${baseCurrency}:`, data.conversion_rates);
       return data;
     } catch (error) {
-      console.error('❌ Error fetching exchange rates:', error);
       throw error;
     }
   }
@@ -107,7 +103,6 @@ export class CurrencyService {
         convertedAmount
       };
     } catch (error) {
-      console.error('❌ Error converting currency:', error);
       throw error;
     }
   }

@@ -80,8 +80,7 @@ export function SocialLoginButtons({ mode, referralCode }: SocialLoginButtonsPro
           redirectUrlComplete: redirectUrlComplete.toString(),
         })
       }
-    } catch (error: any) {
-      console.error(`Error authenticating with ${strategy}:`, error)
+    } catch {
       setLoadingProvider(null)
       // Error will be handled by Clerk's redirect flow
     }

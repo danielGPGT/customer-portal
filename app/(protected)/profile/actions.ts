@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 
 export type ProfileFormState = {
   status: 'idle' | 'success' | 'error'
@@ -82,7 +82,7 @@ export async function updateProfileAction(
   }
 
   const data = parsed.data
-  const supabase = await createClient()
+  const supabase = createServiceClient()
 
   // Get Clerk user instead of Supabase auth user
   const { getClerkUser } = await import('@/lib/clerk/server')

@@ -168,8 +168,6 @@ export function FlightsSection({ flights, currency, bookingId, teamId, bookingRe
       // Refresh the page to update the flight list
       router.refresh()
     } catch (error: any) {
-      console.error('Error deleting flight:', error)
-      
       let errorMessage = 'Failed to remove flight information'
       if (error instanceof Error) {
         errorMessage = error.message

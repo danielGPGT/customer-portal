@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-import { createClient } from '@/lib/supabase/server'
+
 
 export type ChangePasswordFormState = {
   status: 'idle' | 'success' | 'error'

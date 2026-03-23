@@ -71,7 +71,6 @@ export function EnhancedStatsGrid({
         )
         setDiscountValue(conversion.convertedAmount)
       } catch (error) {
-        console.error('Error converting currency:', error)
         setDiscountValue(discountValueBase)
       }
     }

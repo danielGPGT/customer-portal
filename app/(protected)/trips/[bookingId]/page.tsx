@@ -37,7 +37,7 @@ export default async function TripDetailsPage({ params }: TripDetailsPageProps) 
     redirect('/dashboard?error=client_not_found')
   }
 
-  const supabase = await (await import('@/lib/supabase/server')).createClient()
+  const supabase = (await import('@/lib/supabase/service')).createServiceClient()
 
   // OPTIMIZED: Parallel fetch booking and loyalty settings (they're independent)
   const [

@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/app/page-header'
@@ -35,48 +35,37 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function PointsPage({ searchParams }: PointsPageProps) {
-  const pageStartTime = performance.now()
-  console.log('[Points Page] Starting page load...')
-  
-  const supabase = await createClient()
+  const supabase = createServiceClient()
   const params = await searchParams
   const currentPage = parseInt(params.page || '1', 10)
   const pageSize = 10
   
-  const clientStartTime = performance.now()
   const { client, user } = await getClient()
-  console.log(`[Points Page] Client fetch: ${(performance.now() - clientStartTime).toFixed(2)}ms`)
 
   if (!user || !client) {
     redirect('/login')
   }
 
   // OPTIMIZED: Parallel fetch initial data (settings, redemptions, referral data)
-  const initialDataStartTime = performance.now()
   const [
     { data: settings, error: settingsError },
     { data: pendingRedemptions, error: redemptionsError },
     { data: referralData, error: referralError },
   ] = await Promise.all([
     (async () => {
-      const start = performance.now()
       const result = await supabase
         .from('loyalty_settings')
         .select('*')
         .eq('id', 1)
         .single()
-      console.log(`[Points Page] Settings query: ${(performance.now() - start).toFixed(2)}ms`)
       return result
     })(),
     // OPTIMIZED: Use RPC function for redemptions sum (much faster than SELECT)
     (async () => {
-      const start = performance.now()
       const { data: sumData, error: sumError } = await supabase.rpc('get_pending_redemptions_sum', { 
         p_client_id: client.id 
       })
-      console.log(`[Points Page] Redemptions sum RPC: ${(performance.now() - start).toFixed(2)}ms`)
       if (sumError) {
-        console.warn('[Points Page] Redemptions RPC failed, using fallback:', sumError)
         // Fallback to regular query
         const fallbackResult = await supabase
           .from('redemptions')
@@ -94,7 +83,6 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
     })(),
     // OPTIMIZED: Read referral code directly from client record (already fetched, no query needed!)
     (async () => {
-      const start = performance.now()
       let referralCode = client.referral_code || null
       
       // Only call RPC if code doesn't exist yet (should be rare after first use)
@@ -108,15 +96,12 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
       // Get base URL from environment or use localhost in dev
       const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '')
       const referralLink = referralCode && baseUrl ? `${baseUrl}/signup?ref=${referralCode}` : null
-      console.log(`[Points Page] Referral code lookup: ${(performance.now() - start).toFixed(2)}ms`)
       return { 
         data: referralCode ? { referral_code: referralCode, referral_link: referralLink } : null,
         error: null 
       }
     })(),
   ])
-  const initialDataEndTime = performance.now()
-  console.log(`[Points Page] Initial data (settings, redemptions, referrals): ${(initialDataEndTime - initialDataStartTime).toFixed(2)}ms`)
 
   // Calculate reserved points (if RPC was used, it's already a sum; otherwise reduce the array)
   const reservedPoints = typeof pendingRedemptions?.[0]?.points_redeemed === 'number' && pendingRedemptions.length === 1
@@ -143,12 +128,8 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
   sixMonthsAgo.setMonth(now.getMonth() - 6)
 
   // OPTIMIZED: Use database aggregation functions instead of fetching thousands of rows
-  const statsQueriesStartTime = performance.now()
-  
-  // Log individual query start times
-  const rpcStartTime = performance.now()
   const [
-    { data: statsData, error: statsError },
+    { data: statsData },
     { data: referralCountsData, error: referralCountsError },
     transactionCountResult,
     { data: transactions },
@@ -156,33 +137,15 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
     { data: recentTransactions },
   ] = await Promise.all([
     // Single RPC call that calculates all stats in one query (MUCH faster - no row fetching!)
-    supabase.rpc('get_points_stats', { p_client_id: client.id }).then(result => {
-      const rpcEndTime = performance.now()
-      console.log(`[Points Page] RPC get_points_stats: ${(rpcEndTime - rpcStartTime).toFixed(2)}ms`)
-      if (result.error) {
-        console.error('[Points Page] RPC error:', result.error)
-      }
-      return result
-    }),
+    supabase.rpc('get_points_stats', { p_client_id: client.id }),
     // Single RPC call for all referral counts (replaces 3 slow count queries!)
-    (async () => {
-      const start = performance.now()
-      const result = await supabase.rpc('get_referral_counts', { p_client_id: client.id })
-      console.log(`[Points Page] RPC get_referral_counts: ${(performance.now() - start).toFixed(2)}ms`)
-      if (result.error) {
-        console.error('[Points Page] Referral counts RPC error:', result.error)
-      }
-      return result
-    })(),
+    supabase.rpc('get_referral_counts', { p_client_id: client.id }),
     // Transactions count for pagination - OPTIMIZED: Use RPC function (bypasses RLS, much faster)
     (async () => {
-      const start = performance.now()
       const { data: countData, error: countError } = await supabase.rpc('get_transaction_count', { 
         p_client_id: client.id 
       })
-      console.log(`[Points Page] Transaction count RPC: ${(performance.now() - start).toFixed(2)}ms`)
       if (countError) {
-        console.warn('[Points Page] Transaction count RPC failed, using fallback:', countError)
         // Fallback to regular count query
         const fallbackResult = await supabase
           .from('loyalty_transactions')
@@ -195,15 +158,12 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
     })(),
     // Transactions for table (paginated) - OPTIMIZED: Use RPC function (bypasses RLS, much faster)
     (async () => {
-      const start = performance.now()
       const { data: transactionsData, error: transactionsError } = await supabase.rpc('get_transactions_paginated', { 
         p_client_id: client.id,
         p_page: currentPage,
         p_page_size: pageSize
       })
-      console.log(`[Points Page] Transactions pagination RPC: ${(performance.now() - start).toFixed(2)}ms`)
       if (transactionsError) {
-        console.warn('[Points Page] Transactions RPC failed, using fallback:', transactionsError)
         // Fallback to regular query - sort client-side to ensure correct order
         const fallbackResult = await supabase
           .from('loyalty_transactions')
@@ -230,7 +190,6 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
     })(),
     // Booking stats
     (async () => {
-      const start = performance.now()
       const result = await supabase
         .from('bookings')
         .select('points_earned')
@@ -238,12 +197,10 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
         .in('status', ['confirmed', 'completed'])
         .is('deleted_at', null)
         .not('points_earned', 'is', null)
-      console.log(`[Points Page] Bookings stats query: ${(performance.now() - start).toFixed(2)}ms`)
       return result
     })(),
     // Recent transactions for monthly chart (last 6 months)
     (async () => {
-      const start = performance.now()
       const result = await supabase
         .from('loyalty_transactions')
         .select('points, transaction_type, created_at, id')
@@ -263,26 +220,16 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
           return a.id > b.id ? -1 : a.id < b.id ? 1 : 0
         })
       }
-      console.log(`[Points Page] Recent transactions (6 months) query: ${(performance.now() - start).toFixed(2)}ms`)
       return result
     })(),
   ])
-  const statsQueriesEndTime = performance.now()
-  console.log(`[Points Page] Stats queries (8 parallel, 1 RPC aggregation): ${(statsQueriesEndTime - statsQueriesStartTime).toFixed(2)}ms`)
 
-  // Check if RPC functions exist
-  if (statsError) {
-    console.error('[Points Page] RPC function get_points_stats failed - make sure migration_add_points_stats_function.sql is run!')
-    console.error('[Points Page] Error:', statsError)
-  }
-  
   // Extract referral counts from RPC result, with fallback if function doesn't exist
   let friendsReferred = 0
   let currentYearReferrals = 0
   let lastYearReferrals = 0
   
   if (referralCountsError) {
-    console.warn('[Points Page] RPC function get_referral_counts not found - using fallback queries. Run migration_add_referral_counts_function.sql!')
     // Fallback: Use individual count queries (slower but works)
     const [totalResult, currentYearResult, lastYearResult] = await Promise.all([
       supabase
@@ -374,9 +321,7 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
 
   // Batch fetch all bookings in one query (only if needed)
   const bookingMap = new Map<string, { booking_reference: string | null; event_name: string | null }>()
-  let bookingsTime = 0
   if (bookingIds.length > 0) {
-    const bookingsStartTime = performance.now()
     const { data: bookings } = await supabase
       .from('bookings')
       .select(`
@@ -388,8 +333,6 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
       `)
       .in('id', bookingIds)
       .is('deleted_at', null)
-    bookingsTime = performance.now() - bookingsStartTime
-    console.log(`[Points Page] Bookings query (${bookingIds.length} IDs): ${bookingsTime.toFixed(2)}ms`)
 
     // Create map for O(1) lookup
     bookings?.forEach(booking => {
@@ -432,17 +375,13 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
 
   // Get expiring points if expiry is enabled
   let expiringPointsData: { points_expiring: number; days_remaining: number } | null = null
-  let expiringTime = 0
   if (settings?.points_expire_after_days) {
     try {
-      const expiringStartTime = performance.now()
       const { data: expiringData } = await supabase
         .from('points_expiring_soon')
         .select('points_balance, days_remaining')
         .eq('id', client.id)
         .maybeSingle()
-      expiringTime = performance.now() - expiringStartTime
-      console.log(`[Points Page] Expiring points query: ${expiringTime.toFixed(2)}ms`)
       
       if (expiringData && expiringData.days_remaining > 0 && expiringData.days_remaining <= 30) {
         // The view shows customers with points expiring, but doesn't calculate exact amount
@@ -453,9 +392,8 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
           days_remaining: expiringData.days_remaining
         }
       }
-    } catch (error) {
+    } catch {
       // View might not exist or error querying, ignore silently
-      console.warn('Failed to fetch expiring points:', error)
     }
   }
 
@@ -492,24 +430,6 @@ export default async function PointsPage({ searchParams }: PointsPageProps) {
   const baseCurrency = settings?.currency || 'GBP'
   const preferredCurrency = getClientPreferredCurrency(client, baseCurrency)
   const currency = baseCurrency // Keep for backward compatibility
-
-  const totalPageTime = performance.now() - pageStartTime
-  const clientFetchTime = initialDataStartTime - clientStartTime
-  const initialDataTime = initialDataEndTime - initialDataStartTime
-  const statsQueriesTime = statsQueriesEndTime - statsQueriesStartTime
-  
-  console.log(`[Points Page] ========== PERFORMANCE BREAKDOWN ==========`)
-  console.log(`[Points Page] Total page load time: ${totalPageTime.toFixed(2)}ms`)
-  console.log(`[Points Page] - Client fetch: ${clientFetchTime.toFixed(2)}ms`)
-  console.log(`[Points Page] - Initial data (3 queries parallel): ${initialDataTime.toFixed(2)}ms`)
-  console.log(`[Points Page] - Stats queries (14 queries parallel): ${statsQueriesTime.toFixed(2)}ms`)
-  if (bookingIds.length > 0) {
-    console.log(`[Points Page] - Bookings query (${bookingIds.length} IDs): ${bookingsTime.toFixed(2)}ms`)
-  }
-  if (settings?.points_expire_after_days) {
-    console.log(`[Points Page] - Expiring points query: ${expiringTime.toFixed(2)}ms`)
-  }
-  console.log(`[Points Page] ==========================================`)
 
   return (
     <div className="h-full w-full space-y-6">

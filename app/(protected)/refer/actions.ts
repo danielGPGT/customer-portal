@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { getClient } from '@/lib/utils/get-client'
 import { checkServerRateLimit } from '@/lib/utils/rate-limit-server'
 import { getBaseUrl } from '@/lib/utils/get-base-url'
@@ -42,7 +42,7 @@ export async function submitReferralInvite(
     return { error: 'Please enter a valid email address.' }
   }
 
-  const supabase = await createClient()
+  const supabase = createServiceClient()
 
   // Get or create the client's persistent referral code
   const { data: referralCode, error: codeError } = await supabase.rpc('get_or_create_referral_code', {

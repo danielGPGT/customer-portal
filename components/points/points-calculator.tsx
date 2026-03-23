@@ -67,7 +67,6 @@ export function PointsCalculator({
           )
           setAmountInBaseCurrency(conversion.convertedAmount)
         } catch (error) {
-          console.error('[PointsCalculator] Error converting amount:', error)
           setAmountInBaseCurrency(amountNum) // Fallback to entered amount
         } finally {
           setIsConverting(false)
@@ -105,7 +104,6 @@ export function PointsCalculator({
           )
           setConvertedDiscount(conversion.convertedAmount)
         } catch (error) {
-          console.error('[PointsCalculator] Error converting discount:', error)
           setConvertedDiscount(null)
         } finally {
           setIsConverting(false)

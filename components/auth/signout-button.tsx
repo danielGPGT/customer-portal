@@ -18,8 +18,7 @@ export function SignOutButton({ children, className, asChild }: SignOutButtonPro
       // Use window.location for a full page reload after sign-out
       // This ensures the session is fully cleared and prevents blank screens
       window.location.href = '/login'
-    } catch (error) {
-      console.error('Sign out error:', error)
+    } catch {
       // Fallback to redirect even if signOut fails
       window.location.href = '/login'
     }

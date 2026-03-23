@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/app/page-header'
@@ -34,7 +34,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     redirect('/')
   }
 
-  const supabase = await createClient()
+  const supabase = createServiceClient()
 
   // Search bookings/trips - search by booking reference or event name
   // Get all bookings first, then filter in memory for better flexibility

@@ -46,8 +46,7 @@ export async function cleanupAuthUser(userId: string): Promise<{ success: boolea
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
     
     if (!serviceRoleKey) {
-      console.error('SUPABASE_SERVICE_ROLE_KEY not configured - cannot cleanup auth user')
-      // Don't fail - just log the error. The user can be cleaned up manually later
+      // Don't fail — the user can be cleaned up manually later
       return { success: false, error: 'Service role key not configured' }
     }
     
@@ -67,14 +66,11 @@ export async function cleanupAuthUser(userId: string): Promise<{ success: boolea
     const { error } = await supabaseAdmin.auth.admin.deleteUser(userId)
     
     if (error) {
-      console.error('Failed to cleanup auth user:', error)
       return { success: false, error: error.message }
     }
     
-    console.log('Successfully cleaned up auth user:', userId)
     return { success: true }
   } catch (error: any) {
-    console.error('Error cleaning up auth user:', error)
     return { success: false, error: error.message }
   }
 }

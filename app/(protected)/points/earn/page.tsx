@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/app/page-header'
@@ -21,7 +21,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function PointsEarnPage() {
-  const supabase = await createClient()
+  const supabase = createServiceClient()
   const { client, user } = await getClient()
 
   if (!user || !client) {

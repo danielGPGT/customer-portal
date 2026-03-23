@@ -64,9 +64,8 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
           })
           return
         }
-      } catch (rateLimitError: any) {
-        // If rate limit check fails, log but continue (fail open)
-        console.warn('[SignupForm] Rate limit check failed:', rateLimitError)
+      } catch {
+        // If rate limit check fails, continue (fail open)
       }
 
       // STEP 1: Check if client already exists with this email
@@ -78,7 +77,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
       
       // Handle query errors (not just "not found")
       if (clientCheckError && clientCheckError.code !== 'PGRST116') {
-        console.error('Error checking existing client:', clientCheckError)
         // Continue anyway - treat as "not found"
       }
 
@@ -119,7 +117,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
             description: 'Please check your email for the verification code.',
           })
         } catch (verifyError: any) {
-          console.error('Error preparing email verification:', verifyError)
           const errDisplay = getSignupErrorMessage(verifyError, 'signup')
           toast({
             variant: 'soft',
@@ -146,7 +143,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         try {
           await setActive({ session: result.createdSessionId })
         } catch (setActiveErr: any) {
-          console.error('[SignupForm] setActive failed:', setActiveErr)
           setActiveFailed = true
           // Continue to create/link client so account exists; we’ll ask user to log in
         }
@@ -176,7 +172,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
           })
 
           if (referralError) {
-            console.error('Referral error:', referralError)
             // If referral fails but client exists, try to link without referral
             // Link client to Clerk user
             if (existingClient) {
@@ -373,7 +368,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         })
       }
     } catch (error: any) {
-      console.error('Signup error:', error)
       const errDisplay = getSignupErrorMessage(error)
       toast({
         variant: 'soft',
@@ -401,12 +395,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         code: verificationCode,
       })
 
-      console.log('[SignupForm] Verification result:', {
-        status: result.status,
-        hasCreatedUserId: !!result.createdUserId,
-        hasCreatedSessionId: !!result.createdSessionId,
-      })
-
       if (result.status === 'complete') {
         const clerkUserId = result.createdUserId
         if (!clerkUserId) {
@@ -428,8 +416,7 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
 
         try {
           await setActive({ session: result.createdSessionId })
-        } catch (setActiveError: any) {
-          console.error('[SignupForm] Error setting active session:', setActiveError)
+        } catch {
           toast({
             variant: 'soft',
             title: 'Verification failed',
@@ -443,12 +430,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         let clientCreatedOrLinked = false
 
         try {
-          console.log('[SignupForm] Starting client creation/linking process...', {
-            hasReferralCode: !!formData.referralCode,
-            email: formData.email,
-            clerkUserId,
-          })
-          
           // Handle existing client record and referral codes
           // If referral code provided, process it (handles client creation/update)
           if (formData.referralCode) {
@@ -456,7 +437,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
             const normalizedReferralCode = formData.referralCode.toUpperCase().trim()
             
             // Call referral function with Clerk user ID
-            console.log('[SignupForm] Calling process_referral_signup RPC...')
             const { data: referralData, error: referralError } = await supabase.rpc('process_referral_signup', {
               p_referral_code: normalizedReferralCode,
               p_clerk_user_id: clerkUserId,
@@ -467,30 +447,15 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
               p_team_id: null,
             })
 
-            console.log('[SignupForm] Referral RPC result:', {
-              hasData: !!referralData,
-              hasError: !!referralError,
-              errorMessage: referralError?.message,
-            })
-
             if (referralError) {
-              console.error('[SignupForm] Referral error:', referralError)
               // Check if client exists by email
-              console.log('[SignupForm] Referral failed, checking for existing client by email...')
               const { data: existingClientByEmail, error: checkError } = await supabase
                 .from('clients')
                 .select('id, team_id')
                 .eq('email', formData.email)
                 .maybeSingle()
 
-              console.log('[SignupForm] Existing client check:', {
-                hasClient: !!existingClientByEmail,
-                clientId: existingClientByEmail?.id,
-                checkError: checkError?.message,
-              })
-
               if (existingClientByEmail) {
-                console.log('[SignupForm] Updating existing client with Clerk user ID...')
                 const { error: updateError } = await supabase
                   .from('clients')
                   .update({
@@ -504,13 +469,10 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
                   .eq('id', existingClientByEmail.id)
 
                 if (updateError) {
-                  console.error('[SignupForm] Error updating client:', updateError)
                   throw updateError
                 }
-                console.log('[SignupForm] Client updated successfully')
                 clientCreatedOrLinked = true
               } else {
-                console.log('[SignupForm] No existing client found, creating new client...')
                 const { data: newClient, error: createError } = await supabase.from('clients').insert({
                   clerk_user_id: clerkUserId,
                   user_id: null, // Clerk users don't have a Supabase Auth user_id
@@ -526,10 +488,8 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
                 }).select().single()
 
                 if (createError) {
-                  console.error('[SignupForm] Error creating client:', createError)
                   throw createError
                 }
-                console.log('[SignupForm] Client created successfully:', newClient?.id)
                 clientCreatedOrLinked = true
               }
             } else {
@@ -630,7 +590,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
           }
 
           if (clientCreatedOrLinked) {
-            console.log('[SignupForm] Client created/linked successfully, redirecting to dashboard')
             // Verify client exists before redirecting
             const { data: verifyClient } = await supabase
               .from('clients')
@@ -639,7 +598,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
               .single()
             
             if (!verifyClient) {
-              console.warn('[SignupForm] Client not found after creation, waiting and retrying...')
               // Wait a bit longer and check again
               await new Promise(resolve => setTimeout(resolve, 1000))
               const { data: retryClient } = await supabase
@@ -659,7 +617,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
               }
             }
             
-            console.log('[SignupForm] Client verified, redirecting to dashboard')
             // Small delay to ensure session is fully propagated before navigation
             // Reduced from 500ms to 200ms to avoid user delay while still ensuring session is set
             await new Promise(resolve => setTimeout(resolve, 200))
@@ -674,7 +631,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
             return
           }
         } catch (stepError: any) {
-          console.error('[SignupForm] Error in client creation/linking:', stepError)
           const errDisplay = getSignupErrorMessage(stepError, 'verification')
           toast({
             variant: 'soft',
@@ -684,7 +640,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
           return
         }
       } else {
-        console.log('[SignupForm] Verification status not complete:', result.status)
         toast({
           variant: 'soft',
           title: 'Verification failed',
@@ -694,7 +649,6 @@ export function SignupForm({ initialReferralCode }: SignupFormProps = {}) {
         })
       }
     } catch (error: any) {
-      console.error('[SignupForm] Verification error:', error)
       const errDisplay = getSignupErrorMessage(error, 'verification')
       toast({
         variant: 'soft',

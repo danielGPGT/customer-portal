@@ -103,7 +103,6 @@ export function NavBar() {
           setReferralLink(link)
         }
       } catch (error) {
-        console.error('Error fetching referral link:', error)
       }
     }
 

@@ -42,7 +42,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     return { hasError: true, error }
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  componentDidCatch(error: Error, _errorInfo: React.ErrorInfo) {
     // Check if this is a development-only error
     const message = error.message || ''
     const stack = error.stack || ''
@@ -58,14 +58,10 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 
     // Suppress development-only errors
     if (isDevelopmentError && process.env.NODE_ENV === 'development') {
-      console.warn('[ErrorBoundary] Suppressing development-only error:', error.message)
       // Reset error state to prevent UI error message
       this.setState({ hasError: false, error: null })
       return
     }
-
-    // Log real errors
-    console.error('[ErrorBoundary] Caught error:', error, errorInfo)
   }
 
   render() {

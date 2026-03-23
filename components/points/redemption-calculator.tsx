@@ -77,7 +77,6 @@ export function RedemptionCalculator({
           )
           setBookingAmountInBase(conversion.convertedAmount)
         } catch (error) {
-          console.error('[RedemptionCalculator] Error converting booking amount:', error)
           setBookingAmountInBase(bookingAmountNum)
         } finally {
           setIsConverting(false)
@@ -114,7 +113,6 @@ export function RedemptionCalculator({
           setConvertedDiscount(discountConv.convertedAmount)
           setConvertedFinalPrice(finalPriceConv.convertedAmount)
         } catch (error) {
-          console.error('[RedemptionCalculator] Error converting amounts:', error)
           setConvertedDiscount(null)
           setConvertedFinalPrice(null)
         } finally {

@@ -35,10 +35,9 @@ function SSOCallbackContent() {
               window.location.href = '/'
               return
             }
-          } catch (signInError: any) {
+          } catch {
             // If handleRedirectCallback fails, it might be a sign-up flow
             // Continue to try sign-up below
-            console.log('[SSOCallback] Sign-in callback failed, trying sign-up:', signInError.message)
           }
         }
 
@@ -84,8 +83,7 @@ function SSOCallbackContent() {
                     p_team_id: null,
                   })
                 }
-              } catch (referralError) {
-                console.error('Error processing referral code:', referralError)
+              } catch {
                 // Continue even if referral fails
               }
             } else if (user) {
@@ -132,8 +130,7 @@ function SSOCallbackContent() {
                     })
                   }
                 }
-              } catch (clientError) {
-                console.error('Error creating/linking client:', clientError)
+              } catch {
                 // Continue even if client creation fails - getClient() will handle it
               }
             }
@@ -143,11 +140,10 @@ function SSOCallbackContent() {
             window.location.href = '/'
             return
           }
-          } catch (signUpError: any) {
+          } catch {
             // If handleRedirectCallback fails, redirect to login
             if (!hasRedirected.current) {
               hasRedirected.current = true
-              console.error('[SSOCallback] Sign-up callback failed:', signUpError)
               router.push('/login?error=oauth_failed')
             }
             return
@@ -159,8 +155,7 @@ function SSOCallbackContent() {
           hasRedirected.current = true
           router.push('/login?error=oauth_failed')
         }
-      } catch (error) {
-        console.error('SSO callback error:', error)
+      } catch {
         if (!hasRedirected.current) {
           hasRedirected.current = true
           router.push('/login?error=oauth_failed')

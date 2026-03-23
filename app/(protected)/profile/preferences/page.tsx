@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { PageHeader } from '@/components/app/page-header'
 import { ArrowLeft, Settings2, DollarSign } from 'lucide-react'
 import { getClient } from '@/lib/utils/get-client'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { PreferencesForm } from '@/components/profile/preferences-form'
 import { getClientPreferredCurrency } from '@/lib/utils/currency'
@@ -34,7 +34,7 @@ export default async function PreferencesPage() {
   }
 
   // Get loyalty settings to show base currency
-  const supabase = await createClient()
+  const supabase = createServiceClient()
   const { data: settings } = await supabase
     .from('loyalty_settings')
     .select('currency')

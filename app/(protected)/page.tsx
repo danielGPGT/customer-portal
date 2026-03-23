@@ -40,7 +40,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     redirect('/sign-in?error=setup_failed')
   }
 
-  const supabase = await (await import('@/lib/supabase/server')).createClient()
+  const supabase = (await import('@/lib/supabase/service')).createServiceClient()
 
   // OPTIMIZED: Parallel fetch settings, referrals, and recent transactions (they're independent)
   const [

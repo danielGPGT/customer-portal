@@ -41,11 +41,11 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
     redirect('/dashboard?error=client_not_found')
   }
 
-  const supabase = await (await import('@/lib/supabase/server')).createClient()
+  const supabase = (await import('@/lib/supabase/service')).createServiceClient()
 
   // OPTIMIZED: Parallel fetch all data
   const [
-    { data: bookings, error: bookingsError },
+    { data: bookings },
     { data: loyaltyTransactions },
     { data: redemptions },
     { data: settings },
@@ -97,10 +97,6 @@ export default async function TripsPage({ searchParams }: TripsPageProps) {
       .eq('id', 1)
       .single(),
   ])
-
-  if (bookingsError) {
-    console.error('Error fetching bookings:', bookingsError)
-  }
 
   // Get client's first loyalty booking date to check if booking is first
   const firstLoyaltyBookingAt = client.first_loyalty_booking_at

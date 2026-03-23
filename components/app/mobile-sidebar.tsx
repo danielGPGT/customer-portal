@@ -110,7 +110,6 @@ export function MobileSidebar({ open, onOpenChange }: MobileSidebarProps) {
           setReferralLink(link)
         }
       } catch (error) {
-        console.error('Error fetching referral link:', error)
       }
     }
 
@@ -144,7 +143,6 @@ export function MobileSidebar({ open, onOpenChange }: MobileSidebarProps) {
         setIsCopying(false)
       }, 2000)
     } catch (error) {
-      console.error('Failed to copy referral link:', error)
       toast({
         title: "Failed to copy",
         description: "Please try again",

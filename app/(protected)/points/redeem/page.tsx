@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/app/page-header'
@@ -21,7 +21,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function PointsRedeemPage() {
-  const supabase = await createClient()
+  const supabase = createServiceClient()
   const { client, user } = await getClient()
 
   if (!user || !client) {
@@ -59,9 +59,8 @@ export default async function PointsRedeemPage() {
     if (!error && discountData && discountData.length > 0) {
       availableDiscount = discountData[0]
     }
-  } catch (error) {
+  } catch {
     // Fallback to calculated value if RPC fails
-    console.warn('Failed to fetch available discount from RPC:', error)
   }
 
   // Get redemption stats

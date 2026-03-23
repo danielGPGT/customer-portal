@@ -2,7 +2,7 @@
 
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { z } from 'zod'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { isValidCurrency } from '@/lib/utils/currency'
 
 export type PreferencesFormState = {
@@ -49,7 +49,7 @@ export async function updatePreferencesAction(
   }
 
   const data = parsed.data
-  const supabase = await createClient()
+  const supabase = createServiceClient()
 
   // Get Clerk user
   const { getClerkUser } = await import('@/lib/clerk/server')

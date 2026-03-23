@@ -61,7 +61,6 @@ END:VCALENDAR`
       document.body.removeChild(link)
       URL.revokeObjectURL(url)
     } catch (error) {
-      console.error('Error generating ICS file:', error)
       alert('Failed to generate calendar file. Please try again.')
     }
   }

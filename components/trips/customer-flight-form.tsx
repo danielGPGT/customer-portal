@@ -234,7 +234,6 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
                   }))
                 }
               } catch (error) {
-                console.error('Error fetching airline:', error)
               }
             } else if (segment.marketingAirlineCode) {
               // Fallback: search by code
@@ -251,7 +250,6 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
                   }
                 }
               } catch (error) {
-                console.error('Error fetching airline:', error)
               }
             }
           } else {
@@ -295,7 +293,6 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
                   }))
                 }
               } catch (error) {
-                console.error('Error fetching airline:', error)
               }
             } else if (segment.marketingAirlineCode) {
               // Fallback: search by code
@@ -312,7 +309,6 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
                   }
                 }
               } catch (error) {
-                console.error('Error fetching airline:', error)
               }
             }
           }
@@ -398,7 +394,6 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
             }))
           }
         } catch (error) {
-          console.error('Error fetching airline:', error)
         }
       } else if (outboundSegment?.marketingAirlineCode || flight.outbound_airline_code) {
         // Fallback: search by code
@@ -416,7 +411,6 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
             }
           }
         } catch (error) {
-          console.error('Error fetching airline:', error)
         }
       }
 
@@ -440,7 +434,6 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
             }))
           }
         } catch (error) {
-          console.error('Error fetching airline:', error)
         }
       } else if (returnSegment?.marketingAirlineCode || flight.inbound_airline_code) {
         // Fallback: search by code
@@ -458,7 +451,6 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
             }
           }
         } catch (error) {
-          console.error('Error fetching airline:', error)
         }
       }
 
@@ -578,7 +570,6 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
           }
         }
       } catch (error) {
-        console.error('Error fetching airport details:', error)
       }
     }
 
@@ -608,7 +599,6 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
       setAirports(prev => ({ ...prev, [fieldId]: result.data || [] }))
       setAirportSearchQuery(prev => ({ ...prev, [fieldId]: query }))
     } catch (error) {
-      console.error('Error searching airports:', error)
       setAirports(prev => ({ ...prev, [fieldId]: [] }))
     }
   }
@@ -628,7 +618,6 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
       setAirlines(prev => ({ ...prev, [fieldId]: result.data || [] }))
       setAirlineSearchQuery(prev => ({ ...prev, [fieldId]: query }))
     } catch (error) {
-      console.error('Error searching airlines:', error)
       setAirlines(prev => ({ ...prev, [fieldId]: [] }))
     }
   }
@@ -697,7 +686,6 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
                 outboundAirlineLogo = airlineData.logo_url
               }
             } catch (error) {
-              console.error('Error fetching airline:', error)
             }
           }
         }
@@ -752,7 +740,6 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
                 returnAirlineLogo = airlineData.logo_url
               }
             } catch (error) {
-              console.error('Error fetching airline:', error)
             }
           }
         }
@@ -919,7 +906,6 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
       // Reset form
       form.reset()
     } catch (error: any) {
-      console.error('Error adding flight:', error)
       toast({
         variant: 'destructive',
         title: 'Error',

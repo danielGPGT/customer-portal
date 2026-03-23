@@ -227,14 +227,6 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         let errorMessage = 'Failed to update traveller information'
         
         // Log detailed error for debugging
-        console.error('Traveler update error details:', {
-          code: error.code,
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
-          travelerId: traveler.id,
-        })
-        
         try {
           // Try to parse error message if it's JSON
           if (typeof error.message === 'string') {
@@ -309,8 +301,6 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         router.refresh()
       }, 100)
     } catch (error: any) {
-      console.error('Error updating traveler:', error)
-      
       // Extract error message safely
       let errorMessage = 'Failed to update traveller information'
       

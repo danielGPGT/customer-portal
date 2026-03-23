@@ -177,7 +177,6 @@ export function TransactionList({
         setHasMore(false)
       }
     } catch (error) {
-      console.error('Error loading more transactions:', error)
     } finally {
       setIsLoading(false)
     }

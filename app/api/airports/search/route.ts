@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { auth } from '@clerk/nextjs/server'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const supabase = await createClient()
+    const supabase = createServiceClient()
     const searchParams = request.nextUrl.searchParams
     const query = searchParams.get('q') || ''
     const limit = Math.min(Math.max(1, parseInt(searchParams.get('limit') || '50') || 50), 100)
@@ -33,7 +33,6 @@ export async function GET(request: NextRequest) {
     const { data, error, count } = await queryBuilder
 
     if (error) {
-      console.error('Error searching airports:', error)
       return NextResponse.json(
         { error: 'Failed to search airports' },
         { status: 500 }
@@ -46,8 +45,7 @@ export async function GET(request: NextRequest) {
       limit,
       offset,
     })
-  } catch (error) {
-    console.error('Error in airports search API:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
