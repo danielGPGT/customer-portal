@@ -11,6 +11,7 @@ import { createClient } from '@/lib/supabase/client'
 import { formatDistanceToNow, format } from 'date-fns'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
+import { markNotificationReadAction, markAllNotificationsReadAction, fetchNotificationsAction } from '@/app/(protected)/notifications/actions'
 
 interface Notification {
   id: string
@@ -36,17 +37,11 @@ export function NotificationsList({ notifications: initialNotifications, clientI
   const { toast } = useToast()
 
   const fetchNotifications = React.useCallback(async () => {
-    const supabase = createClient()
-    const { data, error } = await supabase
-      .from('notifications')
-      .select('*')
-      .eq('client_id', clientId)
-      .order('created_at', { ascending: false })
-
-    if (!error && data) {
-      setNotifications(data)
+    const result = await fetchNotificationsAction()
+    if (result.success && result.data) {
+      setNotifications(result.data)
     }
-  }, [clientId])
+  }, [])
 
   // Subscribe to real-time updates
   React.useEffect(() => {
@@ -79,13 +74,9 @@ export function NotificationsList({ notifications: initialNotifications, clientI
   }, [clientId, fetchNotifications])
 
   const markAsRead = async (notificationId: string) => {
-    const supabase = createClient()
-    const { error } = await supabase
-      .from('notifications')
-      .update({ read: true, read_at: new Date().toISOString() })
-      .eq('id', notificationId)
+    const result = await markNotificationReadAction(notificationId)
 
-    if (!error) {
+    if (result.success) {
       setNotifications((prev) =>
         prev.map((n) => (n.id === notificationId ? { ...n, read: true, read_at: new Date().toISOString() } : n))
       )
@@ -97,13 +88,9 @@ export function NotificationsList({ notifications: initialNotifications, clientI
     if (unreadIds.length === 0) return
 
     setIsLoading(true)
-    const supabase = createClient()
-    const { error } = await supabase
-      .from('notifications')
-      .update({ read: true, read_at: new Date().toISOString() })
-      .in('id', unreadIds)
+    const result = await markAllNotificationsReadAction(unreadIds)
 
-    if (!error) {
+    if (result.success) {
       setNotifications((prev) =>
         prev.map((n) => ({ ...n, read: true, read_at: new Date().toISOString() }))
       )

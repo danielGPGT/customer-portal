@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(for file:*)",
+      "Bash(do echo:*)",
+      "Read(//c/gpgt-customer-portal/customer-portal/**)",
+      "Bash(done)"
     ]
   }
 }

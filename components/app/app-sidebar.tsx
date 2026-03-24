@@ -55,7 +55,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { createClient } from "@/lib/supabase/client"
 
 interface NavItem {
   title: string
@@ -116,7 +115,6 @@ export function AppSidebar({ user, client }: { user: any; client: any }) {
   const { user: clerkUser } = useUser()
   const pathname = usePathname()
   const router = useRouter()
-  const supabase = createClient()
 
   // SignOutButton component handles signout now
 

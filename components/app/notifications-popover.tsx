@@ -14,6 +14,7 @@ import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
 import { formatDistanceToNow } from "date-fns"
+import { markNotificationReadAction, markAllNotificationsReadAction, fetchNotificationsAction } from "@/app/(protected)/notifications/actions"
 
 interface Notification {
   id: string
@@ -43,18 +44,12 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
 
     const supabase = createClient()
 
-    // Fetch notifications
+    // Fetch notifications via server action
     const fetchNotifications = async () => {
-      const { data, error } = await supabase
-        .from('notifications')
-        .select('*')
-        .eq('client_id', clientId)
-        .order('created_at', { ascending: false })
-        .limit(10)
-
-      if (!error && data) {
-        setNotifications(data)
-        setUnreadCount(data.filter((n) => !n.read).length)
+      const result = await fetchNotificationsAction({ limit: 10 })
+      if (result.success && result.data) {
+        setNotifications(result.data)
+        setUnreadCount(result.data.filter((n: Notification) => !n.read).length)
       }
       setIsLoading(false)
     }
@@ -84,13 +79,9 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
   }, [clientId])
 
   const markAsRead = async (notificationId: string) => {
-    const supabase = createClient()
-    const { error } = await supabase
-      .from('notifications')
-      .update({ read: true, read_at: new Date().toISOString() })
-      .eq('id', notificationId)
+    const result = await markNotificationReadAction(notificationId)
 
-    if (!error) {
+    if (result.success) {
       setNotifications((prev) =>
         prev.map((n) => (n.id === notificationId ? { ...n, read: true } : n))
       )
@@ -102,13 +93,9 @@ export function NotificationsPopover({ clientId }: { clientId: string }) {
     const unreadIds = notifications.filter((n) => !n.read).map((n) => n.id)
     if (unreadIds.length === 0) return
 
-    const supabase = createClient()
-    const { error } = await supabase
-      .from('notifications')
-      .update({ read: true, read_at: new Date().toISOString() })
-      .in('id', unreadIds)
+    const result = await markAllNotificationsReadAction(unreadIds)
 
-    if (!error) {
+    if (result.success) {
       setNotifications((prev) =>
         prev.map((n) => ({ ...n, read: true }))
       )
