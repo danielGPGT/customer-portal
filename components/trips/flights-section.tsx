@@ -9,10 +9,10 @@ import { format } from 'date-fns'
 import { formatCalendarDate } from '@/lib/utils/date'
 import { CustomerFlightForm } from '@/components/trips/customer-flight-form'
 import { FlightItineraryCard } from '@/components/trips/flight-itinerary-card'
-import { createClient } from '@/lib/supabase/client'
 import { useToast } from '@/hooks/use-toast'
 import { toast as sonnerToast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { deleteFlightAction } from '@/app/(protected)/trips/[bookingId]/actions'
 
 interface Flight {
   id: string
@@ -141,18 +141,12 @@ export function FlightsSection({ flights, currency, bookingId, teamId, bookingRe
     if (deletingFlightId) return // Prevent multiple simultaneous deletions
     
     setDeletingFlightId(flightId)
-    const supabase = createClient()
 
     try {
-      // Soft delete by setting deleted_at timestamp
-      const { error } = await supabase
-        .from('bookings_flights')
-        .update({ deleted_at: new Date().toISOString() })
-        .eq('id', flightId)
-        .eq('flight_type', 'customer')
+      const result = await deleteFlightAction(bookingId, flightId)
 
-      if (error) {
-        throw error
+      if (!result.success) {
+        throw new Error(result.error)
       }
 
       sonnerToast.success('Flight removed', {

@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { createClient } from '@/lib/supabase/client'
 import { useToast } from '@/hooks/use-toast'
 import { toast as sonnerToast } from 'sonner'
 import { useRouter, usePathname } from 'next/navigation'
+import { updateTravelerAction } from '@/app/(protected)/trips/[bookingId]/actions'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter, SheetDescription } from '@/components/ui/sheet'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
@@ -175,29 +175,17 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
     }
 
     setIsLoading(true)
-    const supabase = createClient()
 
     try {
-      // First, verify the traveler exists and is accessible
-      const { data: existingTraveler, error: checkError } = await supabase
-        .from('booking_travelers')
-        .select('id, deleted_at')
-        .eq('id', traveler.id)
-        .single()
-
-      if (checkError || !existingTraveler) {
-        throw new Error('Traveller not found. Please refresh the page and try again.')
-      }
-
-      if (existingTraveler.deleted_at) {
-        throw new Error('This traveller has been deleted and cannot be updated.')
+      if (!bookingId) {
+        throw new Error('Booking ID is required to update traveller information.')
       }
 
       // Format phone number before saving
       const formattedPhone = data.phone ? formatPhoneNumber(data.phone) : null
 
       // Convert empty strings to null for optional fields
-      const updateData: any = {
+      const updateData: Record<string, unknown> = {
         first_name: data.first_name.trim(),
         last_name: data.last_name.trim(),
         email: data.email?.trim() || null,
@@ -214,55 +202,10 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
         updated_at: new Date().toISOString(),
       }
 
-      const { data: updatedData, error } = await supabase
-        .from('booking_travelers')
-        .update(updateData)
-        .eq('id', traveler.id)
-        .is('deleted_at', null) // Ensure we're not updating deleted records
-        .select()
-        .single()
+      const result = await updateTravelerAction(bookingId, traveler.id, updateData)
 
-      if (error) {
-        // Handle Supabase errors
-        let errorMessage = 'Failed to update traveller information'
-        
-        // Log detailed error for debugging
-        try {
-          // Try to parse error message if it's JSON
-          if (typeof error.message === 'string') {
-            try {
-              const parsedError = JSON.parse(error.message)
-              errorMessage = parsedError.message || parsedError.error || error.message
-            } catch {
-              // Not JSON, use as-is
-              errorMessage = error.message
-            }
-          } else {
-            errorMessage = error.message || errorMessage
-          }
-        } catch (parseError) {
-          // If parsing fails, use the error message directly
-          errorMessage = error.message || errorMessage
-        }
-
-        // Check for specific error types
-        if (error.code === '23505') {
-          errorMessage = 'A traveller with this information already exists'
-        } else if (error.code === '23503') {
-          errorMessage = 'Invalid reference. Please refresh the page and try again.'
-        } else if (error.code === 'PGRST116' || error.code === 'PGRST301') {
-          // PGRST116 = No rows found, PGRST301 = Multiple rows found (shouldn't happen with single)
-          errorMessage = 'Unable to update traveller. This may be due to permissions or the traveller may have been deleted. Please refresh the page and try again.'
-        } else if (error.code === '42501' || error.message?.includes('permission denied') || error.message?.includes('row-level security')) {
-          errorMessage = 'You do not have permission to update this traveller. Please contact support if this issue persists.'
-        }
-
-        throw new Error(errorMessage)
-      }
-
-      // Verify we got updated data back
-      if (!updatedData) {
-        throw new Error('Update completed but no data was returned. Please refresh the page to see your changes.')
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to update traveller information')
       }
 
       // Success notifications
@@ -278,25 +221,9 @@ export function TravelerEditDrawer({ traveler, open, onOpenChange, onSuccess, ca
 
       onOpenChange(false)
       // Pass updated traveler data to onSuccess callback for optimistic update
-      onSuccess?.(updatedData as Traveler)
+      onSuccess?.(result.data as unknown as Traveler)
 
-      // Notify internal staff (direct insert per CLIENT_PORTAL_NOTIFICATION_SETUP.md)
-      if (bookingId && teamId && bookingReference) {
-        void supabase
-          .from('internal_notifications')
-          .insert({
-            team_id: teamId,
-            type: 'booking_updated_by_client',
-            title: `Booking ${bookingReference} updated by client`,
-            message: 'Traveler details or client flights were changed. Review in booking.',
-            link_path: `/booking/${bookingId}`,
-            link_id: null,
-            metadata: { booking_id: bookingId },
-          })
-          .then(() => {}, () => {})
-      }
-      
-      // Force server-side refresh to bypass all caches
+      // Server action already handles notification and revalidation
       setTimeout(() => {
         router.refresh()
       }, 100)

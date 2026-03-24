@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Users, User, Mail, Phone, MapPin, Edit2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -304,35 +304,12 @@ export function TravelersSection({ travelers, canEdit, isEditLocked, daysUntilLo
         onSuccess={async (updatedTraveler) => {
           // Optimistically update local state with the updated traveler
           if (updatedTraveler) {
-            setLocalTravelers(prev => 
+            setLocalTravelers(prev =>
               prev.map(t => t.id === updatedTraveler.id ? updatedTraveler : t)
             )
-          } else {
-            // If no updated traveler provided, silently refetch all travelers for this booking
-            // We need to get the booking_id from the first traveler
-            if (localTravelers.length > 0) {
-              const supabase = createClient()
-              // Fetch the booking_id from the first traveler
-              const { data: travelerData } = await supabase
-                .from('booking_travelers')
-                .select('booking_id')
-                .eq('id', localTravelers[0].id)
-                .single()
-              
-              if (travelerData?.booking_id) {
-                const { data: updatedData } = await supabase
-                  .from('booking_travelers')
-                  .select('*')
-                  .eq('booking_id', travelerData.booking_id)
-                  .is('deleted_at', null)
-                  .order('created_at', { ascending: true })
-                
-                if (updatedData) {
-                  setLocalTravelers(updatedData as Traveler[])
-                }
-              }
-            }
           }
+          // Server action handles revalidation; router.refresh() in the drawer
+          // will cause Next.js to re-render with fresh server data
         }}
         canEditContactFields={!hasBookedFlights}
       />

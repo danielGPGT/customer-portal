@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
 import { useToast } from '@/hooks/use-toast'
 import { useRouter, usePathname } from 'next/navigation'
+import { insertFlightAction, updateFlightAction, getFlightForEditAction } from '@/app/(protected)/trips/[bookingId]/actions'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -146,23 +147,22 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
         return
       }
 
-      const supabase = createClient()
-      const { data: flight, error } = await supabase
-        .from('bookings_flights')
-        .select('flight_details, outbound_airline_code, inbound_airline_code')
-        .eq('id', flightId)
-        .eq('flight_type', 'customer')
-        .single()
+      const result = await getFlightForEditAction(bookingId, flightId)
 
-      if (error || !flight) {
+      if (!result.success || !result.data) {
         toast({
           title: 'Error loading flight',
-          description: 'Could not load flight data. Please try again.',
+          description: result.error || 'Could not load flight data. Please try again.',
           variant: 'destructive',
         })
         form.reset()
         return
       }
+
+      const flight = result.data
+
+      // Browser client for read-only airline/airport lookups (permissive SELECT policies)
+      const supabase = createClient()
 
       const details = flight.flight_details as any
       if (!details) {
@@ -777,15 +777,11 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
       if (flightId) {
         // If editing a specific segment, merge with existing flight details
         if (editingSegment) {
-          const { data: existingFlight } = await supabase
-            .from('bookings_flights')
-            .select('flight_details')
-            .eq('id', flightId)
-            .eq('flight_type', 'customer')
-            .single()
+          // Fetch existing flight data via server action
+          const existingResult = await getFlightForEditAction(bookingId, flightId)
 
-          if (existingFlight && existingFlight.flight_details) {
-            const existingDetails = existingFlight.flight_details as any
+          if (existingResult.success && existingResult.data && existingResult.data.flight_details) {
+            const existingDetails = existingResult.data.flight_details as any
             const updatedDetails = { ...existingDetails }
 
             if (editingSegment.type === 'outbound') {
@@ -815,63 +811,43 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
               updatedDetails.returnDate = data.returnDepartureDateTime || null
             }
 
-            const updateData: any = {
+            const updatePayload: Record<string, unknown> = {
               flight_details: updatedDetails,
             }
-            
+
             if (editingSegment.type === 'outbound') {
-              updateData.outbound_airline_code = outboundAirlineCode
+              updatePayload.outbound_airline_code = outboundAirlineCode
             } else if (returnSegment) {
-              updateData.inbound_airline_code = inboundAirlineCode
+              updatePayload.inbound_airline_code = inboundAirlineCode
             }
 
-            const { error: updateError } = await supabase
-              .from('bookings_flights')
-              .update(updateData)
-              .eq('id', flightId)
-              .eq('flight_type', 'customer')
-
-            error = updateError
+            const result = await updateFlightAction(bookingId, flightId, updatePayload)
+            if (!result.success) throw new Error(result.error)
           } else {
-            error = { message: 'Could not load existing flight data' } as any
+            throw new Error('Could not load existing flight data')
           }
         } else {
-          // Update entire flight
-          const { error: updateError } = await supabase
-            .from('bookings_flights')
-            .update({
-              flight_details: flightDetails,
-              outbound_airline_code: outboundAirlineCode,
-              inbound_airline_code: inboundAirlineCode,
-            })
-            .eq('id', flightId)
-            .eq('flight_type', 'customer')
-
-          error = updateError
-        }
-      } else {
-        // Insert new flight
-        const { error: insertError } = await supabase
-          .from('bookings_flights')
-          .insert({
-            booking_id: bookingId,
-            flight_type: 'customer',
+          // Update entire flight via server action
+          const result = await updateFlightAction(bookingId, flightId, {
             flight_details: flightDetails,
             outbound_airline_code: outboundAirlineCode,
             inbound_airline_code: inboundAirlineCode,
-            quantity: 1,
-            cost: 0,
-            unit_price: 0,
-            total_price: 0,
           })
-
-        error = insertError
+          if (!result.success) throw new Error(result.error)
+        }
+      } else {
+        // Insert new flight via server action
+        const result = await insertFlightAction(
+          bookingId,
+          flightDetails as Record<string, unknown>,
+          outboundAirlineCode,
+          inboundAirlineCode,
+        )
+        if (!result.success) throw new Error(result.error)
       }
 
-      if (error) throw error
-
       toast({
-        title: flightId 
+        title: flightId
           ? (editingSegment ? 'Segment updated! ✅' : 'Flight updated! ✅')
           : 'Flight added! ✅',
         description: flightId
@@ -881,28 +857,12 @@ export function CustomerFlightForm({ bookingId, teamId, bookingReference, open, 
 
       onOpenChange(false)
 
-      // Notify internal staff (direct insert per CLIENT_PORTAL_NOTIFICATION_SETUP.md)
-      if (teamId && bookingReference) {
-        void supabase
-          .from('internal_notifications')
-          .insert({
-            team_id: teamId,
-            type: 'booking_updated_by_client',
-            title: `Booking ${bookingReference} updated by client`,
-            message: 'Traveler details or client flights were changed. Review in booking.',
-            link_path: `/booking/${bookingId}`,
-            link_id: null,
-            metadata: { booking_id: bookingId },
-          })
-          .then(() => {}, () => {})
-      }
-
-      // Enterprise-level: Force server-side refresh to bypass all caches
+      // Server actions already handle notification and revalidation
       setTimeout(() => {
         router.refresh()
       }, 100)
       onSuccess?.()
-      
+
       // Reset form
       form.reset()
     } catch (error: unknown) {
