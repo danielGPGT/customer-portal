@@ -5,7 +5,17 @@
       "Bash(for file:*)",
       "Bash(do echo:*)",
       "Read(//c/gpgt-customer-portal/customer-portal/**)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(find /c/Users/dangl/Documents/customer-portal/app/api -type f -name *.ts -o -name *.tsx)",
+      "Bash(grep -r \"user_role\\\\|user_permission\\\\|user_type\\\\|role_id\\\\|permission\" /c/Users/dangl/Documents/customer-portal/db/*.sql)",
+      "Bash(grep \"user_portal_access\\\\|portal_access\\\\|portal_type\" /c/Users/dangl/Documents/customer-portal/db/*.sql)",
+      "Bash(grep -B 5 -A 30 \"CREATE TABLE.*user_portal_access\" /c/Users/dangl/Documents/customer-portal/db/*.sql)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(grep -r \"impersonate\\\\|admin\\\\|role\\\\|permission\" /c/Users/dangl/Documents/customer-portal/*.md)",
+      "Bash(wc:*)",
+      "Bash(find /c/Users/dangl/Documents/customer-portal/src -type f \\\\\\(-name *.ts -o -name *.tsx \\\\\\))",
+      "Bash(grep -r 'use server' /c/Users/dangl/Documents/customer-portal --include=*.ts --include=*.tsx --exclude-dir=node_modules --exclude-dir=.next)"
     ]
   }
 }

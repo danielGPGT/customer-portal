@@ -12,6 +12,7 @@ const isProtectedRoute = createRouteMatcher([
   "/notifications(.*)",
   "/search(.*)",
   "/support(.*)",
+  "/diagnostics(.*)", // Admin diagnostic page
 ]);
 
 // Define public auth routes (login, signup, sign-in, sign-up, etc.)
